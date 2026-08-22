@@ -122,7 +122,7 @@ td.num,th.num{text-align:end;white-space:nowrap}
 .hidden{display:none!important}
 /* modal / sheet */
 .modal{position:fixed;inset:0;background:rgba(20,33,61,.5);display:none;align-items:flex-end;justify-content:center;z-index:30}
-@media (min-width:901px){.modal{align-items:stretch;justify-content:flex-end}.sheet{border-radius:0;max-width:640px;max-height:100vh;height:100vh;animation:slide .22s ease;box-shadow:-8px 0 30px rgba(20,33,61,.18)}[dir=rtl] .sheet{animation-name:slideR;box-shadow:8px 0 30px rgba(20,33,61,.18)}.modal.center{align-items:center;justify-content:center;padding:20px}.modal.center .sheet{height:auto;max-width:520px;max-height:90vh;border-radius:18px;animation:up .22s ease}}
+@media (min-width:901px){.modal{align-items:stretch;justify-content:flex-end;padding:0}.modal .sheet{border-radius:0;width:640px;max-width:640px;max-height:100vh;height:100vh;animation:slide .22s ease;box-shadow:-8px 0 30px rgba(20,33,61,.18)}[dir=rtl] .modal{justify-content:flex-start}[dir=rtl] .modal .sheet{animation-name:slideR;box-shadow:8px 0 30px rgba(20,33,61,.18)}.modal.center{align-items:center;justify-content:center;padding:20px}.modal.center .sheet{height:auto;width:100%;max-width:520px;max-height:90vh;border-radius:18px;animation:up .22s ease}}
 @keyframes slide{from{transform:translateX(40px);opacity:0}to{transform:none;opacity:1}}@keyframes slideR{from{transform:translateX(-40px);opacity:0}to{transform:none;opacity:1}}
 .modal.on{display:flex}
 .sheet{background:#fff;border-radius:18px 18px 0 0;width:100%;max-width:none;max-height:92vh;overflow:auto;padding:20px 20px 28px;animation:up .22s ease}
