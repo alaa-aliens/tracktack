@@ -5,6 +5,7 @@
 <title>TrackTack</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="config.js"></script>
+<link rel="manifest" href="manifest.json"><meta name="theme-color" content="#2563EB"><link rel="apple-touch-icon" href="apple-touch-icon.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="TrackTack"><link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -494,6 +495,7 @@ function exportCSV(kind){const list=kind==="inv"?D.invoices:D.expenses;const col
  const a=document.createElement("a");a.href="data:text/csv;charset=utf-8,"+encodeURIComponent(csv);a.download=(kind==="inv"?"sales":"expenses")+".csv";a.click();}
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
 document.addEventListener("click",e=>{if(e.target.id==="modal")closeModal()});
+if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js").catch(()=>{});}
 render();boot();sb.auth.onAuthStateChange((ev)=>{if(ev==="SIGNED_OUT"){SESSION=null;unlocked=false;D=null;render();}});
 window.addEventListener("focus",async()=>{if(unlocked&&BIZ){try{const r=await window.storage.get("tt:data");const nd=JSON.parse(r.value);if(JSON.stringify(nd)!==JSON.stringify(D)){D=nd;D.contacts=D.contacts||{};D.products=D.products||[];render();}}catch(e){}}});
 </script>
