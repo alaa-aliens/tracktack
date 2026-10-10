@@ -1,4 +1,4 @@
-# TrackTack
+# Tamm (formerly TrackTack)
 Invoices, expenses and cash tracking. Static site + Supabase backend.
 
 Files:
