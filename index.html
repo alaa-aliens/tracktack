@@ -707,7 +707,7 @@ function navBar(){const tabs=["home","act","people","more"];const cur=SUBS[tab]|
 function subHead(title,action){return`<div class="tm-ph sub"><button class="tm-back" aria-label="Back" onclick="go('${SUBS[tab]||"home"}')">${I2.back}</button><h1>${title}</h1>${action||""}</div>`;}
 function shell(body){return`<main class="tm-main${window.__still?" still":""}">${body}</main>${navBar()}`;}
 function vHome(){const c=calc();const cur=D.settings.cur;const AR=lang==="ar";
- const line=c.cash<-0.5?t("cashNeg").replace("{v}",`<b>${signed(c.cash)}</b>`).replace("{c}",cur):(c.funded+c.rev+c.spend)>0?t("cashPos").replace("{v}",`<b>${fmt(c.cash)}</b>`).replace("{c}",cur):t("cashZero");
+ const line=c.cash<-0.5?t("cashNeg").replace("{v}",`<b>${fmt(Math.abs(c.cash))}</b>`).replace("{c}",cur):(c.funded+c.rev+c.spend)>0?t("cashPos").replace("{v}",`<b>${fmt(c.cash)}</b>`).replace("{c}",cur):t("cashZero");
  const acts=[...D.invoices.map(x=>({...x,k:"i"})),...D.expenses.map(x=>({...x,k:"e"})),...D.funding.map(x=>({...x,k:"f",party:x.from+" → "+x.to,desc:x.ref}))].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5).map(rowHTML).join("");
  const nm=whoName();
  const qa=canEdit()?`<div class="tm-card"><h2>${t("today")}</h2><div class="tm-qa">
@@ -819,6 +819,11 @@ function openFundDetail(id){const x=D.funding.find(r=>r.id===id);if(!x)return;
  ${dtPhotos("fund",id,x)}
  ${canEdit()?`<button class="dt-del" onclick="delRec('fund','${id}')">${t("deleteThis")}</button>`:""}`);}
 
+
+/* auto-update: reload when a new version is published */
+const BUILD="b3";
+async function checkUpdate(){try{const r=await fetch("version.txt?"+Date.now(),{cache:"no-store"});const v=(await r.text()).trim();if(v&&v!==BUILD){const m=document.getElementById("modal");if(m&&m.classList.contains("on"))return;location.reload();}}catch(e){}}
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")checkUpdate();});setTimeout(checkUpdate,3000);
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
 document.addEventListener("click",e=>{if(e.target.id==="modal")closeModal()});
 if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js").catch(()=>{});}
