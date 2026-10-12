@@ -328,6 +328,28 @@ a{color:var(--ink)}
 .dt-muted{color:var(--muted);font-size:13px;margin-top:6px}
 .dt-rm{border:0;background:none;color:var(--red);cursor:pointer;padding:0 0 0 6px;vertical-align:-3px}.dt-rm svg{width:14px;height:14px}
 .dt-del{display:block;margin:22px auto 4px;background:none;border:0;color:var(--red);font:inherit;font-size:14px!important;font-weight:600;cursor:pointer;padding:10px}
+.fm-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:-4px}
+.fm-title{font-size:20px;font-weight:700;letter-spacing:-.4px}
+.fm-extra{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.fm-hero{margin-top:14px;background:#fff;border-radius:24px;padding:18px 16px;text-align:center;box-shadow:var(--sh)}
+.fm-q{font-size:13px;color:var(--muted)}
+.fm-amt{display:flex;align-items:baseline;justify-content:center;gap:6px;margin-top:4px}
+.fm-amt input.bigamt{border:0!important;outline:0!important;background:transparent;text-align:center;font-size:46px!important;font-weight:700;letter-spacing:-1.5px;width:6ch;field-sizing:content;min-width:2.5ch;max-width:75%;padding:0!important;color:var(--ink);font-family:inherit;-moz-appearance:textfield}
+.fm-amt input.bigamt::-webkit-outer-spin-button,.fm-amt input.bigamt::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.fm-amt input.bigamt::placeholder{color:#C9C7BD}
+.fm-amt .cu{font-size:17px;font-weight:600;color:var(--muted)}
+.fm-card{margin-top:12px;background:#fff;border-radius:22px;padding:16px;box-shadow:var(--sh)}
+.sheet.fm .form input,.sheet.fm .form select,.sheet.fm .form textarea{background:var(--paper);border-color:transparent;border-radius:14px}
+.sheet.fm .form label{font-size:12px}
+.fm-acts{position:sticky;bottom:-26px;margin:16px -18px 0;padding:12px 18px calc(14px + env(safe-area-inset-bottom));background:linear-gradient(180deg,rgba(251,250,246,0),var(--paper) 30%)!important;display:flex;gap:10px;flex-wrap:nowrap}
+.fm-acts .fm-btn{flex:1;height:54px;border-radius:27px;font-size:16px!important;font-weight:600;padding:0 16px}
+.fm-acts .fm-btn.primary{background:var(--ink);color:#fff;flex:1.4}
+.dt-lbl{margin-top:14px;font-size:13px;color:var(--muted)}
+.pp-tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:16px}
+.pp-tiles>div{background:#fff;border-radius:18px;padding:12px;box-shadow:var(--sh);min-width:0}
+.pp-tiles span{display:block;font-size:12px;color:var(--muted)}.pp-tiles b{display:block;font-size:17px;font-weight:700;margin-top:2px;font-variant-numeric:tabular-nums;overflow:hidden;text-overflow:ellipsis}
+.pp-in{border:0;background:var(--paper);border-radius:12px;padding:8px 10px;font:inherit;font-size:15px!important;text-align:end;color:var(--ink);min-width:0;width:60%}
+.sheet.fm .gal img{border-radius:14px}
 main.tm-main{background:transparent!important;margin:0 auto!important;max-width:640px!important;box-shadow:none!important;border-radius:0!important;padding:max(14px,env(safe-area-inset-top)) 16px 140px!important}
 .tm-add button,.tm-sum{font-size:15px!important}.tm-add button b{font-size:18px}
 </style>
@@ -820,8 +842,48 @@ function openFundDetail(id){const x=D.funding.find(r=>r.id===id);if(!x)return;
  ${canEdit()?`<button class="dt-del" onclick="delRec('fund','${id}')">${t("deleteThis")}</button>`:""}`);}
 
 
+/* ===== Tamm: forms, person and other sheets in the same style ===== */
+Object.assign(T.en,{howMuch:"How much?",callL:"Call",payAgain:"Pay again",paidTotal:"Paid in total",soldTotal:"Sold in total",history:"History",payments2:"Payments",phoneL:"Phone",notesL:"Notes",settled:"All settled",owesYouL:"Owes you",youOweL:"You owe",timesL:"Entries",detailsL:"Details"});
+Object.assign(T.ar,{howMuch:"كم المبلغ؟",callL:"اتصال",payAgain:"ادفع مجددًا",paidTotal:"المدفوع إجمالًا",soldTotal:"المباع إجمالًا",history:"السجل",payments2:"الدفعات",phoneL:"الهاتف",notesL:"ملاحظات",settled:"لا شيء مستحق",owesYouL:"مستحق لك",youOweL:"عليك",timesL:"عدد الحركات",detailsL:"التفاصيل"});
+const I4={phone:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>',
+ pay:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg>',
+ inv:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 7 7 17M17 17H7V7"/></svg>'};
+/* top bar used by every sheet */
+function sheetTop(title){return`<div class="fm-top"><span class="fm-title">${title||""}</span><button class="dt-x" aria-label="${t("close")}" onclick="closeModal()">${I3.x}</button></div>`;}
+function tidySheet(){const m=document.getElementById("modal");const sh=m&&m.querySelector(".sheet");if(!sh||sh.classList.contains("dt")||sh.dataset.tidy)return sh;sh.dataset.tidy="1";sh.classList.add("fm");
+ const h=sh.querySelector(":scope > h3");if(h){const title=[...h.childNodes].filter(n=>n.nodeType===3||n.tagName==="SPAN"&&!n.classList.contains("spacer")).map(n=>n.textContent).join(" ").trim();const extra=[...h.querySelectorAll("button,label")];h.insertAdjacentHTML("beforebegin",sheetTop(esc(title)));if(extra.length){const bar=document.createElement("div");bar.className="fm-extra";extra.forEach(b=>bar.append(b));h.after(bar);}h.remove();}
+ const acts=sh.querySelector(":scope > .actions");if(acts){[...acts.querySelectorAll(".btn.line")].forEach(b=>{if(/closeModal\(\)/.test(b.getAttribute("onclick")||""))b.remove();});const del=acts.querySelector(".btn.danger");if(del){del.className="dt-del";del.style.marginInlineEnd="";del.querySelectorAll("svg").forEach(s=>s.remove());sh.append(del);}
+  const btns=[...acts.querySelectorAll(".btn")];btns.forEach(b=>{b.classList.add("fm-btn");if(!b.classList.contains("line"))b.classList.add("primary");});acts.classList.add("fm-acts");if(!btns.length)acts.remove();}
+ return sh;}
+const _openForm=openForm;
+openForm=function(kind,id){_openForm(kind,id);const sh=tidySheet();if(!sh)return;
+ const amt=sh.querySelector('#frm > .full input.bigamt[name=amount]');
+ if(amt){const wrap=amt.closest(".full");const hero=document.createElement("div");hero.className="fm-hero";hero.innerHTML=`<div class="fm-q">${t("howMuch")}</div><div class="fm-amt"></div>`;
+  hero.querySelector(".fm-amt").append(amt);hero.querySelector(".fm-amt").insertAdjacentHTML("beforeend",`<span class="cu">${esc(D.settings.cur)}</span>`);wrap.remove();sh.querySelector("#frm").before(hero);amt.setAttribute("inputmode","decimal");}
+ const frm=sh.querySelector("#frm");if(frm)frm.classList.add("fm-card");
+ const a=sh.querySelector(kind==='inv'?'.it-d':'[name=amount]');if(a&&!id)setTimeout(()=>a.focus(),80);};
+const _openAddPerson=openAddPerson;openAddPerson=function(){_openAddPerson();const sh=tidySheet();const f=sh&&sh.querySelector(".form");if(f)f.classList.add("fm-card");};
+const _pickForPayment=pickForPayment;pickForPayment=function(){_pickForPayment();const sh=tidySheet();if(!sh)return;const rows=[...sh.querySelectorAll(":scope > .row")];if(rows.length){const c=document.createElement("div");c.className="tm-list";rows[0].before(c);rows.forEach(r=>c.append(r));}};
+const _viewImg=viewImg;viewImg=function(src){_viewImg(src);tidySheet();};
+function openPerson(i){const p=window.__PPL[i];if(!p)return;const nm=p.name;const sq=nm.replace(/'/g,"\\'");
+ const invs=D.invoices.filter(x=>x.party===nm).map(x=>({...x,k:"inv"})),exps=D.expenses.filter(x=>x.party===nm).map(x=>({...x,k:"exp"}));
+ const txs=[...invs,...exps].sort((a,b)=>String(b.date).localeCompare(String(a.date)));const ph=D.contacts[nm]||"";const note=D.dir&&D.dir[nm]&&D.dir[nm].notes||"";
+ const role=[p.isC?t("cust"):"",p.isS?t("supp"):""].filter(Boolean).join(" · ");
+ let lbl,val,pill;if(p.youOwe>0.004){lbl=t("youOweL");val=p.youOwe;pill=`<span class="dt-pill due">${t("youOweL")} ${fmt(p.youOwe)}</span>`;}else if(p.owedToYou>0.004){lbl=t("owesYouL");val=p.owedToYou;pill=`<span class="dt-pill due">${t("owesYouL")} ${fmt(p.owedToYou)}</span>`;}else{lbl=p.isC&&!p.isS?t("soldTotal"):t("paidTotal");val=p.isC&&!p.isS?p.invoiced:p.spent;pill=`<span class="dt-pill ok">${t("settled")}</span>`;}
+ const acts=[];if(ph)acts.push([`location.href='tel:${esc(ph).replace(/[^0-9+]/g,"")}'`,I4.phone,t("callL")],[`window.open('https://wa.me/'+'${esc(ph)}'.replace(/[^0-9]/g,''))`,I3.wa,t("waL")]);
+ if(canEdit()){if(p.isS||!p.isC)acts.push([`personPay('${sq}','exp')`,I4.pay,t("payAgain"),true]);if(p.isC)acts.push([`personPay('${sq}','inv')`,I4.inv,t("gotPaid"),!p.isS]);}
+ const tiles=[];if(p.isS||!p.isC)tiles.push([t("paidTotal"),fmt(p.spent)]);if(p.isC)tiles.push([t("soldTotal"),fmt(p.invoiced)]);tiles.push([p.youOwe>0.004?t("youOweL"):p.owedToYou>0.004?t("owesYouL"):t("remaining"),fmt(p.youOwe||p.owedToYou||0)]);tiles.push([t("timesL"),String(txs.length)]);
+ const hist=txs.map(x=>{const st=statusOf(x);return`<div class="row" onclick="openDetail('${x.k}','${x.id}')"><div class="txt"><b>${esc(tx(x.desc)||x.no||trCat(x.cat))}</b><span>${niceDate(x.date)}${x.att&&x.att.length?" · 📎"+x.att.length:""}</span></div><div class="amt">${x.k==="exp"?"−":"+"}${fmt(x.amount)}${st!=="paid"?`<span><span class="pill ${st}">${t(st)}</span></span>`:""}</div></div>`}).join("");
+ dtShell(`<div class="dt-top"><span></span><button class="dt-x" aria-label="${t("close")}" onclick="closeModal()">${I3.x}</button></div>
+ <div class="dt-hero"><span class="dt-av">${ini(nm)}</span><div class="dt-who"><b style="color:var(--ink);font-size:20px;font-weight:700">${esc(tx(nm))}</b>${role?`<br>${role}`:""}</div><div class="dt-lbl">${lbl}</div>${bigAmt(val)}${pill}</div>
+ ${acts.length?`<div class="dt-acts">${acts.map(a=>`<button onclick="${a[0]}"><span class="c${a[3]?" lm":""}">${a[1]}</span>${a[2]}</button>`).join("")}</div>`:""}
+ <div class="pp-tiles">${tiles.slice(0,3).map(x=>`<div><span>${x[0]}</span><b>${x[1]}</b></div>`).join("")}</div>
+ ${canEdit()?`<div class="dt-card"><div class="dt-row"><span>${t("phoneL")}</span><input class="pp-in" value="${esc(ph)}" inputmode="tel" placeholder="07…" onchange="D.contacts['${sq}']=this.value;persist()"></div><div class="dt-row" style="display:block"><span>${t("notesL")}</span><textarea class="pp-in" rows="2" style="width:100%;text-align:start;margin-top:6px" onchange="D.dir=D.dir||{};D.dir['${sq}']=D.dir['${sq}']||{};D.dir['${sq}'].notes=this.value;persist()">${esc(note)}</textarea></div></div>`:(note?`<div class="dt-card"><div class="dt-row"><span>${t("notesL")}</span><b>${esc(note)}</b></div></div>`:"")}
+ <div class="dt-sec">${t("history")}</div><div class="tm-list">${hist||`<div class="empty">${t("empty")}</div>`}</div>`);}
+function personPay(nm,kind){openForm(kind);setTimeout(()=>{const i=document.querySelector('#frm [name=party]');if(i){i.value=nm;}},60);}
+
 /* auto-update: reload when a new version is published */
-const BUILD="b3";
+const BUILD="b4";
 async function checkUpdate(){try{const r=await fetch("version.txt?"+Date.now(),{cache:"no-store"});const v=(await r.text()).trim();if(v&&v!==BUILD){const m=document.getElementById("modal");if(m&&m.classList.contains("on"))return;location.reload();}}catch(e){}}
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")checkUpdate();});setTimeout(checkUpdate,3000);
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
