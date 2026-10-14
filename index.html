@@ -5,7 +5,7 @@
 <title>Tamm</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="config.js"></script>
-<link rel="manifest" href="manifest.json?v=tamm2"><link rel="icon" href="tamm-icon-192.png"><meta name="theme-color" content="#FBFAF6"><link rel="apple-touch-icon" href="tamm-touch-180.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="Tamm"><link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="manifest" href="manifest.json?v=tamm3"><link rel="icon" href="tamm-icon-192.png"><meta name="theme-color" content="#FBFAF6"><link rel="apple-touch-icon" href="tamm-touch-180.png?v=3"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="Tamm"><link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Lalezar&display=swap" rel="stylesheet">
 <style>
@@ -180,7 +180,7 @@ a{color:var(--ink)}
 /* shell */
 .tm-main{max-width:640px;margin:0 auto;padding:max(14px,env(safe-area-inset-top)) 16px 130px;min-height:100vh}
 .tm-head{display:flex;align-items:center;justify-content:space-between;padding:4px 2px 0}
-.tm-head .lg{width:40px;height:40px;display:block;border-radius:50%}
+.tm-head .lg{width:40px;height:40px;display:block;border-radius:11px}
 .tm-ic{width:40px;height:40px;border-radius:50%;background:#fff;border:1px solid var(--line);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink);position:relative;padding:0}
 .tm-ic svg{width:19px;height:19px}
 .tm-av{width:40px;height:40px;border-radius:50%;background:var(--soft);display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;border:0;cursor:pointer;color:var(--ink)}
@@ -260,7 +260,7 @@ a{color:var(--ink)}
 .tm-gtop{display:flex;justify-content:flex-end}
 .tm-seg{display:inline-flex;background:#fff;border:1px solid var(--line);border-radius:20px;padding:3px}.tm-seg button{border:0;background:none;border-radius:16px;padding:6px 13px;font:inherit;font-size:13px!important;color:var(--muted);cursor:pointer}.tm-seg button.on{background:var(--ink);color:#fff;font-weight:600}
 .tm-brand{display:flex;flex-direction:column;align-items:center;text-align:center;padding-top:40px}
-.tm-brand img{width:92px;height:92px;border-radius:50%;animation:pop .7s cubic-bezier(.2,.9,.3,1.25) both}
+.tm-brand img{width:92px;height:92px;border-radius:24px;animation:pop .7s cubic-bezier(.2,.9,.3,1.25) both}
 .tm-wm{font-family:"Lalezar","Plus Jakarta Sans",sans-serif;font-weight:400;letter-spacing:.5px;line-height:1}
 .tm-brand .tm-wm{font-size:46px;margin-top:12px}
 .tm-brand h1{font-size:26px;font-weight:700;letter-spacing:-.6px;margin-top:20px}.tm-brand p{color:var(--muted);margin-top:6px;font-size:15px}
@@ -273,8 +273,8 @@ a{color:var(--ink)}
 #splash{position:fixed;inset:0;z-index:100;background:var(--logo);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .45s ease,visibility .45s}
 #splash.off{opacity:0;visibility:hidden}
 #splash .rg{position:relative;width:120px;height:120px}
-#splash .rg i{position:absolute;inset:0;border-radius:50%;border:2px solid var(--lime);animation:ring 1.6s ease-out infinite}
-#splash img{position:relative;width:120px;height:120px;border-radius:50%;animation:pop .8s cubic-bezier(.2,.9,.3,1.25) both}
+#splash .rg i{position:absolute;inset:0;border-radius:36px;border:2px solid var(--lime);animation:ring 1.6s ease-out infinite}
+#splash img{position:relative;width:120px;height:120px;border-radius:31px;animation:pop .8s cubic-bezier(.2,.9,.3,1.25) both}
 #splash .tm-wm{font-size:50px;margin-top:20px;animation:rise .8s .25s both}
 #splash p{margin-top:6px;font-size:14px;color:#A9AD9F;animation:rise .8s .4s both}
 #splash .dots3{position:absolute;bottom:calc(56px + env(safe-area-inset-bottom));display:flex;gap:6px}#splash .dots3 i{width:7px;height:7px;border-radius:50%;background:var(--lime);animation:blink 1.2s infinite}#splash .dots3 i:nth-child(2){animation-delay:.2s}#splash .dots3 i:nth-child(3){animation-delay:.4s}
@@ -384,7 +384,7 @@ let ROLE="owner";const canEdit=()=>ROLE==="owner"||ROLE==="editor";async functio
 async function signUp(email,pw){const {data,error}=await sb.auth.signUp({email,password:pw});if(error)throw error;return data;}
 async function signOut(){await sb.auth.signOut();location.reload();}
 /* ================================================================ */
-const LOGO=`<img src="logo.png" alt="Tamm" style="width:100%;height:100%;border-radius:50%;display:block">`;
+const LOGO=`<img src="logo.png" alt="Tamm" style="width:100%;height:100%;border-radius:26%;display:block">`;
 const ICONS={home:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8v9a2 2 0 0 1-2 2h-4v-6H9v6H5a2 2 0 0 1-2-2z"/></svg>',
  sales:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h8"/></svg>',
  exp:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="13" rx="2"/><circle cx="12" cy="12.5" r="3"/><path d="M2 10h2M20 10h2"/></svg>',
@@ -883,7 +883,7 @@ function openPerson(i){const p=window.__PPL[i];if(!p)return;const nm=p.name;cons
 function personPay(nm,kind){openForm(kind);setTimeout(()=>{const i=document.querySelector('#frm [name=party]');if(i){i.value=nm;}},60);}
 
 /* auto-update: reload when a new version is published */
-const BUILD="b4";
+const BUILD="b5";
 async function checkUpdate(){try{const r=await fetch("version.txt?"+Date.now(),{cache:"no-store"});const v=(await r.text()).trim();if(v&&v!==BUILD){const m=document.getElementById("modal");if(m&&m.classList.contains("on"))return;location.reload();}}catch(e){}}
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")checkUpdate();});setTimeout(checkUpdate,3000);
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
