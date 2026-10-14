@@ -5,7 +5,7 @@
 <title>Tamm</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="config.js"></script>
-<link rel="manifest" href="manifest.json?v=tamm3"><link rel="icon" href="tamm-icon-192.png"><meta name="theme-color" content="#FBFAF6"><link rel="apple-touch-icon" href="tamm-touch-180.png?v=3"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="Tamm"><link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="manifest" href="manifest.json?v=tamm4"><link rel="icon" href="tamm-icon-192.png"><meta name="theme-color" content="#FBFAF6"><link rel="apple-touch-icon" href="tamm-touch-180.png?v=4"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="Tamm"><link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Lalezar&display=swap" rel="stylesheet">
 <style>
@@ -275,8 +275,8 @@ a{color:var(--ink)}
 #splash .rg{position:relative;width:120px;height:120px}
 #splash .rg i{position:absolute;inset:0;border-radius:36px;border:2px solid var(--lime);animation:ring 1.6s ease-out infinite}
 #splash img{position:relative;width:120px;height:120px;border-radius:31px;animation:pop .8s cubic-bezier(.2,.9,.3,1.25) both}
-#splash .tm-wm{font-size:50px;margin-top:20px;animation:rise .8s .25s both}
-#splash p{margin-top:6px;font-size:14px;color:#A9AD9F;animation:rise .8s .4s both}
+#splash .tm-wm{font-size:50px;margin-top:20px;animation:rise .7s 1.5s both}
+#splash p{margin-top:6px;font-size:14px;color:#A9AD9F;animation:rise .7s 1.65s both}
 #splash .dots3{position:absolute;bottom:calc(56px + env(safe-area-inset-bottom));display:flex;gap:6px}#splash .dots3 i{width:7px;height:7px;border-radius:50%;background:var(--lime);animation:blink 1.2s infinite}#splash .dots3 i:nth-child(2){animation-delay:.2s}#splash .dots3 i:nth-child(3){animation-delay:.4s}
 @keyframes pop{0%{transform:scale(.6);opacity:0}60%{transform:scale(1.08);opacity:1}100%{transform:scale(1)}}
 @keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
@@ -292,8 +292,8 @@ a{color:var(--ink)}
 #done .bx{position:relative;width:120px;height:120px}
 #done .ck{position:absolute;inset:0;border-radius:50%;background:var(--lime);display:flex;align-items:center;justify-content:center;animation:burst .6s cubic-bezier(.2,.9,.3,1.3) both}
 #done .ck svg{width:58px;height:58px}#done .ck path{stroke-dasharray:40;stroke-dashoffset:40;animation:draw .45s .3s ease-out forwards}
-#done .cf{position:absolute;left:50%;top:50%;border-radius:50%;opacity:0;animation:conf .9s .15s ease-out forwards}
-#done .tm-wm{font-size:44px;margin-top:26px;animation:rise .5s .35s both}#done p{margin-top:8px;font-size:16px;color:var(--muted);animation:rise .5s .45s both}#done p b{color:var(--ink)}
+#done .cf{position:absolute;left:50%;top:50%;border-radius:50%;opacity:0;animation:conf .9s 1.35s ease-out forwards}
+#done .tm-wm{font-size:44px;margin-top:26px;animation:rise .5s 1.4s both}#done p{margin-top:8px;font-size:16px;color:var(--muted);animation:rise .5s 1.5s both}#done p b{color:var(--ink)}
 @keyframes burst{0%{transform:scale(0)}55%{transform:scale(1.15)}75%{transform:scale(.95)}100%{transform:scale(1)}}
 @keyframes draw{to{stroke-dashoffset:0}}
 @keyframes conf{0%{opacity:0;transform:translate(-50%,-50%) scale(.4)}20%{opacity:1}100%{opacity:0;transform:translate(calc(-50% + var(--x)),calc(-50% + var(--y))) scale(1)}}
@@ -350,12 +350,22 @@ a{color:var(--ink)}
 .pp-tiles span{display:block;font-size:12px;color:var(--muted)}.pp-tiles b{display:block;font-size:17px;font-weight:700;margin-top:2px;font-variant-numeric:tabular-nums;overflow:hidden;text-overflow:ellipsis}
 .pp-in{border:0;background:var(--paper);border-radius:12px;padding:8px 10px;font:inherit;font-size:15px!important;text-align:end;color:var(--ink);min-width:0;width:60%}
 .sheet.fm .gal img{border-radius:14px}
+.tm-mark{display:block}.tm-mark .mk-c{display:none}
+.tm-mark.anim .mk-c{display:inline;stroke-dasharray:1 1;stroke-dashoffset:1;animation:mkDraw .42s cubic-bezier(.4,0,.2,1) .15s forwards,mkErase .45s cubic-bezier(.5,0,.3,1) .62s forwards}
+.tm-mark.anim .mk-w{stroke-dasharray:1 1;stroke-dashoffset:1;animation:mkDraw .85s cubic-bezier(.45,0,.25,1) .62s forwards}
+.tm-mark.anim .mk-s{stroke-dasharray:1 1;stroke-dashoffset:1;animation:mkDraw .28s ease-out 1.45s forwards}
+@keyframes mkDraw{0%{opacity:1;stroke-dashoffset:1}100%{opacity:1;stroke-dashoffset:0}}@keyframes mkErase{0%{opacity:1;stroke-dashoffset:0}99%{opacity:1}100%{opacity:0;stroke-dashoffset:-1}}
+.tm-mark.anim path{opacity:0}
+@media (prefers-reduced-motion:reduce){.tm-mark.anim .mk-c{display:none}.tm-mark.anim .mk-w,.tm-mark.anim .mk-s{animation:none;stroke-dashoffset:0;opacity:1}}
+#splash .tm-mark{position:relative;width:120px;height:120px;animation:pop .6s cubic-bezier(.2,.9,.3,1.25) both}
+#done .tm-mark{width:120px;height:120px;animation:burst .55s cubic-bezier(.2,.9,.3,1.3) both}
+.tm-brand .tm-mark{width:92px;height:92px;animation:pop .6s cubic-bezier(.2,.9,.3,1.25) both}
 main.tm-main{background:transparent!important;margin:0 auto!important;max-width:640px!important;box-shadow:none!important;border-radius:0!important;padding:max(14px,env(safe-area-inset-top)) 16px 140px!important}
 .tm-add button,.tm-sum{font-size:15px!important}.tm-add button b{font-size:18px}
 </style>
 </head>
 <body>
-<div id="splash"><div class="rg"><i></i><img src="logo.png" alt=""></div><div class="tm-wm">Tamm</div><p>Your shop's money, done.</p><div class="dots3"><i></i><i></i><i></i></div></div><script>window.__t0=Date.now();setTimeout(function(){var s=document.getElementById("splash");if(s){s.classList.add("off");setTimeout(function(){s.remove()},500)}},7000);</script>
+<div id="splash"><div class="rg"><i></i><svg class="tm-mark anim" viewBox="0 0 115 115" aria-hidden="true"><rect width="115" height="115" rx="30" fill="#202020"/><g transform="translate(5.75 5.75) scale(.9)" fill="none" stroke="#D4FF40" stroke-linecap="round" stroke-linejoin="round"><path class="mk-c" pathLength="1" d="M27.5 60L46 76.5L93.8 49.4" stroke-width="8"/><path class="mk-w" pathLength="1" d="M93.8 49.4C54.8 29.1 28.4 63.9 47.5 77.1C63.4 88.2 88.3 58.5 54.8 52.1C30.2 47.3 19 68.7 17.5 77.1" stroke-width="8"/><path class="mk-s" pathLength="1" d="M99 35.6C95.6 33.8 86.7 29.9 79 29.2" stroke-width="7"/></g></svg></div><div class="tm-wm">Tamm</div><p>Your shop's money, done.</p><div class="dots3"><i></i><i></i><i></i></div></div><script>window.__t0=Date.now();setTimeout(function(){var s=document.getElementById("splash");if(s){s.classList.add("off");setTimeout(function(){s.remove()},500)}},7000);</script>
 <div id="app"></div><div class="toast" id="toast"></div>
 <script>
 /* ================= Tamm backend (Supabase) ================= */
@@ -775,18 +785,19 @@ function quickAdd(){const m=document.getElementById("modal");m.innerHTML=`<div c
  <button class="tm-addlink" onclick="pickForPayment()">${t("recPay")}</button></div>`;m.classList.remove("center");m.classList.add("on");}
 function snapReceipt(){openForm('exp');setTimeout(()=>{const i=document.querySelector('#modal input[type=file]');if(i)i.click();},80);}
 function moreSheet(){go('more');}
+const TAMM_MARK=(cls)=>`<svg class="tm-mark ${cls||""}" viewBox="0 0 115 115" aria-hidden="true"><rect width="115" height="115" rx="30" fill="#202020"/><g transform="translate(5.75 5.75) scale(.9)" fill="none" stroke="#D4FF40" stroke-linecap="round" stroke-linejoin="round"><path class="mk-c" pathLength="1" d="M27.5 60L46 76.5L93.8 49.4" stroke-width="8"/><path class="mk-w" pathLength="1" d="M93.8 49.4C54.8 29.1 28.4 63.9 47.5 77.1C63.4 88.2 88.3 58.5 54.8 52.1C30.2 47.3 19 68.7 17.5 77.1" stroke-width="8"/><path class="mk-s" pathLength="1" d="M99 35.6C95.6 33.8 86.7 29.9 79 29.2" stroke-width="7"/></g></svg>`;
 function showDone(kind,amt,party){try{const old=document.getElementById("done");if(old)old.remove();const el=document.createElement("div");el.id="done";el.setAttribute("role","status");
  const cf=[[10,"#D9F26F",-110,-90],[8,"#16190F",100,-110],[9,"#D9F26F",120,30],[7,"#16190F",-120,40],[8,"#D9F26F",-40,-140],[9,"#D9F26F",60,120],[7,"#16190F",-70,120],[8,"#D9F26F",140,-40]].map(([s,c,x,y])=>`<i class="cf" style="width:${s}px;height:${s}px;background:${c};--x:${x}px;--y:${y}px"></i>`).join("");
- el.innerHTML=`<div class="bx">${cf}<div class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="#16190F" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17 19 7.5"/></svg></div></div><div class="tm-wm">${t("done")}</div><p><b>${fmt(amt)} ${esc(D.settings.cur)}</b>${party?" · "+esc(tx(party)):""} ${t("isSaved")}</p>`;
- const close=()=>{el.classList.add("out");setTimeout(()=>el.remove(),300);};el.onclick=close;document.body.appendChild(el);setTimeout(close,1700);}catch(e){}}
-function hideSplash(){const s=document.getElementById("splash");if(!s||s.classList.contains("off"))return;const wait=Math.max(0,1300-(Date.now()-(window.__t0||0)));setTimeout(()=>{s.classList.add("off");setTimeout(()=>s.remove(),500);},wait);}
+ el.innerHTML=`<div class="bx">${cf}${TAMM_MARK("anim")}</div><div class="tm-wm">${t("done")}</div><p><b>${fmt(amt)} ${esc(D.settings.cur)}</b>${party?" · "+esc(tx(party)):""} ${t("isSaved")}</p>`;
+ const close=()=>{el.classList.add("out");setTimeout(()=>el.remove(),300);};el.onclick=close;document.body.appendChild(el);setTimeout(close,2600);}catch(e){}}
+function hideSplash(){const s=document.getElementById("splash");if(!s||s.classList.contains("off"))return;const wait=Math.max(0,2300-(Date.now()-(window.__t0||0)));setTimeout(()=>{s.classList.add("off");setTimeout(()=>s.remove(),500);},wait);}
 function skeleton(){return`<main class="tm-main still"><div class="tm-head"><img class="lg" src="logo.png" alt="${APP}"><span class="sk" style="width:40px;height:40px;border-radius:50%"></span></div><div class="tm-hello"><span class="sk" style="width:180px;height:28px"></span><span class="sk" style="width:240px;height:14px;margin-top:12px"></span></div><div class="skd" style="margin-top:16px;height:122px;border-radius:24px"></div><div class="tm-card"><span class="sk" style="width:150px;height:14px"></span><div style="display:flex;justify-content:space-around;margin-top:16px">${'<span class="sk" style="width:56px;height:56px;border-radius:50%"></span>'.repeat(4)}</div></div><div class="tm-list" style="padding:6px 16px">${[140,110,160].map(w=>`<div style="display:flex;gap:12px;align-items:center;padding:12px 0"><span class="sk" style="width:40px;height:40px"></span><span style="flex:1"><span class="sk" style="width:${w}px;height:12px"></span><span class="sk" style="width:80px;height:10px;margin-top:8px"></span></span><span class="sk" style="width:56px;height:14px"></span></div>`).join("")}</div></main>`;}
 function gateHTML(){const mode=authMode;let box;
- if(!SESSION){box=`<div class="tm-brand"><img src="logo.png" alt=""><div class="tm-wm">${APP}</div><h1>${mode==="up"?t("signup"):t("welcome")}</h1><p>${t("tagline")}</p></div>
+ if(!SESSION){box=`<div class="tm-brand">${TAMM_MARK("anim")}<div class="tm-wm">${APP}</div><h1>${mode==="up"?t("signup"):t("welcome")}</h1><p>${t("tagline")}</p></div>
  <div class="form"><div><label>${t("email")}</label><input id="em" type="email" autocomplete="email"></div><div><label>${t("password")}</label><div style="position:relative"><input id="pw" type="password" autocomplete="${mode==="up"?"new-password":"current-password"}" onkeydown="if(event.key==='Enter')doAuth()" style="padding-inline-end:64px"><button type="button" class="link" style="position:absolute;top:50%;transform:translateY(-50%);inset-inline-end:14px;font-size:13px!important" onclick="const i=document.getElementById('pw');i.type=i.type==='password'?'text':'password';this.textContent=i.type==='password'?t('showPw'):t('hidePw')">${t("showPw")}</button></div></div>${mode==="up"?"":`<label style="display:flex;align-items:center;gap:10px;font-size:14px;margin:0;color:var(--ink)"><input type="checkbox" id="rem" checked style="width:20px;height:20px;margin:0;accent-color:#16190F"> ${t("remember")}</label>`}</div>
  <p class="hint" id="authMsg" style="margin-top:10px;min-height:18px;color:var(--red)"></p>
  <div class="go"><button class="btn" onclick="doAuth()">${mode==="up"?t("signup"):t("signin")}</button><button class="sw" onclick="authMode='${mode==="up"?"in":"up"}';render()">${mode==="up"?t("hasAcc"):t("noAcc")}</button></div>`;}
- else{box=`<div class="tm-brand"><img src="logo.png" alt=""><div class="tm-wm">${APP}</div><h1>${t("bizSetup")}</h1><p>${t("signedAs")} ${esc(SESSION.user.email)}</p></div>
+ else{box=`<div class="tm-brand">${TAMM_MARK("anim")}<div class="tm-wm">${APP}</div><h1>${t("bizSetup")}</h1><p>${t("signedAs")} ${esc(SESSION.user.email)}</p></div>
  <div class="form"><div><label>${t("bizName")}</label><input id="bn" placeholder="My shop"></div></div><button class="btn" style="margin-top:12px" onclick="doCreateBiz()">${t("createBiz")}</button>
  <p class="hint" style="margin-top:22px">${t("orJoin")}</p><div class="form" style="grid-template-columns:1fr auto;margin-top:8px;align-items:end"><div><label>${t("joinCode")}</label><input id="jc" maxlength="6" style="text-transform:uppercase;letter-spacing:3px"></div><button class="btn line" onclick="doJoin()" style="width:auto">${t("join")}</button></div><p class="hint" style="margin-top:6px">${t("joinH")}</p><p class="hint" id="authMsg" style="margin-top:10px;min-height:18px;color:var(--red)"></p><button class="sw" onclick="signOut()">${t("signout")}</button>`;}
  return`<div class="tm-gate"><div class="tm-gtop">${langSeg()}</div>${box}</div>`;}
@@ -883,7 +894,7 @@ function openPerson(i){const p=window.__PPL[i];if(!p)return;const nm=p.name;cons
 function personPay(nm,kind){openForm(kind);setTimeout(()=>{const i=document.querySelector('#frm [name=party]');if(i){i.value=nm;}},60);}
 
 /* auto-update: reload when a new version is published */
-const BUILD="b5";
+const BUILD="b6";
 async function checkUpdate(){try{const r=await fetch("version.txt?"+Date.now(),{cache:"no-store"});const v=(await r.text()).trim();if(v&&v!==BUILD){const m=document.getElementById("modal");if(m&&m.classList.contains("on"))return;location.reload();}}catch(e){}}
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")checkUpdate();});setTimeout(checkUpdate,3000);
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
