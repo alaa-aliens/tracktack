@@ -692,7 +692,7 @@ function openForm(kind,id){pendingAtt=[];removedAtt=[];const td=today();
  const m=document.getElementById("modal");
  m.innerHTML=`<div class="sheet"><h3>${id?t("edit"):kind==="inv"?t("qS"):kind==="exp"?t("qE"):t("qF")}</h3><div class="form" id="frm">${f}</div><div class="actions">${id?`<button class="btn danger" style="margin-inline-end:auto" onclick="delRec('${kind}','${id}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="vertical-align:-2px;margin-inline-end:6px"><path d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m5 5v6m4-6v6"/></svg>${t("del")}</button>`:""}<button class="btn line" onclick="closeModal()">${t("cancel")}</button>${kind==="inv"?`<button class="btn line" onclick="saveRec('${kind}','${id||""}',true)">${t("saveShare")}</button>`:""}<button class="btn" onclick="saveRec('${kind}','${id||""}')">${t("save")}</button></div></div>`;
  m.classList.remove("center");m.classList.add("on");fillThumbs();syncPaid();if(kind==='inv'&&!id)applyTerms();setTimeout(()=>{const a=m.querySelector(kind==='inv'?'.it-d':'[name=amount]');if(a&&!id)a.focus();},50);}
-async function saveRec(kind,id,share){const v={};document.querySelectorAll("#frm [name]").forEach(el=>v[el.name]=el.value);
+async function saveRec(kind,id,share){const v={};document.querySelectorAll("#frm [name], #modal .fm-hero [name]").forEach(el=>v[el.name]=el.value);
  if(kind==="inv"){recalcItems();const tm=document.getElementById("terms");if(tm)v.terms=Number(tm.value);v.amount=document.querySelector('#items [name=amount]').value;v.items=readItems();v.desc=v.items.map(i=>i.d).filter(Boolean).join(", ");if(v.phone!==undefined){if(v.phone)D.contacts[v.party]=v.phone;delete v.phone;}}
  if(kind==="inv"&&Number(v.amount)<=0&&Number(v.paidNow)>0){v.amount=v.paidNow;v.items=[{d:v.items[0]&&v.items[0].d||t("qS"),q:1,p:Number(v.paidNow)}];v.desc=v.items[0].d;}
  if(!v.date)return toast(t("date"));if(!v.amount||Number(v.amount)<=0){const pr=document.querySelector('.it-p');if(pr){pr.focus();pr.style.outline='2px solid var(--red)';}return toast(kind==="inv"?t("needPrice"):t("needAmt"));}v.amount=Number(v.amount);
@@ -1060,7 +1060,7 @@ const _vMore=vMore;vMore=function(){const h=_vMore();const help=`<div class="tm-
 const _vHome=vHome;vHome=function(){const h=_vHome();const ck=checklistHTML();if(!ck)return h;const i=h.indexOf('<button class="tm-sum"');return i<0?ck+h:h.slice(0,i)+ck+h.slice(i);};
 
 /* auto-update: reload when a new version is published */
-const BUILD="b8";
+const BUILD="b9";
 async function checkUpdate(){try{const r=await fetch("version.txt?"+Date.now(),{cache:"no-store"});const v=(await r.text()).trim();if(v&&v!==BUILD){const m=document.getElementById("modal");if(m&&m.classList.contains("on"))return;location.reload();}}catch(e){}}
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")checkUpdate();});setTimeout(checkUpdate,3000);
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
