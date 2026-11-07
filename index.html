@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: blob:; connect-src 'self' https://lemszbmzgedeshfpcfre.supabase.co wss://lemszbmzgedeshfpcfre.supabase.co; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
-<meta name="referrer" content="no-referrer"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="referrer" content="no-referrer"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover,interactive-widget=resizes-content">
 <title>Tamm</title>
 <script src="vendor/supabase-js-2.118.0.js"></script>
 <script src="config.js"></script>
@@ -477,6 +477,15 @@ main.tm-main{background:transparent!important;margin:0 auto!important;max-width:
 .pd-cats{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px}.pd-c{min-height:64px;border:2px solid transparent;border-radius:16px;background:#fff;box-shadow:var(--sh);font:inherit;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:6px}.pd-c span{font-size:20px}.pd-c.on{border-color:#16190F;background:#F7FCE6}
 .pd-photo{display:flex;align-items:center;gap:12px;margin-top:14px;min-height:60px;border:2px dashed #CFCFC6;border-radius:18px;padding:10px 16px;cursor:pointer;font-weight:700}.pd-photo input{display:none}.pd-photo .ic{width:40px;height:40px;border-radius:12px;background:#16190F;color:#fff;display:flex;align-items:center;justify-content:center}.pd-photo .ic svg{width:20px;height:20px}.pd-photo.ok{border-style:solid;border-color:var(--green);color:var(--green)}
 .shake{animation:shk .35s}@keyframes shk{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+
+/* b13 review fixes */
+.sl-hp small{display:block;font-weight:500;font-size:12.5px;color:var(--muted);margin-top:2px}
+.sl-b{min-height:56px}.sl-b:disabled{opacity:.55}.sheet.busy .sl-b{pointer-events:none}
+.sl-b.wide{background:#16190F;border-color:#16190F;color:#fff}
+.sl-step button{width:44px;height:44px}
+.sl-err{background:#FDECE4;color:#9A3412;border-radius:12px;padding:10px 12px;font-size:14px;font-weight:600;margin-bottom:8px}
+.dn-undo{margin-top:16px;border:1.5px solid currentColor;background:transparent;color:inherit;border-radius:999px;padding:10px 26px;font:inherit;font-size:15px;font-weight:700;cursor:pointer;min-height:44px}
+.st-top h1{overflow-wrap:anywhere;line-height:1.2}.st-top>div{min-width:0}
 </style>
 </head>
 <body>
@@ -548,7 +557,7 @@ async function createBiz(name){const {data,error}=await sb.from("businesses").in
 async function joinBiz(code){const {data,error}=await sb.rpc("join_business",{code});if(error)throw error;if(!data)throw new Error(lang==="ar"?"الرمز غير صحيح":"Invalid code");try{localStorage.setItem("tt:biz",data);}catch(e){}await loadBiz();}
 let ROLE="owner";const canEdit=()=>ROLE==="owner"||ROLE==="editor"||ROLE==="accountant";async function loadRole(){try{const {data}=await sb.rpc("my_role",{b:BIZ.id});ROLE=data||"viewer";}catch(e){ROLE="viewer";}}async function loadTeam(){const {data}=await sb.rpc("team",{b:BIZ.id});const {data:inv}=await sb.from("invites").select("id,email,role,token,accepted_at").eq("business_id",BIZ.id).is("accepted_at",null);return{members:data||[],invites:inv||[]};}async function createInvite(em,r){const {data,error}=await sb.rpc("create_invite",{b:BIZ.id,em,r});if(error)throw error;return data;}async function acceptInvite(tk){const {data,error}=await sb.rpc("accept_invite",{tk});if(error)throw error;return data;}async function setRole(u,r){const {error}=await sb.rpc("set_role",{b:BIZ.id,u,r});if(error)throw error;}async function signIn(email,pw){const {error}=await sb.auth.signInWithPassword({email,password:pw});if(error)throw error;}
 async function signUp(email,pw){const {data,error}=await sb.auth.signUp({email,password:pw});if(error)throw error;return data;}
-async function signOut(){await sb.auth.signOut();location.reload();}
+async function signOut(){try{localStorage.removeItem("tamm:name");localStorage.removeItem("tamm:nameSkip");}catch(e){}await sb.auth.signOut();location.reload();}
 /* ================================================================ */
 const LOGO=`<img src="logo.png" alt="Tamm" style="width:100%;height:100%;border-radius:26%;display:block">`;
 const ICONS={home:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8v9a2 2 0 0 1-2 2h-4v-6H9v6H5a2 2 0 0 1-2-2z"/></svg>',
@@ -626,7 +635,7 @@ const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&
 const ja=s=>esc(JSON.stringify(String(s??"")).replace(/</g,"\\u003c"));
 async function load(){try{const r=await window.storage.get(KEY,true);D=sanitizeData(JSON.parse(r.value));D.contacts=D.contacts||{};D.products=D.products||[];}catch(e){if(String(e&&e.message)!=="nf"){toast(lang==="ar"?"تعذّر تحميل بياناتك. تحقق من الاتصال وحاول مجددًا.":"Couldn't load your data. Check your connection and try again.");setTimeout(()=>location.reload(),4000);throw e;}D=JSON.parse(JSON.stringify(seed));D.settings.name=BIZ.name;D.onboard={done:false,step:1};await persist();}
  try{const r=await window.storage.get(PINKEY,true);pin=r.value;}catch(e){pin=null;}}
-async function persist(){if(!canEdit()){toast(t("viewOnly"));return;}if(!HAS_STORE){toast(t("noStore").slice(0,60)+"…");return;}try{await window.storage.set(KEY,JSON.stringify(D),true);}catch(e){toast("Not saved: "+e.message);}}
+async function persist(){if(!canEdit()&&ROLE!=="staff"){toast(t("viewOnly"));return false;}if(!HAS_STORE){toast(t("noStore").slice(0,60)+"…");return false;}try{await window.storage.set(KEY,JSON.stringify(D),true);return true;}catch(e){toast((lang==="ar"?"لم يُحفظ: ":"Not saved: ")+e.message);return false;}}
 function toast(m){const el=document.getElementById("toast");el.textContent=m;el.classList.add("on");setTimeout(()=>el.classList.remove("on"),1600);}
 /* ---------- calc ---------- */
 const paidOf=r=>(r.pays||[]).reduce((a,p)=>a+num(p.amount),0);
@@ -776,7 +785,7 @@ function pickForPayment(){const open=D.invoices.filter(x=>statusOf(x)!=="paid").
 function closeModal(){const m=document.getElementById("modal");m.classList.remove("on");m.classList.remove("center");}
 function opt(arr,ar,cur){return arr.map((v,i)=>`<option value="${v}" ${v===cur?"selected":""}>${lang==="ar"?ar[i]:v}</option>`).join("")}
 function datalist(kind){const names=[...new Set((kind==="inv"?D.invoices:D.expenses).map(x=>x.party))];return`<datalist id="dl">${names.map(n=>`<option value="${esc(n)}">`).join("")}</datalist>`;}
-function nextNo(){const n=D.invoices.length+1;return"INV-"+String(n).padStart(4,"0");}
+function nextNo(){let mx=D.invoices.length;for(const x of D.invoices){const m=/(\d+)\s*$/.exec(String(x.no||""));if(m)mx=Math.max(mx,Number(m[1]));}return"INV-"+String(mx+1).padStart(4,"0");}
 function openForm(kind,id){pendingAtt=[];removedAtt=[];const td=today();
  const list=kind==="fund"?D.funding:kind==="inv"?D.invoices:D.expenses;
  let x=id?list.find(r=>r.id===id):null;
@@ -885,14 +894,14 @@ function shell(body){return`<main class="tm-main${window.__still?" still":""}">$
 function vHome(){const c=calc();const cur=D.settings.cur;const AR=lang==="ar";
  const line=c.cash<-0.5?t("cashNeg").replace("{v}",`<b>${fmt(Math.abs(c.cash))}</b>`).replace("{c}",cur):(c.funded+c.rev+c.spend)>0?t("cashPos").replace("{v}",`<b>${fmt(c.cash)}</b>`).replace("{c}",cur):t("cashZero");
  const acts=[...D.invoices.map(x=>({...x,k:"i"})),...D.expenses.map(x=>({...x,k:"e"})),...D.funding.map(x=>({...x,k:"f",party:x.from+" → "+x.to,desc:x.ref}))].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5).map(rowHTML).join("");
- const nm=(myName()||"").split(/\s+/)[0];
+ const nm=myName();
  const qa=canEdit()?`<div class="tm-card"><h2>${t("today")}</h2><div class="tm-qa">
  <button onclick="openForm('exp')"><span class="c">${I2.out}</span>${t("iPaid")}</button>
  <button onclick="openForm('inv')"><span class="c">${I2.in}</span>${t("gotPaid")}</button>
  <button onclick="openForm('fund')"><span class="c">${I2.bank}</span>${t("putIn")}</button>
  <button onclick="snapReceipt()"><span class="c">${I2.cam}</span>${t("receipt")}</button></div></div>`:"";
  return`<div class="tm-head"><img class="lg" src="logo.png" alt="${APP}"><span style="display:flex;gap:8px"><button class="tm-ic" aria-label="${t("reports")}" onclick="go('reports')">${I2.chart}</button><button class="tm-av" aria-label="${t("more")}" onclick="go('more')">${ini(nm||D.settings.name)}</button></span></div>
- <div class="tm-hello"><h1>${t("hello")}${nm?", "+esc(nm):""}</h1><p>${line}</p></div>${nameCard()}
+ <div class="tm-hello"><h1>${t("hello")}${nm?(lang==="ar"?"، ":", ")+esc(nm):""}</h1><p>${line}</p></div>${nameCard()}
  <button class="tm-sum" onclick="go('reports')"><span><span class="ci" style="background:var(--lime);color:var(--ink)">${I2.in}</span><span class="l">${t("putIn")}</span><span class="v" style="color:var(--lime)">${fmt0(c.funded)}</span></span><span><span class="ci" style="background:#fff;color:var(--ink)">${I2.out}</span><span class="l">${t("spentL")}</span><span class="v">${fmt0(c.spend)}</span></span><span><span class="ci" style="background:rgba(255,255,255,.14);color:#fff">${I2.bag}</span><span class="l">${t("salesL")}</span><span class="v">${fmt0(c.rev)}</span></span></button>
  ${qa}
  <div class="tm-sec">${t("recent")}<button onclick="go('act')">${t("seeAll")}</button></div>
@@ -931,10 +940,10 @@ function quickAdd(){const m=document.getElementById("modal");m.innerHTML=`<div c
 function snapReceipt(){openForm('exp');setTimeout(()=>{const i=document.querySelector('#modal input[type=file]');if(i)i.click();},80);}
 function moreSheet(){go('more');}
 const TAMM_MARK=(cls)=>`<svg class="tm-mark ${cls||""}" viewBox="0 0 115 115" aria-hidden="true"><rect width="115" height="115" rx="30" fill="#202020"/><g transform="translate(5.75 5.75) scale(.9)" fill="none" stroke="#D4FF40" stroke-linecap="round" stroke-linejoin="round"><path class="mk-c" pathLength="1" d="M27.5 60L46 76.5L93.8 49.4" stroke-width="8"/><path class="mk-w" pathLength="1" d="M93.8 49.4C54.8 29.1 28.4 63.9 47.5 77.1C63.4 88.2 88.3 58.5 54.8 52.1C30.2 47.3 19 68.7 17.5 77.1" stroke-width="8"/><path class="mk-s" pathLength="1" d="M99 35.6C95.6 33.8 86.7 29.9 79 29.2" stroke-width="7"/></g></svg>`;
-function showDone(kind,amt,party){try{const old=document.getElementById("done");if(old)old.remove();const el=document.createElement("div");el.id="done";el.setAttribute("role","status");
+function showDone(kind,amt,party,undo){try{const old=document.getElementById("done");if(old)old.remove();const el=document.createElement("div");el.id="done";el.setAttribute("role","status");
  const cf=[[10,"#D9F26F",-110,-90],[8,"#16190F",100,-110],[9,"#D9F26F",120,30],[7,"#16190F",-120,40],[8,"#D9F26F",-40,-140],[9,"#D9F26F",60,120],[7,"#16190F",-70,120],[8,"#D9F26F",140,-40]].map(([s,c,x,y])=>`<i class="cf" style="width:${s}px;height:${s}px;background:${c};--x:${x}px;--y:${y}px"></i>`).join("");
- el.innerHTML=`<div class="bx">${cf}${TAMM_MARK("anim")}</div><div class="tm-wm">${t("done")}</div><p><b>${fmt(amt)} ${esc(D.settings.cur)}</b>${party?" · "+esc(tx(party)):""} ${t("isSaved")}</p>`;
- const close=()=>{el.classList.add("out");setTimeout(()=>el.remove(),300);};el.onclick=close;document.body.appendChild(el);setTimeout(close,3800);}catch(e){}}
+ el.innerHTML=`<div class="bx">${cf}${TAMM_MARK("anim")}</div><div class="tm-wm">${t("done")}</div><p><b>${fmt(amt)} ${esc(D.settings.cur)}</b>${party&&party!=="Shop sales"?" · "+esc(tx(party)):""} ${t("isSaved")}</p>${undo?`<button class="dn-undo" type="button">${t("undo")}</button>`:""}`;
+ const close=()=>{el.classList.add("out");setTimeout(()=>el.remove(),300);};el.onclick=close;if(undo){const b=el.querySelector(".dn-undo");b.onclick=e=>{e.stopPropagation();close();undo();};}document.body.appendChild(el);setTimeout(close,undo?6000:3800);}catch(e){}}
 function hideSplash(){const s=document.getElementById("splash");if(!s||s.classList.contains("off"))return;const wait=Math.max(0,3400-(Date.now()-(window.__t0||0)));setTimeout(()=>{s.classList.add("off");setTimeout(()=>s.remove(),500);},wait);}
 function skeleton(){return`<main class="tm-main still"><div class="tm-head"><img class="lg" src="logo.png" alt="${APP}"><span class="sk" style="width:40px;height:40px;border-radius:50%"></span></div><div class="tm-hello"><span class="sk" style="width:180px;height:28px"></span><span class="sk" style="width:240px;height:14px;margin-top:12px"></span></div><div class="skd" style="margin-top:16px;height:122px;border-radius:24px"></div><div class="tm-card"><span class="sk" style="width:150px;height:14px"></span><div style="display:flex;justify-content:space-around;margin-top:16px">${'<span class="sk" style="width:56px;height:56px;border-radius:50%"></span>'.repeat(4)}</div></div><div class="tm-list" style="padding:6px 16px">${[140,110,160].map(w=>`<div style="display:flex;gap:12px;align-items:center;padding:12px 0"><span class="sk" style="width:40px;height:40px"></span><span style="flex:1"><span class="sk" style="width:${w}px;height:12px"></span><span class="sk" style="width:80px;height:10px;margin-top:8px"></span></span><span class="sk" style="width:56px;height:14px"></span></div>`).join("")}</div></main>`;}
 /* ---------- sign in with Google + "who are you?" onboarding ---------- */
@@ -948,7 +957,7 @@ const doGoogle=()=>doOAuth("google");
 function whoCard(k,icon,title,desc){return`<button type="button" class="who-card" onclick="setWho('${k}')"><span class="who-ic">${icon}</span><span><b>${title}</b><small>${desc}</small></span></button>`;}
 function joinBlock(){const em=SESSION&&SESSION.user&&SESSION.user.email||"";return`<div class="form" style="grid-template-columns:1fr auto;margin-top:8px;align-items:end"><div><label>${t("joinCode")}</label><input id="jc" maxlength="12" autocomplete="off" autocapitalize="characters" style="text-transform:uppercase;letter-spacing:2px"></div><button class="btn line" onclick="doJoin()" style="width:auto">${t("join")}</button></div><p class="hint" style="margin-top:6px">${t("joinH")}</p><div class="who-note"><b>${t("whoInviteT")}</b><span>${t("whoInviteD").replace("{e}",esc(em))}</span><button type="button" class="btn line sm" onclick="boot()">${t("whoCheck")}</button></div>`;}
 function whoHTML(){const head=(h,p)=>`<div class="tm-brand">${TAMM_MARK(WHO?"":"anim")}<div class="tm-wm">${APP}</div><h1>${h}</h1><p>${p}</p></div>`;const msg=`<p class="hint" id="authMsg" style="margin-top:10px;min-height:18px;color:var(--red)"></p>`;const back=`<button class="sw" onclick="setWho(null)">${t("obBack")}</button>`;
- if(!WHO)return head(t("whoT"),t("whoD"))+(myName()?"":`<div class="form nm-who"><div><label for="nmWho">${t("nmQ")}</label><input id="nmWho" autocomplete="given-name" placeholder="${t("nmPh")}" onchange="try{localStorage.setItem('tamm:name',this.value.trim())}catch(e){};if(this.value.trim()&&SESSION)sb.auth.updateUser({data:{name:this.value.trim()}})"></div></div>`)+`<div class="who-list">${whoCard("owner","🏪",t("whoOwner"),t("whoOwnerD"))}${whoCard("acct","🧮",t("whoAcct"),t("whoAcctD"))}${whoCard("staff","🧾",t("whoStaff"),t("whoStaffD"))}</div>${msg}<button class="sw" onclick="signOut()">${t("signout")}</button>`;
+ if(!WHO)return head(t("whoT"),t("whoD"))+(myName()?"":`<div class="form nm-who"><div><label for="nmWho">${t("nmQ")}</label><input id="nmWho" autocomplete="given-name" placeholder="${t("nmPh")}" maxlength="40" onchange="saveName(this.value,true)"></div></div>`)+`<div class="who-list">${whoCard("owner","🏪",t("whoOwner"),t("whoOwnerD"))}${whoCard("acct","🧮",t("whoAcct"),t("whoAcctD"))}${whoCard("staff","🧾",t("whoStaff"),t("whoStaffD"))}</div>${msg}<button class="sw" onclick="signOut()">${t("signout")}</button>`;
  if(WHO==="acct")return head(t("acctT"),t("acctD"))+`<div class="who-list">${whoCard("acct1","🏢",t("acctOne"),t("acctOneD"))}${whoCard("acctN","🗂️",t("acctMany"),t("acctManyD"))}</div>${msg}${back}`;
  if(WHO==="acctN")return head(t("acctMany"),t("acctSoon"))+`<button class="btn" style="margin-top:6px" onclick="setWho('owner')">${t("acctOwnBiz")}</button><p class="hint" style="margin-top:18px">${t("acctMeanwhile")}</p>${joinBlock()}${msg}<button class="sw" onclick="setWho('acct')">${t("obBack")}</button>`;
  const isAcct=WHO==="acct1";return head(isAcct?t("acctOne"):t("whoStaff"),isAcct?t("acctJoinD"):t("staffJoinD"))+joinBlock()+msg+`<button class="sw" onclick="setWho(${isAcct?"'acct'":"null"})">${t("obBack")}</button>`;}
@@ -1016,7 +1025,7 @@ async function doNewPw(){const a=document.getElementById("np1").value,b=document
  try{const {error}=await sb.auth.updateUser({password:a});if(error)throw error;RECOVER=false;try{history.replaceState({},"",location.pathname);}catch(e){}toast(t("pwSaved"));await boot();}catch(e){msg.textContent=e.message;}}
 /* ---------- staff ---------- */
 function myEntries(){const me=SESSION&&SESSION.user.id;return[...D.invoices.map(x=>({...x,k:"i"})),...D.expenses.map(x=>({...x,k:"e"}))].filter(x=>x.by===me).sort((a,b)=>String(b.at||b.date).localeCompare(String(a.at||a.date)));}
-function vStaff(){const nm=(myName()||"").split(/\s+/)[0];const td=today();const wk=new Date(Date.now()-6*864e5).toISOString().slice(0,10);
+function vStaff(){const nm=myName();const td=today();const wk=new Date(Date.now()-6*864e5).toISOString().slice(0,10);
  const mine=myEntries();const tdL=mine.filter(x=>x.date===td),wkL=mine.filter(x=>x.date<td&&x.date>=wk);
  const tin=tdL.filter(x=>x.k==="i").reduce((a,x)=>a+num(x.amount),0),tout=tdL.filter(x=>x.k==="e").reduce((a,x)=>a+num(x.amount),0);
  return`<main class="tm-main st-main"><div class="st-top"><div><small>${esc(D.settings.name)}</small><h1>${nm?t("stHi").replace("{n}",esc(nm)):t("hello")}</h1></div>${langSeg()}</div>${nameCard()}
@@ -1072,34 +1081,39 @@ function bkExport(){const k=bkData();const cols=["type","no","date","party","des
 /* ===== b13: one-tap selling, quick "I paid", your name ===== */
 Object.assign(T.en,{slT:"What did you sell?",slTap:"Tap what you sold. Tap again to add one more.",slOther:"Other amount",slOtherItem:"Other",slAmtQ:"How much was it?",slWhatQ:"What was it? (optional)",slTotal:"Total",slHowPaid:"How did they pay?",slCash:"Cash",slCard:"Card",slCliq:"CliQ",slLater:"Will pay later",slWho:"Who will pay later?",slWhoPh:"Customer name",slSaveLater:"Save. They owe this",slNeed:"Tap something you sold first",slNeedWho:"Write the customer's name",slAdd:"Add",slFull:"More details (customer, tax, invoice)",slRemove:"Remove one",slPlus:"Add one",
  pdT:"What did you pay for?",pdFor:"What was it for?",pdTo:"Paid to (optional)",pdToPh:"Shop or person",pdPhoto:"Take a photo of the receipt",pdPhotoOk:"Receipt added",pdSave:"Save",pdFull:"More details (paid part, due date)",pdNeed:"Write how much you paid",
- nmQ:"What should we call you?",nmD:"Your team will see this name next to what you add.",nmPh:"Your name",nmSave:"Save",nmSkip:"Not now"});
+ nmQ:"What should we call you?",nmD:"Your team will see this name next to what you add.",nmPh:"Your name",nmSave:"Save",nmSkip:"Not now",
+ slTapSaves:"Tapping one saves the sale.",slNotSaved:"Not saved. Check your internet and tap again.",undo:"Undo",undone:"Removed",photoFail:"The receipt photo was not saved. Open the entry to add it again."});
 Object.assign(T.ar,{slT:"ماذا بعت؟",slTap:"اضغط على ما بعته. اضغط مرة أخرى لإضافة واحدة.",slOther:"مبلغ آخر",slOtherItem:"أخرى",slAmtQ:"كم كان المبلغ؟",slWhatQ:"ما هو؟ (اختياري)",slTotal:"المجموع",slHowPaid:"كيف دفع الزبون؟",slCash:"نقدًا",slCard:"بطاقة",slCliq:"كليك",slLater:"سيدفع لاحقًا",slWho:"من سيدفع لاحقًا؟",slWhoPh:"اسم الزبون",slSaveLater:"احفظ. المبلغ دين عليه",slNeed:"اضغط على ما بعته أولًا",slNeedWho:"اكتب اسم الزبون",slAdd:"إضافة",slFull:"تفاصيل أكثر (زبون، ضريبة، فاتورة)",slRemove:"إزالة واحدة",slPlus:"إضافة واحدة",
  pdT:"ماذا دفعت؟",pdFor:"لأي شيء؟",pdTo:"لمن دفعت (اختياري)",pdToPh:"محل أو شخص",pdPhoto:"صوّر الإيصال",pdPhotoOk:"تمت إضافة الإيصال",pdSave:"حفظ",pdFull:"تفاصيل أكثر (دفع جزئي، تاريخ استحقاق)",pdNeed:"اكتب كم دفعت",
- nmQ:"بماذا نناديك؟",nmD:"سيرى فريقك هذا الاسم بجانب ما تضيفه.",nmPh:"اسمك",nmSave:"حفظ",nmSkip:"ليس الآن"});
+ nmQ:"بماذا نناديك؟",nmD:"سيرى فريقك هذا الاسم بجانب ما تضيفه.",nmPh:"اسمك",nmSave:"حفظ",nmSkip:"ليس الآن",
+ slTapSaves:"الضغط على أحدها يحفظ البيع.",slNotSaved:"لم يُحفظ. تحقّق من الإنترنت واضغط مرة أخرى.",undo:"تراجع",undone:"تم الحذف",photoFail:"لم تُحفظ صورة الإيصال. افتح القيد لإضافتها مرة أخرى."});
 /* ---------- your name ---------- */
-function myName(){try{const m=(SESSION&&SESSION.user&&SESSION.user.user_metadata)||{};const n=m.name||m.full_name||localStorage.getItem("tamm:name")||"";return String(n).trim();}catch(e){return"";}}
+const nmKey=k=>"tamm:"+k+":"+((SESSION&&SESSION.user&&SESSION.user.id)||"anon");
+function myName(){try{const m=(SESSION&&SESSION.user&&SESSION.user.user_metadata)||{};const n=m.name||m.full_name||localStorage.getItem(nmKey("name"))||"";return String(n).trim().slice(0,40);}catch(e){return"";}}
+const mineToday=x=>!!(x&&ROLE==="staff"&&SESSION&&x.by===SESSION.user.id&&x.date===today());
+Object.assign(AR_MAP,{"Shop sales":"مبيعات المحل","Other":"أخرى","Sale":"بيع"});
 whoName=()=>{const n=myName();if(n)return n.split(/\s+/)[0];try{const e=(SESSION&&SESSION.user&&SESSION.user.email)||"";const x=e.split("@")[0].replace(/[._-]+/g," ").replace(/\d+/g,"").trim();return x?x.charAt(0).toUpperCase()+x.slice(1):"";}catch(e){return""}};
-async function saveName(v){v=String(v||"").trim().slice(0,40);if(!v)return;try{localStorage.setItem("tamm:name",v);}catch(e){}if(SESSION&&SESSION.user){SESSION.user.user_metadata=Object.assign({},SESSION.user.user_metadata,{name:v});try{await sb.auth.updateUser({data:{name:v}});}catch(e){}}render();}
-function skipName(){try{localStorage.setItem("tamm:nameSkip","1");}catch(e){}render();}
-function nameCard(){if(myName())return"";try{if(localStorage.getItem("tamm:nameSkip"))return"";}catch(e){}
+async function saveName(v,quiet){v=String(v||"").trim().slice(0,40);if(!v)return;try{localStorage.setItem(nmKey("name"),v);}catch(e){}if(SESSION&&SESSION.user){SESSION.user.user_metadata=Object.assign({},SESSION.user.user_metadata,{name:v});try{await sb.auth.updateUser({data:{name:v}});}catch(e){}}if(!quiet)render();}
+function skipName(){try{localStorage.setItem(nmKey("nameSkip"),"1");}catch(e){}render();}
+function nameCard(){if(myName())return"";try{if(localStorage.getItem(nmKey("nameSkip")))return"";}catch(e){}
  return`<div class="tm-card nm-card"><b>${t("nmQ")}</b><p>${t("nmD")}</p><div class="nm-row"><input id="nmIn" autocomplete="given-name" placeholder="${t("nmPh")}" aria-label="${t("nmPh")}" onkeydown="if(event.key==='Enter')saveName(this.value)"><button class="btn" onclick="saveName(document.getElementById('nmIn').value)">${t("nmSave")}</button></div><button class="nm-skip" onclick="skipName()">${t("nmSkip")}</button></div>`;}
 /* ---------- one-tap selling ---------- */
-let SELL={cart:{},other:[],later:false,amt:"",what:"",who:""};let __full=false;
+let SELL={cart:{},other:[],later:false,amt:"",what:"",who:"",oname:""};let __full=false;let BUSY=false;
 function slProds(){return(D.products||[]).filter(p=>p&&String(p.name||"").trim());}
-function slItems(){const P=slProds();const it=[];for(const [i,q] of Object.entries(SELL.cart)){const p=P[i];if(p&&q>0)it.push({d:p.name,q,p:num(p.price)});}
- SELL.other.forEach(a=>it.push({d:t("slOtherItem"),q:1,p:num(a)}));
- if(!P.length&&num(SELL.amt)>0)it.push({d:SELL.what||t("qS"),q:1,p:num(SELL.amt)});return it;}
+function slItems(){const P=slProds();const it=[];for(const [i,q] of Object.entries(SELL.cart)){const p=P[i];if(p&&q>0)it.push({d:p.name,q,p:num(p.price),pi:Number(i)});}
+ SELL.other.forEach((o,k)=>it.push({d:o.d||T.en.slOtherItem,q:1,p:num(o.p),ok:k}));
+ if(!P.length&&num(SELL.amt)>0)it.push({d:String(SELL.what||"").trim()||T.en.qS,q:1,p:num(SELL.amt)});return it.map(({pi,ok,...x})=>Object.defineProperties(x,{pi:{value:pi,enumerable:false},ok:{value:ok,enumerable:false}}));}
 function slTotal(){return slItems().reduce((a,i)=>a+num(i.q)*num(i.p),0);}
-function openSell(){SELL={cart:{},other:[],later:false,amt:"",what:"",who:""};pendingAtt=[];removedAtt=[];renderSell(true);}
+function openSell(){SELL={cart:{},other:[],later:false,amt:"",what:"",who:"",oname:""};BUSY=false;pendingAtt=[];removedAtt=[];renderSell(true);}
 function renderSell(first){const m=document.getElementById("modal");const old=m.querySelector(".sheet");const st=old?old.scrollTop:0;const P=slProds();const cur=esc(D.settings.cur);const tot=slTotal();
  const grid=P.length?`<p class="sl-hint">${t("slTap")}</p><div class="sl-grid">${P.map((p,i)=>{const q=SELL.cart[i]||0;return`<button class="sl-p${q?" on":""}" onclick="slAdd(${i})" aria-label="${esc(p.name)} ${fmt(p.price)} ${cur}"><b>${esc(tx(p.name))}</b><span>${num(p.price)?fmt(p.price):"—"}</span>${q?`<i class="sl-q">${q}</i>`:""}</button>`;}).join("")}<button class="sl-p sl-oth" onclick="slOtherOpen()"><b>+ ${t("slOther")}</b></button></div>
   <div class="sl-orow hidden" id="slORow"><input id="slO" type="number" inputmode="decimal" step="0.01" placeholder="0.00" aria-label="${t("slOther")}" onkeydown="if(event.key==='Enter')slOtherAdd()"><button class="btn" onclick="slOtherAdd()">${t("slAdd")}</button></div>`
   :`<div class="fm-hero"><div class="fm-q">${t("slAmtQ")}</div><div class="fm-amt"><input class="bigamt" id="slAmt" type="number" inputmode="decimal" step="0.01" placeholder="0.00" value="${esc(SELL.amt)}" oninput="SELL.amt=this.value;slSync()"><span class="cu">${cur}</span></div></div>
   <div class="fm-card form" style="grid-template-columns:1fr;margin-top:12px"><div><label for="slWhat">${t("slWhatQ")}</label><input id="slWhat" value="${esc(SELL.what)}" oninput="SELL.what=this.value"></div></div>`;
- const lines=P.length?slItems().map(it=>{const pi=P.findIndex(p=>p.name===it.d);return`<div class="sl-line"><span class="n">${esc(tx(it.d))}</span>${pi>-1?`<span class="sl-step"><button aria-label="${t("slRemove")}" onclick="slAdd(${pi},-1)">−</button><b>${it.q}</b><button aria-label="${t("slPlus")}" onclick="slAdd(${pi},1)">+</button></span>`:`<span class="sl-step"><button aria-label="${t("slRemove")}" onclick="slOtherDel(${ja(String(it.p))})">−</button></span>`}<span class="v">${fmt(num(it.q)*num(it.p))}</span></div>`;}).join(""):"";
- const pay=SELL.later?`<div class="fm-card form sl-later" style="grid-template-columns:1fr"><div><label for="slWho">${t("slWho")}</label><input id="slWho" list="dl" placeholder="${t("slWhoPh")}" value="${esc(SELL.who)}" oninput="SELL.who=this.value">${datalist("inv")}</div></div>
-  <div class="sl-pay"><button class="sl-b main wide" onclick="slSave('later')">${t("slSaveLater")}</button></div><button class="sl-back" onclick="SELL.later=false;renderSell()">${t("obBack")}</button>`
-  :`<p class="sl-hp">${t("slHowPaid")}</p><div class="sl-pay"><button class="sl-b main" onclick="slSave('Cash')">💵 ${t("slCash")}</button><button class="sl-b" onclick="slSave('Card')">💳 ${t("slCard")}</button><button class="sl-b" onclick="slSave('CliQ')">📲 ${t("slCliq")}</button><button class="sl-b" onclick="slLater()">🕒 ${t("slLater")}</button></div>`;
+ const lines=P.length?slItems().map(it=>`<div class="sl-line"><span class="n">${esc(tx(it.d))}</span>${it.pi!==undefined?`<span class="sl-step"><button aria-label="${t("slRemove")}" onclick="slAdd(${it.pi},-1)">−</button><b>${it.q}</b><button aria-label="${t("slPlus")}" onclick="slAdd(${it.pi},1)">+</button></span>`:`<span class="sl-step"><button aria-label="${t("slRemove")}" onclick="slOtherDel(${it.ok})">−</button></span>`}<span class="v">${fmt(num(it.q)*num(it.p))}</span></div>`).join(""):"";
+ const pay=SELL.later?`<div class="fm-card form sl-later" style="grid-template-columns:1fr"><div><label for="slWho">${t("slWho")}</label><input id="slWho" list="dlc" autocomplete="off" placeholder="${t("slWhoPh")}" value="${esc(SELL.who)}" oninput="SELL.who=this.value"><datalist id="dlc">${[...new Set(D.invoices.map(x=>x.party))].filter(n=>n&&n!=="Shop sales").map(n=>`<option value="${esc(n)}">`).join("")}</datalist></div></div>
+  <div class="sl-pay"><button class="sl-b wide" onclick="slSave('later')">${t("slSaveLater")}</button></div><button class="sl-back" onclick="SELL.later=false;renderSell()">${t("obBack")}</button>`
+  :`<p class="sl-hp">${t("slHowPaid")} <small>${t("slTapSaves")}</small></p><div class="sl-pay"><button class="sl-b" onclick="slSave('Cash')">💵 ${t("slCash")}</button><button class="sl-b" onclick="slSave('Card')">💳 ${t("slCard")}</button><button class="sl-b" onclick="slSave('CliQ')">📲 ${t("slCliq")}</button><button class="sl-b" onclick="slLater()">🕒 ${t("slLater")}</button></div>`;
  m.innerHTML=`<div class="sheet fm sl">${sheetTop(t("slT"))}${grid}
  ${lines?`<div class="sl-cart">${lines}</div>`:""}
  <div class="sl-foot"><div class="sl-tot${tot>0?"":" empty"}"><span>${t("slTotal")}</span><b id="slTot">${fmt(tot)} <small>${cur}</small></b></div>${pay}${canEdit()?`<button class="sl-full" onclick="fullForm('inv')">${t("slFull")}</button>`:""}</div></div>`;
@@ -1107,36 +1121,40 @@ function renderSell(first){const m=document.getElementById("modal");const old=m.
  if(first&&!P.length)setTimeout(()=>{const a=document.getElementById("slAmt");if(a)a.focus();},80);
  if(SELL.later&&first!==true)setTimeout(()=>{const w=document.getElementById("slWho");if(w&&!w.value)w.focus();},60);}
 function slSync(){const e=document.getElementById("slTot");if(e)e.innerHTML=`${fmt(slTotal())} <small>${esc(D.settings.cur)}</small>`;}
-function slAdd(i,d){d=d||1;SELL.cart[i]=Math.max(0,(SELL.cart[i]||0)+d);if(!SELL.cart[i])delete SELL.cart[i];const P=slProds();if(d>0&&P[i]&&!num(P[i].price)){delete SELL.cart[i];slOtherOpen(P[i].name);return;}try{navigator.vibrate&&navigator.vibrate(8);}catch(e){}renderSell();}
-function slOtherOpen(){const r=document.getElementById("slORow");if(r){r.classList.remove("hidden");const i=document.getElementById("slO");if(i)i.focus();}}
-function slOtherAdd(){const i=document.getElementById("slO");const v=num(i&&i.value);if(v>0){SELL.other.push(v);renderSell();}}
-function slOtherDel(p){const k=SELL.other.findIndex(a=>String(num(a))===String(num(p)));if(k>-1)SELL.other.splice(k,1);renderSell();}
-function slLater(){if(slTotal()<=0)return slNeed();SELL.later=true;renderSell();}
+function slAdd(i,d){d=d||1;const P=slProds();if(d>0&&P[i]&&!num(P[i].price)){slOtherOpen(P[i].name);return;}SELL.cart[i]=Math.max(0,(SELL.cart[i]||0)+d);if(!SELL.cart[i])delete SELL.cart[i];try{navigator.vibrate&&navigator.vibrate(8);}catch(e){}renderSell();}
+function slOtherOpen(name){SELL.oname=name||"";const r=document.getElementById("slORow");if(r){r.classList.remove("hidden");const i=document.getElementById("slO");if(i){i.placeholder=name?name+" · 0.00":"0.00";i.focus();}try{r.scrollIntoView({block:"center",behavior:"smooth"});}catch(e){}}}
+function slOtherAdd(){const i=document.getElementById("slO");const v=num(i&&i.value);if(v>0){SELL.other.push({d:SELL.oname||"",p:v});SELL.oname="";renderSell();return true;}return false;}
+function slPendingOther(){const i=document.getElementById("slO");if(i&&num(i.value)>0){SELL.other.push({d:SELL.oname||"",p:num(i.value)});SELL.oname="";i.value="";}}
+function slOtherDel(k){if(k>-1&&k<SELL.other.length)SELL.other.splice(k,1);renderSell();}
+function slLater(){slPendingOther();if(slTotal()<=0)return slNeed();SELL.later=true;renderSell();}
 function slNeed(){toast(t("slNeed"));const g=document.querySelector(".sl-grid,.fm-hero");if(g){g.classList.remove("shake");void g.offsetWidth;g.classList.add("shake");}}
-async function slSave(method){const items=slItems();const amount=Math.round(slTotal()*1000)/1000;if(amount<=0)return slNeed();
- let party="Shop sales";if(method==="later"){party=String(SELL.who||"").trim();if(!party){toast(t("slNeedWho"));const w=document.getElementById("slWho");if(w)w.focus();return;}}
- const td=today();if(lockedOn(td))return toast(t("bkLocked").replace("{d}",niceDate(D.lock)));
- const rec={id:uid(),no:nextNo(),date:td,due:method==="later"?td:"",party,desc:items.map(i=>i.q>1?`${i.d} × ${i.q}`:i.d).join(", "),cat:T.en.salesCats[0],amount,items,pays:method==="later"?[]:[{date:td,amount,method}],notes:"",by:SESSION&&SESSION.user&&SESSION.user.id,at:new Date().toISOString()};
- D.invoices.push(rec);await persist();closeModal();render();showDone("inv",amount,party);}
+function setBusy(on){BUSY=on;document.querySelectorAll("#modal .sl-b").forEach(b=>{b.disabled=on;});const m=document.querySelector("#modal .sheet");if(m)m.classList.toggle("busy",on);}
+async function saveNew(listKey,rec,kind,label){D[listKey].push(rec);const ok=await persist();if(!ok){D[listKey]=D[listKey].filter(x=>x.id!==rec.id);setBusy(false);slFail();return false;}
+ closeModal();render();showDone(kind,rec.amount,label,async()=>{if(lockedOn(rec.date))return;D[listKey]=D[listKey].filter(x=>x.id!==rec.id);if(await persist()){render();toast(t("undone"));}else{D[listKey].push(rec);}});return true;}
+function slFail(){const m=document.querySelector("#modal .sheet");if(!m)return;let e=m.querySelector(".sl-err");if(!e){e=document.createElement("p");e.className="sl-err";e.setAttribute("role","alert");const f=m.querySelector(".sl-foot")||m.lastElementChild;f.prepend(e);}e.textContent=t("slNotSaved");}
+async function slSave(method){if(BUSY)return;slPendingOther();const items=slItems();const amount=Math.round(slTotal()*1000)/1000;if(amount<=0)return slNeed();
+ let party="Shop sales";if(method==="later"){party=String(SELL.who||"").trim();if(!party||party==="Shop sales"){toast(t("slNeedWho"));const w=document.getElementById("slWho");if(w)w.focus();return;}}
+ const td=today();if(lockedOn(td))return toast(t("bkLocked").replace("{d}",niceDate(D.lock)));setBusy(true);
+ const rec={id:uid(),no:nextNo(),date:td,due:"",party,desc:items.map(i=>i.q>1?`${i.d} × ${i.q}`:i.d).join(", "),cat:T.en.salesCats[0],amount,items,pays:method==="later"?[]:[{date:td,amount,method}],notes:"",by:SESSION&&SESSION.user&&SESSION.user.id,at:new Date().toISOString()};
+ try{await saveNew("invoices",rec,"inv",party==="Shop sales"?"":party);}finally{BUSY=false;}}
 /* ---------- quick "I paid" ---------- */
 const PD_CATS=[[7,"📦"],[8,"🧴"],[4,"🚕"],[9,"👷"],[6,"💡"],[0,"🏠"],[12,"➕"]];let PD={cat:null};
-function openPaid(){PD={cat:null};pendingAtt=[];removedAtt=[];const m=document.getElementById("modal");const cur=esc(D.settings.cur);
+function openPaid(){PD={cat:null};BUSY=false;pendingAtt=[];removedAtt=[];const m=document.getElementById("modal");const cur=esc(D.settings.cur);
  m.innerHTML=`<div class="sheet fm pd">${sheetTop(t("pdT"))}
  <div class="fm-hero"><div class="fm-q">${t("howMuch")}</div><div class="fm-amt"><input class="bigamt" id="pdAmt" type="number" inputmode="decimal" step="0.01" placeholder="0.00"><span class="cu">${cur}</span></div></div>
  <p class="sl-hp">${t("pdFor")}</p><div class="pd-cats" role="group" aria-label="${t("pdFor")}">${PD_CATS.map(([i,e])=>`<button class="pd-c" data-i="${i}" aria-pressed="false" onclick="pdCat(${i})"><span>${e}</span>${esc(lang==="ar"?T.ar.expCats[i]:T.en.expCats[i])}</button>`).join("")}</div>
  <label class="pd-photo" id="pdPhoto"><span class="ic">${I2.cam}</span><span class="tx">${t("pdPhoto")}</span><input type="file" accept="image/*" capture="environment" onchange="pdPick(this)"></label><div class="thumbs" id="attList"></div>
  <div class="fm-card form" style="grid-template-columns:1fr;margin-top:12px"><div><label for="pdTo">${t("pdTo")}</label><input id="pdTo" list="dl" placeholder="${t("pdToPh")}">${datalist("exp")}</div></div>
- <div class="sl-pay"><button class="sl-b main wide" onclick="pdSave()">${t("pdSave")}</button></div>
- ${canEdit()?`<button class="sl-full" onclick="fullForm('exp')">${t("pdFull")}</button>`:""}</div>`;
+ <div class="sl-foot"><div class="sl-pay"><button class="sl-b wide" onclick="pdSave()">${t("pdSave")}</button></div>${canEdit()?`<button class="sl-full" onclick="fullForm('exp')">${t("pdFull")}</button>`:""}</div></div>`;
  m.classList.remove("center");m.classList.add("on");setTimeout(()=>{const a=document.getElementById("pdAmt");if(a)a.focus();},80);}
 function pdCat(i){PD.cat=PD.cat===i?null:i;document.querySelectorAll(".pd-c").forEach(b=>{const on=Number(b.dataset.i)===PD.cat;b.classList.toggle("on",on);b.setAttribute("aria-pressed",on);});}
 async function pdPick(input){await pickAtt(input);const l=document.getElementById("pdPhoto");if(l&&pendingAtt.length){l.classList.add("ok");l.querySelector(".tx").textContent=t("pdPhotoOk")+" ("+pendingAtt.length+")";}}
-async function pdSave(){const a=document.getElementById("pdAmt");const amount=Math.round(num(a&&a.value)*1000)/1000;if(amount<=0){toast(t("pdNeed"));if(a){a.focus();const h=a.closest(".fm-hero");h.classList.remove("shake");void h.offsetWidth;h.classList.add("shake");}return;}
- const td=today();if(lockedOn(td))return toast(t("bkLocked").replace("{d}",niceDate(D.lock)));
+async function pdSave(){if(BUSY)return;const a=document.getElementById("pdAmt");const amount=Math.round(num(a&&a.value)*1000)/1000;if(amount<=0){toast(t("pdNeed"));if(a){a.focus();const h=a.closest(".fm-hero");h.classList.remove("shake");void h.offsetWidth;h.classList.add("shake");}return;}
+ const td=today();if(lockedOn(td))return toast(t("bkLocked").replace("{d}",niceDate(D.lock)));setBusy(true);
  const cat=PD.cat==null?T.en.expCats[12]:T.en.expCats[PD.cat];const to=String((document.getElementById("pdTo")||{}).value||"").trim();
  const rec={id:uid(),no:"",date:td,due:"",party:to,desc:"",cat,amount,pays:[{date:td,amount,method:"Cash"}],notes:"",att:[],by:SESSION&&SESSION.user&&SESSION.user.id,at:new Date().toISOString()};
- for(const pa of pendingAtt){try{await window.storage.set(ATT+pa.id,pa.d,true);rec.att.push(pa.id);}catch(e){toast("Photo not saved");}}
- D.expenses.push(rec);await persist();closeModal();render();showDone("exp",amount,rec.party);}
+ let photoFail=false;for(const pa of pendingAtt){try{await window.storage.set(ATT+pa.id,pa.d,true);rec.att.push(pa.id);}catch(e){photoFail=true;}}
+ try{const ok=await saveNew("expenses",rec,"exp",rec.party);if(ok&&photoFail)setTimeout(()=>toast(t("photoFail")),3900);}finally{BUSY=false;}}
 /* ---------- the full forms are one tap away ---------- */
 function fullForm(kind){const items=kind==="inv"?slItems():null;const amt=kind==="exp"?String((document.getElementById("pdAmt")||{}).value||""):"";const to=kind==="exp"?String((document.getElementById("pdTo")||{}).value||""):String(SELL.who||"");const keep=pendingAtt.slice();const cat=PD.cat;
  __full=true;try{openForm(kind);}finally{__full=false;}
@@ -1205,7 +1223,7 @@ function openDetail(kind,id){if(kind==="fund")return openFundDetail(id);const x=
  ${acts.length?`<div class="dt-acts">${acts.map(a=>`<button onclick="${a[0]}"><span class="c${a[3]?" lm":""}">${a[1]}</span>${a[2]}</button>`).join("")}</div>`:""}
  ${dtRows([[t("when"),niceDate(x.date)],x.due&&rem>0.004?[t("dueL"),niceDate(x.due)]:null,lastPay?[t("paidWith"),esc(trM(lastPay.method||""))]:null,[t("forL"),esc(trCat(x.cat))],x.desc?[t("whatL"),esc(tx(x.desc))]:null,x.no?[isInv?t("invNo"):t("refL"),esc(x.no)]:null,x.notes?[t("note"),esc(tx(x.notes))]:null])}
  ${payForm}${pays}${dtPhotos(kind,id,x)}
- ${canEdit()?`<button class="dt-del" onclick="delRec('${kind}',${ja(id)})">${t("deleteThis")}</button>`:""}`);}
+ ${canEdit()||mineToday(x)?`<button class="dt-del" onclick="delRec('${kind}',${ja(id)})">${t("deleteThis")}</button>`:""}`);}
 function openFundDetail(id){const x=D.funding.find(r=>r.id===id);if(!x)return;
  dtShell(`<div class="dt-top"><span></span><button class="dt-x" aria-label="${t("close")}" onclick="closeModal()">${I3.x}</button></div>
  <div class="dt-hero"><span class="dt-av lm">${ini(x.from)}</span><div class="dt-who">${esc(tx(x.from))} ${t("putInBy")}</div>${bigAmt(x.amount)}<span class="dt-pill ok">${t("fund")}</span></div>
