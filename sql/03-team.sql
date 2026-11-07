@@ -1,6 +1,7 @@
 -- Tamm: team, roles and invites. Run AFTER 02-hardening.sql. Safe to run more than once.
 -- What it does:
---   1. Adds the Accountant role (can add, edit and export; can't manage the team or delete the shop).
+--   1. Adds the Accountant role (can add, edit and export; can't manage the team or delete the shop)
+--      and the Staff role (adds sales and expenses from a simple screen; can't edit or delete).
 --   2. Invites are tied to an email, work once, and expire after 14 days.
 --   3. Anyone invited joins automatically the next time they sign in with that email
 --      (Google or password), as long as the email is verified. No code or link needed.
@@ -30,7 +31,7 @@ create policy "owner manages invites" on public.invites for all
 
 -- ---------- one list of roles ----------
 create or replace function public.valid_role(r text) returns boolean
-language sql immutable as $$ select r in ('editor', 'accountant', 'viewer') $$;
+language sql immutable as $$ select r in ('editor', 'accountant', 'staff', 'viewer') $$;
 
 -- the signed-in user's verified email (null if not verified)
 create or replace function public.my_verified_email() returns text
