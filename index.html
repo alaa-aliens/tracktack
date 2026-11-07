@@ -176,6 +176,8 @@ td.num,th.num{text-align:end;white-space:nowrap}
 
 /* sign-in with Google + who-are-you onboarding */
 .g-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;background:#fff}
+.a-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;background:#000;color:#fff;margin:18px 0 10px}
+.tm-brand+.g-btn{margin-top:18px}
 .or-line{display:flex;align-items:center;gap:12px;margin:16px 0 4px;color:var(--muted);font-size:13px}
 .or-line:before,.or-line:after{content:"";flex:1;height:1px;background:var(--line)}
 .who-list{display:grid;gap:10px;margin-top:6px}
@@ -891,8 +893,10 @@ function skeleton(){return`<main class="tm-main still"><div class="tm-head"><img
 let WHO=null;try{WHO=localStorage.getItem("tamm:who")||null;}catch(e){}
 function setWho(w){WHO=w;try{w?localStorage.setItem("tamm:who",w):localStorage.removeItem("tamm:who");}catch(e){}if(w&&SESSION){try{sb.auth.updateUser({data:{persona:w}});}catch(e){}}render();}
 const GICON='<svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>';
-function googleBtn(){if(!(window.TT_CONFIG&&TT_CONFIG.google))return"";return`<button type="button" class="btn line g-btn" onclick="doGoogle()">${GICON}<span>${t("gContinue")}</span></button><div class="or-line"><span>${t("orEmail")}</span></div>`;}
-async function doGoogle(){try{const back=location.origin+location.pathname+location.search;const {error}=await sb.auth.signInWithOAuth({provider:"google",options:{redirectTo:back,queryParams:{prompt:"select_account"}}});if(error)throw error;}catch(e){const m=document.getElementById("authMsg");if(m)m.textContent=e.message;}}
+const AICON='<svg width="17" height="17" viewBox="0 0 814 1000" aria-hidden="true"><path fill="currentColor" d="M788 341c-6 4-108 62-108 190 0 148 130 200 134 201-1 3-21 72-69 142-43 62-88 123-156 123s-86-40-164-40c-77 0-104 41-167 41s-106-57-156-128C44 786 0 662 0 545 0 356 123 256 244 256c64 0 118 42 158 42 38 0 98-45 171-45 28 0 128 3 194 95zM554 165c30-36 52-86 52-136 0-7-1-14-2-20-49 2-108 33-143 74-28 32-54 82-54 133 0 8 1 15 2 18 3 1 9 2 14 2 44 0 99-30 131-71z"/></svg>';
+function googleBtn(){const c=window.TT_CONFIG||{};if(!c.google&&!c.apple)return"";return`${c.apple?`<button type="button" class="btn a-btn" onclick="doOAuth('apple')">${AICON}<span>${t("aContinue")}</span></button>`:""}${c.google?`<button type="button" class="btn line g-btn" onclick="doOAuth('google')">${GICON}<span>${t("gContinue")}</span></button>`:""}<div class="or-line"><span>${t("orEmail")}</span></div>`;}
+async function doOAuth(provider){try{const back=location.origin+location.pathname+location.search;const opts={redirectTo:back};if(provider==="google")opts.queryParams={prompt:"select_account"};const {error}=await sb.auth.signInWithOAuth({provider,options:opts});if(error)throw error;}catch(e){const m=document.getElementById("authMsg");if(m)m.textContent=e.message;}}
+const doGoogle=()=>doOAuth("google");
 function whoCard(k,icon,title,desc){return`<button type="button" class="who-card" onclick="setWho('${k}')"><span class="who-ic">${icon}</span><span><b>${title}</b><small>${desc}</small></span></button>`;}
 function joinBlock(){const em=SESSION&&SESSION.user&&SESSION.user.email||"";return`<div class="form" style="grid-template-columns:1fr auto;margin-top:8px;align-items:end"><div><label>${t("joinCode")}</label><input id="jc" maxlength="12" autocomplete="off" autocapitalize="characters" style="text-transform:uppercase;letter-spacing:2px"></div><button class="btn line" onclick="doJoin()" style="width:auto">${t("join")}</button></div><p class="hint" style="margin-top:6px">${t("joinH")}</p><div class="who-note"><b>${t("whoInviteT")}</b><span>${t("whoInviteD").replace("{e}",esc(em))}</span><button type="button" class="btn line sm" onclick="boot()">${t("whoCheck")}</button></div>`;}
 function whoHTML(){const head=(h,p)=>`<div class="tm-brand">${TAMM_MARK(WHO?"":"anim")}<div class="tm-wm">${APP}</div><h1>${h}</h1><p>${p}</p></div>`;const msg=`<p class="hint" id="authMsg" style="margin-top:10px;min-height:18px;color:var(--red)"></p>`;const back=`<button class="sw" onclick="setWho(null)">${t("obBack")}</button>`;
@@ -900,7 +904,7 @@ function whoHTML(){const head=(h,p)=>`<div class="tm-brand">${TAMM_MARK(WHO?"":"
  if(WHO==="acct")return head(t("acctT"),t("acctD"))+`<div class="who-list">${whoCard("acct1","🏢",t("acctOne"),t("acctOneD"))}${whoCard("acctN","🗂️",t("acctMany"),t("acctManyD"))}</div>${msg}${back}`;
  if(WHO==="acctN")return head(t("acctMany"),t("acctSoon"))+`<button class="btn" style="margin-top:6px" onclick="setWho('owner')">${t("acctOwnBiz")}</button><p class="hint" style="margin-top:18px">${t("acctMeanwhile")}</p>${joinBlock()}${msg}<button class="sw" onclick="setWho('acct')">${t("obBack")}</button>`;
  const isAcct=WHO==="acct1";return head(isAcct?t("acctOne"):t("whoStaff"),isAcct?t("acctJoinD"):t("staffJoinD"))+joinBlock()+msg+`<button class="sw" onclick="setWho(${isAcct?"'acct'":"null"})">${t("obBack")}</button>`;}
-Object.assign(T.en,{accountant:"Accountant",gContinue:"Continue with Google",orEmail:"or use email",
+Object.assign(T.en,{accountant:"Accountant",gContinue:"Continue with Google",aContinue:"Continue with Apple",orEmail:"or use email",
  whoT:"Welcome to Tamm",whoD:"What brings you here? We'll set things up for you.",
  whoOwner:"I own or run a business",whoOwnerD:"Set up your company or shop and invite your team.",
  whoAcct:"I'm an accountant",whoAcctD:"Keep the books for the company you work at, or for clients.",
@@ -914,7 +918,7 @@ Object.assign(T.en,{accountant:"Accountant",gContinue:"Continue with Google",orE
  staffJoinD:"Enter the code your manager gave you, or ask them to invite your email.",
  joinH:"The owner finds the code in More, then Team and settings. New members join as viewers until the owner changes their role.",
  whoInviteT:"Invited by email?",whoInviteD:"Ask the owner to invite {e}. You'll get in automatically, no code needed.",whoCheck:"I've been invited, check again"});
-Object.assign(T.ar,{accountant:"محاسب",gContinue:"المتابعة باستخدام Google",orEmail:"أو استخدم البريد الإلكتروني",
+Object.assign(T.ar,{accountant:"محاسب",gContinue:"المتابعة باستخدام Google",aContinue:"المتابعة باستخدام Apple",orEmail:"أو استخدم البريد الإلكتروني",
  whoT:"أهلًا بك في تمّ",whoD:"ما الذي جاء بك؟ سنجهّز كل شيء لك.",
  whoOwner:"أملك أو أدير مشروعًا",whoOwnerD:"أنشئ شركتك أو محلك وادعُ فريقك.",
  whoAcct:"أنا محاسب",whoAcctD:"امسك حسابات الشركة التي تعمل بها أو حسابات عملائك.",
