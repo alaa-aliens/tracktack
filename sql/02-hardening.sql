@@ -2,6 +2,7 @@
 -- Safe to run more than once. Run it in Supabase > SQL Editor AFTER publishing app version b10.
 -- It does not delete any shop data. What it changes:
 --   1. Viewers can no longer change a shop's records (until now only the app stopped them, not the database).
+--      Owners, editors and accountants can.
 --   2. Only the owner can rename the shop, delete all its data, or manage invites.
 --   3. Shop codes become 10 characters from a secure random source, and guessing is limited
 --      to 10 tries an hour per account. EXISTING SHOP CODES CHANGE (the new one shows in the app).
@@ -23,7 +24,7 @@ $$;
 
 create or replace function public.can_write(b uuid) returns boolean
 language sql stable security definer set search_path = public as $$
-  select coalesce(public.member_role(b) in ('owner', 'editor'), false);
+  select coalesce(public.member_role(b) in ('owner', 'editor', 'accountant'), false);
 $$;
 
 create or replace function public.is_owner(b uuid) returns boolean
