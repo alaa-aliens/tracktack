@@ -486,6 +486,20 @@ main.tm-main{background:transparent!important;margin:0 auto!important;max-width:
 .sl-err{background:#FDECE4;color:#9A3412;border-radius:12px;padding:10px 12px;font-size:14px;font-weight:600;margin-bottom:8px}
 .dn-undo{margin-top:16px;border:1.5px solid currentColor;background:transparent;color:inherit;border-radius:999px;padding:10px 26px;font:inherit;font-size:15px;font-weight:700;cursor:pointer;min-height:44px}
 .st-top h1{overflow-wrap:anywhere;line-height:1.2}.st-top>div{min-width:0}
+
+/* b14: partial payments, got paid */
+.sl-pay .span2{grid-column:1/-1}
+.sl-big-in{font-size:22px!important;font-weight:700;height:54px}
+.sl-mseg{display:flex;gap:8px}.sl-mseg button{flex:1;min-height:48px;border-radius:14px;border:1.5px solid var(--line);background:#fff;font:inherit;font-weight:700;font-size:14px;cursor:pointer;color:var(--ink)}.sl-mseg button.on{border-color:#16190F;background:#F7FCE6}
+.sl-rem{font-weight:700;color:var(--amber);font-size:15px;min-height:4px;margin:0}
+.pd-part{display:block;width:100%;margin-top:12px;min-height:52px;border-radius:16px;border:1.5px dashed #CFCFC6;background:transparent;font:inherit;font-weight:700;font-size:15px;color:var(--ink);cursor:pointer}.pd-part.on{border-style:solid;border-color:#16190F;background:#F7FCE6}
+.st-big.gp .ic{background:#E8F0FF;color:#1D4ED8}
+.gp-search{width:100%;height:48px;border:1px solid var(--line);border-radius:14px;padding:0 14px;font:inherit;font-size:16px;margin-top:10px;background:#fff}
+.gp-list{display:flex;flex-direction:column;gap:8px}.gp-row{display:flex;align-items:center;gap:12px;width:100%;min-height:68px;border:0;border-radius:18px;background:#fff;box-shadow:var(--sh);padding:10px 14px;font:inherit;color:var(--ink);cursor:pointer;text-align:start}.gp-row:active{transform:scale(.99)}
+.gp-row .av{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex:none}.gp-row .n{flex:1;min-width:0}.gp-row .n b{display:block;font-size:16px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.gp-row .n small{color:var(--muted);font-size:12.5px}
+.gp-row .v{font-weight:800;font-size:17px;color:var(--amber);direction:ltr;unicode-bidi:isolate;text-align:end}.gp-row .v small{display:block;font-size:11px;color:var(--muted);font-weight:700}
+.gp-empty{text-align:center;padding:40px 10px;color:var(--muted);font-weight:600}
+.gp-note{color:var(--muted);font-size:13px;text-align:center;margin-top:10px}
 </style>
 </head>
 <body>
@@ -509,7 +523,9 @@ function merge3(base,mine,theirs){base=base||{};mine=mine||{};theirs=theirs||{};
   if(LISTS.includes(k)&&(Array.isArray(mine[k])||Array.isArray(base[k]))){
    const B=new Map((base[k]||[]).map(x=>[x&&x.id,x])),M=new Map((mine[k]||[]).map(x=>[x&&x.id,x]));const T=(theirs[k]||[]).slice();
    let res=T.filter(x=>!(B.has(x&&x.id)&&!M.has(x&&x.id)));/* I deleted it */
-   res=res.map(x=>{const m=M.get(x&&x.id);return m&&!same(m,B.get(x.id))?m:x;});/* I edited it */
+   res=res.map(x=>{const m=M.get(x&&x.id);const b=B.get(x&&x.id);if(!(m&&!same(m,b)))return x;
+    if(b&&!same(x,b)&&Array.isArray(x.pays)){const pk=p=>p&&p.id?p.id:JSON.stringify(p);const bk=new Set((b.pays||[]).map(pk)),mk=new Set((m.pays||[]).map(pk));const add=x.pays.filter(p=>!bk.has(pk(p))&&!mk.has(pk(p)));if(add.length)return{...m,pays:[...(m.pays||[]),...add]};}
+    return m;});/* I edited it; payments someone else added to the same record are kept */
    const have=new Set(res.map(x=>x&&x.id));for(const m of (mine[k]||[]))if(!have.has(m&&m.id)&&!B.has(m&&m.id))res.push(m);/* I added it */
    out[k]=res;}
   else if(MAPS.includes(k)&&mine[k]&&typeof mine[k]==="object"&&!Array.isArray(mine[k])){
@@ -833,7 +849,7 @@ function openDetail(kind,id){if(kind==="fund")return openFundDetail(id);const x=
 function openFundDetail(id){const x=D.funding.find(r=>r.id===id);const m=document.getElementById("modal");
  m.innerHTML=`<div class="sheet"><h3>${esc(tx(x.from))} → ${esc(tx(x.to))}<div class="spacer"></div><button class="btn sm line" onclick="openForm('fund',${ja(id)})">${t("edit")}</button></h3><div class="kv"><span>${t("date")}</span><b>${x.date}</b></div><div class="kv"><span>${t("ref")}</span><b>${esc(x.ref||"—")}</b></div><div class="kv"><span>${t("amt")}</span><b style="color:var(--teal2)">${fmt(x.amount)} ${D.settings.cur}</b></div>${photoSection("fund",id,x)}
  <div class="actions"><button class="btn danger" style="margin-inline-end:auto" onclick="delRec('fund',${ja(id)})"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="vertical-align:-2px;margin-inline-end:6px"><path d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m5 5v6m4-6v6"/></svg>${t("del")}</button><button class="btn line" onclick="closeModal()">${t("close")}</button></div></div>`;m.classList.add("on");fillThumbs();}
-async function addPay(kind,id){const x=(kind==="inv"?D.invoices:D.expenses).find(r=>r.id===id);const a=Number(document.getElementById("payA").value);if(!a)return;x.pays=x.pays||[];x.pays.push({date:document.getElementById("payD").value,amount:a,method:document.getElementById("payM").value});await persist();render();openDetail(kind,id);toast(t("saved"));}
+async function addPay(kind,id){const x=(kind==="inv"?D.invoices:D.expenses).find(r=>r.id===id);const a=Number(document.getElementById("payA").value);if(!a)return;x.pays=x.pays||[];x.pays.push({id:uid(),date:document.getElementById("payD").value,amount:a,method:document.getElementById("payM").value,by:SESSION&&SESSION.user&&SESSION.user.id});await persist();render();openDetail(kind,id);toast(t("saved"));}
 async function removePay(kind,id,i){const x=(kind==="inv"?D.invoices:D.expenses).find(r=>r.id===id);x.pays.splice(i,1);await persist();render();openDetail(kind,id);}
 async function shareInv(id,already){if(!already)printInv(id);await new Promise(r=>setTimeout(r,150));const x=D.invoices.find(r=>r.id===id);const el=document.querySelector(".inv");if(!el||!window.html2canvas)return toast("Share not available");toast(t("sharing"));
  try{const cv=await html2canvas(el,{scale:2,backgroundColor:"#fff",useCORS:true});const blob=await new Promise(r=>cv.toBlob(r,"image/png"));const file=new File([blob],(x.no||"invoice")+".png",{type:"image/png"});
@@ -936,7 +952,7 @@ function quickAdd(){const m=document.getElementById("modal");m.innerHTML=`<div c
  <button class="lm" onclick="openForm('inv')"><span class="ci">${I2.in}</span><span><b>${t("gotPaid")}</b><small>${t("gotPaidD")}</small></span></button>
  <button onclick="openForm('fund')"><span class="ci">${I2.bank}</span><span><b>${t("putIn")}</b><small>${t("fundD")}</small></span></button>
  <button onclick="snapReceipt()"><span class="ci">${I2.cam}</span><span><b>${t("snapR")}</b><small>${t("snapRd")}</small></span></button></div>
- <button class="tm-addlink" onclick="pickForPayment()">${t("recPay")}</button></div>`;m.classList.remove("center");m.classList.add("on");}
+ <button class="tm-addlink" onclick="openGotPaid()">${t("recPay")}</button></div>`;m.classList.remove("center");m.classList.add("on");}
 function snapReceipt(){openForm('exp');setTimeout(()=>{const i=document.querySelector('#modal input[type=file]');if(i)i.click();},80);}
 function moreSheet(){go('more');}
 const TAMM_MARK=(cls)=>`<svg class="tm-mark ${cls||""}" viewBox="0 0 115 115" aria-hidden="true"><rect width="115" height="115" rx="30" fill="#202020"/><g transform="translate(5.75 5.75) scale(.9)" fill="none" stroke="#D4FF40" stroke-linecap="round" stroke-linejoin="round"><path class="mk-c" pathLength="1" d="M27.5 60L46 76.5L93.8 49.4" stroke-width="8"/><path class="mk-w" pathLength="1" d="M93.8 49.4C54.8 29.1 28.4 63.9 47.5 77.1C63.4 88.2 88.3 58.5 54.8 52.1C30.2 47.3 19 68.7 17.5 77.1" stroke-width="8"/><path class="mk-s" pathLength="1" d="M99 35.6C95.6 33.8 86.7 29.9 79 29.2" stroke-width="7"/></g></svg>`;
@@ -993,13 +1009,13 @@ Object.assign(T.ar,{accountant:"محاسب",gContinue:"المتابعة باست
 /* ===== b12: staff screen, accountant books, password reset ===== */
 Object.assign(T.en,{staff:"Staff",forgot:"Forgot password?",resetT:"Reset your password",resetD:"Enter your email and we'll send you a link to choose a new password.",resetSend:"Send reset link",resetSent:"If that email has an account, a reset link is on its way. Check your inbox.",backSignin:"Back to sign in",
  newPwT:"Choose a new password",newPwD:"For {e}",newPw:"New password",newPw2:"Repeat new password",pwShort:"Use at least 8 characters.",pwMismatch:"The two passwords don't match.",pwSaved:"Password updated",savePw:"Save password",
- stHi:"Hi {n}",stSold:"I sold something",stSoldD:"A sale, or money a customer paid",stPaid:"I paid for something",stPaidD:"An expense. Add a photo of the receipt",stToday:"Today",stWeek:"Earlier this week",stNone:"Nothing added today yet. Use the buttons above.",stNote:"You see only what you added. The owner sees everything.",stIn:"In",stOut:"Out",
+ stHi:"Hi {n}",stSold:"I sold something",stSoldD:"A new sale, paid now or later",stPaid:"I paid for something",stPaidD:"An expense. Add a photo of the receipt",stToday:"Today",stWeek:"Earlier this week",stNone:"Nothing added today yet. Use the buttons above.",stNote:"You see what you added, and who owes money so you can take payments. The owner sees everything.",stIn:"In",stOut:"Out",
  books:"Books",booksD:"Accountant view",bkMonth:"This month",bkLast:"Last month",bkQ:"This quarter",bkYear:"This year",bkAll:"All time",bkSales:"Sales",bkColl:"Collected",bkExp:"Expenses",bkPaidOut:"Paid out",bkNet:"Profit",bkTax:"Tax on sales",bkFund:"Money put in",bkRecv:"Customers owe",bkOwe:"Still to pay",bkPeriod:"{a} to {b}",
  bkReview:"To review",bkReviewD:"{n} not checked yet",bkAllOk:"Everything in this period is checked.",bkCheck:"Mark checked",bkCheckAll:"Mark all checked",bkMissing:"Expenses without a receipt",bkMissingOk:"Every expense here has a receipt photo.",bkByCat:"Expenses by category",bkExport:"Export this period (CSV)",
  bkClose:"Close books through {d}",bkClosed:"Books closed through {d}",bkReopen:"Reopen",bkCloseQ:"Close the books through {d}? After this, only the owner or accountant can change entries on or before that date.",bkReopenQ:"Reopen the books so everyone can edit older entries again?",bkLocked:"The books are closed through {d}. Ask the owner or accountant to change this.",bkMore:"+{n} more"});
 Object.assign(T.ar,{staff:"موظف",forgot:"نسيت كلمة المرور؟",resetT:"إعادة تعيين كلمة المرور",resetD:"أدخل بريدك وسنرسل لك رابطًا لاختيار كلمة مرور جديدة.",resetSend:"أرسل الرابط",resetSent:"إذا كان لهذا البريد حساب، فالرابط في الطريق. تفقّد بريدك.",backSignin:"العودة لتسجيل الدخول",
  newPwT:"اختر كلمة مرور جديدة",newPwD:"للحساب {e}",newPw:"كلمة المرور الجديدة",newPw2:"أعد كتابة كلمة المرور",pwShort:"استخدم 8 أحرف على الأقل.",pwMismatch:"كلمتا المرور غير متطابقتين.",pwSaved:"تم تحديث كلمة المرور",savePw:"حفظ كلمة المرور",
- stHi:"أهلًا {n}",stSold:"بعت شيئًا",stSoldD:"بيع، أو مبلغ دفعه زبون",stPaid:"دفعت ثمن شيء",stPaidD:"مصروف. أضف صورة الإيصال",stToday:"اليوم",stWeek:"في وقت سابق هذا الأسبوع",stNone:"لم تُضف شيئًا اليوم بعد. استخدم الأزرار في الأعلى.",stNote:"ترى فقط ما أضفته أنت. المالك يرى كل شيء.",stIn:"داخل",stOut:"خارج",
+ stHi:"أهلًا {n}",stSold:"بعت شيئًا",stSoldD:"بيع جديد، مدفوع الآن أو لاحقًا",stPaid:"دفعت ثمن شيء",stPaidD:"مصروف. أضف صورة الإيصال",stToday:"اليوم",stWeek:"في وقت سابق هذا الأسبوع",stNone:"لم تُضف شيئًا اليوم بعد. استخدم الأزرار في الأعلى.",stNote:"ترى ما أضفته أنت، ومن عليه مال لتستلم منه. المالك يرى كل شيء.",stIn:"داخل",stOut:"خارج",
  books:"الدفاتر",booksD:"عرض المحاسب",bkMonth:"هذا الشهر",bkLast:"الشهر الماضي",bkQ:"هذا الربع",bkYear:"هذه السنة",bkAll:"كل الفترات",bkSales:"المبيعات",bkColl:"المحصّل",bkExp:"المصاريف",bkPaidOut:"المدفوع",bkNet:"الربح",bkTax:"الضريبة على المبيعات",bkFund:"أموال مضافة",bkRecv:"على الزبائن",bkOwe:"باقي للدفع",bkPeriod:"{a} إلى {b}",
  bkReview:"للمراجعة",bkReviewD:"{n} لم تُراجع بعد",bkAllOk:"كل شيء في هذه الفترة تمت مراجعته.",bkCheck:"تمت المراجعة",bkCheckAll:"مراجعة الكل",bkMissing:"مصاريف بلا إيصال",bkMissingOk:"كل المصاريف هنا لها صورة إيصال.",bkByCat:"المصاريف حسب الفئة",bkExport:"تصدير هذه الفترة (CSV)",
  bkClose:"إغلاق الدفاتر حتى {d}",bkClosed:"الدفاتر مغلقة حتى {d}",bkReopen:"إعادة فتح",bkCloseQ:"إغلاق الدفاتر حتى {d}؟ بعدها يستطيع المالك أو المحاسب فقط تعديل القيود في هذا التاريخ أو قبله.",bkReopenQ:"إعادة فتح الدفاتر ليتمكن الجميع من تعديل القيود القديمة؟",bkLocked:"الدفاتر مغلقة حتى {d}. اطلب من المالك أو المحاسب تعديل هذا.",bkMore:"+{n} أخرى"});
@@ -1027,12 +1043,13 @@ async function doNewPw(){const a=document.getElementById("np1").value,b=document
 function myEntries(){const me=SESSION&&SESSION.user.id;return[...D.invoices.map(x=>({...x,k:"i"})),...D.expenses.map(x=>({...x,k:"e"}))].filter(x=>x.by===me).sort((a,b)=>String(b.at||b.date).localeCompare(String(a.at||a.date)));}
 function vStaff(){const nm=myName();const td=today();const wk=new Date(Date.now()-6*864e5).toISOString().slice(0,10);
  const mine=myEntries();const tdL=mine.filter(x=>x.date===td),wkL=mine.filter(x=>x.date<td&&x.date>=wk);
- const tin=tdL.filter(x=>x.k==="i").reduce((a,x)=>a+num(x.amount),0),tout=tdL.filter(x=>x.k==="e").reduce((a,x)=>a+num(x.amount),0);
+ const col=myCollected();const tin=tdL.filter(x=>x.k==="i").reduce((a,x)=>a+num(x.amount),0)+col.reduce((a,p)=>a+p.amount,0),tout=tdL.filter(x=>x.k==="e").reduce((a,x)=>a+num(x.amount),0);
  return`<main class="tm-main st-main"><div class="st-top"><div><small>${esc(D.settings.name)}</small><h1>${nm?t("stHi").replace("{n}",esc(nm)):t("hello")}</h1></div>${langSeg()}</div>${nameCard()}
  <button class="st-big in" onclick="openForm('inv')"><span class="ic">${I2.in}</span><span><b>${t("stSold")}</b><small>${t("stSoldD")}</small></span></button>
  <button class="st-big out" onclick="openForm('exp')"><span class="ic">${I2.cam}</span><span><b>${t("stPaid")}</b><small>${t("stPaidD")}</small></span></button>
+ <button class="st-big gp" onclick="openGotPaid()"><span class="ic">${I2.bag||I2.in}</span><span><b>${t("stGot")}</b><small>${t("stGotD")}</small></span></button>
  <div class="tm-sec"><span>${t("stToday")}</span>${tdL.length?`<small class="st-sum"><span style="color:var(--green)">+${fmt(tin)}</span> · <span style="color:var(--red)">−${fmt(tout)}</span> ${esc(D.settings.cur)}</small>`:""}</div>
- <div class="tm-card st-list">${tdL.length?tdL.map(rowHTML).join(""):`<p class="st-empty">${t("stNone")}</p>`}</div>
+ <div class="tm-card st-list">${tdL.length||col.length?tdL.map(rowHTML).join("")+col.map(p=>`<div class="row"><div class="av" style="background:${avColor(p.party)}">${ini(p.party)}</div><div class="txt"><b>${esc(tx(p.party))}</b><span>${t("stCollected")} · ${esc(trM(p.method||""))}</span></div><div class="amt" style="color:var(--green)">+${fmt(p.amount)}</div></div>`).join(""):`<p class="st-empty">${t("stNone")}</p>`}</div>
  ${wkL.length?`<div class="tm-sec"><span>${t("stWeek")}</span></div><div class="tm-card st-list">${wkL.map(rowHTML).join("")}</div>`:""}
  <p class="st-note">${t("stNote")}</p>
  <div class="tm-list" style="margin-top:18px"><button class="tm-li red" onclick="lock()">${I2.exit}<span class="f">${t("lout")}</span></button></div></main>`;}
@@ -1082,11 +1099,17 @@ function bkExport(){const k=bkData();const cols=["type","no","date","party","des
 Object.assign(T.en,{slT:"What did you sell?",slTap:"Tap what you sold. Tap again to add one more.",slOther:"Other amount",slOtherItem:"Other",slAmtQ:"How much was it?",slWhatQ:"What was it? (optional)",slTotal:"Total",slHowPaid:"How did they pay?",slCash:"Cash",slCard:"Card",slCliq:"CliQ",slLater:"Will pay later",slWho:"Who will pay later?",slWhoPh:"Customer name",slSaveLater:"Save. They owe this",slNeed:"Tap something you sold first",slNeedWho:"Write the customer's name",slAdd:"Add",slFull:"More details (customer, tax, invoice)",slRemove:"Remove one",slPlus:"Add one",
  pdT:"What did you pay for?",pdFor:"What was it for?",pdTo:"Paid to (optional)",pdToPh:"Shop or person",pdPhoto:"Take a photo of the receipt",pdPhotoOk:"Receipt added",pdSave:"Save",pdFull:"More details (paid part, due date)",pdNeed:"Write how much you paid",
  nmQ:"What should we call you?",nmD:"Your team will see this name next to what you add.",nmPh:"Your name",nmSave:"Save",nmSkip:"Not now",
- slTapSaves:"Tapping one saves the sale.",slNotSaved:"Not saved. Check your internet and tap again.",undo:"Undo",undone:"Removed",photoFail:"The receipt photo was not saved. Open the entry to add it again."});
+ slTapSaves:"Tapping one saves the sale.",slPart:"Paid part",slPaidNow:"How much did they pay now?",slWhoPart:"Who owes the rest?",slSaveOwe:"Save. They owe the rest",slOwes:"They still owe {v}",slPaidAll:"That's the full amount. Go back and tap Cash, Card or CliQ.",slPaidAllHint:"The amount paid now must be less than the total",slNeedPaid:"Write how much they paid now",method:"Paid with",
+ pdPart:"I paid only part of it",pdNow:"How much did you pay now?",pdPartD:"The rest is saved as money you still owe.",pdToReq:"Paid to (who you still owe)",pdNeedTo:"Write who you paid, so Tamm can remember what you still owe",
+ stGot:"A customer paid me",stGotD:"Money for something they bought before",stCollected:"Paid you",
+ gpT:"Who paid you?",gpT2:"A customer paid",gpPick:"Tap the customer who paid.",gpBills:"{n} unpaid",gpNone:"No customer owes you money right now.",gpOwes:"owes {v}",gpHowMuch:"How much did they pay?",gpNote:"Tamm pays off their oldest bills first.",gpTapSaves:"Tapping one saves it.",gpTooMuch:"They only owe {v}",gpOther:"Choose another customer",search:"Search",slNotSaved:"Not saved. Check your internet and tap again.",undo:"Undo",undone:"Removed",photoFail:"The receipt photo was not saved. Open the entry to add it again."});
 Object.assign(T.ar,{slT:"ماذا بعت؟",slTap:"اضغط على ما بعته. اضغط مرة أخرى لإضافة واحدة.",slOther:"مبلغ آخر",slOtherItem:"أخرى",slAmtQ:"كم كان المبلغ؟",slWhatQ:"ما هو؟ (اختياري)",slTotal:"المجموع",slHowPaid:"كيف دفع الزبون؟",slCash:"نقدًا",slCard:"بطاقة",slCliq:"كليك",slLater:"سيدفع لاحقًا",slWho:"من سيدفع لاحقًا؟",slWhoPh:"اسم الزبون",slSaveLater:"احفظ. المبلغ دين عليه",slNeed:"اضغط على ما بعته أولًا",slNeedWho:"اكتب اسم الزبون",slAdd:"إضافة",slFull:"تفاصيل أكثر (زبون، ضريبة، فاتورة)",slRemove:"إزالة واحدة",slPlus:"إضافة واحدة",
  pdT:"ماذا دفعت؟",pdFor:"لأي شيء؟",pdTo:"لمن دفعت (اختياري)",pdToPh:"محل أو شخص",pdPhoto:"صوّر الإيصال",pdPhotoOk:"تمت إضافة الإيصال",pdSave:"حفظ",pdFull:"تفاصيل أكثر (دفع جزئي، تاريخ استحقاق)",pdNeed:"اكتب كم دفعت",
  nmQ:"بماذا نناديك؟",nmD:"سيرى فريقك هذا الاسم بجانب ما تضيفه.",nmPh:"اسمك",nmSave:"حفظ",nmSkip:"ليس الآن",
- slTapSaves:"الضغط على أحدها يحفظ البيع.",slNotSaved:"لم يُحفظ. تحقّق من الإنترنت واضغط مرة أخرى.",undo:"تراجع",undone:"تم الحذف",photoFail:"لم تُحفظ صورة الإيصال. افتح القيد لإضافتها مرة أخرى."});
+ slTapSaves:"الضغط على أحدها يحفظ البيع.",slPart:"دفع جزءًا",slPaidNow:"كم دفع الآن؟",slWhoPart:"من عليه الباقي؟",slSaveOwe:"احفظ. الباقي دين عليه",slOwes:"باقي عليه {v}",slPaidAll:"هذا المبلغ كاملًا. ارجع واضغط نقدًا أو بطاقة أو كليك.",slPaidAllHint:"المبلغ المدفوع الآن يجب أن يكون أقل من المجموع",slNeedPaid:"اكتب كم دفع الآن",method:"طريقة الدفع",
+ pdPart:"دفعت جزءًا منه فقط",pdNow:"كم دفعت الآن؟",pdPartD:"الباقي يُحفظ كمبلغ ما زال عليك.",pdToReq:"لمن دفعت (من لا يزال له عليك)",pdNeedTo:"اكتب لمن دفعت، ليتذكّر تمّ ما زال عليك",
+ stGot:"زبون دفع لي",stGotD:"مقابل شيء اشتراه من قبل",stCollected:"دفع لك",
+ gpT:"من دفع لك؟",gpT2:"زبون دفع",gpPick:"اضغط على الزبون الذي دفع.",gpBills:"{n} غير مدفوعة",gpNone:"لا يوجد زبون عليه مال لك الآن.",gpOwes:"عليه {v}",gpHowMuch:"كم دفع؟",gpNote:"يسدّد تمّ أقدم فواتيره أولًا.",gpTapSaves:"الضغط على أحدها يحفظه.",gpTooMuch:"عليه فقط {v}",gpOther:"اختر زبونًا آخر",search:"بحث",slNotSaved:"لم يُحفظ. تحقّق من الإنترنت واضغط مرة أخرى.",undo:"تراجع",undone:"تم الحذف",photoFail:"لم تُحفظ صورة الإيصال. افتح القيد لإضافتها مرة أخرى."});
 /* ---------- your name ---------- */
 const nmKey=k=>"tamm:"+k+":"+((SESSION&&SESSION.user&&SESSION.user.id)||"anon");
 function myName(){try{const m=(SESSION&&SESSION.user&&SESSION.user.user_metadata)||{};const n=m.name||m.full_name||localStorage.getItem(nmKey("name"))||"";return String(n).trim().slice(0,40);}catch(e){return"";}}
@@ -1098,22 +1121,27 @@ function skipName(){try{localStorage.setItem(nmKey("nameSkip"),"1");}catch(e){}r
 function nameCard(){if(myName())return"";try{if(localStorage.getItem(nmKey("nameSkip")))return"";}catch(e){}
  return`<div class="tm-card nm-card"><b>${t("nmQ")}</b><p>${t("nmD")}</p><div class="nm-row"><input id="nmIn" autocomplete="given-name" placeholder="${t("nmPh")}" aria-label="${t("nmPh")}" onkeydown="if(event.key==='Enter')saveName(this.value)"><button class="btn" onclick="saveName(document.getElementById('nmIn').value)">${t("nmSave")}</button></div><button class="nm-skip" onclick="skipName()">${t("nmSkip")}</button></div>`;}
 /* ---------- one-tap selling ---------- */
-let SELL={cart:{},other:[],later:false,amt:"",what:"",who:"",oname:""};let __full=false;let BUSY=false;
+let SELL={cart:{},other:[],later:false,part:false,paid:"",pm:"Cash",amt:"",what:"",who:"",oname:""};let __full=false;let BUSY=false;
 function slProds(){return(D.products||[]).filter(p=>p&&String(p.name||"").trim());}
 function slItems(){const P=slProds();const it=[];for(const [i,q] of Object.entries(SELL.cart)){const p=P[i];if(p&&q>0)it.push({d:p.name,q,p:num(p.price),pi:Number(i)});}
  SELL.other.forEach((o,k)=>it.push({d:o.d||T.en.slOtherItem,q:1,p:num(o.p),ok:k}));
  if(!P.length&&num(SELL.amt)>0)it.push({d:String(SELL.what||"").trim()||T.en.qS,q:1,p:num(SELL.amt)});return it.map(({pi,ok,...x})=>Object.defineProperties(x,{pi:{value:pi,enumerable:false},ok:{value:ok,enumerable:false}}));}
 function slTotal(){return slItems().reduce((a,i)=>a+num(i.q)*num(i.p),0);}
-function openSell(){SELL={cart:{},other:[],later:false,amt:"",what:"",who:"",oname:""};BUSY=false;pendingAtt=[];removedAtt=[];renderSell(true);}
+function openSell(){SELL={cart:{},other:[],later:false,part:false,paid:"",pm:"Cash",amt:"",what:"",who:"",oname:""};BUSY=false;pendingAtt=[];removedAtt=[];renderSell(true);}
 function renderSell(first){const m=document.getElementById("modal");const old=m.querySelector(".sheet");const st=old?old.scrollTop:0;const P=slProds();const cur=esc(D.settings.cur);const tot=slTotal();
  const grid=P.length?`<p class="sl-hint">${t("slTap")}</p><div class="sl-grid">${P.map((p,i)=>{const q=SELL.cart[i]||0;return`<button class="sl-p${q?" on":""}" onclick="slAdd(${i})" aria-label="${esc(p.name)} ${fmt(p.price)} ${cur}"><b>${esc(tx(p.name))}</b><span>${num(p.price)?fmt(p.price):"—"}</span>${q?`<i class="sl-q">${q}</i>`:""}</button>`;}).join("")}<button class="sl-p sl-oth" onclick="slOtherOpen()"><b>+ ${t("slOther")}</b></button></div>
   <div class="sl-orow hidden" id="slORow"><input id="slO" type="number" inputmode="decimal" step="0.01" placeholder="0.00" aria-label="${t("slOther")}" onkeydown="if(event.key==='Enter')slOtherAdd()"><button class="btn" onclick="slOtherAdd()">${t("slAdd")}</button></div>`
   :`<div class="fm-hero"><div class="fm-q">${t("slAmtQ")}</div><div class="fm-amt"><input class="bigamt" id="slAmt" type="number" inputmode="decimal" step="0.01" placeholder="0.00" value="${esc(SELL.amt)}" oninput="SELL.amt=this.value;slSync()"><span class="cu">${cur}</span></div></div>
   <div class="fm-card form" style="grid-template-columns:1fr;margin-top:12px"><div><label for="slWhat">${t("slWhatQ")}</label><input id="slWhat" value="${esc(SELL.what)}" oninput="SELL.what=this.value"></div></div>`;
  const lines=P.length?slItems().map(it=>`<div class="sl-line"><span class="n">${esc(tx(it.d))}</span>${it.pi!==undefined?`<span class="sl-step"><button aria-label="${t("slRemove")}" onclick="slAdd(${it.pi},-1)">−</button><b>${it.q}</b><button aria-label="${t("slPlus")}" onclick="slAdd(${it.pi},1)">+</button></span>`:`<span class="sl-step"><button aria-label="${t("slRemove")}" onclick="slOtherDel(${it.ok})">−</button></span>`}<span class="v">${fmt(num(it.q)*num(it.p))}</span></div>`).join(""):"";
- const pay=SELL.later?`<div class="fm-card form sl-later" style="grid-template-columns:1fr"><div><label for="slWho">${t("slWho")}</label><input id="slWho" list="dlc" autocomplete="off" placeholder="${t("slWhoPh")}" value="${esc(SELL.who)}" oninput="SELL.who=this.value"><datalist id="dlc">${[...new Set(D.invoices.map(x=>x.party))].filter(n=>n&&n!=="Shop sales").map(n=>`<option value="${esc(n)}">`).join("")}</datalist></div></div>
+ const debtors=`<datalist id="dlc">${[...new Set(D.invoices.map(x=>x.party))].filter(n=>n&&n!=="Shop sales").map(n=>`<option value="${esc(n)}">`).join("")}</datalist>`;
+ const who=`<div><label for="slWho">${t(SELL.part?"slWhoPart":"slWho")}</label><input id="slWho" list="dlc" autocomplete="off" placeholder="${t("slWhoPh")}" value="${esc(SELL.who)}" oninput="SELL.who=this.value">${debtors}</div>`;
+ const mseg=`<div class="sl-mseg" role="group" aria-label="${t("method")}">${[["Cash","💵","slCash"],["Card","💳","slCard"],["CliQ","📲","slCliq"]].map(([k,e,l])=>`<button class="${SELL.pm===k?"on":""}" aria-pressed="${SELL.pm===k}" onclick="SELL.pm='${k}';renderSell()">${e} ${t(l)}</button>`).join("")}</div>`;
+ const pay=SELL.part?`<div class="fm-card form sl-later" style="grid-template-columns:1fr"><div><label for="slPaid">${t("slPaidNow")}</label><input id="slPaid" class="sl-big-in" type="number" inputmode="decimal" step="0.01" placeholder="0.00" value="${esc(SELL.paid)}" oninput="SELL.paid=this.value;slRem()"></div>${mseg}<p class="sl-rem" id="slRem">${slRemText()}</p>${who}</div>
+  <div class="sl-pay"><button class="sl-b wide" onclick="slSave('part')">${t("slSaveOwe")}</button></div><button class="sl-back" onclick="SELL.part=false;renderSell()">${t("obBack")}</button>`
+  :SELL.later?`<div class="fm-card form sl-later" style="grid-template-columns:1fr">${who}</div>
   <div class="sl-pay"><button class="sl-b wide" onclick="slSave('later')">${t("slSaveLater")}</button></div><button class="sl-back" onclick="SELL.later=false;renderSell()">${t("obBack")}</button>`
-  :`<p class="sl-hp">${t("slHowPaid")} <small>${t("slTapSaves")}</small></p><div class="sl-pay"><button class="sl-b" onclick="slSave('Cash')">💵 ${t("slCash")}</button><button class="sl-b" onclick="slSave('Card')">💳 ${t("slCard")}</button><button class="sl-b" onclick="slSave('CliQ')">📲 ${t("slCliq")}</button><button class="sl-b" onclick="slLater()">🕒 ${t("slLater")}</button></div>`;
+  :`<p class="sl-hp">${t("slHowPaid")} <small>${t("slTapSaves")}</small></p><div class="sl-pay"><button class="sl-b" onclick="slSave('Cash')">💵 ${t("slCash")}</button><button class="sl-b" onclick="slSave('Card')">💳 ${t("slCard")}</button><button class="sl-b" onclick="slSave('CliQ')">📲 ${t("slCliq")}</button><button class="sl-b" onclick="slPart()">🌓 ${t("slPart")}</button><button class="sl-b span2" onclick="slLater()">🕒 ${t("slLater")}</button></div>`;
  m.innerHTML=`<div class="sheet fm sl">${sheetTop(t("slT"))}${grid}
  ${lines?`<div class="sl-cart">${lines}</div>`:""}
  <div class="sl-foot"><div class="sl-tot${tot>0?"":" empty"}"><span>${t("slTotal")}</span><b id="slTot">${fmt(tot)} <small>${cur}</small></b></div>${pay}${canEdit()?`<button class="sl-full" onclick="fullForm('inv')">${t("slFull")}</button>`:""}</div></div>`;
@@ -1126,41 +1154,80 @@ function slOtherOpen(name){SELL.oname=name||"";const r=document.getElementById("
 function slOtherAdd(){const i=document.getElementById("slO");const v=num(i&&i.value);if(v>0){SELL.other.push({d:SELL.oname||"",p:v});SELL.oname="";renderSell();return true;}return false;}
 function slPendingOther(){const i=document.getElementById("slO");if(i&&num(i.value)>0){SELL.other.push({d:SELL.oname||"",p:num(i.value)});SELL.oname="";i.value="";}}
 function slOtherDel(k){if(k>-1&&k<SELL.other.length)SELL.other.splice(k,1);renderSell();}
-function slLater(){slPendingOther();if(slTotal()<=0)return slNeed();SELL.later=true;renderSell();}
+function slLater(){slPendingOther();if(slTotal()<=0)return slNeed();SELL.later=true;SELL.part=false;renderSell();}
+function slPart(){slPendingOther();if(slTotal()<=0)return slNeed();SELL.part=true;SELL.later=false;renderSell();setTimeout(()=>{const p=document.getElementById("slPaid");if(p&&!p.value)p.focus();},60);}
+function slRemText(){const tot=slTotal(),p=num(SELL.paid);if(p<=0)return"";if(p>=tot-0.0005)return t("slPaidAll");return t("slOwes").replace("{v}",fmt(tot-p)+" "+esc(D.settings.cur));}
+function slRem(){const e=document.getElementById("slRem");if(e)e.textContent=slRemText();}
 function slNeed(){toast(t("slNeed"));const g=document.querySelector(".sl-grid,.fm-hero");if(g){g.classList.remove("shake");void g.offsetWidth;g.classList.add("shake");}}
 function setBusy(on){BUSY=on;document.querySelectorAll("#modal .sl-b").forEach(b=>{b.disabled=on;});const m=document.querySelector("#modal .sheet");if(m)m.classList.toggle("busy",on);}
 async function saveNew(listKey,rec,kind,label){D[listKey].push(rec);const ok=await persist();if(!ok){D[listKey]=D[listKey].filter(x=>x.id!==rec.id);setBusy(false);slFail();return false;}
  closeModal();render();showDone(kind,rec.amount,label,async()=>{if(lockedOn(rec.date))return;D[listKey]=D[listKey].filter(x=>x.id!==rec.id);if(await persist()){render();toast(t("undone"));}else{D[listKey].push(rec);}});return true;}
 function slFail(){const m=document.querySelector("#modal .sheet");if(!m)return;let e=m.querySelector(".sl-err");if(!e){e=document.createElement("p");e.className="sl-err";e.setAttribute("role","alert");const f=m.querySelector(".sl-foot")||m.lastElementChild;f.prepend(e);}e.textContent=t("slNotSaved");}
 async function slSave(method){if(BUSY)return;slPendingOther();const items=slItems();const amount=Math.round(slTotal()*1000)/1000;if(amount<=0)return slNeed();
- let party="Shop sales";if(method==="later"){party=String(SELL.who||"").trim();if(!party||party==="Shop sales"){toast(t("slNeedWho"));const w=document.getElementById("slWho");if(w)w.focus();return;}}
+ let party="Shop sales",paidNow=amount,pm=method;
+ if(method==="part"){paidNow=Math.round(num(SELL.paid)*1000)/1000;pm=SELL.pm||"Cash";if(paidNow<=0||paidNow>=amount-0.0005){toast(t(paidNow<=0?"slNeedPaid":"slPaidAllHint"));const p=document.getElementById("slPaid");if(p)p.focus();return;}}
+ if(method==="later"||method==="part"){party=String(SELL.who||"").trim();if(!party||party==="Shop sales"){toast(t("slNeedWho"));const w=document.getElementById("slWho");if(w)w.focus();return;}}
  const td=today();if(lockedOn(td))return toast(t("bkLocked").replace("{d}",niceDate(D.lock)));setBusy(true);
- const rec={id:uid(),no:nextNo(),date:td,due:"",party,desc:items.map(i=>i.q>1?`${i.d} × ${i.q}`:i.d).join(", "),cat:T.en.salesCats[0],amount,items,pays:method==="later"?[]:[{date:td,amount,method}],notes:"",by:SESSION&&SESSION.user&&SESSION.user.id,at:new Date().toISOString()};
+ const rec={id:uid(),no:nextNo(),date:td,due:"",party,desc:items.map(i=>i.q>1?`${i.d} × ${i.q}`:i.d).join(", "),cat:T.en.salesCats[0],amount,items,pays:method==="later"?[]:[{id:uid(),date:td,amount:method==="part"?paidNow:amount,method:pm,by:SESSION&&SESSION.user&&SESSION.user.id}],notes:"",by:SESSION&&SESSION.user&&SESSION.user.id,at:new Date().toISOString()};
  try{await saveNew("invoices",rec,"inv",party==="Shop sales"?"":party);}finally{BUSY=false;}}
 /* ---------- quick "I paid" ---------- */
 const PD_CATS=[[7,"📦"],[8,"🧴"],[4,"🚕"],[9,"👷"],[6,"💡"],[0,"🏠"],[12,"➕"]];let PD={cat:null};
-function openPaid(){PD={cat:null};BUSY=false;pendingAtt=[];removedAtt=[];const m=document.getElementById("modal");const cur=esc(D.settings.cur);
+function openPaid(){PD={cat:null,part:false};BUSY=false;pendingAtt=[];removedAtt=[];const m=document.getElementById("modal");const cur=esc(D.settings.cur);
  m.innerHTML=`<div class="sheet fm pd">${sheetTop(t("pdT"))}
  <div class="fm-hero"><div class="fm-q">${t("howMuch")}</div><div class="fm-amt"><input class="bigamt" id="pdAmt" type="number" inputmode="decimal" step="0.01" placeholder="0.00"><span class="cu">${cur}</span></div></div>
+ <button class="pd-part" id="pdPartBtn" aria-pressed="false" onclick="pdPart()">🌓 ${t("pdPart")}</button>
+ <div class="fm-card form hidden" id="pdPartBox" style="grid-template-columns:1fr;margin-top:10px"><div><label for="pdNow">${t("pdNow")}</label><input id="pdNow" class="sl-big-in" type="number" inputmode="decimal" step="0.01" placeholder="0.00"></div><p class="sl-rem">${t("pdPartD")}</p></div>
  <p class="sl-hp">${t("pdFor")}</p><div class="pd-cats" role="group" aria-label="${t("pdFor")}">${PD_CATS.map(([i,e])=>`<button class="pd-c" data-i="${i}" aria-pressed="false" onclick="pdCat(${i})"><span>${e}</span>${esc(lang==="ar"?T.ar.expCats[i]:T.en.expCats[i])}</button>`).join("")}</div>
  <label class="pd-photo" id="pdPhoto"><span class="ic">${I2.cam}</span><span class="tx">${t("pdPhoto")}</span><input type="file" accept="image/*" capture="environment" onchange="pdPick(this)"></label><div class="thumbs" id="attList"></div>
  <div class="fm-card form" style="grid-template-columns:1fr;margin-top:12px"><div><label for="pdTo">${t("pdTo")}</label><input id="pdTo" list="dl" placeholder="${t("pdToPh")}">${datalist("exp")}</div></div>
  <div class="sl-foot"><div class="sl-pay"><button class="sl-b wide" onclick="pdSave()">${t("pdSave")}</button></div>${canEdit()?`<button class="sl-full" onclick="fullForm('exp')">${t("pdFull")}</button>`:""}</div></div>`;
  m.classList.remove("center");m.classList.add("on");setTimeout(()=>{const a=document.getElementById("pdAmt");if(a)a.focus();},80);}
+function pdPart(){PD.part=!PD.part;const b=document.getElementById("pdPartBtn"),x=document.getElementById("pdPartBox");if(b){b.classList.toggle("on",PD.part);b.setAttribute("aria-pressed",PD.part);}if(x)x.classList.toggle("hidden",!PD.part);const to=document.querySelector('label[for=pdTo]');if(to)to.textContent=PD.part?t("pdToReq"):t("pdTo");if(PD.part){const n=document.getElementById("pdNow");if(n)n.focus();}}
 function pdCat(i){PD.cat=PD.cat===i?null:i;document.querySelectorAll(".pd-c").forEach(b=>{const on=Number(b.dataset.i)===PD.cat;b.classList.toggle("on",on);b.setAttribute("aria-pressed",on);});}
 async function pdPick(input){await pickAtt(input);const l=document.getElementById("pdPhoto");if(l&&pendingAtt.length){l.classList.add("ok");l.querySelector(".tx").textContent=t("pdPhotoOk")+" ("+pendingAtt.length+")";}}
 async function pdSave(){if(BUSY)return;const a=document.getElementById("pdAmt");const amount=Math.round(num(a&&a.value)*1000)/1000;if(amount<=0){toast(t("pdNeed"));if(a){a.focus();const h=a.closest(".fm-hero");h.classList.remove("shake");void h.offsetWidth;h.classList.add("shake");}return;}
  const td=today();if(lockedOn(td))return toast(t("bkLocked").replace("{d}",niceDate(D.lock)));setBusy(true);
  const cat=PD.cat==null?T.en.expCats[12]:T.en.expCats[PD.cat];const to=String((document.getElementById("pdTo")||{}).value||"").trim();
- const rec={id:uid(),no:"",date:td,due:"",party:to,desc:"",cat,amount,pays:[{date:td,amount,method:"Cash"}],notes:"",att:[],by:SESSION&&SESSION.user&&SESSION.user.id,at:new Date().toISOString()};
+ let paidNow=amount;if(PD.part){paidNow=Math.round(num((document.getElementById("pdNow")||{}).value)*1000)/1000;if(paidNow<0||paidNow>=amount-0.0005){setBusy(false);toast(t("slPaidAllHint"));const n=document.getElementById("pdNow");if(n)n.focus();return;}if(!to){setBusy(false);toast(t("pdNeedTo"));const w=document.getElementById("pdTo");if(w)w.focus();return;}}
+ const rec={id:uid(),no:"",date:td,due:"",party:to,desc:"",cat,amount,pays:paidNow>0?[{id:uid(),date:td,amount:paidNow,method:"Cash",by:SESSION&&SESSION.user&&SESSION.user.id}]:[],notes:"",att:[],by:SESSION&&SESSION.user&&SESSION.user.id,at:new Date().toISOString()};
  let photoFail=false;for(const pa of pendingAtt){try{await window.storage.set(ATT+pa.id,pa.d,true);rec.att.push(pa.id);}catch(e){photoFail=true;}}
  try{const ok=await saveNew("expenses",rec,"exp",rec.party);if(ok&&photoFail)setTimeout(()=>toast(t("photoFail")),3900);}finally{BUSY=false;}}
+
+/* ---------- got paid: a customer pays toward what they owe (oldest first) ---------- */
+let GP={who:null,q:"",pm:"Cash"};
+function gpDebtors(){const M={};for(const x of D.invoices){if(!x.party||x.party==="Shop sales")continue;const r=num(x.amount)-paidOf(x);if(r<=0.004)continue;const o=M[x.party]=M[x.party]||{name:x.party,owed:0,n:0,old:x.date};o.owed+=r;o.n++;if(x.date<o.old)o.old=x.date;}return Object.values(M).sort((a,b)=>b.owed-a.owed);}
+function openGotPaid(who){GP={who:who||null,q:"",pm:"Cash"};BUSY=false;renderGP(true);}
+function renderGP(first){const m=document.getElementById("modal");const cur=esc(D.settings.cur);const L=gpDebtors();let body;
+ if(!GP.who){const q=GP.q.trim().toLowerCase();const F=q?L.filter(p=>(p.name+" "+tx(p.name)).toLowerCase().includes(q)):L;
+  body=`${L.length>6?`<input class="gp-search" type="search" placeholder="${t("search")}" aria-label="${t("search")}" value="${esc(GP.q)}" oninput="GP.q=this.value;renderGP()">`:""}
+  ${L.length?`<p class="sl-hint">${t("gpPick")}</p><div class="gp-list">${F.map(p=>`<button class="gp-row" onclick="GP.who=${ja(p.name)};renderGP(true)"><span class="av" style="background:${avColor(p.name)}">${ini(p.name)}</span><span class="n"><b>${esc(tx(p.name))}</b><small>${t("gpBills").replace("{n}",p.n)} · ${niceDate(p.old)}</small></span><span class="v">${fmt(p.owed)}<small>${cur}</small></span></button>`).join("")}</div>`
+  :`<div class="gp-empty">✓ ${t("gpNone")}</div>`}`;}
+ else{const p=L.find(x=>x.name===GP.who);const owed=p?p.owed:0;
+  body=`<div class="fm-hero"><div class="fm-q">${esc(tx(GP.who))} · ${t("gpOwes").replace("{v}",fmt(owed)+" "+cur)}</div><div class="fm-q" style="margin-top:10px">${t("gpHowMuch")}</div><div class="fm-amt"><input class="bigamt" id="gpAmt" type="number" inputmode="decimal" step="0.01" value="${owed?Number(owed.toFixed(3)):""}" placeholder="0.00"><span class="cu">${cur}</span></div></div>
+  <p class="gp-note">${t("gpNote")}</p>
+  <div class="sl-foot"><p class="sl-hp">${t("slHowPaid")} <small>${t("gpTapSaves")}</small></p><div class="sl-pay"><button class="sl-b" onclick="gpSave('Cash')">💵 ${t("slCash")}</button><button class="sl-b" onclick="gpSave('Card')">💳 ${t("slCard")}</button><button class="sl-b span2" onclick="gpSave('CliQ')">📲 ${t("slCliq")}</button></div><button class="sl-back" onclick="GP.who=null;renderGP(true)">${t("gpOther")}</button></div>`;}
+ m.innerHTML=`<div class="sheet fm gp">${sheetTop(GP.who?t("gpT2"):t("gpT"))}${body}</div>`;m.classList.remove("center");m.classList.add("on");
+ if(!GP.who&&!first){const s=m.querySelector(".gp-search");if(s){s.focus();s.setSelectionRange(s.value.length,s.value.length);}}}
+async function gpSave(method){if(BUSY)return;const a=document.getElementById("gpAmt");let amt=Math.round(num(a&&a.value)*1000)/1000;const p=gpDebtors().find(x=>x.name===GP.who);const owed=p?Math.round(p.owed*1000)/1000:0;
+ if(amt<=0){toast(t("pdNeed"));if(a)a.focus();return;}if(amt>owed+0.0005){toast(t("gpTooMuch").replace("{v}",fmt(owed)));if(a){a.value=owed;a.focus();}return;}
+ const td=today();if(lockedOn(td))return toast(t("bkLocked").replace("{d}",niceDate(D.lock)));setBusy(true);
+ if(!SYNC.pending)try{const r=await window.storage.get("tt:data");if(r&&r.value&&!SYNC.pending){const nd=sanitizeData(JSON.parse(r.value));if(JSON.stringify(nd)!==JSON.stringify(D)){D=nd;D.contacts=D.contacts||{};D.products=D.products||[];}}}catch(e){}
+ {const p2=gpDebtors().find(x=>x.name===GP.who);const ow2=p2?Math.round(p2.owed*1000)/1000:0;if(amt>ow2+0.0005){setBusy(false);BUSY=false;renderGP(true);toast(ow2>0?t("gpTooMuch").replace("{v}",fmt(ow2)):t("gpNone"));return;}}
+ const me=SESSION&&SESSION.user&&SESSION.user.id;const open=D.invoices.filter(x=>x.party===GP.who&&num(x.amount)-paidOf(x)>0.004).sort((x,y)=>String(x.date).localeCompare(String(y.date)));
+ const added=[];let left=amt;for(const x of open){if(left<=0.0005)break;const r=Math.round((num(x.amount)-paidOf(x))*1000)/1000;const take=Math.min(left,r);const pay={id:uid(),date:td,amount:Math.round(take*1000)/1000,method,by:me};x.pays=x.pays||[];x.pays.push(pay);added.push([x.id,pay]);left=Math.round((left-take)*1000)/1000;}
+ const undoPays=()=>{for(const [id,pay] of added){const x=D.invoices.find(r=>r.id===id);if(x&&x.pays){const j=x.pays.findIndex(q=>q===pay||(q&&q.id===pay.id));if(j>-1)x.pays.splice(j,1);}}};
+ const redoPays=()=>{for(const [id,pay] of added){const x=D.invoices.find(r=>r.id===id);if(x){x.pays=x.pays||[];if(!x.pays.some(q=>q&&q.id===pay.id))x.pays.push(pay);}}};
+ try{const ok=await persist();if(!ok){undoPays();setBusy(false);slFail();return;}
+  const who=GP.who;closeModal();render();showDone("inv",amt,who,async()=>{if(lockedOn(td))return;undoPays();if(await persist()){render();toast(t("undone"));}else{redoPays();render();}});}finally{BUSY=false;}}
+function myCollected(){const me=SESSION&&SESSION.user&&SESSION.user.id;const td=today();const out=[];for(const x of D.invoices){(x.pays||[]).forEach(p=>{if(p.by===me&&p.date===td&&!(x.by===me&&x.date===td))out.push({party:x.party,amount:num(p.amount),method:p.method,id:x.id});});}return out;}
 /* ---------- the full forms are one tap away ---------- */
 function fullForm(kind){const items=kind==="inv"?slItems():null;const amt=kind==="exp"?String((document.getElementById("pdAmt")||{}).value||""):"";const to=kind==="exp"?String((document.getElementById("pdTo")||{}).value||""):String(SELL.who||"");const keep=pendingAtt.slice();const cat=PD.cat;
+ const part=kind==="exp"?(PD.part?String((document.getElementById("pdNow")||{}).value||""):null):(SELL.part?String(SELL.paid||""):null);const ppm=kind==="inv"&&SELL.part?SELL.pm:null;
  __full=true;try{openForm(kind);}finally{__full=false;}
  const q=n=>document.querySelector('#modal [name='+n+']');
  if(items&&items.length){const box=document.getElementById("items");if(box){box.querySelectorAll(".r").forEach(r=>r.remove());const add=box.querySelector(":scope > button.link");items.forEach(it=>add.insertAdjacentHTML("beforebegin",itemRow(it)));recalcItems();}}
  if(amt&&q("amount"))q("amount").value=amt;if(to&&q("party"))q("party").value=to;if(kind==="exp"&&cat!=null&&q("cat"))q("cat").value=T.en.expCats[cat];
+ if(part!=null){const pf=document.getElementById("pf");if(pf){pf.checked=false;syncPaid();}const pn=document.getElementById("paidNow");if(pn)pn.value=part;if(ppm&&q("method"))q("method").value=ppm;}
  if(keep.length){pendingAtt=keep;const al=document.getElementById("attList");if(al)keep.forEach(pa=>al.insertAdjacentHTML("beforeend",`<div class="th"><img src="${pa.d}"></div>`));}}
 const _openForm13=openForm;
 openForm=function(kind,id){if(!id&&!__full&&kind==="inv")return openSell();if(!id&&!__full&&kind==="exp")return openPaid();return _openForm13(kind,id);};
@@ -1262,7 +1329,7 @@ function openPerson(i){const p=window.__PPL[i];if(!p)return;const nm=p.name;cons
  const role=[p.isC?t("cust"):"",p.isS?t("supp"):""].filter(Boolean).join(" · ");
  let lbl,val,pill;if(p.youOwe>0.004){lbl=t("youOweL");val=p.youOwe;pill=`<span class="dt-pill due">${t("youOweL")} ${fmt(p.youOwe)}</span>`;}else if(p.owedToYou>0.004){lbl=t("owesYouL");val=p.owedToYou;pill=`<span class="dt-pill due">${t("owesYouL")} ${fmt(p.owedToYou)}</span>`;}else{lbl=p.isC&&!p.isS?t("soldTotal"):t("paidTotal");val=p.isC&&!p.isS?p.invoiced:p.spent;pill=`<span class="dt-pill ok">${t("settled")}</span>`;}
  const acts=[];if(ph)acts.push([`location.href='tel:${esc(ph).replace(/[^0-9+]/g,"")}'`,I4.phone,t("callL")],[`window.open('https://wa.me/'+${ja(ph)}.replace(/[^0-9]/g,''))`,I3.wa,t("waL")]);
- if(canEdit()){if(p.isS||!p.isC)acts.push([`personPay(${ja(nm)},'exp')`,I4.pay,t("payAgain"),true]);if(p.isC)acts.push([`personPay(${ja(nm)},'inv')`,I4.inv,t("gotPaid"),!p.isS]);}
+ if(canEdit()){if(p.isS||!p.isC)acts.push([`personPay(${ja(nm)},'exp')`,I4.pay,t("payAgain"),true]);if(p.isC)acts.push([p.owedToYou>0.004?`openGotPaid(${ja(nm)})`:`personPay(${ja(nm)},'inv')`,I4.inv,t("gotPaid"),!p.isS]);}
  const tiles=[];if(p.isS||!p.isC)tiles.push([t("paidTotal"),fmt(p.spent)]);if(p.isC)tiles.push([t("soldTotal"),fmt(p.invoiced)]);tiles.push([p.youOwe>0.004?t("youOweL"):p.owedToYou>0.004?t("owesYouL"):t("remaining"),fmt(p.youOwe||p.owedToYou||0)]);tiles.push([t("timesL"),String(txs.length)]);
  const hist=txs.map(x=>{const st=statusOf(x);return`<div class="row" onclick="openDetail('${x.k}',${ja(x.id)})"><div class="txt"><b>${esc(tx(x.desc)||x.no||trCat(x.cat))}</b><span>${niceDate(x.date)}${x.att&&x.att.length?" · 📎"+x.att.length:""}</span></div><div class="amt">${x.k==="exp"?"−":"+"}${fmt(x.amount)}${st!=="paid"?`<span><span class="pill ${st}">${t(st)}</span></span>`:""}</div></div>`}).join("");
  dtShell(`<div class="dt-top"><span></span><button class="dt-x" aria-label="${t("close")}" onclick="closeModal()">${I3.x}</button></div>
@@ -1291,9 +1358,9 @@ Object.assign(T.en,{bizName:"Shop name",createBiz:"Continue",orJoin:"Joining som
  a2hsT:"Add Tamm to your home screen",a2hsI:"iPhone: tap the Share button in Safari, then “Add to Home Screen”.",a2hsA:"Android: tap ⋮ in Chrome, then “Add to Home screen” or “Install app”.",a2hsDone:"Done",
  tipAct:"Everything in and out, newest first. Tap any entry to see it, edit it or add a receipt.",tipPeople:"Everyone you pay or sell to. Tap a person to see what they owe or what you owe them.",tipMore:"Your sales, expenses, reports and settings live here.",tipGot:"Got it",
  helpT:"Help",hHow:"How Tamm works",hStart:"Getting started checklist",hGuides:"Guides",
- g1t:"Record something you paid",g1d:"Tap + then “I paid”. Type the amount, who you paid and what for. Tick “Paid in full”, or type how much you paid now if the rest is later.",
- g2t:"Record a sale",g2d:"Tap + then “Got paid”. Pick the items and prices. If the customer pays later, leave “Paid now” empty: Tamm keeps it as owed.",
- g3t:"When someone pays what they owe",g3d:"Open the entry (from Activity or the person's page) and use “Record a payment”. The amount still due goes down.",
+ g1t:"Record something you paid",g1d:"Tap + then “I paid”. Type the amount and tap what it was for. If you paid only part, tap “I paid only part of it”, type what you paid now and who you paid.",
+ g2t:"Record a sale",g2d:"Tap + then “Got paid”. Tap what you sold, then how they paid. If they pay later, or pay only part now, tap “Will pay later” or “Paid part” and write their name.",
+ g3t:"When someone pays what they owe",g3d:"Tap + then “A customer paid an invoice”, pick the customer and type how much they paid. Tamm pays off their oldest bills first.",
  g4t:"Keep receipt photos",g4d:"Tap + then “Snap a receipt”, or open any entry and tap “Add a photo”.",
  g5t:"Invite a worker or partner",g5d:"More → Team and settings → Invite. Editors can add and change entries; viewers can only look.",
  g6t:"See if you're making money",g6d:"Home shows money put in, spent and sales. More → Reports shows month by month and where the money goes.",
@@ -1315,9 +1382,9 @@ Object.assign(T.ar,{bizName:"اسم المحل",createBiz:"متابعة",orJoin:
  a2hsT:"أضف تمّ إلى الشاشة الرئيسية",a2hsI:"آيفون: اضغط زر المشاركة في سفاري ثم «إضافة إلى الشاشة الرئيسية».",a2hsA:"أندرويد: اضغط ⋮ في كروم ثم «إضافة إلى الشاشة الرئيسية» أو «تثبيت التطبيق».",a2hsDone:"تم",
  tipAct:"كل ما دخل وخرج، الأحدث أولًا. اضغط على أي حركة لعرضها أو تعديلها أو إضافة إيصال.",tipPeople:"كل من تدفع له أو تبيعه. اضغط على شخص لترى ما عليه أو ما عليك له.",tipMore:"المبيعات والمصاريف والتقارير والإعدادات هنا.",tipGot:"فهمت",
  helpT:"المساعدة",hHow:"كيف يعمل تمّ",hStart:"قائمة البداية",hGuides:"شروحات",
- g1t:"سجّل شيئًا دفعته",g1d:"اضغط + ثم «دفعت». اكتب المبلغ ولمن دفعت ولماذا. اختر «مدفوع بالكامل» أو اكتب ما دفعته الآن إن كان الباقي لاحقًا.",
- g2t:"سجّل عملية بيع",g2d:"اضغط + ثم «قبضت». اختر المنتجات والأسعار. إن كان الزبون سيدفع لاحقًا اترك «المدفوع الآن» فارغًا وسيبقى مستحقًا.",
- g3t:"عندما يدفع أحدهم ما عليه",g3d:"افتح الحركة (من الحركات أو صفحة الشخص) واستخدم «تسجيل دفعة». سينقص المبلغ المتبقي.",
+ g1t:"سجّل شيئًا دفعته",g1d:"اضغط + ثم «دفعت». اكتب المبلغ واختر لماذا. إن دفعت جزءًا فقط اضغط «دفعت جزءًا منه فقط» واكتب ما دفعته الآن ولمن.",
+ g2t:"سجّل عملية بيع",g2d:"اضغط + ثم «قبضت». اختر ما بعته ثم طريقة الدفع. إن كان سيدفع لاحقًا أو دفع جزءًا الآن اضغط «سيدفع لاحقًا» أو «دفع جزءًا» واكتب اسمه.",
+ g3t:"عندما يدفع أحدهم ما عليه",g3d:"اضغط + ثم «زبون دفع فاتورة»، اختر الزبون واكتب كم دفع. يسدّد تمّ أقدم فواتيره أولًا.",
  g4t:"احفظ صور الإيصالات",g4d:"اضغط + ثم «صوّر إيصالًا»، أو افتح أي حركة واضغط «إضافة صورة».",
  g5t:"ادعُ عاملًا أو شريكًا",g5d:"المزيد ← الفريق والإعدادات ← دعوة. المحرر يضيف ويعدّل، والمشاهد يطّلع فقط.",
  g6t:"اعرف إن كنت تربح",g6d:"الرئيسية تعرض المموّل والمصروف والمبيعات. والمزيد ← التقارير تعرض كل شهر وأين يذهب المال.",
@@ -1400,7 +1467,7 @@ const _vMore=vMore;vMore=function(){const h=_vMore();const help=`<div class="tm-
 const _vHome=vHome;vHome=function(){const h=_vHome();const ck=checklistHTML();if(!ck)return h;const i=h.indexOf('<button class="tm-sum"');return i<0?ck+h:h.slice(0,i)+ck+h.slice(i);};
 
 /* auto-update: reload when a new version is published */
-const BUILD="b13";
+const BUILD="b14";
 async function checkUpdate(){try{const r=await fetch("version.txt?"+Date.now(),{cache:"no-store"});const v=(await r.text()).trim();if(v&&v!==BUILD){const m=document.getElementById("modal");if(m&&m.classList.contains("on"))return;location.reload();}}catch(e){}}
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")checkUpdate();});setTimeout(checkUpdate,3000);
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
