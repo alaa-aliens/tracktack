@@ -986,6 +986,75 @@ main.tm-main{background:transparent!important;margin:0 auto!important;max-width:
  .modal.center .sheet.d6-dlg{grid-template-columns:minmax(0,1fr) 330px}
  .d6-sl .sl-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
+/* ===== b18: daily sheet ===== */
+.ds-main.ds-day-tab{padding-bottom:210px!important}
+.ds-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin:6px 2px 0}
+.ds-ttl small{display:block;font-size:14px;color:var(--muted)}.ds-ttl h1{font-size:28px;font-weight:700;letter-spacing:-.6px;margin:2px 0 0;line-height:1.15}
+.ds-dayrow{display:flex;align-items:center;gap:10px;margin:12px 2px 0;flex-wrap:wrap}
+.ds-date{position:relative;display:inline-flex;align-items:center;gap:8px;background:#fff;border-radius:999px;padding:9px 14px;font-size:14px;font-weight:600;box-shadow:var(--sh);cursor:pointer}
+.ds-date svg{width:17px;height:17px}.ds-date input{position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer;border:0;padding:0;margin:0}
+.ds-today{border:0;background:var(--lime);color:var(--limeink);font:inherit;font-size:14px!important;font-weight:600;border-radius:999px;padding:9px 14px;cursor:pointer}
+.ds-lock{margin:12px 4px 0;font-size:14px;color:var(--amber)}
+.ds-hero{position:relative;margin-top:14px;background:var(--ink);color:#fff;border-radius:24px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));padding:18px 0 16px}
+.ds-hero>div{padding:0 16px;border-inline-start:1px solid rgba(255,255,255,.12);min-width:0}.ds-hero>div:first-child{border:0}
+.ds-hero .l{display:block;font-size:12.5px;color:#A9AD9F;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ds-hero .v{display:block;margin-top:4px;font-size:22px;font-weight:700;letter-spacing:-.4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-variant-numeric:tabular-nums}
+.ds-hero .v.lm{color:var(--lime)}.ds-hero .v.ng{color:var(--salmon)}
+.ds-hero .cu{position:absolute;top:12px;inset-inline-end:16px;font-size:11px;color:#A9AD9F}
+.ds-hero.one{grid-template-columns:1fr}.ds-hero.one .v{font-size:30px}
+.ds-card{margin-top:14px;background:#fff;border-radius:var(--r);padding:16px;box-shadow:var(--sh)}
+.ds-h{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}.ds-h h2{font-size:17px;font-weight:700;margin:0}
+.ds-sum{font-size:16px;font-variant-numeric:tabular-nums}
+.ds-f{display:flex;flex-direction:column;gap:5px;min-width:0}.ds-f>span{font-size:13px;color:var(--muted);font-weight:500}.ds-f>span small{display:block;font-size:12px;color:var(--muted);font-weight:400}
+.ds-in{width:100%;min-width:0;box-sizing:border-box;font:inherit;font-size:17px!important;padding:12px 13px;border:1.5px solid var(--line);border-radius:14px;background:#FCFCFA;color:var(--ink);outline:none;transition:border-color .15s}
+.ds-in:focus{border-color:var(--ink);background:#fff}.ds-in:disabled{opacity:.6}
+.ds-g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ds-g3{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:end;margin-top:10px}.ds-g3.sm{grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
+.ds-x{padding-bottom:14px;font-size:18px;color:var(--muted)}
+.ds-paid{margin-top:10px}.ds-amt{display:flex;align-items:center;gap:8px}.ds-amt i{font-style:normal;color:var(--muted);font-size:14px}.ds-amt .ds-in{font-weight:700}
+.ds-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(90px,34%) 40px;gap:8px;align-items:center;margin-top:8px}
+.ds-row .ds-n{font-size:16px!important}
+.ds-cn{display:flex;flex-direction:column;min-width:0}.ds-cn b{font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ds-cn small{font-size:12.5px;color:var(--muted)}
+.ds-del{width:40px;height:40px;border:0;border-radius:12px;background:var(--soft);color:var(--muted);display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0}.ds-del svg{width:16px;height:16px}
+.ds-lk{grid-column:1/-1;margin:0;font-size:12.5px;color:var(--amber)}
+.ds-srow{padding:12px;border:1.5px solid var(--line);border-radius:16px;margin-top:10px}.ds-srow.lk{background:var(--soft)}
+.ds-sw{display:grid;grid-template-columns:minmax(0,1fr) 40px;gap:8px;align-items:center}.ds-sw .ds-who{font-weight:600}
+.ds-shop{font-size:16px;padding:10px 2px}
+.ds-hint{margin:6px 2px 0;font-size:12.5px;color:var(--muted);min-height:0}.ds-hint:empty{display:none}
+.ds-pay{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.ds-pay button{border:1.5px solid var(--line);background:#fff;border-radius:12px;padding:10px 8px;font:inherit;font-size:14px!important;font-weight:600;color:var(--muted);cursor:pointer}
+.ds-pay button.on{border-color:var(--ink);background:var(--ink);color:#fff}
+.ds-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.ds-chips button{border:0;background:var(--soft);color:var(--ink);border-radius:999px;padding:10px 14px;font:inherit;font-size:14.5px!important;font-weight:600;cursor:pointer;min-height:42px}
+.ds-chips button small{font-weight:500;color:var(--muted);margin-inline-start:4px}.ds-chips button.nw{background:var(--lime);color:var(--limeink)}
+.ds-chips button:active,.ds-pay button:active,.ds-save:active{transform:scale(.98)}
+.ds-sub{margin:10px 2px 0;font-size:13px;color:var(--muted)}
+.ds-photo{display:flex;align-items:center;gap:12px;margin-top:14px;background:#fff;border:1.5px dashed #D5D3C8;border-radius:var(--r);padding:16px;cursor:pointer;font-size:15px;font-weight:600;color:var(--ink)}
+.ds-photo svg{width:24px;height:24px;flex:none}.ds-photo input{display:none}.ds-photo.ok{border-style:solid;border-color:var(--green);color:var(--green)}
+.ds-bar{position:fixed;z-index:26;bottom:calc(96px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);width:min(100% - 32px,600px);box-sizing:border-box;display:flex;align-items:center;gap:10px;background:#fff;border-radius:20px;padding:8px 8px 8px 16px;box-shadow:0 10px 30px rgba(22,25,15,.16)}
+[dir=rtl] .ds-bar{padding:8px 16px 8px 8px}
+.ds-bar .ds-st{flex:1;min-width:0;font-size:13.5px;color:var(--green);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ds-bar.dirty .ds-st{color:var(--amber)}
+.ds-undo{display:block;margin:14px auto 0;border:0;background:none;font:inherit;font-size:14px!important;color:var(--muted);cursor:pointer;padding:10px;text-decoration:underline}
+.ds-save{border:0;background:var(--lime);color:var(--limeink);border-radius:14px;padding:13px 18px;font:inherit;font-size:16px!important;font-weight:700;cursor:pointer;white-space:nowrap}
+.ds-save:disabled{background:var(--soft);color:var(--muted);cursor:default}
+.ds-ms .ds-bar,.ds-mfoot .ds-bar{position:sticky;bottom:0;left:auto;transform:none;width:100%;margin-top:14px}
+.ds-ms .ds-top .ds-ttl h1{font-size:22px}
+.ds-list{padding:4px 0}
+.ds-cu,.ds-day{width:100%;display:flex;align-items:center;gap:12px;border:0;background:none;font:inherit;text-align:start;padding:13px 16px;cursor:pointer;color:var(--ink);border-top:1px solid var(--div)}
+.ds-cu:first-child,.ds-day:first-child{border-top:0}
+.ds-cu .av{width:42px;height:42px;border-radius:50%;background:var(--soft);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex:none}
+.ds-cu .n,.ds-day .n{flex:1;min-width:0}.ds-cu .n b,.ds-day .n b{display:block;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ds-cu .n small,.ds-day .n small{display:block;font-size:12.5px;color:var(--muted);margin-top:2px}
+.ds-cu .v,.ds-day .v{font-weight:700;font-size:16px;font-variant-numeric:tabular-nums;color:var(--red);text-align:end;white-space:nowrap}.ds-cu .v.ok{color:var(--green);font-size:13px}
+.ds-day .v{color:var(--green)}.ds-day .v.ng{color:var(--red)}.ds-day .v small{display:block;font-size:11px;font-weight:500;color:var(--muted)}
+.ds-cu>svg,.ds-day>svg{width:18px;height:18px;color:#B6B8AE;flex:none}[dir=rtl] .ds-cu>svg,[dir=rtl] .ds-day>svg{transform:scaleX(-1)}
+.ds-big{width:100%;margin-top:14px;border:0;background:var(--lime);color:var(--limeink);border-radius:18px;padding:17px;font:inherit;font-size:18px!important;font-weight:700;cursor:pointer}
+.ds-h3{font-size:14px;font-weight:600;color:var(--muted);margin:18px 4px 6px}
+.ds-bl{background:var(--soft);border-radius:16px;padding:2px 14px}.ds-bl .r{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 0;border-top:1px solid rgba(22,25,15,.06)}.ds-bl .r:first-child{border:0}
+.ds-bl .r span b{display:block;font-size:14.5px}.ds-bl .r span small{font-size:12.5px;color:var(--muted)}.ds-bl .v{font-size:14.5px;color:var(--red);white-space:nowrap}.ds-bl .v.ok{color:var(--green)}
+.ds-dp{background:var(--limebg);border-radius:16px;padding:12px;margin-bottom:4px}.ds-dp .ds-in{font-weight:700;background:#fff}.ds-dp>small{font-size:12.5px;color:var(--muted)}
+.ds-send{background:var(--ink);color:var(--lime)}
+.ds-qa{background:var(--ink)!important;color:#fff!important}.ds-qa .ci{background:var(--lime)!important;color:var(--limeink)!important}.ds-qa small{color:#C9CCBF!important}
+@media (max-width:370px){.ds-hero .v{font-size:18px}.ds-hero>div{padding:0 11px}.ds-ttl h1{font-size:24px}}
 </style>
 </head>
 <body>
@@ -2573,8 +2642,248 @@ const D6V={home:()=>ROLE==="accountant"?null:d6Home(),act:d6Act,people:d6People,
 shell=function(body){if(!useDk())return _shell15(body);D6SEL=null;const v=D6V[tab];const own=v?v():null;const wide=own!==null||["books","rq","reports"].includes(tab);
  return`<div class="dk-shell" data-tab="${esc(tab)}">${ROLE==="accountant"?dkSide():d6Side()}<main class="tm-main dk-main${window.__still?" still":""}">${own!==null?own:wide?body:`<div class="dk-narrow">${body}</div>`}</main></div>`;};
 
+/* ===== b18: the daily sheet. A seller's home is one page shaped like the shop notebook:
+   what was bought, the costs, the sales (each customer with kilos) and money collected for old bills.
+   Saving turns it into normal Tamm records tagged with the day (sh) and their part (shk), so the
+   owner and accountant see them everywhere else, and the sheet can be opened again to fix it. ===== */
+Object.assign(T.en,{dsT:"Today's sheet",dsDayT:"Sheet for {d}",dsBackToday:"Back to today",dsPickDay:"Change day",
+ dsSold:"Sold",dsOut:"Spent",dsProfit:"Profit",dsLoss:"Loss",
+ dsBuyT:"What you bought",dsBuyWhat:"What was it?",dsBuyPh:"e.g. chicken",dsKg:"Kilos",dsPrice:"Price a kilo",dsPaid:"You paid",dsPaidH:"Change it if you got a discount.",dsFrom:"Bought from (optional)",dsFromPh:"Supplier",
+ dsCostT:"Costs",dsCostPh:"What for?",dsOtherCost:"Other",dsCWork:"Workers",dsCFuel:"Fuel",dsCBags:"Bags",
+ dsSaleT:"Sales",dsWho:"Customer",dsWhoPh:"Customer name",dsShop:"Shop (cash)",dsNewCust:"New customer",dsPaidNow:"Paid now",dsOnAcc:"Will pay later",dsAmt:"Amount",dsLastP:"{p} a kilo",dsDayPrice:"Today's price a kilo",dsDayPriceH:"Every sale uses it. Change one sale's amount if needed.",dsOldPrice:"Last price used. Change it if today's price is different.",dsSend:"Send summary",dsSendT:"{s} · {d}",dsSaveFirst:"Save first, then send",dsTotSold:"Total sold",dsOweAll:"Customers owe you",dsOnAccS:"will pay later",dsPaidS:"paid",
+ dsCollT:"Money collected",dsCollD:"Tap who paid you for an old bill.",dsCollNone:"No customer owes you money.",dsOwes:"owes {v}",dsCollNote:"Payments go to their oldest bills first.",dsTooMuch:"{n} only owes {v}",
+ dsPhoto:"Photo of the notebook page (optional)",dsPhotoOk:"Photo added",
+ dsSave:"Save the day",dsSaveCh:"Save changes",dsSaved:"Saved",dsUnsaved:"Not saved",dsSavedOk:"All saved",dsSaving:"Saving…",
+ dsNeedWho:"Write the customer's name",dsLockedRow:"Already paid in part. Ask the owner to change it.",dsLocked:"This day's books are closed.",dsRemove:"Remove",dsNothing:"Nothing added yet. Tap a button below.",
+ dsNavDay:"Today",dsNavCust:"Customers",dsNavDays:"Days",dsNavMore:"More",
+ dsCustOwe:"Customers owe you",dsPaidUp:"Paid up",dsLastBill:"Last bill {d}",dsTheyPaid:"They paid",dsBills:"Unpaid bills",dsRecentPays:"Recent payments",dsNoCust:"No customers yet. Sales you add to the sheet show up here.",dsLeft:"{v} left",dsBillN:"{n} unpaid",
+ dsDaysT:"Past days",dsNoDays:"No saved days yet.",dsCollected:"Collected",
+ dsQuick:"Quick entries",dsSheet:"Daily sheet",dsSheetD:"What you bought, costs, sales and money collected for one day",dsDiscard:"Undo changes",dsDiscardQ:"Throw away the changes you haven't saved?",dsPhotoSaved:"Photo of the page",dsKgU:"kg"});
+Object.assign(T.ar,{dsT:"ورقة اليوم",dsDayT:"ورقة يوم {d}",dsBackToday:"ارجع لليوم",dsPickDay:"غيّر اليوم",
+ dsSold:"المبيع",dsOut:"المصروف",dsProfit:"الربح",dsLoss:"خسارة",
+ dsBuyT:"الشراء",dsBuyWhat:"ماذا اشتريت؟",dsBuyPh:"مثلًا دجاج",dsKg:"كيلو",dsPrice:"سعر الكيلو",dsPaid:"دفعت",dsPaidH:"غيّره إذا أخذت خصمًا.",dsFrom:"اشتريت من (اختياري)",dsFromPh:"المورّد",
+ dsCostT:"المصاريف",dsCostPh:"لأي شيء؟",dsOtherCost:"أخرى",dsCWork:"عمّال",dsCFuel:"ديزل",dsCBags:"أكياس",
+ dsSaleT:"المبيع",dsWho:"الزبون",dsWhoPh:"اسم الزبون",dsShop:"المحل (نقدًا)",dsNewCust:"زبون جديد",dsPaidNow:"دفع الآن",dsOnAcc:"سيدفع لاحقًا",dsAmt:"المبلغ",dsLastP:"{p} للكيلو",dsDayPrice:"سعر الكيلو اليوم",dsDayPriceH:"كل بيع يستخدمه. غيّر مبلغ أي بيع إذا لزم.",dsOldPrice:"آخر سعر مستخدم. غيّره إذا كان سعر اليوم مختلفًا.",dsSend:"أرسل الملخّص",dsSendT:"{s} · {d}",dsSaveFirst:"احفظ أولًا ثم أرسل",dsTotSold:"مجموع المبيع",dsOweAll:"الزبائن عليهم لك",dsOnAccS:"دين",dsPaidS:"مدفوع",
+ dsCollT:"التحصيل",dsCollD:"اضغط على من دفع لك عن فاتورة قديمة.",dsCollNone:"لا يوجد زبون عليه مال لك.",dsOwes:"عليه {v}",dsCollNote:"الدفعة تسدّد أقدم فواتيره أولًا.",dsTooMuch:"{n} عليه فقط {v}",
+ dsPhoto:"صورة صفحة الدفتر (اختياري)",dsPhotoOk:"تمت إضافة الصورة",
+ dsSave:"احفظ اليوم",dsSaveCh:"احفظ التعديلات",dsSaved:"تم الحفظ",dsUnsaved:"لم يُحفظ بعد",dsSavedOk:"كل شيء محفوظ",dsSaving:"جارٍ الحفظ…",
+ dsNeedWho:"اكتب اسم الزبون",dsLockedRow:"دُفع جزء منها. اطلب من المالك تعديلها.",dsLocked:"دفاتر هذا اليوم مقفلة.",dsRemove:"إزالة",dsNothing:"لم تُضف شيئًا بعد. اضغط زرًّا في الأسفل.",
+ dsNavDay:"اليوم",dsNavCust:"الزبائن",dsNavDays:"الأيام",dsNavMore:"المزيد",
+ dsCustOwe:"الزبائن عليهم لك",dsPaidUp:"لا دين عليه",dsLastBill:"آخر فاتورة {d}",dsTheyPaid:"دفع",dsBills:"فواتير غير مدفوعة",dsRecentPays:"آخر الدفعات",dsNoCust:"لا يوجد زبائن بعد. المبيعات التي تضيفها في الورقة تظهر هنا.",dsLeft:"باقي {v}",dsBillN:"{n} غير مدفوعة",
+ dsDaysT:"الأيام السابقة",dsNoDays:"لا توجد أيام محفوظة بعد.",dsCollected:"التحصيل",
+ dsQuick:"إدخال سريع",dsSheet:"ورقة اليوم",dsSheetD:"الشراء والمصاريف والمبيع والتحصيل ليوم واحد",dsDiscard:"تراجع عن التعديلات",dsDiscardQ:"هل تريد حذف التعديلات غير المحفوظة؟",dsPhotoSaved:"صورة الصفحة",dsKgU:"كغ"});
+const I18={sheet:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2.5"/><path d="M9 4V2.8h6V4M8.5 10h7M8.5 14h7M8.5 18h4"/></svg>',
+ cal:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>',
+ x:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>',
+ chev:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>'};
+let STT="day";let SH=null;let DSBUSY=false;let DSOWN=false;
+/* numbers typed on an Arabic keyboard use Arabic digits and ٫ */
+const dsN=v=>{let s=String(v??"").trim().replace(/[٠-٩]/g,c=>"٠١٢٣٤٥٦٧٨٩".indexOf(c)).replace(/[۰-۹]/g,c=>"۰۱۲۳۴۵۶۷۸۹".indexOf(c)).replace(/[٫،,]/g,".").replace(/[^\d.]/g,"");const p=s.split(".");if(p.length>2)s=p[0]+"."+p.slice(1).join("");const n=parseFloat(s);return isFinite(n)&&n>0?n:0;};
+const r3=n=>Math.round(num(n)*1000)/1000;
+const fq=n=>num(n).toLocaleString("en",{maximumFractionDigits:3});const fq2=n=>num(n).toLocaleString("en",{minimumFractionDigits:2,maximumFractionDigits:2});
+const dsMe=()=>(SESSION&&SESSION.user&&SESSION.user.id)||null;
+const dsKey=d=>"tamm:ds:"+((typeof BIZ!=="undefined"&&BIZ&&BIZ.id)||"")+":"+(dsMe()||"")+":"+d;
+const dsOwn=(p,d)=>p&&p.sh===d&&!p.c;/* the cash payment the sheet itself added to its own record */
+const dsForeign=(x,d)=>r3((x.pays||[]).filter(p=>!dsOwn(p,d)).reduce((a,p)=>a+num(p.amount),0));
+function dsRecs(d){return{buy:D.expenses.find(x=>x.sh===d&&x.shk==="buy")||null,costs:D.expenses.filter(x=>x.sh===d&&x.shk==="cost"),sales:D.invoices.filter(x=>x.sh===d&&x.shk==="sale")};}
+function dsLastBuy(){let b=null;for(const x of D.expenses)if(x.shk==="buy"&&(!b||String(x.date)>String(b.date)))b=x;return b;}
+function dsFromRecs(d){const R=dsRecs(d);const b=R.buy;const lb=b||dsLastBuy();
+ const auto=b&&num(b.qty)>0&&num(b.price)>0?Math.abs(num(b.amount)-r3(num(b.qty)*num(b.price)))<0.005:false;
+ const s={v:3,date:d,dirty:false,att:[],
+  buy:{name:lb?String(lb.item||""):"",qty:b&&num(b.qty)?String(b.qty):"",price:b&&num(b.price)?String(b.price):(lb&&num(lb.price)?String(lb.price):""),paid:b?String(num(b.amount)):"",paidSet:!!b&&!auto,from:b?String(b.party||""):(lb?String(lb.party||""):""),rid:b?b.id:null,lock:b?dsForeign(b,d):0},
+  costs:R.costs.map(x=>({k:x.id,name:String(x.item||x.desc||""),amount:String(num(x.amount)),cat:x.cat||"",rid:x.id,lock:dsForeign(x,d)})),
+  sales:R.sales.map(x=>({k:x.id,who:x.party==="Shop sales"?"":String(x.party||""),shop:x.party==="Shop sales",qty:num(x.qty)?String(x.qty):"",amount:String(num(x.amount)),amtSet:true,paid:(x.pays||[]).some(p=>dsOwn(p,d)),rid:x.id,lock:dsForeign(x,d)})),coll:[]};
+ const M={};for(const x of D.invoices)for(const p of (x.pays||[]))if(p&&p.sh===d&&p.c)M[x.party]=r3((M[x.party]||0)+num(p.amount));
+ s.coll=Object.entries(M).map(([who,a])=>({k:uid(),who,amount:String(a)}));
+ const sp=D.settings&&D.settings.sellPrice;const rp=R.sales.find(x=>num(x.qty)>0&&num(x.dprice)>0);
+ if(rp){s.price=String(rp.dprice);}else if(sp&&sp.d===d&&num(sp.p)>0){s.price=String(sp.p);}else if(sp&&num(sp.p)>0&&!R.sales.length){s.price=String(sp.p);s.priceOld=sp.d<d;}else s.price="";
+ s.has=!!(b||R.costs.length||R.sales.length||s.coll.length);
+ s.photos=[...(b&&b.att||[]),...R.costs.flatMap(x=>x.att||[])].length;return s;}
+function dsLoad(d,keepDraft){let s=null;if(keepDraft!==false)try{const r=localStorage.getItem(dsKey(d));if(r){const o=JSON.parse(r);if(o&&o.v===3&&o.dirty&&o.date===d)s=o;}}catch(e){}
+ if(s){const f=dsFromRecs(d);s.has=f.has;s.photos=f.photos;s.att=[];}SH=s||dsFromRecs(d);SH.auto=d===today();}
+function dsStash(){if(!SH||DSOWN&&!SH.dirty)return;try{if(SH.dirty)localStorage.setItem(dsKey(SH.date),JSON.stringify(Object.assign({},SH,{att:[]})));else localStorage.removeItem(dsKey(SH.date));}catch(e){}}
+function dsEnsure(){if(!D)return;if(SH&&(SH.dirty||DSBUSY))return;const d=SH&&!(SH.auto&&SH.date!==today())?SH.date:today();dsLoad(d);}
+/* what each part adds up to */
+function dsBuyAmt(){const b=SH.buy;return b.paidSet?r3(dsN(b.paid)):r3(dsN(b.qty)*dsN(b.price));}
+function dsCalc(){const buy=dsBuyAmt(),costs=r3(SH.costs.reduce((a,r)=>a+dsN(r.amount),0)),sold=r3(SH.sales.reduce((a,r)=>a+dsN(r.amount),0)),coll=r3(SH.coll.reduce((a,r)=>a+dsN(r.amount),0));return{buy,costs,out:r3(buy+costs),sold,coll,profit:r3(sold-buy-costs)};}
+function dsCusts(){const M={};for(const x of D.invoices){if(!x.party||x.party==="Shop sales")continue;const o=M[x.party]=M[x.party]||{name:x.party,owed:0,n:0,last:"",old:""};const r=r3(num(x.amount)-paidOf(x));if(r>0.004){o.owed=r3(o.owed+r);o.n++;if(!o.old||String(x.date)<o.old)o.old=x.date;}if(String(x.date)>o.last)o.last=x.date;}
+ return Object.values(M).sort((a,b)=>((b.owed>0.004)-(a.owed>0.004))||(b.owed-a.owed)||String(b.last).localeCompare(String(a.last)));}
+/* what a customer owes before today's sheet collects anything */
+function dsOwedBefore(who,d){let o=0;for(const x of D.invoices){if(x.party!==who)continue;const pre=(x.pays||[]).filter(p=>!(p&&p.sh===d&&p.c)).reduce((a,p)=>a+num(p.amount),0);o+=Math.max(0,num(x.amount)-pre);}return r3(o);}
+function dsOldestLeft(who,d){const L=D.invoices.filter(x=>x.party===who&&!(x.sh===d&&x.shk==="sale")).map(x=>({d:x.date,r:r3(num(x.amount)-(x.pays||[]).filter(p=>!(p&&p.sh===d&&p.c)).reduce((a,p)=>a+num(p.amount),0))})).filter(x=>x.r>0.004).sort((a,b)=>String(a.d).localeCompare(String(b.d)));return L.length?L[0].r:0;}
+function dsLastPriceUnused(who){let best=null;for(const x of D.invoices){if(x.party!==who||!(num(x.qty)>0)||!(num(x.amount)>0))continue;if(!best||String(x.date)>String(best.date))best=x;}return best?Math.round(num(best.amount)/num(best.qty)*1000)/1000:0;}
+function dsRecentCusts(){const M={};for(const x of D.invoices){if(!x.party||x.party==="Shop sales")continue;if(!M[x.party]||String(x.date)>M[x.party])M[x.party]=String(x.date);}return Object.keys(M).sort((a,b)=>M[b].localeCompare(M[a]));}
+const DS_CDEF=[["dsCWork",5],["dsCFuel",4],["dsCBags",8]];
+function dsCostChips(){const seen=new Set(),out=[];const L=D.expenses.filter(x=>x.shk==="cost").sort((a,b)=>String(b.date).localeCompare(String(a.date)));
+ for(const x of L){const n=String(x.item||"").trim();if(!n||seen.has(n.toLowerCase()))continue;seen.add(n.toLowerCase());out.push({n,cat:x.cat});if(out.length>=5)break;}
+ if(out.length<3)for(const [k,i] of DS_CDEF){const n=t(k);if(!seen.has(n.toLowerCase())){seen.add(n.toLowerCase());out.push({n,cat:T.en.expCats[i]});}}return out;}
+/* ---------- the sheet ---------- */
+function dsInp(id,val,on,ph,extra){return`<input id="${id}" class="ds-in" type="text" inputmode="decimal" autocomplete="off" value="${esc(val)}" placeholder="${esc(ph||"0")}" oninput="${on}"${extra||""}>`;}
+function dsHero(){const c=dsCalc();const cur=esc(D.settings.cur);const neg=c.profit<-0.004;
+ return`<div class="ds-hero"><div><span class="l">${t("dsSold")}</span><b class="v lm" id="dsSold">${fmt(c.sold)}</b></div><div><span class="l">${t("dsOut")}</span><b class="v" id="dsOutV">${fmt(c.out)}</b></div><div><span class="l" id="dsPL">${neg?t("dsLoss"):t("dsProfit")}</span><b class="v${neg?" ng":" lm"}" id="dsProfit">${fmt(Math.abs(c.profit))}</b></div><small class="cu">${cur}</small></div>`;}
+function dsBody(){const s=SH;const cur=esc(D.settings.cur);const td=today();const lk=lockedOn(s.date);const dis=lk?" disabled":"";const c=dsCalc();const b=s.buy;
+ const head=`<div class="ds-top"><div class="ds-ttl"><small>${esc(D.settings.name)}</small><h1>${s.date===td?t("dsT"):t("dsDayT").replace("{d}",esc(niceDate(s.date)))}</h1></div>${DSOWN?"":langSeg()}</div>
+ <div class="ds-dayrow"><label class="ds-date">${I18.cal}<span>${esc(niceDate(s.date))}</span><input type="date" aria-label="${t("dsPickDay")}" max="${td}" value="${esc(s.date)}" onchange="if(this.value)dsOpenDay(this.value)"></label>${s.date!==td?`<button class="ds-today" onclick="dsOpenDay(today())">${t("dsBackToday")}</button>`:""}</div>
+ ${lk?`<p class="ds-lock">🔒 ${t("dsLocked")}</p>`:""}${dsHero()}`;
+ const buy=`<section class="ds-card"><div class="ds-h"><h2>🛒 ${t("dsBuyT")}</h2><b class="ds-sum" id="dsBuySum">${fmt(c.buy)}</b></div>
+ <div class="ds-g2"><label class="ds-f"><span>${t("dsBuyWhat")}</span><input class="ds-in" id="dsBuyName" value="${esc(b.name)}" placeholder="${t("dsBuyPh")}" oninput="dsSet('buy','','name',this.value)"${dis}></label><label class="ds-f"><span>${t("dsFrom")}</span><input class="ds-in" id="dsBuyFrom" list="dsSup" autocomplete="off" value="${esc(b.from)}" placeholder="${t("dsFromPh")}" oninput="dsSet('buy','','from',this.value)"${dis}><datalist id="dsSup">${[...new Set(D.expenses.filter(x=>x.shk==="buy"||x.cat===T.en.expCats[7]).map(x=>x.party).filter(Boolean))].map(n=>`<option value="${esc(n)}">`).join("")}</datalist></label></div>
+ <div class="ds-g3"><label class="ds-f"><span>${t("dsKg")}</span>${dsInp("dsBuyQty",b.qty,"dsSet('buy','','qty',this.value)","0",dis)}</label><span class="ds-x">×</span><label class="ds-f"><span>${t("dsPrice")}</span>${dsInp("dsBuyPrice",b.price,"dsSet('buy','','price',this.value)","0.00",dis)}</label></div>
+ <label class="ds-f ds-paid"><span>${t("dsPaid")} <small>${t("dsPaidH")}</small></span><span class="ds-amt">${dsInp("dsBuyPaid",b.paidSet?b.paid:(c.buy?String(c.buy):""),"dsSet('buy','','paid',this.value)","0.00",dis)}<i>${cur}</i></span></label></section>`;
+ const crow=r=>`<div class="ds-row${r.lock?" lk":""}" id="dsr-${r.k}"><input class="ds-in ds-n" value="${esc(r.name)}" placeholder="${t("dsCostPh")}" aria-label="${t("dsCostPh")}" oninput="dsSet('costs','${r.k}','name',this.value)"${dis||r.lock?" disabled":""}>${dsInp("dsa-"+r.k,r.amount,`dsSet('costs','${r.k}','amount',this.value)`,"0.00",(dis||r.lock?" disabled":"")+` aria-label="${t("dsAmt")}"`)}${lk||r.lock?"":`<button class="ds-del" aria-label="${t("dsRemove")}" onclick="dsDel('costs','${r.k}')">${I18.x}</button>`}${r.lock?`<p class="ds-lk">${t("dsLockedRow")}</p>`:""}</div>`;
+ const costs=`<section class="ds-card"><div class="ds-h"><h2>💸 ${t("dsCostT")}</h2><b class="ds-sum" id="dsCostSum">${fmt(c.costs)}</b></div>
+ ${s.costs.map(crow).join("")}${lk?"":`<div class="ds-chips">${dsCostChips().map(o=>`<button onclick="dsAddCost(${ja(o.n)},${ja(o.cat||"")})">+ ${esc(tx(o.n))}</button>`).join("")}<button onclick="dsAddCost('','')">+ ${t("dsOtherCost")}</button></div>`}</section>`;
+ const known=dsRecentCusts();const inSale=new Set(s.sales.map(r=>r.shop?"\u0000shop":String(r.who||"").trim()));
+ const srow=r=>{const ip=dsN(r.qty)>0&&dsN(r.amount)>0?dsN(r.amount)/dsN(r.qty):0;const off=dis||r.lock?" disabled":"";
+  return`<div class="ds-srow${r.lock?" lk":""}" id="dsr-${r.k}"><div class="ds-sw">${r.shop?`<b class="ds-shop">🏪 ${t("dsShop")}</b>`:`<input class="ds-in ds-who" list="dsCust" autocomplete="off" value="${esc(r.who)}" placeholder="${t("dsWhoPh")}" aria-label="${t("dsWho")}" oninput="dsSet('sales','${r.k}','who',this.value)"${off}>`}${lk||r.lock?"":`<button class="ds-del" aria-label="${t("dsRemove")}" onclick="dsDel('sales','${r.k}')">${I18.x}</button>`}</div>
+  <div class="ds-g3 sm"><label class="ds-f"><span>${t("dsKg")}</span>${dsInp("dsq-"+r.k,r.qty,`dsSet('sales','${r.k}','qty',this.value)`,"0",off)}</label><label class="ds-f"><span>${t("dsAmt")}</span>${dsInp("dsa-"+r.k,r.amount,`dsSet('sales','${r.k}','amount',this.value)`,"0.00",off)}</label></div>
+  <p class="ds-hint" id="dsh-${r.k}">${ip?esc(t("dsLastP").replace("{p}",fq2(ip))):""}</p>
+  ${r.shop?"":`<div class="ds-pay" role="group" aria-label="${t("method")}"><button class="${r.paid?"":"on"}" aria-pressed="${!r.paid}" onclick="dsPaid('${r.k}',false)"${off}>🕒 ${t("dsOnAcc")}</button><button class="${r.paid?"on":""}" aria-pressed="${!!r.paid}" onclick="dsPaid('${r.k}',true)"${off}>💵 ${t("dsPaidNow")}</button></div>`}
+  ${r.lock?`<p class="ds-lk">${t("dsLockedRow")}</p>`:""}</div>`;};
+ const sales=`<section class="ds-card"><div class="ds-h"><h2>🧾 ${t("dsSaleT")}</h2><b class="ds-sum" id="dsSaleSum">${fmt(c.sold)}</b></div>
+ <label class="ds-f ds-dp"><span>${t("dsDayPrice")}</span><span class="ds-amt">${dsInp("dsDayP",s.price||"",`dsSet('day','','price',this.value)`,"0.00",dis)}<i>${cur}</i></span><small>${s.priceOld?t("dsOldPrice"):t("dsDayPriceH")}</small></label>
+ <datalist id="dsCust">${known.map(n=>`<option value="${esc(n)}">`).join("")}</datalist>${s.sales.map(srow).join("")}
+ ${lk?"":`<div class="ds-chips">${known.filter(n=>!inSale.has(n)).slice(0,8).map(n=>`<button onclick="dsAddSale(${ja(n)})">+ ${esc(tx(n))}</button>`).join("")}${inSale.has("\u0000shop")?"":`<button onclick="dsAddSale('',true)">+ 🏪 ${t("dsShop")}</button>`}<button class="nw" onclick="dsAddSale('')">+ ${t("dsNewCust")}</button></div>`}</section>`;
+ const owe=dsCusts().filter(p=>p.owed>0.004||s.coll.some(r=>r.who===p.name));const inColl=new Set(s.coll.map(r=>r.who));
+ const krow=r=>`<div class="ds-row" id="dsr-${r.k}"><span class="ds-cn"><b>${esc(tx(r.who))}</b><small id="dsko-${r.k}">${esc(t("dsOwes").replace("{v}",fmt(dsOwedBefore(r.who,s.date))+" "+cur))}</small></span>${dsInp("dsa-"+r.k,r.amount,`dsSet('coll','${r.k}','amount',this.value)`,"0.00",dis+` aria-label="${t("dsAmt")}"`)}${lk?"":`<button class="ds-del" aria-label="${t("dsRemove")}" onclick="dsDel('coll','${r.k}')">${I18.x}</button>`}</div>`;
+ const coll=`<section class="ds-card"><div class="ds-h"><h2>💰 ${t("dsCollT")}</h2><b class="ds-sum" id="dsCollSum">${fmt(c.coll)}</b></div>
+ ${s.coll.map(krow).join("")}${lk?"":owe.filter(p=>!inColl.has(p.name)).length?`<p class="ds-sub">${t("dsCollD")}</p><div class="ds-chips">${owe.filter(p=>!inColl.has(p.name)).slice(0,10).map(p=>`<button onclick="dsAddColl(${ja(p.name)})">+ ${esc(tx(p.name))} <small>${fmt(p.owed)}</small></button>`).join("")}</div>`:s.coll.length?"":`<p class="ds-sub">${t("dsCollNone")}</p>`}
+ ${s.coll.length?`<p class="ds-sub">${t("dsCollNote")}</p>`:""}</section>`;
+ const photo=lk?"":`<label class="ds-photo${s.att.length?" ok":""}">${I2.cam}<span>${s.att.length?t("dsPhotoOk")+" ("+s.att.length+")":s.photos?t("dsPhotoSaved")+" ✓ · "+t("dsPhoto"):t("dsPhoto")}</span><input type="file" accept="image/*" capture="environment" onchange="dsPick(this)"></label>`;
+ const undo=s.dirty&&!lk?`<button class="ds-undo" onclick="dsDiscard()">${t("dsDiscard")}</button>`:"";
+ return head+buy+costs+sales+coll+photo+undo;}
+function dsBarHTML(){if(!SH)return"";const lk=lockedOn(SH.date);if(lk)return"";
+ const st=DSBUSY?t("dsSaving"):SH.dirty?t("dsUnsaved"):SH.has?t("dsSavedOk"):"";
+ return`<div class="ds-bar${SH.dirty?" dirty":""}" id="dsBar"><span class="ds-st">${SH.dirty?"●":SH.has?"✓":""} ${st}</span>${!SH.dirty&&SH.has&&!DSBUSY?`<button class="ds-save ds-send" onclick="dsShare()">📤 ${t("dsSend")}</button>`:`<button class="ds-save" onclick="dsSave()"${DSBUSY||!SH.dirty?" disabled":""}>${SH.has?t("dsSaveCh"):t("dsSave")}</button>`}</div>`;}
+/* the day's summary, written like the notebook page, sent on WhatsApp (or any app the phone offers) */
+function dsSummary(d){const fm=v=>fmt(v).replace(/\.00$/,"");const s=dsFromRecs(d);const cur=D.settings.cur;const L=[];const c=(()=>{const o=SH;SH=s;const r=dsCalc();SH=o;return r;})();
+ L.push(`*${D.settings.name}* · ${niceDate(d)}`);
+ const b=s.buy;if(c.buy>0)L.push("",`🛒 ${t("dsBuyT")}: ${b.name?b.name+" ":""}${dsN(b.qty)?fq(dsN(b.qty))+" "+t("dsKgU"):""}${dsN(b.price)?" × "+fq(dsN(b.price)):""} = ${fm(c.buy)}`);
+ if(s.costs.length)L.push(`💸 ${t("dsCostT")}: ${s.costs.map(r=>`${r.name} ${fm(dsN(r.amount))}`).join(lang==="ar"?"، ":", ")} = ${fm(c.costs)}`);
+ if(s.sales.length){L.push("",`🧾 ${t("dsSaleT")}${dsN(s.price)?` (${fq2(dsN(s.price))} / ${t("dsKgU")})`:""}:`);for(const r of s.sales)L.push(`• ${r.shop?t("dsShop"):r.who}${dsN(r.qty)?" "+fq(dsN(r.qty))+" "+t("dsKgU"):""} = ${fm(dsN(r.amount))}${r.shop?"":" ("+(r.paid?t("dsPaidS"):t("dsOnAccS"))+")"}`);L.push(`${t("dsTotSold")}: ${fm(c.sold)}`);}
+ L.push("",`${c.profit<-0.004?"🔻 "+t("dsLoss"):"✅ "+t("dsProfit")}: *${fm(Math.abs(c.profit))} ${cur}*`);
+ if(s.coll.length)L.push("",`💰 ${t("dsCollT")}: ${s.coll.map(r=>`${r.who} ${fm(dsN(r.amount))}`).join(" · ")} = ${fm(c.coll)}`);
+ const ow=r3(dsCusts().reduce((a,p)=>a+p.owed,0));if(ow>0)L.push(`${t("dsOweAll")}: ${fm(ow)} ${cur}`);
+ return L.join("\n");}
+async function dsShare(){if(!SH)return;if(SH.dirty)return toast(t("dsSaveFirst"));const text=dsSummary(SH.date);
+ try{if(navigator.share){await navigator.share({text});return;}}catch(e){if(e&&e.name==="AbortError")return;}
+ try{window.open("https://wa.me/?text="+encodeURIComponent(text),"_blank","noopener");}catch(e){}}
+function dsPaint(focus){const w=document.getElementById("dsWrap");if(!w)return render();w.innerHTML=dsBody();const bar=document.getElementById("dsBar");if(bar)bar.outerHTML=dsBarHTML();else if(DSOWN){const f=document.querySelector("#modal .ds-mfoot");if(f)f.innerHTML=dsBarHTML();}
+ if(focus)setTimeout(()=>{const e=document.getElementById(focus);if(e){e.focus();try{e.scrollIntoView({block:"center",behavior:"smooth"});}catch(x){}}},30);}
+function dsBar(){const bar=document.getElementById("dsBar");if(bar)bar.outerHTML=dsBarHTML();}
+function dsTot(){const c=dsCalc();const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
+ set("dsSold",fmt(c.sold));set("dsOutV",fmt(c.out));const neg=c.profit<-0.004;set("dsProfit",fmt(Math.abs(c.profit)));set("dsPL",neg?t("dsLoss"):t("dsProfit"));const p=document.getElementById("dsProfit");if(p){p.classList.toggle("ng",neg);p.classList.toggle("lm",!neg);}
+ set("dsBuySum",fmt(c.buy));set("dsCostSum",fmt(c.costs));set("dsSaleSum",fmt(c.sold));set("dsCollSum",fmt(c.coll));
+ const bp=document.getElementById("dsBuyPaid");if(bp&&!SH.buy.paidSet&&document.activeElement!==bp)bp.value=c.buy?String(c.buy):"";
+ const bar=document.getElementById("dsBar");if(bar&&!bar.classList.contains("dirty"))dsBar();}
+function dsDirty(){SH.dirty=true;dsStash();}
+function dsSet(sec,k,f,v){if(!SH||DSBUSY)return;if(sec==="day"){SH.price=v;SH.priceOld=false;const p=dsN(v);for(const r of SH.sales){if(r.lock||r.amtSet||!(dsN(r.qty)>0))continue;r.amount=p?String(Math.round(dsN(r.qty)*p*100)/100):"";const a=document.getElementById("dsa-"+r.k);if(a)a.value=r.amount;dsHint(r);}dsDirty();dsTot();return;}
+ const o=sec==="buy"?SH.buy:(SH[sec]||[]).find(r=>r.k===k);if(!o)return;o[f]=v;
+ if(sec==="buy"&&f==="paid")o.paidSet=String(v).trim()!==""&&Math.abs(dsN(v)-r3(dsN(o.qty)*dsN(o.price)))>0.004;
+ if(sec==="sales"&&f==="amount")o.amtSet=String(v).trim()!=="";
+ if(sec==="sales"&&f==="qty"){const p=dsN(SH.price);if(p&&!o.amtSet){o.amount=dsN(o.qty)>0?String(Math.round(dsN(o.qty)*p*100)/100):"";const a=document.getElementById("dsa-"+k);if(a)a.value=o.amount;}}
+ if(sec==="sales")dsHint(o);
+ dsDirty();dsTot();}
+function dsHint(o){const h=document.getElementById("dsh-"+o.k);if(!h)return;const ip=dsN(o.qty)>0&&dsN(o.amount)>0?dsN(o.amount)/dsN(o.qty):0;h.textContent=ip?t("dsLastP").replace("{p}",fq2(ip)):"";}
+function dsPaid(k,v){const r=SH.sales.find(x=>x.k===k);if(!r||r.lock)return;r.paid=v;dsDirty();dsPaint();}
+function dsAddCost(name,cat){if(!SH)return;const k=uid();SH.costs.push({k,name:name||"",amount:"",cat:cat||""});dsDirty();dsPaint(name?"dsa-"+k:null);if(!name)setTimeout(()=>{const e=document.querySelector("#dsr-"+k+" .ds-n");if(e)e.focus();},40);}
+function dsAddSale(who,shop){if(!SH)return;const k=uid();SH.sales.push({k,who:who||"",shop:!!shop,qty:"",amount:"",amtSet:false,paid:!!shop});dsDirty();dsPaint(who?"dsq-"+k:shop?"dsa-"+k:null);if(!who&&!shop)setTimeout(()=>{const e=document.querySelector("#dsr-"+k+" .ds-who");if(e)e.focus();},40);}
+function dsAddColl(who){if(!SH)return;const ex=SH.coll.find(r=>r.who===who);if(ex){dsPaint("dsa-"+ex.k);return;}const k=uid();const old=dsOldestLeft(who,SH.date);SH.coll.push({k,who,amount:old?String(old):""});dsDirty();dsPaint("dsa-"+k);}
+function dsDel(sec,k){const r=(SH[sec]||[]).find(x=>x.k===k);if(!r)return;if(r.lock)return toast(t("dsLockedRow"));SH[sec]=SH[sec].filter(x=>x.k!==k);dsDirty();dsPaint();}
+async function dsPick(input){const before=pendingAtt.length;await pickAtt(input);const add=pendingAtt.slice(before);if(add.length){SH.att=[...SH.att,...add];dsDirty();dsPaint();}}
+function dsDiscard(){if(!SH||!confirm(t("dsDiscardQ")))return;try{localStorage.removeItem(dsKey(SH.date));}catch(e){}const d=SH.date;dsLoad(d,false);pendingAtt=[];dsPaint();}
+function dsOpenDay(d){if(!d||!/^\d{4}-\d{2}-\d{2}$/.test(d))return;if(d>today())d=today();dsStash();dsLoad(d);STT="day";if(DSOWN){dsPaint();return;}render();try{window.scrollTo({top:0});}catch(e){}}
+function dsCatFor(name){const n=String(name||"").trim().toLowerCase();for(const [k,i] of DS_CDEF){if(n===String(T.en[k]).toLowerCase()||n===String(T.ar[k]).toLowerCase())return T.en.expCats[i];}
+ const prev=D.expenses.filter(x=>x.shk==="cost"&&String(x.item||"").trim().toLowerCase()===n).sort((a,b)=>String(b.date).localeCompare(String(a.date)))[0];return prev&&prev.cat?prev.cat:T.en.expCats[12];}
+/* ---------- saving: the sheet becomes records ---------- */
+async function dsSave(){if(DSBUSY||!SH)return;const d=SH.date;if(lockedOn(d))return toast(t("dsLocked"));
+ for(const r of SH.sales){if(!r.lock&&dsN(r.amount)>0&&!r.shop&&!String(r.who||"").trim()){toast(t("dsNeedWho"));const e=document.querySelector("#dsr-"+r.k+" .ds-who");if(e)e.focus();return;}}
+ /* pull the newest data first so a teammate's payments are counted */
+ if(!SYNC.pending&&!DSOWN)try{const r=await window.storage.get("tt:data");if(r&&r.value&&!SYNC.pending){const nd=sanitizeData(JSON.parse(r.value));if(JSON.stringify(nd)!==JSON.stringify(D)){D=nd;D.contacts=D.contacts||{};D.products=D.products||[];}}}catch(e){}
+ const snap=clone(D);DSBUSY=true;dsBar();const me=dsMe(),at=new Date().toISOString();let photoFail=false;
+ const pay=(a,c)=>Object.assign({id:uid(),date:d,amount:r3(a),method:"Cash",by:me,sh:d},c?{c:1}:{});
+ const foreignPays=x=>(x.pays||[]).filter(p=>!dsOwn(p,d));
+ const fail=m=>{const e=new Error(m);e.ds=1;return e;};
+ try{const R=dsRecs(d);const keepE=new Set(),keepI=new Set();
+  /* what was bought */
+  const b=SH.buy,bq=r3(dsN(b.qty)),bp=r3(dsN(b.price)),bAmt=dsBuyAmt();let buyRec=null;
+  if(bAmt>0){let x=R.buy;if(!x){x={id:uid(),no:"",date:d,due:"",notes:"",att:[],by:me,at,sh:d,shk:"buy"};D.expenses.push(x);}
+   const nm=String(b.name||"").trim();const fp=foreignPays(x);const fs=r3(fp.reduce((a,p)=>a+num(p.amount),0));if(bAmt<fs-0.004)throw fail(t("dsLockedRow"));
+   Object.assign(x,{date:d,party:String(b.from||"").trim(),item:nm,desc:[nm||t("dsBuyT"),bq?fq(bq)+" kg":"",bp?"× "+fq(bp):""].filter(Boolean).join(" "),cat:x.cat||T.en.expCats[7],amount:bAmt,qty:bq,price:bp,unit:"kg"});
+   x.pays=[...fp,...(bAmt-fs>0.004?[pay(bAmt-fs)]:[])];keepE.add(x.id);buyRec=x;}
+  /* costs */
+  let firstCost=null;
+  for(const r of SH.costs){const old=r.rid&&D.expenses.find(e=>e.id===r.rid);if(r.lock&&old){keepE.add(old.id);continue;}const a=r3(dsN(r.amount));if(a<=0)continue;
+   let x=old;if(!x){x={id:uid(),no:"",date:d,due:"",notes:"",att:[],by:me,at,sh:d,shk:"cost"};D.expenses.push(x);}
+   const nm=String(r.name||"").trim()||t("dsCostT");const fp=foreignPays(x);const fs=r3(fp.reduce((s,p)=>s+num(p.amount),0));
+   Object.assign(x,{date:d,party:x.party||"",item:nm,desc:nm,cat:r.cat||dsCatFor(nm),amount:a});x.pays=[...fp,...(a-fs>0.004?[pay(a-fs)]:[])];keepE.add(x.id);if(!firstCost)firstCost=x;}
+  /* sales */
+  const bName=String(b.name||"").trim();
+  for(const r of SH.sales){const old=r.rid&&D.invoices.find(e=>e.id===r.rid);if(r.lock&&old){keepI.add(old.id);continue;}const a=r3(dsN(r.amount));if(a<=0)continue;
+   let x=old;if(!x){x={id:uid(),no:nextNo(),date:d,due:"",notes:"",by:me,at,sh:d,shk:"sale"};D.invoices.push(x);}
+   const q=r3(dsN(r.qty));const party=r.shop?"Shop sales":String(r.who||"").trim();const desc=q?[bName,fq(q)+" kg"].filter(Boolean).join(" "):(bName||(r.shop?T.en.qS:""));
+   const fp=foreignPays(x);const fs=r3(fp.reduce((s,p)=>s+num(p.amount),0));if(a<fs-0.004)throw fail(t("dsLockedRow"));
+   Object.assign(x,{date:d,party,desc,cat:x.cat||T.en.salesCats[0],amount:a,qty:q,unit:"kg",price:q?Math.round(a/q*1000)/1000:0,dprice:q?r3(dsN(SH.price)):0,items:[{d:desc||T.en.qS,q:1,p:a}]});
+   x.pays=[...fp,...((r.shop||r.paid)&&a-fs>0.004?[pay(a-fs)]:[])];keepI.add(x.id);}
+  /* records the sheet made that are no longer on it */
+  D.expenses=D.expenses.filter(x=>!(x.sh===d&&(x.shk==="buy"||x.shk==="cost")&&!keepE.has(x.id)&&!dsForeign(x,d)));
+  D.invoices=D.invoices.filter(x=>!(x.sh===d&&x.shk==="sale"&&!keepI.has(x.id)&&!dsForeign(x,d)));
+  /* money collected for old bills: take back this sheet's collections, then pay oldest bills first */
+  for(const x of D.invoices)if(x.pays&&x.pays.some(p=>p&&p.sh===d&&p.c))x.pays=x.pays.filter(p=>!(p&&p.sh===d&&p.c));
+  for(const r of SH.coll){let a=r3(dsN(r.amount));if(a<=0)continue;const open=D.invoices.filter(x=>x.party===r.who&&r3(num(x.amount)-paidOf(x))>0.004).sort((p,q)=>String(p.date).localeCompare(String(q.date))||String(p.at||"").localeCompare(String(q.at||"")));
+   const owed=r3(open.reduce((s,x)=>s+num(x.amount)-paidOf(x),0));if(a>owed+0.004)throw fail(t("dsTooMuch").replace("{n}",tx(r.who)).replace("{v}",fmt(owed)+" "+D.settings.cur));
+   for(const x of open){if(a<=0.0005)break;const take=Math.min(a,r3(num(x.amount)-paidOf(x)));x.pays=x.pays||[];x.pays.push(pay(take,1));a=r3(a-take);}}
+  /* the notebook photo goes with what was bought, or the first cost */
+  if(SH.att.length){const tgt=buyRec||firstCost;if(tgt){tgt.att=tgt.att||[];for(const pa of SH.att){try{await window.storage.set(ATT+pa.id,pa.d,true);tgt.att.push(pa.id);}catch(e){photoFail=true;}}}else photoFail=true;}
+  {const p=r3(dsN(SH.price));const sp=D.settings.sellPrice;if(p>0&&(!sp||!sp.d||sp.d<=d))D.settings.sellPrice={d,p};}
+  const ok=await persist();if(!ok)throw fail("");
+ }catch(e){D=snap;DSBUSY=false;if(e&&e.ds&&e.message)toast(e.message);else if(!(e&&e.ds))toast(t("slNotSaved"));dsBar();return;}
+ DSBUSY=false;try{localStorage.removeItem(dsKey(d));}catch(e){}pendingAtt=[];SH=dsFromRecs(d);SH.auto=d===today();
+ if(DSOWN){DSOWN=false;closeModal();render();}else{render();}toast(t("dsSaved"));if(photoFail)setTimeout(()=>toast(t("photoFail")),1800);}
+/* ---------- customers ---------- */
+function dsCustView(){const L=dsCusts();const cur=esc(D.settings.cur);const tot=r3(L.reduce((a,p)=>a+p.owed,0));
+ return`<div class="ds-top"><div class="ds-ttl"><small>${esc(D.settings.name)}</small><h1>${t("dsNavCust")}</h1></div>${langSeg()}</div>
+ <div class="ds-hero one"><div><span class="l">${t("dsCustOwe")}</span><b class="v lm">${fmt(tot)}</b></div><small class="cu">${cur}</small></div>
+ ${L.length?`<div class="tm-card ds-list">${L.map(p=>`<button class="ds-cu" onclick="dsCust(${ja(p.name)})"><span class="av">${esc(ini(tx(p.name)))}</span><span class="n"><b>${esc(tx(p.name))}</b><small>${p.owed>0.004?esc(t("dsBillN").replace("{n}",p.n))+" · ":""}${esc(t("dsLastBill").replace("{d}",niceDate(p.last)))}</small></span><span class="v${p.owed>0.004?"":" ok"}">${p.owed>0.004?fmt(p.owed):t("dsPaidUp")}</span>${I18.chev}</button>`).join("")}</div>`:`<p class="st-empty tm-card">${t("dsNoCust")}</p>`}`;}
+function dsCust(name){const m=document.getElementById("modal");const cur=esc(D.settings.cur);const p=dsCusts().find(x=>x.name===name);if(!p)return;
+ const bills=D.invoices.filter(x=>x.party===name&&r3(num(x.amount)-paidOf(x))>0.004).sort((a,b)=>String(a.date).localeCompare(String(b.date)));
+ const pays=D.invoices.filter(x=>x.party===name).flatMap(x=>(x.pays||[]).map(q=>({d:q.date,a:num(q.amount)}))).sort((a,b)=>String(b.d).localeCompare(String(a.d))).slice(0,6);
+ m.innerHTML=`<div class="sheet fm ds-cs">${sheetTop(esc(tx(name)))}
+ <div class="ds-hero one"><div><span class="l">${p.owed>0.004?t("gpOwes").replace("{v}",""):t("dsPaidUp")}</span><b class="v lm">${fmt(p.owed)}</b></div><small class="cu">${cur}</small></div>
+ ${p.owed>0.004&&ROLE==="staff"?`<button class="ds-big" onclick="dsTheyPaid(${ja(name)})">💰 ${t("dsTheyPaid")}</button>`:""}
+ ${bills.length?`<h3 class="ds-h3">${t("dsBills")}</h3><div class="ds-bl">${bills.map(x=>`<div class="r"><span><b>${esc(niceDate(x.date))}</b><small>${num(x.qty)?esc(fq(x.qty))+" "+t("dsKgU")+" · ":""}${fmt(x.amount)} ${cur}</small></span><b class="v">${esc(t("dsLeft").replace("{v}",fmt(num(x.amount)-paidOf(x))))}</b></div>`).join("")}</div>`:""}
+ ${pays.length?`<h3 class="ds-h3">${t("dsRecentPays")}</h3><div class="ds-bl">${pays.map(q=>`<div class="r"><span><b>${esc(niceDate(q.d))}</b></span><b class="v ok">+${fmt(q.a)}</b></div>`).join("")}</div>`:""}</div>`;
+ m.classList.remove("center");m.classList.add("on");if(WIDE())d6Dlg("d6-one");}
+function dsTheyPaid(name){closeModal();if(!SH||SH.date!==today()){dsStash();dsLoad(today());}STT="day";render();dsAddColl(name);}
+/* ---------- past days ---------- */
+function dsDays(){const M={};const g=d=>M[d]=M[d]||{d,sold:0,out:0,coll:0};
+ for(const x of D.invoices){if(x.sh&&x.shk==="sale")g(x.sh).sold+=num(x.amount);for(const p of (x.pays||[]))if(p&&p.sh&&p.c)g(p.sh).coll+=num(p.amount);}
+ for(const x of D.expenses)if(x.sh&&(x.shk==="buy"||x.shk==="cost"))g(x.sh).out+=num(x.amount);
+ return Object.values(M).sort((a,b)=>b.d.localeCompare(a.d)).slice(0,90);}
+function dsDaysView(){const L=dsDays();const cur=esc(D.settings.cur);
+ return`<div class="ds-top"><div class="ds-ttl"><small>${esc(D.settings.name)}</small><h1>${t("dsDaysT")}</h1></div>${langSeg()}</div>
+ ${L.length?`<div class="tm-card ds-list">${L.map(x=>{const pr=r3(x.sold-x.out);return`<button class="ds-day" onclick="dsOpenDay(${ja(x.d)})"><span class="n"><b>${esc(niceDate(x.d))}</b><small>${t("dsSold")} ${fmt(x.sold)} · ${t("dsOut")} ${fmt(x.out)}${x.coll>0.004?" · "+t("dsCollected")+" "+fmt(x.coll):""}</small></span><span class="v${pr<-0.004?" ng":""}"><small>${pr<-0.004?t("dsLoss"):t("dsProfit")}</small>${fmt(Math.abs(pr))}</span>${I18.chev}</button>`;}).join("")}</div>`:`<p class="st-empty tm-card">${t("dsNoDays")}</p>`}`;}
+/* ---------- more: name, language, the quick buttons, sign out ---------- */
+function dsMoreView(){const nm=myName();
+ return`<div class="ds-top"><div class="ds-ttl"><small>${esc(D.settings.name)}</small><h1>${nm?t("stHi").replace("{n}",esc(nm)):t("hello")}</h1></div>${langSeg()}</div>${nameCard()}
+ <div class="tm-sec"><span>${t("dsQuick")}</span></div>
+ <button class="st-big in" onclick="openForm('inv')"><span class="ic">${I2.bag}</span><span><b>${t("stSold")}</b><small>${t("stSoldD")}</small></span></button>
+ <button class="st-big out" onclick="openForm('exp')"><span class="ic">${I2.cam}</span><span><b>${t("stPaid")}</b><small>${t("stPaidD")}</small></span></button>
+ <button class="st-big gp" onclick="openGotPaid()"><span class="ic">${I2.in}</span><span><b>${t("stGot")}</b><small>${t("stGotD")}</small></span></button>
+ <p class="st-note">${t("stNote")}</p>
+ <div class="tm-list" style="margin-top:18px"><button class="tm-li red" onclick="lock()">${I2.exit}<span class="f">${t("lout")}</span></button></div>`;}
+function dsNav(){const tabs=[["day",I18.sheet,"dsNavDay"],["cust",I2.people,"dsNavCust"],["days",I18.cal,"dsNavDays"],["more",I2.more,"dsNavMore"]];
+ return`<div class="tm-fade"></div><div class="tm-nav"><nav class="tm-bar" aria-label="Main">${tabs.map(([k,ic,l])=>`<button class="${STT===k?"on":""}" ${STT===k?'aria-current="page"':""} onclick="dsGo('${k}')">${ic}${t(l)}</button>`).join("")}</nav></div>`;}
+function dsGo(k){if(STT==="day")dsStash();STT=k;render();try{window.scrollTo({top:0});}catch(e){}}
+vStaff=function(){dsEnsure();const v=STT==="cust"?dsCustView():STT==="days"?dsDaysView():STT==="more"?dsMoreView():`<div id="dsWrap">${dsBody()}</div>`;
+ return`<main class="tm-main st-main ds-main${STT==="day"?" ds-day-tab":""}">${v}</main>${STT==="day"?dsBarHTML():""}${dsNav()}`;};
+/* the owner (or a manager) can fill the same sheet from the + menu */
+function dsOwner(d){if(!canEdit())return toast(t("viewOnly"));DSOWN=true;dsLoad(d||today());const m=document.getElementById("modal");
+ m.innerHTML=`<div class="sheet fm ds-ms">${sheetTop(t("dsSheet"))}<div id="dsWrap">${dsBody()}</div><div class="ds-mfoot">${dsBarHTML()}</div></div>`;m.classList.remove("center");m.classList.add("on");if(WIDE())d6Dlg("d6-one");}
+const _closeModal18=closeModal;closeModal=function(){if(DSOWN&&SH&&SH.dirty){dsStash();}DSOWN=false;_closeModal18();};
+const _quickAdd18=quickAdd;quickAdd=function(){_quickAdd18();const m=document.querySelector("#modal .tm-add");if(m&&canEdit())m.insertAdjacentHTML("afterbegin",`<button class="ds-qa" onclick="dsOwner()"><span class="ci">${I18.sheet}</span><span><b>${t("dsSheet")}</b><small>${t("dsSheetD")}</small></span></button>`);};
+
 /* auto-update: reload when a new version is published */
-const BUILD="b17";
+const BUILD="b18";
 async function checkUpdate(){try{const r=await fetch("version.txt?"+Date.now(),{cache:"no-store"});const v=(await r.text()).trim();if(v&&v!==BUILD){const m=document.getElementById("modal");if(m&&m.classList.contains("on"))return;location.reload();}}catch(e){}}
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")checkUpdate();});setTimeout(checkUpdate,3000);
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
