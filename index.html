@@ -1061,6 +1061,20 @@ body.kb .tm-nav,body.kb .tm-fade{display:none}body.kb .ds-bar{bottom:calc(8px + 
 .ds-send{background:var(--ink);color:var(--lime)}
 .ds-qa{background:var(--ink)!important;color:#fff!important}.ds-qa .ci{background:var(--lime)!important;color:var(--limeink)!important}.ds-qa small{color:#C9CCBF!important}
 @media (max-width:370px){.ds-hero .v{font-size:18px}.ds-hero>div{padding:0 11px}.ds-ttl h1{font-size:24px}}
+/* ===== b19: advances ===== */
+.av-hero .av-n{display:block;margin-top:4px;font-size:13px;color:#A9AD9F}
+.av-ask{display:flex;align-items:center;justify-content:center;gap:10px}.av-ask svg{width:22px;height:22px}
+.av-wa{display:inline-flex;align-items:center;gap:6px;border:0;background:#fff;border-radius:999px;padding:8px 12px;font:inherit;font-size:13px!important;font-weight:600;color:var(--green);cursor:pointer;white-space:nowrap;flex:none}
+.av-wa svg{width:16px;height:16px}
+.ds-bl .v.av-v{color:var(--ink)}.ds-bl .v.av-x{color:var(--muted);font-weight:500;font-size:13px}
+.av-empty{margin:4px 4px 0}
+.av-gap{margin-top:14px}
+.av-note{margin:12px 2px 0;background:var(--soft);border-radius:14px;padding:12px 14px;font-size:15px}
+.av-no{width:100%;margin-top:10px;border:1.5px solid var(--line);background:#fff;border-radius:18px;padding:15px;font:inherit;font-size:16px!important;font-weight:600;color:var(--ink);cursor:pointer}
+.av-st{margin:16px 2px 0;font-size:15px;font-weight:600}.av-st.ok{color:var(--green)}.av-st.no{color:var(--muted)}
+.av-who{grid-template-columns:repeat(auto-fill,minmax(110px,1fr))}.av-who button{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.ds-bl .r>span{min-width:0;overflow-wrap:anywhere}.av-note{overflow-wrap:anywhere}.b5-rt small .av-amt{display:inline;color:var(--ink);font-weight:700}
+.ds-big:disabled{opacity:.6;cursor:default}
 </style>
 </head>
 <body>
@@ -2704,13 +2718,14 @@ function dsFromRecs(d){const R=dsRecs(d);const b=R.buy;const lb=b||dsLastBuy();
   buy:{name:lb?String(lb.item||""):"",qty:b&&num(b.qty)?String(b.qty):"",price:b&&num(b.price)?String(b.price):(lb&&num(lb.price)?String(lb.price):""),paid:b?String(num(b.amount)):"",paidSet:!!b&&!auto,from:b?String(b.party||""):(lb?String(lb.party||""):""),rid:b?b.id:null,lock:b?(dsOthers(b)?-1:dsForeign(b,d)):0},
   costs:R.costs.map(x=>({k:x.id,name:String(x.item||x.desc||""),amount:String(num(x.amount)),cat:x.cat||"",rid:x.id,lock:dsOthers(x)?-1:dsForeign(x,d)})),
   sales:R.sales.map(x=>({k:x.id,who:x.party==="Shop sales"?"":String(x.party||""),shop:x.party==="Shop sales",qty:num(x.qty)?String(x.qty):"",amount:String(num(x.amount)),amtSet:!(num(x.qty)>0&&num(x.dprice)>0&&Math.abs(num(x.amount)-Math.round(num(x.qty)*num(x.dprice)*100)/100)<0.005),paid:(x.pays||[]).some(p=>dsOwn(p,d)),rid:x.id,lock:dsOthers(x)?-1:dsForeign(x,d)})),coll:[]};
- const M={};for(const x of D.invoices)for(const p of (x.pays||[]))if(p&&p.sh===d&&p.c)M[x.party]=r3((M[x.party]||0)+num(p.amount));
+ const CI=ROLE==="staff"?D.invoices.filter(x=>x&&x.sh):D.invoices;/* a seller only works with collections on bills from the sheets */
+ const M={};for(const x of CI)for(const p of (x.pays||[]))if(p&&p.sh===d&&p.c)M[x.party]=r3((M[x.party]||0)+num(p.amount));
  s.coll=Object.entries(M).map(([who,a])=>({k:uid(),who,amount:String(a)}));
  const sp=D.settings&&D.settings.sellPrice;const rp=R.sales.find(x=>num(x.qty)>0&&num(x.dprice)>0);
  if(rp){s.price=String(rp.dprice);}else if(sp&&sp.d===d&&num(sp.p)>0){s.price=String(sp.p);}else if(sp&&num(sp.p)>0&&!R.sales.length){s.price=String(sp.p);s.priceOld=sp.d<d;}else s.price="";
  s.has=!!(b||R.costs.length||R.sales.length||s.coll.length);
  /* what this sheet was built from: saving only changes or removes these, never what someone else added since */
- s.seen={e:[...(b?[b.id]:[]),...R.costs.map(x=>x.id)],i:R.sales.map(x=>x.id),c:D.invoices.flatMap(x=>(x.pays||[]).filter(p=>p&&p.sh===d&&p.c).map(p=>p.id))};
+ s.seen={e:[...(b?[b.id]:[]),...R.costs.map(x=>x.id)],i:R.sales.map(x=>x.id),c:CI.flatMap(x=>(x.pays||[]).filter(p=>p&&p.sh===d&&p.c).map(p=>p.id))};
  s.photos=[...(b&&b.att||[]),...R.costs.flatMap(x=>x.att||[])].length;return s;}
 function dsLoad(d,keepDraft){let s=null;if(keepDraft!==false&&!dsRO(d))try{const r=localStorage.getItem(dsKey(d));if(r){const o=JSON.parse(r);if(o&&o.v===3&&o.dirty&&o.date===d)s=o;}}catch(e){}
  if(s){const f=dsFromRecs(d);s.has=f.has;s.photos=f.photos;if(!s.seen)s.seen=f.seen;}SH=s||dsFromRecs(d);SH.att=SH.dirty?(DSATT[d]||[]):[];if(!SH.dirty)delete DSATT[d];SH.auto=d===today();}
@@ -2720,13 +2735,13 @@ function dsEnsure(){if(!D)return;if(SH&&(SH.dirty||DSBUSY))return;const d=SH&&!(
 /* what each part adds up to */
 function dsBuyAmt(){const b=SH.buy;return b.paidSet?r3(dsN(b.paid)):r3(dsN(b.qty)*dsN(b.price));}
 function dsCalc(){const buy=dsBuyAmt(),costs=r3(SH.costs.reduce((a,r)=>a+dsN(r.amount),0)),sold=r3(SH.sales.reduce((a,r)=>a+dsN(r.amount),0)),coll=r3(SH.coll.reduce((a,r)=>a+dsN(r.amount),0));return{buy,costs,out:r3(buy+costs),sold,coll,profit:r3(sold-buy-costs)};}
-function dsCusts(){const M={};for(const x of D.invoices){if(!x.party||x.party==="Shop sales")continue;const o=M[x.party]=M[x.party]||{name:x.party,owed:0,n:0,last:"",old:""};const r=r3(num(x.amount)-paidOf(x));if(r>0.004){o.owed=r3(o.owed+r);o.n++;if(!o.old||String(x.date)<o.old)o.old=x.date;}if(String(x.date)>o.last)o.last=x.date;}
+function dsCusts(){const M={};for(const x of dsInv()){if(!x.party||x.party==="Shop sales")continue;const o=M[x.party]=M[x.party]||{name:x.party,owed:0,n:0,last:"",old:""};const r=r3(num(x.amount)-paidOf(x));if(r>0.004){o.owed=r3(o.owed+r);o.n++;if(!o.old||String(x.date)<o.old)o.old=x.date;}if(String(x.date)>o.last)o.last=x.date;}
  return Object.values(M).sort((a,b)=>((b.owed>0.004)-(a.owed>0.004))||(b.owed-a.owed)||String(b.last).localeCompare(String(a.last)));}
 /* what a customer owes before today's sheet collects anything */
-function dsOwedBefore(who,d){let o=0;for(const x of D.invoices){if(x.party!==who)continue;const pre=(x.pays||[]).filter(p=>!(p&&p.sh===d&&p.c)).reduce((a,p)=>a+num(p.amount),0);o+=Math.max(0,num(x.amount)-pre);}return r3(o);}
-function dsOldestLeft(who,d){const L=D.invoices.filter(x=>x.party===who&&!(x.sh===d&&x.shk==="sale")).map(x=>({d:x.date,r:r3(num(x.amount)-(x.pays||[]).filter(p=>!(p&&p.sh===d&&p.c)).reduce((a,p)=>a+num(p.amount),0))})).filter(x=>x.r>0.004).sort((a,b)=>String(a.d).localeCompare(String(b.d)));return L.length?L[0].r:0;}
-function dsLastPriceUnused(who){let best=null;for(const x of D.invoices){if(x.party!==who||!(num(x.qty)>0)||!(num(x.amount)>0))continue;if(!best||String(x.date)>String(best.date))best=x;}return best?Math.round(num(best.amount)/num(best.qty)*1000)/1000:0;}
-function dsRecentCusts(){const M={};for(const x of D.invoices){if(!x.party||x.party==="Shop sales")continue;if(!M[x.party]||String(x.date)>M[x.party])M[x.party]=String(x.date);}return Object.keys(M).sort((a,b)=>M[b].localeCompare(M[a]));}
+function dsOwedBefore(who,d){let o=0;for(const x of dsInv()){if(x.party!==who)continue;const pre=(x.pays||[]).filter(p=>!(p&&p.sh===d&&p.c)).reduce((a,p)=>a+num(p.amount),0);o+=Math.max(0,num(x.amount)-pre);}return r3(o);}
+function dsOldestLeft(who,d){const L=dsInv().filter(x=>x.party===who&&!(x.sh===d&&x.shk==="sale")).map(x=>({d:x.date,r:r3(num(x.amount)-(x.pays||[]).filter(p=>!(p&&p.sh===d&&p.c)).reduce((a,p)=>a+num(p.amount),0))})).filter(x=>x.r>0.004).sort((a,b)=>String(a.d).localeCompare(String(b.d)));return L.length?L[0].r:0;}
+function dsLastPriceUnused(who){let best=null;for(const x of dsInv()){if(x.party!==who||!(num(x.qty)>0)||!(num(x.amount)>0))continue;if(!best||String(x.date)>String(best.date))best=x;}return best?Math.round(num(best.amount)/num(best.qty)*1000)/1000:0;}
+function dsRecentCusts(){const M={};for(const x of dsInv()){if(!x.party||x.party==="Shop sales")continue;if(!M[x.party]||String(x.date)>M[x.party])M[x.party]=String(x.date);}return Object.keys(M).sort((a,b)=>M[b].localeCompare(M[a]));}
 const DS_CDEF=[["dsCWork",5],["dsCFuel",4],["dsCBags",8]];
 function dsCostChips(){const seen=new Set(),out=[];const L=D.expenses.filter(x=>x.shk==="cost").sort((a,b)=>String(b.date).localeCompare(String(a.date)));
  for(const x of L){const n=String(x.item||"").trim();if(!n||seen.has(n.toLowerCase()))continue;seen.add(n.toLowerCase());out.push({n,cat:x.cat});if(out.length>=5)break;}
@@ -2858,7 +2873,7 @@ async function dsSave(){if(DSBUSY||!SH)return;const d=SH.date;if(dsRO(d))return 
   /* money collected for old bills: take back the collections this sheet showed, then pay oldest bills first */
   const oldC=new Map();for(const x of D.invoices)for(const p of (x.pays||[]))if(p&&p.sh===d&&p.c&&SC.has(p.id)){if(!oldC.has(x.id))oldC.set(x.id,[]);oldC.get(x.id).push(p);}
   for(const x of D.invoices)if(oldC.has(x.id))x.pays=x.pays.filter(p=>!(p&&p.sh===d&&p.c&&SC.has(p.id)));
-  for(const r of SH.coll){let a=r3(dsN(r.amount));if(a<=0)continue;const open=D.invoices.filter(x=>x.party===r.who&&r3(num(x.amount)-paidOf(x))>0.004).sort((p,q)=>String(p.date).localeCompare(String(q.date))||String(p.at||"").localeCompare(String(q.at||"")));
+  for(const r of SH.coll){let a=r3(dsN(r.amount));if(a<=0)continue;const open=dsInv().filter(x=>x.party===r.who&&r3(num(x.amount)-paidOf(x))>0.004).sort((p,q)=>(oldC.has(q.id)?1:0)-(oldC.has(p.id)?1:0)||String(p.date).localeCompare(String(q.date))||String(p.at||"").localeCompare(String(q.at||"")));/* bills this money already paid come first, so saving again does not move it */
    const owed=r3(open.reduce((q,x)=>q+num(x.amount)-paidOf(x),0));if(a>owed+0.004)throw fail(t("dsTooMuch").replace("{n}",tx(r.who)).replace("{v}",fmt(owed)+" "+D.settings.cur));
    for(const x of open){if(a<=0.0005)break;const take=Math.min(a,r3(num(x.amount)-paidOf(x)));const prev=(oldC.get(x.id)||[]).shift();x.pays=x.pays||[];x.pays.push(pay(take,1,prev));a=r3(a-take);}}
   /* the notebook photo goes with what was bought, or the first cost */
@@ -2874,8 +2889,8 @@ function dsCustView(){const L=dsCusts();const cur=esc(D.settings.cur);const tot=
  <div class="ds-hero one"><div><span class="l">${t("dsCustOwe")}</span><b class="v lm">${fmt(tot)}</b></div><small class="cu">${cur}</small></div>
  ${L.length?`<div class="tm-card ds-list">${L.map(p=>`<button class="ds-cu" onclick="dsCust(${ja(p.name)})"><span class="av">${esc(ini(tx(p.name)))}</span><span class="n"><b>${esc(tx(p.name))}</b><small>${p.owed>0.004?esc(t("dsBillN").replace("{n}",p.n))+" · ":""}${esc(t("dsLastBill").replace("{d}",niceDate(p.last)))}</small></span><span class="v${p.owed>0.004?"":" ok"}">${p.owed>0.004?fmt(p.owed):t("dsPaidUp")}</span>${I18.chev}</button>`).join("")}</div>`:`<p class="st-empty tm-card">${t("dsNoCust")}</p>`}`;}
 function dsCust(name){const m=document.getElementById("modal");const cur=esc(D.settings.cur);const p=dsCusts().find(x=>x.name===name);if(!p)return;
- const bills=D.invoices.filter(x=>x.party===name&&r3(num(x.amount)-paidOf(x))>0.004).sort((a,b)=>String(a.date).localeCompare(String(b.date)));
- const pays=D.invoices.filter(x=>x.party===name).flatMap(x=>(x.pays||[]).map(q=>({d:q.date,a:num(q.amount)}))).sort((a,b)=>String(b.d).localeCompare(String(a.d))).slice(0,6);
+ const bills=dsInv().filter(x=>x.party===name&&r3(num(x.amount)-paidOf(x))>0.004).sort((a,b)=>String(a.date).localeCompare(String(b.date)));
+ const pays=dsInv().filter(x=>x.party===name).flatMap(x=>(x.pays||[]).map(q=>({d:q.date,a:num(q.amount)}))).sort((a,b)=>String(b.d).localeCompare(String(a.d))).slice(0,6);
  m.innerHTML=`<div class="sheet fm ds-cs">${sheetTop(esc(tx(name)))}
  <div class="ds-hero one"><div><span class="l">${p.owed>0.004?t("gpOwes").replace("{v}",""):t("dsPaidUp")}</span><b class="v${p.owed>0.004?" ng":" lm"}">${fmt(p.owed)}</b></div><small class="cu">${cur}</small></div>
  ${p.owed>0.004&&ROLE==="staff"?`<button class="ds-big" onclick="dsTheyPaid(${ja(name)})">💰 ${t("dsTheyPaid")}</button>`:""}
@@ -2897,7 +2912,7 @@ function dsMoreView(){const nm=myName();
  return`<div class="ds-top"><div class="ds-ttl"><small>${esc(D.settings.name)}</small><h1>${nm?t("stHi").replace("{n}",esc(nm)):t("hello")}</h1></div>${langSeg()}</div>${nameCard()}
  <p class="st-note">${t("stNote")}</p>
  <div class="tm-list" style="margin-top:18px"><button class="tm-li red" onclick="lock()">${I2.exit}<span class="f">${t("lout")}</span></button></div>`;}
-function dsNav(){const tabs=[["day",I18.sheet,"dsNavDay"],["cust",I2.people,"dsNavCust"],["days",I18.cal,"dsNavDays"],["more",I2.more,"dsNavMore"]];
+function dsNav(){const tabs=[["day",I18.sheet,"dsNavDay"],["cust",I2.people,"dsNavCust"],["days",I18.cal,"dsNavDays"],["more",I19.me,"dsNavMe"]];
  return`<div class="tm-fade"></div><div class="tm-nav"><nav class="tm-bar" aria-label="Main">${tabs.map(([k,ic,l])=>`<button class="${STT===k?"on":""}" ${STT===k?'aria-current="page"':""} onclick="dsGo('${k}')">${ic}${t(l)}</button>`).join("")}</nav></div>`;}
 function dsGo(k){if(STT==="day")dsStash();STT=k;render();try{window.scrollTo({top:0});}catch(e){}}
 vStaff=function(){dsEnsure();setTimeout(dsFit,0);const v=STT==="cust"?dsCustView():STT==="days"?dsDaysView():STT==="more"?dsMoreView():`<div id="dsWrap">${dsBody()}</div>`;
@@ -2908,8 +2923,111 @@ function dsOwner(d){if(!canEdit())return toast(t("viewOnly"));DSOWN=true;dsLoad(
 const _closeModal18=closeModal;closeModal=function(){if(DSOWN&&SH&&SH.dirty){dsStash();}DSOWN=false;_closeModal18();};
 const _quickAdd18=quickAdd;quickAdd=function(){_quickAdd18();const m=document.querySelector("#modal .tm-add");if(m&&canEdit())m.insertAdjacentHTML("afterbegin",`<button class="ds-qa" onclick="dsOwner()"><span class="ci">${I18.sheet}</span><span><b>${t("dsSheet")}</b><small>${t("dsSheetD")}</small></span></button>`);};
 
+/* ===== b19: a seller sees only what came from the daily sheets, and team members can see and ask for advances.
+   A request is kept in D.advreq until the owner pays it (it then becomes a normal expense, category Salaries,
+   tagged adv=<user id>) or says no. ===== */
+LISTS.push("advreq");
+const dsVis=x=>ROLE!=="staff"||!!(x&&x.sh);/* sellers only see bills that came from a daily sheet */
+function dsInv(){return D.invoices.filter(dsVis);}
+Object.assign(T.en,{dsNavMe:"Me",avT:"Advances",avGot:"Advances you got",avNone:"No advances yet.",avAsk:"Ask for an advance",avAmt:"How much?",avWhy:"What is it for? (optional)",avWhyPh:"e.g. rent",
+ avSend:"Send request",avSent:"Request sent",avWait:"Waiting for an answer",avNo:"Not approved",avTell:"Tell on WhatsApp",avMsg:"Hi, I asked for an advance of {v} {c} in Tamm.",avMsgWhy:"It is for: {w}",
+ avNeedAmt:"Write the amount",avLoadFail:"Couldn't load your team. Check your connection and try again.",avItem:"Advance: {n}",avReqT:"{n} asked for an advance",avReqS:"Wants an advance",avAsked:"Asked {d}",avPayB:"Pay the advance",avSayNo:"Say no",avPaidOk:"Advance recorded",avNoOk:"Request declined",
+ avDone:"Paid on {d}",avSoFar:"Advances so far: {v}",avAmtPay:"Amount to pay",avReview:"Review",avGive:"Give an advance",avGiveD:"Money a team member gets before their pay",avWho:"Who gets it?",
+ avNoStaff:"Invite a team member first.",avRec:"Record the advance",avNeedWho:"Pick who gets it",avCount:"{n} advances",avCount_1:"1 advance",avCount_0:"No advances",avCount_2:"2 advances",avCount_m:"{n} advances",avLoading:"Loading the team…"});
+Object.assign(T.ar,{dsNavMe:"أنا",avT:"السلف",avGot:"السلف التي أخذتها",avNone:"لا توجد سلف بعد.",avAsk:"اطلب سلفة",avAmt:"كم المبلغ؟",avWhy:"لأجل ماذا؟ (اختياري)",avWhyPh:"مثلًا الإيجار",
+ avSend:"أرسل الطلب",avSent:"تم إرسال الطلب",avWait:"بانتظار الرد",avNo:"لم تتم الموافقة",avTell:"أخبره على واتساب",avMsg:"مرحبًا، طلبت سلفة بقيمة {v} {c} على تَمّ.",avMsgWhy:"السبب: {w}",
+ avNeedAmt:"اكتب المبلغ",avLoadFail:"تعذّر تحميل الفريق. تحقق من الاتصال وحاول مرة أخرى.",avItem:"سلفة: {n}",avReqT:"{n} طلب سلفة",avReqS:"يطلب سلفة",avAsked:"طلبها {d}",avPayB:"ادفع السلفة",avSayNo:"ارفض",avPaidOk:"سُجّلت السلفة",avNoOk:"رُفض الطلب",
+ avDone:"دُفعت {d}",avSoFar:"السلف حتى الآن: {v}",avAmtPay:"المبلغ الذي ستدفعه",avReview:"راجِع",avGive:"أعطِ سلفة",avGiveD:"مال يأخذه أحد الفريق قبل راتبه",avWho:"لمن؟",
+ avNoStaff:"ادعُ أحدًا إلى فريقك أولًا.",avRec:"سجّل السلفة",avNeedWho:"اختر من سيأخذها",avCount:"{n} سلف",avCount_1:"سلفة واحدة",avCount_2:"سلفتان",avCount_0:"لا توجد سلف",avCount_m:"{n} سلفة",avLoading:"جارٍ تحميل الفريق…"});
+const I19={me:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="10" r="3"/><path d="M6.6 18.4a6 6 0 0 1 10.8 0"/></svg>',
+ cash:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="6" width="19" height="12" rx="2.5"/><circle cx="12" cy="12" r="2.6"/><path d="M6 9.5v.01M18 14.5v.01"/></svg>',
+ wa:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11.5a8 8 0 0 1-11.8 7l-4.2 1.3 1.3-4A8 8 0 1 1 20 11.5z"/></svg>'};
+const avCanPay=()=>ROLE==="owner"||ROLE==="editor";
+const avUid=()=>(SESSION&&SESSION.user&&SESSION.user.id)||"";
+function avOf(u){return D.expenses.filter(x=>x&&x.adv&&x.adv===u).sort((a,b)=>String(b.date).localeCompare(String(a.date))||String(b.at||"").localeCompare(String(a.at||"")));}
+function avReqs(){return (D.advreq||[]).filter(r=>r&&typeof r==="object"&&r.id);}
+function avPend(){return avReqs().filter(r=>r.st==="ask").sort((a,b)=>String(a.at||"").localeCompare(String(b.at||"")));}
+function avTot(L){return r3(L.reduce((a,x)=>a+num(x.amount),0));}
+/* ---------- the seller's "Me" tab ---------- */
+function dsMeView(){const nm=myName();const cur=esc(D.settings.cur);const u=avUid();const L=avOf(u);const tot=avTot(L);
+ const R=avReqs().filter(r=>r.uid===u);const wait=R.filter(r=>r.st==="ask").sort((a,b)=>String(b.at||"").localeCompare(String(a.at||"")));
+ const cut=localDay(Date.now()-30*864e5);const no=R.filter(r=>r.st==="no"&&String(r.dAt||r.at||"").slice(0,10)>=cut);
+ return`<div class="ds-top"><div class="ds-ttl"><small>${esc(D.settings.name)}</small><h1>${nm?t("stHi").replace("{n}",esc(nm)):t("hello")}</h1></div>${langSeg()}</div>${nameCard()}
+ <div class="ds-hero one av-hero"><div><span class="l">${t("avGot")}</span><b class="v lm">${fmt(tot)}</b><span class="av-n">${esc(tn("avCount",L.length))}</span></div><small class="cu">${cur}</small></div>
+ <button class="ds-big av-ask" onclick="avAsk()">${I19.cash}<span>${t("avAsk")}</span></button>
+ ${wait.length?`<h3 class="ds-h3">${t("avWait")}</h3><div class="ds-bl">${wait.map(r=>`<div class="r"><span><b>${fmt(r.amount)} ${cur}</b><small>${esc(t("avAsked").replace("{d}",niceDate(r.d)))}${r.note?` · <bdi>${esc(r.note)}</bdi>`:""}</small></span><button class="av-wa" onclick="avTell(${ja(r.id)})">${I19.wa}<span>${t("avTell")}</span></button></div>`).join("")}</div>`:""}
+ <h3 class="ds-h3">${t("avT")}</h3>${L.length?`<div class="ds-bl">${L.map(x=>`<div class="r"><span><b>${esc(niceDate(x.date))}</b>${x.notes?`<small dir="auto">${esc(x.notes)}</small>`:""}</span><b class="v av-v">${fmt(x.amount)}</b></div>`).join("")}</div>`:`<p class="ds-sub av-empty">${t("avNone")}</p>`}
+ ${no.length?`<h3 class="ds-h3">${t("avNo")}</h3><div class="ds-bl">${no.map(r=>`<div class="r"><span><b>${fmt(r.amount)} ${cur}</b><small>${esc(t("avAsked").replace("{d}",niceDate(r.d)))}</small></span><b class="v av-x">${t("avNo")}</b></div>`).join("")}</div>`:""}
+ <p class="st-note" style="margin-top:18px">${t("stNote")}</p>
+ <div class="tm-list" style="margin-top:14px"><button class="tm-li red" onclick="lock()">${I2.exit}<span class="f">${t("lout")}</span></button></div>`;}
+dsMoreView=dsMeView;
+function avOpen(html){const m=document.getElementById("modal");m.innerHTML=html;m.classList.remove("center");m.classList.add("on");if(WIDE())d6Dlg("d6-one");}
+function avAsk(){avOpen(`<div class="sheet fm ds-cs av-sh">${sheetTop(t("avAsk"))}
+ <label class="ds-f"><span>${t("avAmt")}</span><span class="ds-amt"><input id="avAmt" class="ds-in" inputmode="decimal" autocomplete="off" placeholder="0" onkeydown="if(event.key==='Enter')avSend()"><i>${esc(D.settings.cur)}</i></span></label>
+ <label class="ds-f av-gap"><span>${t("avWhy")}</span><input id="avWhy" class="ds-in" maxlength="120" autocomplete="off" placeholder="${t("avWhyPh")}" onkeydown="if(event.key==='Enter')avSend()"></label>
+ <button class="ds-big" id="avGo" onclick="avSend()">${t("avSend")}</button></div>`);setTimeout(()=>{const e=document.getElementById("avAmt");if(e)e.focus();},80);}
+let AVBUSY=false;
+async function avSend(){if(AVBUSY)return;const ai=document.getElementById("avAmt");const a=r3(dsN(ai&&ai.value));if(!(a>0)){toast(t("avNeedAmt"));if(ai)ai.focus();return;}
+ const why=String((document.getElementById("avWhy")||{}).value||"").trim().slice(0,120);AVBUSY=true;const b=document.getElementById("avGo");if(b)b.disabled=true;
+ const snap=clone(D);const r={id:uid(),uid:avUid(),name:myName()||((SESSION&&SESSION.user&&SESSION.user.email)||"").split("@")[0],amount:a,note:why,d:today(),at:new Date().toISOString(),st:"ask"};
+ D.advreq=Array.isArray(D.advreq)?D.advreq:[];D.advreq.push(r);const ok=await persist();AVBUSY=false;
+ if(!ok){D=snap;if(b)b.disabled=false;return;}closeModal();toast(t("avSent"));render();}
+async function avTell(id){const r=avReqs().find(x=>x.id===id);if(!r)return;const text=[t("avMsg").replace("{v}",fq2(r.amount)).replace("{c}",D.settings.cur),r.note?t("avMsgWhy").replace("{w}",r.note):""].filter(Boolean).join("\n");
+ try{if(navigator.share){await navigator.share({text});return;}}catch(e){if(e&&e.name==="AbortError")return;}
+ try{window.open("https://wa.me/?text="+encodeURIComponent(text),"_blank","noopener");}catch(e){}}
+/* ---------- the owner: requests on the home page, pay or say no ---------- */
+function avCard(){if(!avCanPay())return"";const L=avPend();if(!L.length)return"";const cur=esc(D.settings.cur);
+ return`<section class="tm-card b5-needs av-needs"><div class="b5-nh"><span class="b5-ni">${I19.cash}</span><div><b>${t("needsYou")}</b><small>${t("avT")}</small></div><i>${L.length}</i></div>${L.slice(0,4).map(r=>`<button class="b5-nq" onclick="avReview(${ja(r.id)})"><span class="b5-av">${esc(ini(r.name||"?"))}</span><span class="b5-rt"><b><bdi>${esc(r.name||"?")}</bdi></b><small><b class="av-amt">${fmt(r.amount)} ${cur}</b> · ${t("avReqS")}${r.note?` · <bdi>${esc(r.note)}</bdi>`:` · ${esc(niceDate(r.d))}`}</small></span><span class="b5-fl b5-ch">${I5.chev}</span></button>`).join("")}</section>`;}
+const _vHome19=vHome;vHome=function(){const h=_vHome19();const c=avCard();if(!c)return h;let i=h.indexOf('<section class="tm-card b5-needs');if(i<0)i=h.indexOf('<div class="tm-card ck');if(i<0)i=h.indexOf('<button class="tm-sum"');return i<0?c+h:h.slice(0,i)+c+h.slice(i);};
+const _d6Needs19=d6Needs;d6Needs=function(){const out=_d6Needs19();if(!avCanPay())return out;const cur=esc(D.settings.cur);
+ return[...avPend().slice(0,3).map(r=>({ic:I19.cash,cls:"q",t:esc(t("avReqT")).replace("{n}",`<bdi>${esc(r.name||"?")}</bdi>`),s:`<b>${fmt(r.amount)} ${cur}</b>${r.note?` · <bdi>${esc(r.note)}</bdi>`:""}`,lab:r.name||"",open:`avReview(${ja(r.id)})`,btn:t("avReview"),dark:1})),...out];};
+function avReview(id){const r=avReqs().find(x=>x.id===id);if(!r)return;const cur=esc(D.settings.cur);const prev=avOf(r.uid);const tot=avTot(prev);const live=r.st==="ask"&&avCanPay();
+ const paid=r.eid&&D.expenses.find(x=>x.id===r.eid);
+ avOpen(`<div class="sheet fm ds-cs av-sh">${sheetTop(esc(t("avReqT")).replace("{n}",`<bdi>${esc(r.name||"?")}</bdi>`))}
+ <div class="ds-hero one"><div><span class="l">${esc(t("avAsked").replace("{d}",niceDate(r.d)))}</span><b class="v lm">${fmt(r.amount)}</b></div><small class="cu">${cur}</small></div>
+ ${r.note?`<p class="av-note" dir="auto">${esc(r.note)}</p>`:""}
+ <p class="ds-sub">${esc(t("avSoFar").replace("{v}",fmt(tot)+" "+D.settings.cur))} · ${esc(tn("avCount",prev.length))}</p>
+ ${live?`<label class="ds-f av-gap"><span>${t("avAmtPay")}</span><span class="ds-amt"><input id="avPayAmt" class="ds-in" inputmode="decimal" autocomplete="off" value="${esc(String(r3(r.amount)))}"><i>${cur}</i></span></label>
+ <button class="ds-big" id="avGo" onclick="avPay(${ja(id)})">${t("avPayB")}</button><button class="av-no" onclick="avDecline(${ja(id)})">${t("avSayNo")}</button>`
+ :`<p class="av-st ${r.st==="paid"?"ok":"no"}">${r.st==="paid"?esc(t("avDone").replace("{d}",niceDate(paid?paid.date:String(r.dAt||"").slice(0,10)))):r.st==="no"?t("avNo"):t("avWait")}</p>`}</div>`);}
+async function avDecide(id,fn){if(AVBUSY)return;if(!avCanPay())return toast(t("viewOnly"));AVBUSY=true;
+ /* read the newest data first: another phone may have paid or declined this already */
+ if(!SYNC.pending)try{const g=await window.storage.get("tt:data");if(g&&g.value&&!SYNC.pending){const nd=sanitizeData(JSON.parse(g.value));if(JSON.stringify(nd)!==JSON.stringify(D)){D=nd;D.contacts=D.contacts||{};D.products=D.products||[];}}}catch(e){}
+ const r=avReqs().find(x=>x.id===id);if(!r||r.st!=="ask"){AVBUSY=false;closeModal();if(r)toast(r.st==="paid"?t("avPaidOk"):t("avNoOk"));render(true);return;}const snap=clone(D);let msg="";
+ try{msg=fn(r);}catch(e){AVBUSY=false;D=snap;if(e&&e.message)toast(e.message);return;}
+ const ok=await persist();AVBUSY=false;if(!ok){D=snap;return;}closeModal();toast(msg);render(true);}
+function avPay(id){const ai=document.getElementById("avPayAmt");const a=r3(dsN(ai&&ai.value));if(!(a>0)){toast(t("avNeedAmt"));if(ai)ai.focus();return;}
+ if(typeof lockedOn==="function"&&lockedOn(today()))return toast(t("dsLocked"));
+ avDecide(id,r=>{const at=new Date().toISOString();const d=today();const x=avRecord(r.uid,r.name,a,r.note,d,at,"adv_"+r.id);r.st="paid";r.eid=x.id;r.paid=a;r.dAt=at;r.dBy=dsMe();return t("avPaidOk");});}
+function avDecline(id){avDecide(id,r=>{r.st="no";r.dAt=new Date().toISOString();r.dBy=dsMe();return t("avNoOk");});}
+function avRecord(u,name,a,note,d,at,fid){const me=dsMe();const nm=String(name||"").trim();
+ if(fid){const ex=D.expenses.find(x=>x.id===fid);if(ex)return ex;}
+ const x={id:fid||uid(),no:"",date:d,due:"",party:nm,item:T.en.avItem.replace("{n}",nm),desc:t("avItem").replace("{n}",nm),cat:T.en.expCats[9],amount:a,notes:note||"",att:[],by:me,at,adv:u,
+  pays:[{id:uid(),date:d,amount:a,method:"Cash",by:me}]};D.expenses.push(x);return x;}
+/* the owner can also give one directly, from the + menu */
+let AVTOK=0;
+async function avGive(){if(!avCanPay())return toast(t("viewOnly"));const tok=String(++AVTOK);avOpen(`<div class="sheet fm ds-cs av-sh" data-tok="${tok}">${sheetTop(t("avGive"))}<p class="ds-sub">${t("avLoading")}</p></div>`);
+ let mem=[],bad=false;try{const {data,error}=await sb.rpc("team",{b:BIZ.id});if(error||!Array.isArray(data))throw error||new Error("team");mem=data.filter(m=>m&&m.user_id&&m.user_id!==avUid()&&m.role!=="owner");}catch(e){bad=true;}
+ const known={};for(const r of avReqs())if(r.uid&&r.name)known[r.uid]=r.name;for(const x of D.expenses)if(x.adv&&x.party&&!known[x.adv])known[x.adv]=x.party;
+ const L=mem.map(m=>({u:m.user_id,n:known[m.user_id]||m.name||m.display_name||String(m.email||"").split("@")[0]||"?",t:m.email||""}));
+ {const c={};for(const p of L)c[p.n]=(c[p.n]||0)+1;for(const p of L)if(c[p.n]>1&&p.t)p.n=p.t;}const m=document.getElementById("modal");if(!m.classList.contains("on")||!m.querySelector(`.av-sh[data-tok="${tok}"]`))return;
+ if(bad){m.querySelector(".av-sh .ds-sub").textContent=t("avLoadFail");return;}
+ m.innerHTML=`<div class="sheet fm ds-cs av-sh">${sheetTop(t("avGive"))}<p class="ds-sub" style="margin-top:0">${t("avGiveD")}</p>
+ ${L.length?`<div class="ds-f av-gap"><span>${t("avWho")}</span><div class="ds-pay av-who">${L.map((p,i)=>`<button type="button" data-u="${esc(p.u)}" data-n="${esc(p.n)}" title="${esc(p.t||p.n)}" onclick="avPick(this)">${esc(p.n)}</button>`).join("")}</div></div>
+ <label class="ds-f av-gap"><span>${t("avAmt")}</span><span class="ds-amt"><input id="avPayAmt" class="ds-in" inputmode="decimal" autocomplete="off" placeholder="0"><i>${esc(D.settings.cur)}</i></span></label>
+ <label class="ds-f av-gap"><span>${t("avWhy")}</span><input id="avWhy" class="ds-in" maxlength="120" autocomplete="off" placeholder="${t("avWhyPh")}"></label>
+ <button class="ds-big" id="avGo" onclick="avGiveSave()">${t("avRec")}</button>`:`<p class="ds-sub">${t("avNoStaff")}</p>`}</div>`;
+ if(L.length===1)avPick(m.querySelector(".av-who button"));}
+function avPick(b){if(!b)return;b.parentElement.querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b));}
+async function avGiveSave(){if(AVBUSY)return;const b=document.querySelector(".av-who button.on");if(!b)return toast(t("avNeedWho"));const ai=document.getElementById("avPayAmt");const a=r3(dsN(ai&&ai.value));if(!(a>0)){toast(t("avNeedAmt"));if(ai)ai.focus();return;}
+ if(typeof lockedOn==="function"&&lockedOn(today()))return toast(t("dsLocked"));
+ const note=String((document.getElementById("avWhy")||{}).value||"").trim().slice(0,120);AVBUSY=true;const snap=clone(D);avRecord(b.dataset.u,b.dataset.n,a,note,today(),new Date().toISOString());
+ const ok=await persist();AVBUSY=false;if(!ok){D=snap;return;}closeModal();toast(t("avPaidOk"));render(true);}
+const _quickAdd19=quickAdd;quickAdd=function(){_quickAdd19();if(!avCanPay())return;const c=document.querySelector("#modal .tm-add");if(!c||c.querySelector(".av-qa"))return;
+ const html=`<button class="av-qa" onclick="avGive()"><span class="ci">${I19.cash}</span><span><b>${t("avGive")}</b><small>${t("avGiveD")}</small></span></button>`;const q=c.querySelector(".ds-qa");if(q)q.insertAdjacentHTML("afterend",html);else c.insertAdjacentHTML("afterbegin",html);};
+
 /* auto-update: reload when a new version is published */
-const BUILD="b18";
+const BUILD="b19";
 async function checkUpdate(){try{const r=await fetch("version.txt?"+Date.now(),{cache:"no-store"});const v=(await r.text()).trim();if(v&&v!==BUILD){const m=document.getElementById("modal");if(m&&m.classList.contains("on"))return;location.reload();}}catch(e){}}
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"){checkUpdate();try{if(unlocked&&D)dsRoll();}catch(e){}}});setTimeout(checkUpdate,3000);
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
