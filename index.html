@@ -1122,7 +1122,9 @@ body.kb .tm-nav,body.kb .tm-fade{display:none}body.kb .ds-bar{bottom:calc(8px + 
 .v2-close.off{background:#E4E3DC;color:#8B8F82;cursor:default}.v2-close.off .ar{background:#F1F0EA;color:#8B8F82}
 .v2-close.sent{background:var(--greenbg);color:var(--green)}.v2-close.sent .ar{background:var(--green);color:#fff}
 .v2-hint{margin:10px 6px 0;font-size:13px;color:var(--muted);text-align:center}
-[dir=rtl] .v2-step .go svg,[dir=rtl] .v2-close .ar svg,[dir=rtl] .v2-done .ic svg,[dir=rtl] .v2-back svg{transform:scaleX(-1)}
+[dir=rtl] .v2-step .go svg,[dir=rtl] .v2-close .ar svg,[dir=rtl] .v2-done .ic svg,[dir=rtl] .v2-back svg,[dir=rtl] .v2-note svg,[dir=rtl] .v2-chip svg{transform:scaleX(-1)}
+.v2-sum b,.v2-sumrow b,.v2-li .v{direction:ltr;unicode-bidi:isolate}
+body.v2-stp .toast{bottom:calc(196px + env(safe-area-inset-bottom))}
 /* step pages */
 .v2-pg{display:flex;align-items:center;gap:12px;padding-top:4px;margin:6px 2px 0}
 .v2-back{width:44px;height:44px;border-radius:50%;border:0;background:#fff;box-shadow:var(--sh);display:flex;align-items:center;justify-content:center;color:var(--ink);flex:none;cursor:pointer}.v2-back svg{width:20px;height:20px}
@@ -1152,9 +1154,10 @@ body.kb .tm-nav,body.kb .tm-fade{display:none}body.kb .ds-bar{bottom:calc(8px + 
 .v2-rt{position:relative;background:#fff;border:2px solid transparent;border-radius:22px;box-shadow:var(--sh);min-height:112px;font:inherit;color:var(--ink);text-align:start;padding:14px;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start;cursor:pointer;min-width:0}
 .v2-rt .av{width:40px;height:40px;border-radius:12px;background:var(--soft);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px}.v2-rt .av svg{width:20px;height:20px}
 .v2-rt>span:last-child{max-width:100%;min-width:0}
-.v2-rt b{display:block;font-size:16px;font-weight:700;margin-top:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.v2-rt b{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;font-size:16px;font-weight:700;margin-top:10px;overflow:hidden;overflow-wrap:anywhere;line-height:1.25;text-align:start}
 .v2-rt .sb{display:block;font-size:13px;color:var(--muted);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.v2-rt .ow,.v2-rt .sold,.v2-rt .nw{position:absolute;top:12px;inset-inline-end:12px;font-size:12px;font-weight:700;border-radius:999px;padding:3px 8px;font-variant-numeric:tabular-nums;display:flex;align-items:center;gap:4px;max-width:calc(100% - 70px);overflow:hidden;white-space:nowrap}
+.v2-rt .ow,.v2-rt .sold,.v2-rt .nw{position:absolute;top:12px;inset-inline-end:12px;font-size:12px;font-weight:700;border-radius:999px;padding:3px 8px;font-variant-numeric:tabular-nums;display:flex;align-items:center;gap:4px;max-width:calc(100% - 60px);box-sizing:border-box;overflow:hidden;white-space:nowrap}
+.v2-rt .ow bdi,.v2-rt .sold bdi{flex:none;direction:ltr;unicode-bidi:isolate}.v2-rt .ow .w{min-width:0;overflow:hidden;text-overflow:ellipsis}
 .v2-rt .ow{color:var(--amber);background:var(--amberbg)}.v2-rt .sold{color:var(--ink);background:var(--lime);font-weight:800}.v2-rt .sold svg{width:12px;height:12px}
 .v2-rt .nw{top:auto;bottom:12px;background:var(--soft);color:var(--muted)}
 .v2-rt.on{border-color:var(--ink);background:var(--limebg)}
@@ -2873,10 +2876,10 @@ function dsFromRecs(d){const R=dsRecs(d);const b=R.buy;const lb=b||dsLastBuy();
   costs:R.costs.map(x=>({k:x.id,name:String(x.item||x.desc||""),amount:String(num(x.amount)),cat:x.cat||"",rid:x.id,lock:dsOthers(x)?-1:dsForeign(x,d)})),
   sales:R.sales.map(x=>({k:x.id,who:x.party==="Shop sales"?"":String(x.party||""),shop:x.party==="Shop sales",qty:num(x.qty)?String(x.qty):"",amount:String(num(x.amount)),amtSet:!(num(x.qty)>0&&num(x.dprice)>0&&Math.abs(num(x.amount)-Math.round(num(x.qty)*num(x.dprice)*100)/100)<0.005),paid:(x.pays||[]).some(p=>dsOwn(p,d)),rid:x.id,lock:dsOthers(x)?-1:dsForeign(x,d)})),coll:[]};
  const CI=ROLE==="staff"?D.invoices.filter(x=>x&&x.sh):D.invoices;/* a seller only works with collections on bills from the sheets */
- const M={};for(const x of CI)for(const p of (x.pays||[]))if(p&&p.sh===d&&p.c)M[x.party]=r3((M[x.party]||0)+num(p.amount));
+ const M={};for(const x of CI)for(const p of (x.pays||[]))if(p&&p.sh===d&&p.c){const w=rsK(x.party);M[w]=r3((M[w]||0)+num(p.amount));}
  s.coll=Object.entries(M).map(([who,a])=>({k:uid(),who,amount:String(a)}));
  const sp=D.settings&&D.settings.sellPrice;const rp=R.sales.find(x=>num(x.qty)>0&&num(x.dprice)>0);
- if(rp){s.price=String(rp.dprice);}else if(sp&&sp.d===d&&num(sp.p)>0){s.price=String(sp.p);}else if(sp&&num(sp.p)>0&&!R.sales.length){s.price=String(sp.p);s.priceOld=sp.d<d;}else s.price="";
+ if(sp&&sp.d===d&&num(sp.p)>0){s.price=String(sp.p);}else if(rp){s.price=String(rp.dprice);}else if(sp&&num(sp.p)>0&&!R.sales.length){s.price=String(sp.p);s.priceOld=sp.d<d;}else s.price="";
  s.has=!!(b||R.costs.length||R.sales.length||s.coll.length);
  /* what this sheet was built from: saving only changes or removes these, never what someone else added since */
  s.seen={e:[...(b?[b.id]:[]),...R.costs.map(x=>x.id)],i:R.sales.map(x=>x.id),c:CI.flatMap(x=>(x.pays||[]).filter(p=>p&&p.sh===d&&p.c).map(p=>p.id))};
@@ -2889,11 +2892,11 @@ function dsEnsure(){if(!D)return;if(SH&&(SH.dirty||DSBUSY))return;const d=SH&&!(
 /* what each part adds up to */
 function dsBuyAmt(){const b=SH.buy;return b.paidSet?r3(dsN(b.paid)):r3(dsN(b.qty)*dsN(b.price));}
 function dsCalc(){const buy=dsBuyAmt(),costs=r3(SH.costs.reduce((a,r)=>a+dsN(r.amount),0)),sold=r3(SH.sales.reduce((a,r)=>a+dsN(r.amount),0)),coll=r3(SH.coll.reduce((a,r)=>a+dsN(r.amount),0));return{buy,costs,out:r3(buy+costs),sold,coll,profit:r3(sold-buy-costs)};}
-function dsCusts(){const M={};for(const x of dsInv()){if(!x.party||x.party==="Shop sales")continue;const o=M[x.party]=M[x.party]||{name:x.party,owed:0,n:0,last:"",old:""};const r=r3(num(x.amount)-paidOf(x));if(r>0.004){o.owed=r3(o.owed+r);o.n++;if(!o.old||String(x.date)<o.old)o.old=x.date;}if(String(x.date)>o.last)o.last=x.date;}
+function dsCusts(){const M={};for(const x of dsInv()){if(!x.party||x.party==="Shop sales")continue;const pk=rsK(x.party);const o=M[pk]=M[pk]||{name:pk,owed:0,n:0,last:"",old:""};const r=r3(num(x.amount)-paidOf(x));if(r>0.004){o.owed=r3(o.owed+r);o.n++;if(!o.old||String(x.date)<o.old)o.old=x.date;}if(String(x.date)>o.last)o.last=x.date;}
  return Object.values(M).sort((a,b)=>((b.owed>0.004)-(a.owed>0.004))||(b.owed-a.owed)||String(b.last).localeCompare(String(a.last)));}
 /* what a customer owes before today's sheet collects anything */
-function dsOwedBefore(who,d){let o=0;for(const x of dsInv()){if(x.party!==who)continue;const pre=(x.pays||[]).filter(p=>!(p&&p.sh===d&&p.c)).reduce((a,p)=>a+num(p.amount),0);o+=Math.max(0,num(x.amount)-pre);}return r3(o);}
-function dsOldestLeft(who,d){const L=dsInv().filter(x=>x.party===who&&!(x.sh===d&&x.shk==="sale")).map(x=>({d:x.date,r:r3(num(x.amount)-(x.pays||[]).filter(p=>!(p&&p.sh===d&&p.c)).reduce((a,p)=>a+num(p.amount),0))})).filter(x=>x.r>0.004).sort((a,b)=>String(a.d).localeCompare(String(b.d)));return L.length?L[0].r:0;}
+function dsOwedBefore(who,d){let o=0;const K=rsKeys(who);for(const x of dsInv()){if(!K.includes(x.party))continue;const pre=(x.pays||[]).filter(p=>!(p&&p.sh===d&&p.c)).reduce((a,p)=>a+num(p.amount),0);o+=Math.max(0,num(x.amount)-pre);}return r3(o);}
+function dsOldestLeft(who,d){const K=rsKeys(who);const L=dsInv().filter(x=>K.includes(x.party)&&!(x.sh===d&&x.shk==="sale")).map(x=>({d:x.date,r:r3(num(x.amount)-(x.pays||[]).filter(p=>!(p&&p.sh===d&&p.c)).reduce((a,p)=>a+num(p.amount),0))})).filter(x=>x.r>0.004).sort((a,b)=>String(a.d).localeCompare(String(b.d)));return L.length?L[0].r:0;}
 function dsLastPriceUnused(who){let best=null;for(const x of dsInv()){if(x.party!==who||!(num(x.qty)>0)||!(num(x.amount)>0))continue;if(!best||String(x.date)>String(best.date))best=x;}return best?Math.round(num(best.amount)/num(best.qty)*1000)/1000:0;}
 function dsRecentCusts(){const M={};for(const x of dsInv()){if(!x.party||x.party==="Shop sales")continue;if(!M[x.party]||String(x.date)>M[x.party])M[x.party]=String(x.date);}return Object.keys(M).sort((a,b)=>M[b].localeCompare(M[a]));}
 const DS_CDEF=[["dsCWork",5],["dsCFuel",4],["dsCBags",8]];
@@ -2950,9 +2953,9 @@ function dsSummary(d){const fm=v=>fmt(v).replace(/\.00$/,"");const s=dsFromRecs(
  if(s.coll.length)L.push("",`💰 ${t("dsCollT")}: ${s.coll.map(r=>`${rsName(r.who)}${lang==="ar"?"\u200F":""} ${fm(dsN(r.amount))}`).join(" · ")} = ${fm(c.coll)}`);
  const ow=r3(dsCusts().reduce((a,p)=>a+p.owed,0));if(ow>0)L.push(`${t("dsOweAll")}: ${fm(ow)} ${cur}`);
  return (lang==="ar"?L.map(l=>l?"\u200F"+l:l):L).join("\n");}
-async function dsShare(){if(!SH)return;if(SH.dirty)return toast(t("dsSaveFirst"));const text=dsSummary(SH.date);
- try{if(navigator.share){await navigator.share({text});return;}}catch(e){if(e&&e.name==="AbortError")return;}
- try{window.open("https://wa.me/?text="+encodeURIComponent(text),"_blank","noopener");}catch(e){}}
+async function dsShare(){if(!SH)return false;if(SH.dirty){toast(t("dsSaveFirst"));return false;}const text=dsSummary(SH.date);
+ try{if(navigator.share){await navigator.share({text});return true;}}catch(e){if(e&&e.name==="AbortError")return false;}
+ try{window.open("https://wa.me/?text="+encodeURIComponent(text),"_blank","noopener");return true;}catch(e){return false;}}
 function dsPaint(focus){const w=document.getElementById("dsWrap");if(!w)return render();w.innerHTML=dsBody();setTimeout(dsFit,0);const bar=document.getElementById("dsBar");if(bar)bar.outerHTML=dsBarHTML();else if(DSOWN){const f=document.querySelector("#modal .ds-mfoot");if(f)f.innerHTML=dsBarHTML();}
  if(focus)setTimeout(()=>{const e=document.getElementById(focus);if(e){e.focus();try{e.scrollIntoView({block:"center",behavior:"smooth"});}catch(x){}}},30);}
 function dsBar(){const bar=document.getElementById("dsBar");if(bar)bar.outerHTML=dsBarHTML();}
@@ -2964,7 +2967,7 @@ function dsTot(){const c=dsCalc();const set=(id,v)=>{const e=document.getElement
  const bp=document.getElementById("dsBuyPaid");if(bp&&!SH.buy.paidSet&&document.activeElement!==bp)bp.value=c.buy?String(c.buy):"";
  const bar=document.getElementById("dsBar");if(bar&&!bar.classList.contains("dirty"))dsBar();dsFit();}
 function dsDirty(){SH.dirty=true;dsStash();}
-function dsSet(sec,k,f,v){if(!SH||DSBUSY)return;if(sec==="day"){SH.price=v;SH.priceOld=false;const p=dsN(v);for(const r of SH.sales){if(r.lock||r.amtSet||!(dsN(r.qty)>0))continue;r.amount=p?String(Math.round(dsN(r.qty)*p*100)/100):"";r.ch=1;const a=document.getElementById("dsa-"+r.k);if(a)a.value=r.amount;dsHint(r);}dsDirty();dsTot();return;}
+function dsSet(sec,k,f,v){if(!SH||DSBUSY)return;if(sec==="day"){SH.price=v;SH.priceOld=false;SH.priceSet=true;const p=dsN(v);for(const r of SH.sales){if(r.lock||r.amtSet||!(dsN(r.qty)>0))continue;r.amount=p?String(Math.round(dsN(r.qty)*p*100)/100):"";r.ch=1;const a=document.getElementById("dsa-"+r.k);if(a)a.value=r.amount;dsHint(r);}dsDirty();dsTot();return;}
  const o=sec==="buy"?SH.buy:(SH[sec]||[]).find(r=>r.k===k);if(!o)return;o[f]=v;o.ch=1;
  if(sec==="buy"&&f==="paid")o.paidSet=String(v).trim()!==""&&Math.abs(dsN(v)-r3(dsN(o.qty)*dsN(o.price)))>0.004;
  if(sec==="sales"&&f==="amount")o.amtSet=String(v).trim()!=="";
@@ -2990,6 +2993,7 @@ async function dsSave(stay){if(DSBUSY||!SH)return false;const d=SH.date;if(dsRO(
  DSBUSY=true;dsBar();
  /* pull the newest data first so a teammate's entries and payments are counted */
  if(!SYNC.pending)try{const r=await window.storage.get("tt:data");if(r&&r.value&&!SYNC.pending){const nd=sanitizeData(JSON.parse(r.value));if(JSON.stringify(nd)!==JSON.stringify(D)){D=nd;D.contacts=D.contacts||{};D.products=D.products||[];}}}catch(e){}
+ {const sp=D.settings&&D.settings.sellPrice;if(!SH.priceSet&&sp&&sp.d===d&&num(sp.p)>0&&r3(num(sp.p))!==r3(dsN(SH.price))){SH.price=String(sp.p);SH.priceOld=false;}}
  const snap=clone(D);const me=dsMe(),at=new Date().toISOString();let photoFail=false;
  const seen=SH.seen||{e:[],i:[],c:[]};const SE=new Set(seen.e),SI=new Set(seen.i),SC=new Set(seen.c);
  /* payments keep their id when a day is saved again, so two phones saving the same day never count a payment twice */
@@ -3016,7 +3020,7 @@ async function dsSave(stay){if(DSBUSY||!SH)return false;const d=SH.date;if(dsRO(
   const bName=String(b.name||"").trim();
   for(const r of SH.sales){const old=find(D.invoices,r.rid);if(old&&(r.lock||!r.ch)){keepI.add(old.id);continue;}const a=r3(dsN(r.amount));if(a<=0)continue;
    let x=old;if(!x){x={id:uid(),no:nextNo(),date:d,due:"",notes:"",by:me,at,sh:d,shk:"sale"};D.invoices.push(x);}
-   const q=r3(dsN(r.qty));const party=r.shop?"Shop sales":String(r.who||"").trim();const desc=q?[bName,fq(q)+" kg"].filter(Boolean).join(" "):(bName||(r.shop?T.en.qS:""));
+   const q=r3(dsN(r.qty));const party=r.shop?"Shop sales":rsK(String(r.who||"").trim());const desc=q?[bName,fq(q)+" kg"].filter(Boolean).join(" "):(bName||(r.shop?T.en.qS:""));
    const op=ownPay(x);const fp=keepPays(x);const fs=r3(fp.reduce((q2,p)=>q2+num(p.amount),0));if(a<fs-0.004)throw fail(t("dsLockedRow"));
    const dp=r3(dsN(SH.price));const follows=q>0&&dp>0&&!r.amtSet;
    Object.assign(x,{date:d,party,desc,cat:x.cat||T.en.salesCats[0],amount:a,qty:q,unit:"kg",price:q?Math.round(a/q*1000)/1000:0,dprice:q?dp:0,items:[{d:desc||T.en.qS,q:1,p:a}]});
@@ -3027,12 +3031,12 @@ async function dsSave(stay){if(DSBUSY||!SH)return false;const d=SH.date;if(dsRO(
   /* money collected for old bills: take back the collections this sheet showed, then pay oldest bills first */
   const oldC=new Map();for(const x of D.invoices)for(const p of (x.pays||[]))if(p&&p.sh===d&&p.c&&SC.has(p.id)){if(!oldC.has(x.id))oldC.set(x.id,[]);oldC.get(x.id).push(p);}
   for(const x of D.invoices)if(oldC.has(x.id))x.pays=x.pays.filter(p=>!(p&&p.sh===d&&p.c&&SC.has(p.id)));
-  for(const r of SH.coll){let a=r3(dsN(r.amount));if(a<=0)continue;const open=dsInv().filter(x=>x.party===r.who&&r3(num(x.amount)-paidOf(x))>0.004).sort((p,q)=>(oldC.has(q.id)?1:0)-(oldC.has(p.id)?1:0)||String(p.date).localeCompare(String(q.date))||String(p.at||"").localeCompare(String(q.at||"")));/* bills this money already paid come first, so saving again does not move it */
+  for(const r of SH.coll){let a=r3(dsN(r.amount));if(a<=0)continue;const RK=rsKeys(r.who);const open=dsInv().filter(x=>RK.includes(x.party)&&r3(num(x.amount)-paidOf(x))>0.004).sort((p,q)=>(oldC.has(q.id)?1:0)-(oldC.has(p.id)?1:0)||String(p.date).localeCompare(String(q.date))||String(p.at||"").localeCompare(String(q.at||"")));/* bills this money already paid come first, so saving again does not move it */
    const owed=r3(open.reduce((q,x)=>q+num(x.amount)-paidOf(x),0));if(a>owed+0.004)throw fail(t("dsTooMuch").replace("{n}",tx(r.who)).replace("{v}",fmt(owed)+" "+D.settings.cur));
    for(const x of open){if(a<=0.0005)break;const take=Math.min(a,r3(num(x.amount)-paidOf(x)));const prev=(oldC.get(x.id)||[]).shift();x.pays=x.pays||[];x.pays.push(pay(take,1,prev));a=r3(a-take);}}
   /* the notebook photo goes with what was bought, or the first cost */
   if(SH.att.length){const tgt=buyRec||firstCost;if(tgt){tgt.att=tgt.att||[];for(const pa of SH.att){try{await window.storage.set(ATT+pa.id,pa.d,true);tgt.att.push(pa.id);}catch(e){photoFail=true;}}}else photoFail=true;}
-  {const p=r3(dsN(SH.price));const sp=D.settings.sellPrice;if(p>0&&(!sp||!sp.d||sp.d<=d)&&!(sp&&sp.d===d&&r3(num(sp.p))===p))D.settings.sellPrice={d,p,by:me,n:myName()||""};}
+  {const p=r3(dsN(SH.price));const sp=D.settings.sellPrice;if(SH.priceSet&&!SH.priceOld&&p>0&&(!sp||!sp.d||sp.d<=d)&&!(sp&&sp.d===d&&r3(num(sp.p))===p))D.settings.sellPrice={d,p,by:me,n:myName()||""};}
   const ok=await persist();if(!ok)throw fail("");
  }catch(e){D=snap;DSBUSY=false;if(e&&e.ds&&e.message)toast(e.message);else if(!(e&&e.ds))toast(t("slNotSaved"));if(DSOWN||document.getElementById("dsWrap"))dsPaint();else dsBar();return false;}
  const wasAuto=SH.auto;DSBUSY=false;try{localStorage.removeItem(dsKey(d));}catch(e){}delete DSATT[d];pendingAtt=[];SH=dsFromRecs(d);SH.auto=wasAuto||d===today();
@@ -3043,8 +3047,8 @@ function dsCustView(){const L=dsCusts();const cur=esc(D.settings.cur);const tot=
  <div class="ds-hero one"><div><span class="l">${t("dsCustOwe")}</span><b class="v lm">${fmt(tot)}</b></div><small class="cu">${cur}</small></div>
  ${L.length?`<div class="tm-card ds-list">${L.map(p=>`<button class="ds-cu" onclick="dsCust(${ja(p.name)})"><span class="av">${esc(ini(rsName(p.name)))}</span><span class="n"><b>${esc(rsName(p.name))}</b><small>${p.owed>0.004?esc(t("dsBillN").replace("{n}",p.n))+" · ":""}${esc(t("dsLastBill").replace("{d}",niceDate(p.last)))}</small></span><span class="v${p.owed>0.004?"":" ok"}">${p.owed>0.004?fmt(p.owed):t("dsPaidUp")}</span>${I18.chev}</button>`).join("")}</div>`:`<p class="st-empty tm-card">${t("dsNoCust")}</p>`}`;}
 function dsCust(name){const m=document.getElementById("modal");const cur=esc(D.settings.cur);const p=dsCusts().find(x=>x.name===name);if(!p)return;
- const bills=dsInv().filter(x=>x.party===name&&r3(num(x.amount)-paidOf(x))>0.004).sort((a,b)=>String(a.date).localeCompare(String(b.date)));
- const pays=dsInv().filter(x=>x.party===name).flatMap(x=>(x.pays||[]).map(q=>({d:q.date,a:num(q.amount)}))).sort((a,b)=>String(b.d).localeCompare(String(a.d))).slice(0,6);
+ const NK=rsKeys(name);const bills=dsInv().filter(x=>NK.includes(x.party)&&r3(num(x.amount)-paidOf(x))>0.004).sort((a,b)=>String(a.date).localeCompare(String(b.date)));
+ const pays=dsInv().filter(x=>NK.includes(x.party)).flatMap(x=>(x.pays||[]).map(q=>({d:q.date,a:num(q.amount)}))).sort((a,b)=>String(b.d).localeCompare(String(a.d))).slice(0,6);
  m.innerHTML=`<div class="sheet fm ds-cs">${sheetTop(esc(rsName(name)))}
  <div class="ds-hero one"><div><span class="l">${p.owed>0.004?t("gpOwes").replace("{v}",""):t("dsPaidUp")}</span><b class="v${p.owed>0.004?" ng":" lm"}">${fmt(p.owed)}</b></div><small class="cu">${cur}</small></div>
  ${p.owed>0.004&&ROLE==="staff"?`<button class="ds-big" onclick="dsTheyPaid(${ja(name)})">💰 ${t("dsTheyPaid")}</button>`:""}
@@ -3250,12 +3254,14 @@ function rsOf(key){if(!key)return null;for(const r of rsSaved())if(r.key===key||
 function rsName(key){if(key==="Shop sales")return t("v2Shop");const r=rsOf(key);if(!r)return tx(key);return lang==="ar"?(r.ar||r.en||key):(r.en||r.ar||key);}
 function rsSub(key){const r=rsOf(key);if(!r)return"";const a=lang==="ar"?r.en:r.ar;return a&&a!==rsName(key)?a:"";}
 const rsKeys=key=>{const r=rsOf(key);return r?[r.key,...(r.alias||[])]:[key];};
+const rsK=p=>{const r=rsOf(p);return r?r.key:p;};
 /* ---------- small helpers ---------- */
-let SV="";let V2E=null;
+let SV="";let V2E=null;let V2B=null;
 const v2PK=d=>"tamm:dsv:"+((typeof BIZ!=="undefined"&&BIZ&&BIZ.id)||"")+":"+(dsMe()||"")+":"+d;
 function v2Passed(d){try{return JSON.parse(localStorage.getItem(v2PK(d))||"{}")||{};}catch(e){return{};}}
 function v2Pass(k,v){if(!SH)return;const o=v2Passed(SH.date);if(v===0)delete o[k];else o[k]=1;try{localStorage.setItem(v2PK(SH.date),JSON.stringify(o));}catch(e){}}
 const v2Cur=()=>esc(D.settings.cur);
+const v2Pill=(k,v)=>{const [a,b]=t(k).split("{v}");return`${a&&a.trim()?`<span class="w">${esc(a.trim())}</span>`:""}<bdi>${esc(v)}</bdi>${b&&b.trim()?`<span class="w">${esc(b.trim())}</span>`:""}`;};
 const v2Kg=v=>fq(v)+" "+t("dsKgU");
 const v2RO=()=>!SH||dsRO(SH.date);
 const v2Unsaved=r=>!r.rid||!!r.ch;
@@ -3268,13 +3274,16 @@ function v2Warn(){if(!SH||!SH.dirty||v2RO())return"";return`<div class="v2-warn"
 let V2FOOT="";/* the step page's footer sits outside <main> for a seller, so it stays fixed at the bottom */
 function v2Foot(label,val,btn,go){const h=v2FootH(label,val,btn,go);if(DSOWN)return h;V2FOOT=h;return"";}
 function v2FootH(label,val,btn,go){return`<div class="v2-foot"><div class="v2-sum"><span>${label}</span><b>${val}</b></div><button class="v2-done" onclick="${go}">${btn}<span class="ic">${I20.chev}</span></button></div>`;}
-function v2Go(v){if(v&&dsRoll())return;if(v&&!SH)return;SV=v||"";v2Close();if(DSOWN){dsPaint();try{document.querySelector("#modal .sheet").scrollTop=0;}catch(e){}return;}render();try{window.scrollTo({top:0});}catch(e){}}
-async function v2Save(after){if(DSBUSY||!SH)return false;document.body.classList.add("v2-busy");let ok=false;try{ok=await dsSave(true);}finally{document.body.classList.remove("v2-busy");}if(ok&&after)after();return ok;}
+function v2Go(v){if(v&&dsRoll())return;if(v&&!SH)return;SV=v||"";v2Close();if(DSOWN){dsPaint();try{document.querySelector("#modal .sheet").scrollTop=0;}catch(e){}return;}render();try{window.scrollTo({top:0});document.body.scrollTop=0;document.documentElement.scrollTop=0;}catch(e){}}
+async function v2Save(after){if(!SH)return false;if(v2Busy())return false;const tok=V2E;document.body.classList.add("v2-busy");let ok=false;try{ok=await dsSave(true);}finally{document.body.classList.remove("v2-busy");}
+ if(ok){const P=v2Passed(SH.date);if(P.closed)v2Pass("closed",0);}if(ok&&after&&V2E===tok)after();return ok;}
+const v2Stale=()=>{if(V2E&&V2E.d&&SH&&V2E.d!==SH.date){v2Close();return true;}return false;};
 /* ---------- the bottom sheet used by every step ---------- */
-function v2Open(html,cls){let o=document.getElementById("v2s");if(!o){o=document.createElement("div");o.id="v2s";document.body.appendChild(o);}
+function v2Busy(){if(DSBUSY){toast(t("dsSaving"));return true;}return false;}
+function v2Open(html,cls){if(v2Busy())return;let o=document.getElementById("v2s");if(!o){o=document.createElement("div");o.id="v2s";document.body.appendChild(o);}
  o.innerHTML=`<div class="dim" onclick="v2Close()"></div><div class="sh ${cls||""}" role="dialog" aria-modal="true">${html}</div>`;o.classList.add("on");document.body.classList.add("v2-open");
  setTimeout(()=>{const f=o.querySelector("[data-af]");if(f){try{f.focus({preventScroll:true});}catch(e){f.focus();}}},60);}
-function v2Close(){const o=document.getElementById("v2s");if(o){o.classList.remove("on");o.innerHTML="";}document.body.classList.remove("v2-open");V2E=null;}
+function v2Close(){const o=document.getElementById("v2s");if(o){o.classList.remove("on");o.innerHTML="";}document.body.classList.remove("v2-open");V2E=null;V2B=null;}
 addEventListener("keydown",e=>{if(e.key==="Escape"&&document.body.classList.contains("v2-open")){e.stopPropagation();v2Close();}},true);
 function v2Head(title,sub,icon){return`<div class="v2-sht">${icon?`<span class="v2-shi">${icon}</span>`:""}<div class="tt"><h2>${title}</h2>${sub?`<span class="sub">${sub}</span>`:""}</div><button class="v2-x" aria-label="${t("close")}" onclick="v2Close()">${I20.x}</button></div>`;}
 const v2In=(id,val,ph,on,extra)=>`<input id="${id}" class="v2-in" type="text" inputmode="decimal" autocomplete="off" value="${esc(val)}" placeholder="${esc(ph||"0")}" oninput="${on||""}"${extra||""}>`;
@@ -3316,15 +3325,14 @@ function v2PriceSheet(){if(!SH||v2RO())return;if(dsRoll())return;const sp=D.sett
  <button class="v2-done" id="v2PGo" onclick="v2PriceUse()">${I20.check}<span id="v2PL">${dsN(cur0)>0?esc(t("v2UseP").replace("{p}",fq2(dsN(cur0)))):t("v2SaveB")}</span></button>`);}
 function v2PriceLive(){const p=dsN(v2Val("v2P"));const l=document.getElementById("v2PL");if(l)l.textContent=p>0?t("v2UseP").replace("{p}",fq2(p)):t("v2SaveB");document.querySelectorAll("#v2s .v2-chip").forEach(b=>b.classList.toggle("on",Math.abs(dsN(b.textContent.split(" ")[0])-p)<0.0005));}
 function v2PriceChip(v){const e=document.getElementById("v2P");if(e)e.value=String(v);v2PriceLive();}
-function v2PriceUse(){const p=r3(dsN(v2Val("v2P")));if(!(p>0)){toast(t("v2NeedP"));const e=document.getElementById("v2P");if(e)e.focus();return;}
+function v2PriceUse(){if(v2Busy())return;const p=r3(dsN(v2Val("v2P")));if(!(p>0)){toast(t("v2NeedP"));const e=document.getElementById("v2P");if(e)e.focus();return;}
  dsSet("day","","price",String(p));v2Save(()=>{v2Close();});}
 /* ---------- step 1: what was bought ---------- */
-let V2B=null;
 function v2BuyOpts(){const names=[],froms=[];const L=D.expenses.filter(x=>x&&x.shk==="buy").sort((a,b)=>String(b.date).localeCompare(String(a.date)));
  for(const x of L){const n=String(x.item||"").trim();if(n&&!names.some(m=>m.toLowerCase()===n.toLowerCase())&&names.length<3)names.push(n);const f=String(x.party||"").trim();if(f&&!froms.includes(f)&&froms.length<4)froms.push(f);}
  for(const k of ["v2Chicken","v2Liver"]){const n=t(k);if(!names.some(m=>v2Norm(m)===v2Norm(T.en[k])||v2Norm(m)===v2Norm(T.ar[k])))names.push(n);}
  return{names:names.slice(0,4),froms};}
-function v2BuySheet(){if(!SH)return;if(dsRoll())return;const b=SH.buy;V2B={name:b.name||"",qty:b.qty||"",price:b.price||"",paid:b.paidSet?b.paid:"",paidSet:!!b.paidSet,from:b.from||"",oname:false,ofrom:false};
+function v2BuySheet(){if(!SH)return;if(dsRoll())return;const b=SH.buy;V2B={d:SH.date,name:b.name||"",qty:b.qty||"",price:b.price||"",paid:b.paidSet?b.paid:"",paidSet:!!b.paidSet,from:b.from||"",oname:false,ofrom:false};
  const o=v2BuyOpts();if(V2B.name&&!o.names.some(n=>n===V2B.name))V2B.oname=true;if(V2B.from&&!o.froms.includes(V2B.from))V2B.ofrom=true;if(!V2B.name&&!b.rid)V2B.name=o.names[0]||t("v2Chicken");v2BuyPaint(true);}
 function v2BuyPaint(first){const B=V2B;if(!B)return;const lk=v2RO()||SH.buy.lock===-1;const dis=lk?" disabled":"";const o=v2BuyOpts();const cur=v2Cur();
  const calc=r3(dsN(B.qty)*dsN(B.price));
@@ -3347,7 +3355,7 @@ function v2BuyLive(){const B=V2B;const calc=r3(dsN(B.qty)*dsN(B.price));const x=
  if(x)x.innerHTML=dsN(B.qty)&&dsN(B.price)?esc(fq(dsN(B.qty))+" × "+fq(dsN(B.price))):"&nbsp;";if(c)c.textContent=fmt(calc);if(p)p.placeholder=calc?String(calc):"0.00";}
 function v2BuyName(n){if(!V2B)return;if(n===null){V2B.oname=true;if(!V2B.name||v2BuyOpts().names.includes(V2B.name))V2B.name="";v2BuyPaint();setTimeout(()=>{const e=document.getElementById("v2BN");if(e)e.focus();},30);return;}V2B.oname=false;V2B.name=n;v2BuyPaint();}
 function v2BuyFrom(n){if(!V2B)return;if(n===null){V2B.ofrom=true;if(v2BuyOpts().froms.includes(V2B.from))V2B.from="";v2BuyPaint();setTimeout(()=>{const e=document.getElementById("v2BF");if(e)e.focus();},30);return;}V2B.ofrom=false;V2B.from=V2B.from===n?"":n;v2BuyPaint();}
-function v2BuyDone(){const B=V2B;if(!B||!SH)return;const b=SH.buy;const nb={name:String(B.name||"").trim(),qty:String(B.qty||"").trim(),price:String(B.price||"").trim(),from:String(B.from||"").trim()};
+function v2BuyDone(){const B=V2B;if(!B||!SH||v2Busy())return;if(B.d!==SH.date){v2Close();return;}const b=SH.buy;const nb={name:String(B.name||"").trim(),qty:String(B.qty||"").trim(),price:String(B.price||"").trim(),from:String(B.from||"").trim()};
  const calc=r3(dsN(nb.qty)*dsN(nb.price));const paidSet=B.paidSet&&String(B.paid).trim()!==""&&Math.abs(dsN(B.paid)-calc)>0.004;
  const same=nb.name===String(b.name||"")&&dsN(nb.qty)===dsN(b.qty)&&dsN(nb.price)===dsN(b.price)&&nb.from===String(b.from||"")&&paidSet===!!b.paidSet&&(!paidSet||dsN(B.paid)===dsN(b.paid));
  const next=()=>{v2Pass("buy");v2Close();v2Go("costs");};
@@ -3361,9 +3369,9 @@ function v2CostExtra(){const out=[];const seen=new Set();const L=D.expenses.filt
  for(const r of (SH?SH.costs:[])){const n=String(r.name||"").trim();const k=v2Norm(n);if(n&&!seen.has(k)&&!v2CostTile(n)&&out.length<5){seen.add(k);out.push(n);}}return out;}
 function v2CostsOf(match){return SH.costs.filter(r=>match(String(r.name||"").trim()));}
 function v2Costs(){const lk=v2RO(),cur=v2Cur(),c=dsCalc();
- const tile=(key,label,icon,match,on)=>{const a=r3(v2CostsOf(match).reduce((q,r)=>q+dsN(r.amount),0));return`<button class="v2-tile${a>0?" on":""}" onclick="${on}"${lk?" disabled":""}>${a>0?`<span class="amt">${esc(fq(a))}</span>`:""}<span class="ti">${icon}</span><b>${esc(label)}</b></button>`;};
+ const tile=(key,label,icon,match,on)=>{const a=r3(v2CostsOf(match).reduce((q,r)=>q+dsN(r.amount),0));return`<button class="v2-tile${a>0?" on":""}" onclick="${on}"${lk?" disabled":""}>${a>0?`<span class="amt">${esc(fq(a))}</span>`:""}<span class="ti">${icon}</span><b dir="auto">${esc(label)}</b></button>`;};
  const tiles=V2C.map(cc=>tile(cc[0],t(cc[1]),I20[cc[3]],n=>v2CostTile(n)===cc,`v2CostSheet('${cc[0]}')`)).join("")+v2CostExtra().map(n=>tile("",n,I20.dots,m=>v2Norm(m)===v2Norm(n),`v2CostSheet('',null,${ja(n)})`)).join("")+(lk?"":`<button class="v2-tile dash" onclick="v2CostSheet('')"><span class="ti">${I20.plus}</span><b>${t("v2Other")}</b></button>`);
- const row=r=>{const cc=v2CostTile(r.name);return`<button class="v2-li" onclick="v2CostSheet('',${ja(r.k)})"${lk?" disabled":""}><span class="av">${cc?I20[cc[3]]:I20.dots}</span><span class="tx"><b>${esc(r.name||t("dsOtherCost"))}</b><span>${r.lock?esc(t("v2Locked")):v2Unsaved(r)?`<i class="v2-ns">${t("v2NotSaved")}</i>`:t("v2Cash")}</span></span><span class="v">${fmt(dsN(r.amount))}</span></button>`;};
+ const row=r=>{const cc=v2CostTile(r.name);return`<button class="v2-li" onclick="v2CostSheet('',${ja(r.k)})"${lk?" disabled":""}><span class="av">${cc?I20[cc[3]]:I20.dots}</span><span class="tx"><b dir="auto">${esc(r.name||t("dsOtherCost"))}</b><span>${r.lock?esc(t("v2Locked")):v2Unsaved(r)?`<i class="v2-ns">${t("v2NotSaved")}</i>`:t("v2Cash")}</span></span><span class="v">${fmt(dsN(r.amount))}</span></button>`;};
  return`${v2Top(2,t("v2S2"),esc(t("v2StepN").replace("{n}",2)))}${v2Warn()}
  ${lk?"":`<p class="v2-sub">${t("v2TapCost")}</p>`}<div class="v2-grid">${tiles}</div>
  ${SH.costs.length?`<div class="v2-h"><b>${t("v2CostsToday")}</b><span>${SH.costs.length}</span></div><div class="v2-list">${SH.costs.map(row).join("")}</div>`:""}
@@ -3371,7 +3379,7 @@ function v2Costs(){const lk=v2RO(),cur=v2Cur(),c=dsCalc();
 function v2Next(k,to){const go=()=>{v2Pass(k);v2Go(to);};if(SH&&SH.dirty&&!v2RO())return v2Save(go);go();}
 function v2CostSheet(key,k,name){if(!SH||v2RO())return;if(dsRoll())return;const r=k?SH.costs.find(x=>x.k===k):null;if(k&&!r)return;
  const cc=r?v2CostTile(r.name):key?V2C.find(c=>c[0]===key):null;const nm=r?String(r.name||""):cc?t(cc[1]):(name||"");const free=!cc&&!name&&(!r||!v2CostTile(r.name));
- V2E={sec:"costs",k:r?r.k:null,cat:cc?T.en.expCats[cc[2]]:(r&&r.cat)||""};
+ V2E={d:SH.date,sec:"costs",k:r?r.k:null,cat:cc?T.en.expCats[cc[2]]:(r&&r.cat)||""};
  const lastX=D.expenses.filter(x=>x&&x.shk==="cost"&&x.sh!==SH.date&&v2Norm(x.item)===v2Norm(nm)&&nm).sort((a,b)=>String(b.date).localeCompare(String(a.date)))[0];const last=lastX?r3(num(lastX.amount)):0;
  const ro=r&&r.lock;
  v2Open(`${v2Head(free&&!r?t("v2Other"):esc(nm||t("dsOtherCost")),t("v2HowMuch"),cc?I20[cc[3]]:I20.dots)}
@@ -3380,19 +3388,19 @@ function v2CostSheet(key,k,name){if(!SH||v2RO())return;if(dsRoll())return;const 
  ${last>0&&!ro?`<div class="v2-chips"><button class="v2-chip" onclick="document.getElementById('v2CA').value='${last}'">${esc(fq(last))} <small>${t("v2LastTime")}</small></button></div>`:""}
  ${ro?`<p class="v2-lk">${r.lock===-1?t("dsByOther"):t("dsLockedRow")}</p>`:`<button class="v2-done" id="v2CGo" onclick="v2CostAdd()">${r?I20.check+t("v2SaveB"):I20.plus+`<span id="v2CL">${esc(t("v2AddX").replace("{n}",nm||t("v2Other")))}</span>`}</button>${r?`<button class="v2-rm" onclick="v2Remove('costs',${ja(r.k)})">${t("v2Remove")}</button>`:""}`}`,"cost");}
 function v2CostLive(){const l=document.getElementById("v2CL");if(l)l.textContent=t("v2AddX").replace("{n}",v2Val("v2CN").trim()||t("v2Other"));}
-function v2CostAdd(){if(!SH||!V2E)return;const nm=String(v2Val("v2CN")||"").trim()||t("dsOtherCost");const a=r3(dsN(v2Val("v2CA")));if(!(a>0)){toast(t("avNeedAmt"));const e=document.getElementById("v2CA");if(e)e.focus();return;}
+function v2CostAdd(){if(!SH||!V2E||v2Busy()||v2Stale())return;const nm=String(v2Val("v2CN")||"").trim()||t("dsOtherCost");const a=r3(dsN(v2Val("v2CA")));if(!(a>0)){toast(t("avNeedAmt"));const e=document.getElementById("v2CA");if(e)e.focus();return;}
  let r=V2E.k?SH.costs.find(x=>x.k===V2E.k):null;if(!r){r={k:uid(),name:"",amount:"",cat:""};SH.costs.push(r);V2E.k=r.k;}
  Object.assign(r,{name:nm,amount:String(a),cat:V2E.cat||r.cat||"",ch:1});dsDirty();v2Save(()=>{v2Pass("costs");v2Close();});}
-function v2Remove(sec,k){if(!SH)return;const r=(SH[sec]||[]).find(x=>x.k===k);if(!r)return;if(r.lock)return toast(t("dsLockedRow"));SH[sec]=SH[sec].filter(x=>x.k!==k);dsDirty();v2Save(()=>v2Close());}
+function v2Remove(sec,k){if(!SH||v2Busy()||v2Stale())return;const r=(SH[sec]||[]).find(x=>x.k===k);if(!r)return;if(r.lock)return toast(t("dsLockedRow"));SH[sec]=SH[sec].filter(x=>x.k!==k);dsDirty();v2Save(()=>v2Close());}
 /* ---------- step 3: sales ---------- */
 function v2Sales(){const lk=v2RO(),cur=v2Cur(),c=dsCalc(),pi=v2PriceInfo(),d=SH.date;const R=rsList();
  const owed={};for(const p of dsCusts())owed[p.name]=p.owed;
  const tile=r=>{const S=v2SalesFor(r.key);const sold=r3(S.reduce((q,x)=>q+dsN(x.amount),0));const ow=r3(rsKeys(r.key).reduce((q,k)=>q+(owed[k]||0),0)-S.filter(x=>x.rid&&!x.paid).reduce((q,x)=>q+dsN(x.amount),0));
-  const sub=rsSub(r.key);return`<button class="v2-rt${sold>0?" on":""}" onclick="v2SaleSheet(${ja(r.key)})"${lk&&!S.length?" disabled":""}>${sold>0?`<span class="sold">${I20.check}${esc(fq2(sold))}</span>`:ow>0.004?`<span class="ow">${esc(t("v2Owed").replace("{v}",fq(ow)))}</span>`:""}${r.st==="new"?`<span class="nw">${t("v2New")}</span>`:""}<span class="av">${esc(ini(rsName(r.key)))}</span><span><b>${esc(rsName(r.key))}</b>${sub?`<span class="sb" dir="auto">${esc(sub)}</span>`:""}</span></button>`;};
+  const sub=rsSub(r.key);return`<button class="v2-rt${sold>0?" on":""}" onclick="v2SaleSheet(${ja(r.key)})"${lk&&!S.length?" disabled":""}>${sold>0?`<span class="sold">${I20.check}<bdi>${esc(fq2(sold))}</bdi></span>`:ow>0.004?`<span class="ow">${v2Pill("v2Owed",fq(ow))}</span>`:""}${r.st==="new"?`<span class="nw">${t("v2New")}</span>`:""}<span class="av">${esc(ini(rsName(r.key)))}</span><span><b dir="auto">${esc(rsName(r.key))}</b>${sub?`<span class="sb" dir="auto">${esc(sub)}</span>`:""}</span></button>`;};
  const shopS=SH.sales.filter(x=>x.shop);const shopA=r3(shopS.reduce((q,x)=>q+dsN(x.amount),0));
- const shop=`<button class="v2-rt shop${shopA>0?" on":""}" onclick="v2SaleSheet('',null,true)"${lk&&!shopS.length?" disabled":""}>${shopA>0?`<span class="sold">${I20.check}${esc(fq2(shopA))}</span>`:""}<span class="av">${I20.store}</span><span><b>${t("v2Shop")}</b></span></button>`;
+ const shop=`<button class="v2-rt shop${shopA>0?" on":""}" onclick="v2SaleSheet('',null,true)"${lk&&!shopS.length?" disabled":""}>${shopA>0?`<span class="sold">${I20.check}<bdi>${esc(fq2(shopA))}</bdi></span>`:""}<span class="av">${I20.store}</span><span><b>${t("v2Shop")}</b></span></button>`;
  const nR=new Set(SH.sales.map(x=>x.shop?"\u0000":rsOf(String(x.who||"").trim())?rsOf(String(x.who||"").trim()).key:String(x.who||"").trim())).size;
- const row=r=>`<button class="v2-li" onclick="v2SaleSheet(${ja(r.shop?"":r.who)},${ja(r.k)},${r.shop?"true":"false"})"><span class="av">${r.shop?I20.store:esc(ini(rsName(String(r.who||"").trim())))}</span><span class="tx"><b>${r.shop?t("v2Shop"):esc(rsName(String(r.who||"").trim()))}</b><span>${dsN(r.qty)?esc(v2Kg(dsN(r.qty)))+" · ":""}${r.lock?esc(t("v2Locked")):v2Unsaved(r)?`<i class="v2-ns">${t("v2NotSaved")}</i>`:r.shop||r.paid?`<span class="c-paid">${t("dsPaidNow")}</span>`:`<span class="c-later">${t("dsOnAcc")}</span>`}</span></span><span class="v">${fmt(dsN(r.amount))}</span></button>`;
+ const row=r=>`<button class="v2-li" onclick="v2SaleSheet(${ja(r.shop?"":r.who)},${ja(r.k)},${r.shop?"true":"false"})"><span class="av">${r.shop?I20.store:esc(ini(rsName(String(r.who||"").trim())))}</span><span class="tx"><b dir="auto">${r.shop?t("v2Shop"):esc(rsName(String(r.who||"").trim()))}</b><span>${dsN(r.qty)?esc(v2Kg(dsN(r.qty)))+" · ":""}${r.lock?esc(t("v2Locked")):v2Unsaved(r)?`<i class="v2-ns">${t("v2NotSaved")}</i>`:r.shop||r.paid?`<span class="c-paid">${t("dsPaidNow")}</span>`:`<span class="c-later">${t("dsOnAcc")}</span>`}</span></span><span class="v">${fmt(dsN(r.amount))}</span></button>`;
  return`${v2Top(3,t("v2S3"),esc(t("v2StepN").replace("{n}",3))+(pi.set?" · "+esc(fq2(pi.p)+" "+t("v2PerKg").replace("{c}",D.settings.cur)):""))}${v2Warn()}
  ${!lk&&!pi.set?`<button class="v2-price need flat" onclick="v2PriceSheet()"><span class="pi">${I20.tag}</span><span class="tx"><small>${t("v2Price")}</small><b>${pi.old?esc(fq2(pi.p)):t("v2NeedPrice")}</b></span><span class="ch">${t("v2SetIt")}</span></button>`:""}
  ${lk?"":`<p class="v2-sub">${t("v2TapWho")}</p>`}
@@ -3401,10 +3409,10 @@ function v2Sales(){const lk=v2RO(),cur=v2Cur(),c=dsCalc(),pi=v2PriceInfo(),d=SH.
  ${SH.sales.length?`<div class="v2-h"><b>${t("v2SalesToday")}</b><span>${SH.sales.length}</span></div><div class="v2-list">${SH.sales.map(row).join("")}</div>`:""}
  ${v2Foot(esc(t("v2SoldN").replace("{n}",nR)),fmt(c.sold)+" "+cur,t("v2NextColl"),"v2Next('sales','coll')")}`;}
 function v2SaleSheet(who,k,shop){if(!SH)return;if(dsRoll())return;who=String(who||"").trim();
- let r=k?SH.sales.find(x=>x.k===k):null;if(!r&&!k){const S=shop?SH.sales.filter(x=>x.shop):v2SalesFor(who);if(S.length===1)r=S[0];}
+ let r=k?SH.sales.find(x=>x.k===k):null;if(!r&&!k){const S=(shop?SH.sales.filter(x=>x.shop):v2SalesFor(who)).filter(x=>!x.lock);if(S.length===1&&!v2RO())r=S[0];}
  if(!r&&v2RO())return;const ro=v2RO()||(r&&r.lock);const key=r?(r.shop?"":String(r.who||"").trim()):who;shop=r?!!r.shop:!!shop;
  const R=key?rsOf(key):null;const pkey=R?R.key:key;
- V2E={sec:"sales",k:r?r.k:null,who:pkey,shop,amtSet:r?!!r.amtSet:false,paid:r?!!r.paid:shop};
+ V2E={d:SH.date,sec:"sales",k:r?r.k:null,q0:r?String(r.qty||""):null,who:pkey,shop,amtSet:r?!!r.amtSet:false,paid:r?!!r.paid:shop};
  const pi=v2PriceInfo();const cur=v2Cur();const ob=shop?0:v2OwedBefore(pkey,SH.date);
  v2Open(`${v2Head(shop?t("v2Shop"):esc(t("v2SaleTo").replace("{n}",rsName(pkey))),shop?"":esc(t("v2OwesBefore").replace("{v}",fmt(ob)+" "+D.settings.cur)),shop?I20.store:`<b class="ini">${esc(ini(rsName(pkey)))}</b>`)}
  ${!pi.set&&!ro?`<label class="v2-pin"><span>${t("dsDayPrice")}</span><span class="v2-fld">${v2In("v2SP",SH.price||"","0.00","v2SaleLive()")}<small>${cur}</small></span></label>`:""}
@@ -3424,13 +3432,14 @@ function v2SaleLive(fromAmt){if(!V2E)return;const q=dsN(v2Val("v2SQ")),p=v2SaleP
  x&&x.classList.toggle("hide",!x.innerHTML);}
 function v2SaleAmt(){if(!V2E)return;V2E.amtSet=true;const w=document.getElementById("v2SAw");if(w)w.classList.remove("hide");const l=document.getElementById("v2SAlt");if(l)l.remove();const a=document.getElementById("v2SA");if(a){a.focus();try{a.select();}catch(e){}}v2SaleLive(1);}
 function v2SalePaid(v){if(!V2E)return;V2E.paid=v;const a=document.getElementById("v2SL"),b=document.getElementById("v2SN");if(a){a.classList.toggle("on",!v);a.setAttribute("aria-pressed",String(!v));}if(b){b.classList.toggle("on",v);b.setAttribute("aria-pressed",String(v));}}
-function v2SaleAdd(){if(!SH||!V2E)return;const q=String(v2Val("v2SQ")||"").trim();const pe=document.getElementById("v2SP");
- if(pe){const p=dsN(pe.value);if(p>0&&p!==dsN(SH.price))dsSet("day","","price",String(r3(p)));}
+function v2SaleAdd(){if(!SH||!V2E||v2Busy()||v2Stale())return;const q=String(v2Val("v2SQ")||"").trim();const pe=document.getElementById("v2SP");
+ if(pe){const p=dsN(pe.value);if(p>0&&(p!==dsN(SH.price)||SH.priceOld||!SH.priceSet))dsSet("day","","price",String(r3(p)));}
  const p=dsN(SH.price);let a=V2E.amtSet?r3(dsN(v2Val("v2SA"))):(dsN(q)>0&&p>0?Math.round(dsN(q)*p*100)/100:0);
+ let keep=false;{const r0=V2E.k?SH.sales.find(x=>x.k===V2E.k):null;if(r0&&!V2E.amtSet&&!V2E.shop&&dsN(r0.amount)>0&&dsN(q)===dsN(V2E.q0)&&!(pe&&dsN(pe.value)>0)){a=r3(dsN(r0.amount));keep=Math.abs(a-(dsN(q)>0&&p>0?Math.round(dsN(q)*p*100)/100:0))>0.004;}}
  if(V2E.shop&&!V2E.amtSet){const av=dsN(v2Val("v2SA"));if(av>0){a=r3(av);V2E.amtSet=!(dsN(q)>0&&p>0&&Math.abs(av-Math.round(dsN(q)*p*100)/100)<0.005);}}
  if(!(a>0)){toast(t("dsNeedAmt"));const e=document.getElementById(dsN(q)>0&&!p&&pe?"v2SP":V2E.amtSet||V2E.shop?"v2SA":"v2SQ");if(e)e.focus();return;}
  let r=V2E.k?SH.sales.find(x=>x.k===V2E.k):null;if(!r){r={k:uid(),who:"",shop:false,qty:"",amount:"",amtSet:false,paid:false};SH.sales.push(r);V2E.k=r.k;}
- Object.assign(r,{who:V2E.shop?"":V2E.who,shop:V2E.shop,qty:q,amount:String(a),amtSet:!!V2E.amtSet,paid:V2E.shop?true:!!V2E.paid,ch:1});dsDirty();v2Save(()=>{v2Pass("sales");v2Close();});}
+ Object.assign(r,{who:V2E.shop?"":V2E.who,shop:V2E.shop,qty:q,amount:String(a),amtSet:!!V2E.amtSet||keep,paid:V2E.shop?true:!!V2E.paid,ch:1});dsDirty();v2Save(()=>{v2Pass("sales");v2Close();});}
 /* a new restaurant: two names, checked against the list so the same place is not added twice */
 function v2RestNew(prefill){if(!SH||v2RO())return;
  v2Open(`${v2Head(t("v2NewRest"),"",I20.store)}
@@ -3439,8 +3448,8 @@ function v2RestNew(prefill){if(!SH||v2RO())return;
  <div id="v2RX"></div>
  <button class="v2-done" onclick="v2RestAdd()">${I20.plus}${t("v2AddRest")}</button>`,"rest");}
 function v2RestFind(en,ar){const ne=v2Norm(en),na=v2Norm(ar);if(!ne&&!na)return null;for(const r of rsList()){const ns=[r.key,r.en,r.ar,...(r.alias||[])].map(v2Norm).filter(Boolean);if((ne&&ns.includes(ne))||(na&&ns.includes(na)))return r;}return null;}
-function v2RestCheck(){const x=document.getElementById("v2RX");if(!x)return;const f=v2RestFind(v2Val("v2RE"),v2Val("v2RA"));
- x.innerHTML=f?`<div class="v2-note on">${I20.merge}<span>${esc(t("v2Exists").replace("{n}",rsName(f.key)))} <button onclick="v2Close();v2SaleSheet(${ja(f.key)})">${esc(t("v2UseIt").replace("{n}",rsName(f.key)))}</button></span></div>`:"";}
+function v2RestCheck(own){const x=document.getElementById("v2RX");if(!x)return;const f=v2RestFind(v2Val("v2RE"),v2Val("v2RA"));
+ x.innerHTML=f?`<div class="v2-note on">${I20.merge}<span>${esc(t("v2Exists").replace("{n}",rsName(f.key)))} <button onclick="${own?`v2RestEdit(${ja(f.key)})`:`v2Close();v2SaleSheet(${ja(f.key)})`}">${esc(t("v2UseIt").replace("{n}",rsName(f.key)))}</button></span></div>`:"";}
 async function v2RestAdd(){const en=String(v2Val("v2RE")).trim().slice(0,60),ar=String(v2Val("v2RA")).trim().slice(0,60);if(!en&&!ar)return toast(t("v2NeedName"));
  const f=v2RestFind(en,ar);if(f){v2Close();return v2SaleSheet(f.key);}
  if(DSBUSY)return;const snap=clone(D);D.rests=Array.isArray(D.rests)?D.rests:[];const key=en||ar;
@@ -3449,21 +3458,21 @@ async function v2RestAdd(){const en=String(v2Val("v2RE")).trim().slice(0,60),ar=
 /* ---------- step 4: money collected ---------- */
 function v2Coll(){const lk=v2RO(),cur=v2Cur(),c=dsCalc(),d=SH.date;const inC={};for(const r of SH.coll)inC[r.who]=r3((inC[r.who]||0)+dsN(r.amount));
  const L=dsCusts().filter(p=>v2OwedBefore(p.name,d)>0.004||inC[p.name]);
- const tile=p=>{const got=inC[p.name]||0;const ow=v2OwedBefore(p.name,d);const sub=rsSub(p.name);return`<button class="v2-rt${got>0?" on":""}" onclick="v2CollSheet(${ja(p.name)})"${lk&&!got?" disabled":""}>${got>0?`<span class="sold">${I20.check}${esc(fq2(got))}</span>`:`<span class="ow">${esc(t("v2Owed").replace("{v}",fq(ow)))}</span>`}<span class="av">${esc(ini(rsName(p.name)))}</span><span><b>${esc(rsName(p.name))}</b>${sub?`<span class="sb" dir="auto">${esc(sub)}</span>`:""}</span></button>`;};
- const row=r=>`<button class="v2-li" onclick="v2CollSheet(${ja(r.who)})"${lk?" disabled":""}><span class="av in">${I20.in}</span><span class="tx"><b>${esc(rsName(r.who))}</b><span>${SH.dirty?`<i class="v2-ns">${t("v2NotSaved")}</i>`:t("v2Cash")}</span></span><span class="v c-paid">+${fmt(dsN(r.amount))}</span></button>`;
+ const tile=p=>{const got=inC[p.name]||0;const ow=v2OwedBefore(p.name,d);const sub=rsSub(p.name);return`<button class="v2-rt${got>0?" on":""}" onclick="v2CollSheet(${ja(p.name)})"${lk&&!got?" disabled":""}>${got>0?`<span class="sold">${I20.check}<bdi>${esc(fq2(got))}</bdi></span>`:`<span class="ow">${v2Pill("v2Owed",fq(ow))}</span>`}<span class="av">${esc(ini(rsName(p.name)))}</span><span><b dir="auto">${esc(rsName(p.name))}</b>${sub?`<span class="sb" dir="auto">${esc(sub)}</span>`:""}</span></button>`;};
+ const row=r=>`<button class="v2-li" onclick="v2CollSheet(${ja(r.who)})"${lk?" disabled":""}><span class="av in">${I20.in}</span><span class="tx"><b dir="auto">${esc(rsName(r.who))}</b><span>${SH.dirty?`<i class="v2-ns">${t("v2NotSaved")}</i>`:t("v2Cash")}</span></span><span class="v c-paid">+${fmt(dsN(r.amount))}</span></button>`;
  return`${v2Top(4,t("v2S4"),esc(t("v2StepN").replace("{n}",4)))}${v2Warn()}
  <p class="v2-sub">${L.length?t("v2CollD"):t("v2NoOwe")}</p>
  ${L.length?`<div class="v2-rest">${L.map(tile).join("")}</div>`:""}
  ${SH.coll.length?`<div class="v2-h"><b>${t("v2CollToday")}</b><span>${SH.coll.length}</span></div><div class="v2-list">${SH.coll.map(row).join("")}</div>`:""}
  ${v2Foot(t("v2CollToday"),fmt(c.coll)+" "+cur,t("v2NextClose"),"v2Next('coll','close')")}`;}
 function v2CollSheet(who){if(!SH)return;if(dsRoll())return;const r=SH.coll.find(x=>x.who===who);if(!r&&v2RO())return;const ro=v2RO();
- const ow=v2OwedBefore(who,SH.date);const old=dsOldestLeft(who,SH.date);V2E={sec:"coll",k:r?r.k:null,who};
+ const ow=v2OwedBefore(who,SH.date);const old=dsOldestLeft(who,SH.date);V2E={d:SH.date,sec:"coll",k:r?r.k:null,who};
  v2Open(`${v2Head(esc(t("v2PaidYou").replace("{n}",rsName(who))),esc(t("v2OwesV").replace("{v}",fmt(ow)+" "+D.settings.cur)),`<b class="ini">${esc(ini(rsName(who)))}</b>`)}
  <label class="v2-big">${v2In("v2KA",r?r.amount:"","0.00","",(ro?" disabled":' data-af="1"')+' onkeydown="if(event.key===\'Enter\')v2CollAdd()"')}<small>${v2Cur()}</small></label>
  ${ro?"":`<div class="v2-chips">${ow>0.004?`<button class="v2-chip" onclick="document.getElementById('v2KA').value='${r3(ow)}'">${esc(t("v2All").replace("{v}",fq(ow)))}</button>`:""}${old>0.004&&Math.abs(old-ow)>0.004?`<button class="v2-chip" onclick="document.getElementById('v2KA').value='${r3(old)}'">${esc(t("v2Oldest").replace("{v}",fq(old)))}</button>`:""}</div>
  <p class="v2-alt">${t("dsCollNote")}</p>
  <button class="v2-done" onclick="v2CollAdd()">${I20.check}${r?t("v2SaveB"):t("v2AddColl")}</button>${r?`<button class="v2-rm" onclick="v2Remove('coll',${ja(r.k)})">${t("v2Remove")}</button>`:""}`}`,"coll");}
-function v2CollAdd(){if(!SH||!V2E)return;const a=r3(dsN(v2Val("v2KA")));if(!(a>0)){toast(t("avNeedAmt"));const e=document.getElementById("v2KA");if(e)e.focus();return;}
+function v2CollAdd(){if(!SH||!V2E||v2Busy()||v2Stale())return;const a=r3(dsN(v2Val("v2KA")));if(!(a>0)){toast(t("avNeedAmt"));const e=document.getElementById("v2KA");if(e)e.focus();return;}
  let r=V2E.k?SH.coll.find(x=>x.k===V2E.k):SH.coll.find(x=>x.who===V2E.who);if(!r){r={k:uid(),who:V2E.who,amount:""};SH.coll.push(r);V2E.k=r.k;}
  r.amount=String(a);dsDirty();v2Save(()=>{v2Pass("coll");v2Close();});}
 /* ---------- close the day: check it like the notebook, then send ---------- */
@@ -3487,7 +3496,7 @@ function v2CloseV(){const s=SH,c=dsCalc(),cur=v2Cur(),lk=v2RO(),b=s.buy;const ne
  <button class="v2-wa" onclick="v2Send()"${s.has||s.dirty?"":" disabled"}>${I20.wa}${lk?t("dsSend"):P.closed?t("v2SendAgain"):t("v2CloseSend")}</button>
  ${!lk&&ROLE==="staff"&&s.date===today()?`<p class="v2-hint">${t("v2CanFix")}</p>`:""}`;}
 async function v2Pick(input){if(!SH)return;const before=pendingAtt.length;await pickAtt(input);const add=pendingAtt.slice(before);if(add.length){SH.att=[...(SH.att||[]),...add];dsDirty();await v2Save();}}
-async function v2Send(){if(!SH)return;if(SH.dirty&&!v2RO()){const ok=await v2Save();if(!ok)return;}if(!SH.has)return;if(!v2RO())v2Pass("closed");await dsShare();if(!v2RO()){toast(t("v2Sent"));v2Go("");}}
+async function v2Send(){if(!SH||DSBUSY)return;if(SH.dirty&&!v2RO()){const ok=await v2Save();if(!ok)return;}if(!SH.has)return;const sent=await dsShare();if(sent&&!v2RO()){v2Pass("closed");toast(t("v2Sent"));v2Go("");}}
 /* ---------- the owner: one list of restaurants ---------- */
 function v2Rests(){if(!canEdit())return toast(t("viewOnly"));const L=rsList();const owed={};for(const p of dsCusts())owed[p.name]=p.owed;const nw=L.filter(r=>r.st==="new").length;
  const row=r=>{const ow=r3(rsKeys(r.key).reduce((q,k)=>q+(owed[k]||0),0));return`<button class="v2-li" onclick="v2RestEdit(${ja(r.key)})"><span class="av">${esc(ini(r.en||r.ar||r.key))}</span><span class="tx"><b dir="auto">${r.en?esc(r.en):`<i class="v2-ns">+ ${t("v2NameEn")}</i>`}</b><span ${r.ar?'dir="rtl" lang="ar" class="arn"':""}>${r.ar?esc(r.ar):`<i class="v2-ns">+ ${t("v2NameAr")}</i>`}</span></span>${r.st==="new"?`<span class="v2-tag new">${t("v2New")}</span>`:""}${ow>0.004?`<span class="v c-later">${fmt(ow)}</span>`:""}<span class="go">${I20.edit}</span></button>`;};
@@ -3496,10 +3505,10 @@ function v2Rests(){if(!canEdit())return toast(t("viewOnly"));const L=rsList();co
  ${L.length?`<div class="v2-list">${L.map(row).join("")}</div>`:`<p class="v2-sub">${t("v2NoRest")}</p>`}
  <button class="v2-done ink" onclick="v2RestNewOwner()">${I20.plus}${t("v2AddRest")}</button>`,"tall");}
 function v2RestNewOwner(){v2Open(`${v2Head(t("v2NewRest"),"",I20.store)}
- <label><span class="v2-lbl">${t("v2NameEn")}</span><input id="v2RE" class="v2-in v2-txt" dir="ltr" lang="en" autocomplete="off" oninput="v2RestCheck()" data-af="1"></label>
- <label><span class="v2-lbl">${t("v2NameAr")}</span><input id="v2RA" class="v2-in v2-txt" dir="rtl" lang="ar" autocomplete="off" oninput="v2RestCheck()"></label><div id="v2RX"></div>
+ <label><span class="v2-lbl">${t("v2NameEn")}</span><input id="v2RE" class="v2-in v2-txt" dir="ltr" lang="en" autocomplete="off" oninput="v2RestCheck(1)" data-af="1"></label>
+ <label><span class="v2-lbl">${t("v2NameAr")}</span><input id="v2RA" class="v2-in v2-txt" dir="rtl" lang="ar" autocomplete="off" oninput="v2RestCheck(1)"></label><div id="v2RX"></div>
  <button class="v2-done" onclick="v2RestAddOwner()">${I20.plus}${t("v2AddRest")}</button>`,"rest");}
-async function v2RestAddOwner(){const en=String(v2Val("v2RE")).trim().slice(0,60),ar=String(v2Val("v2RA")).trim().slice(0,60);if(!en&&!ar)return toast(t("v2NeedName"));if(v2RestFind(en,ar))return v2RestCheck();
+async function v2RestAddOwner(){const en=String(v2Val("v2RE")).trim().slice(0,60),ar=String(v2Val("v2RA")).trim().slice(0,60);if(!en&&!ar)return toast(t("v2NeedName"));if(v2RestFind(en,ar))return v2RestCheck(1);
  const snap=clone(D);D.rests=Array.isArray(D.rests)?D.rests:[];D.rests.push({id:uid(),key:en||ar,en,ar,at:new Date().toISOString(),by:dsMe(),st:""});const ok=await persist();if(!ok){D=snap;return;}toast(t("v2RestOk"));v2Rests();}
 function v2RestEdit(key){if(!canEdit())return;const r=rsList().find(x=>x.key===key);if(!r)return;const others=rsList().filter(x=>x.key!==key);
  v2Open(`${v2Head(t("v2RestEdit"),"",`<b class="ini">${esc(ini(r.en||r.ar||key))}</b>`)}
@@ -3518,8 +3527,11 @@ async function v2Join(a,b){if(!canEdit()||a===b)return;const snap=clone(D);const
  A.alias=[...new Set([...(Array.isArray(A.alias)?A.alias:[]),...moved])].filter(k=>k!==a);if(!A.en&&B&&B.en)A.en=B.en;if(!A.ar&&B&&B.ar)A.ar=B.ar;if(!A.en&&v2Ar(b)===false)A.en=b;if(!A.ar&&v2Ar(b))A.ar=b;A.st="";
  if(B){B.gone=true;B.into=a;}const ok=await persist();if(!ok){D=snap;return;}toast(t("v2Joined"));render();v2Rests();}
 /* ---------- wiring: the sheet, the staff home and the owner's + menu ---------- */
-dsBody=function(){if(!SH)return"";return SV==="costs"?v2Costs():SV==="sales"?v2Sales():SV==="coll"?v2Coll():SV==="close"?v2CloseV():v2Home();};
+{const _roll=dsRoll;dsRoll=function(){const r=_roll();if(r)v2Close();return r;};}
+{const _ld=dsLoad;dsLoad=function(d,k){_ld(d,k);if(SH&&Array.isArray(SH.sales))SH.sales=SH.sales.filter(r=>r.shop||r.rid||String(r.who||"").trim());};}
+dsBody=function(){if(!SH)return"";document.body.classList.toggle("v2-stp",!!SV);return SV==="costs"?v2Costs():SV==="sales"?v2Sales():SV==="coll"?v2Coll():SV==="close"?v2CloseV():v2Home();};
 dsBarHTML=function(){return"";};
+{const _dp=dsPaint;dsPaint=function(f){if(!DSOWN&&STT==="day"&&SV&&ROLE==="staff")return render();return _dp(f);};}
 const _dsFit20=dsFit;dsFit=function(){_dsFit20();document.querySelectorAll(".v2-stats .v").forEach(e=>{e.style.fontSize="";let z=parseFloat(getComputedStyle(e).fontSize);while(e.scrollWidth>e.clientWidth+1&&z>12){z-=1;e.style.fontSize=z+"px";}});};
 const _dsOpenDay20=dsOpenDay;dsOpenDay=function(d){SV="";v2Close();_dsOpenDay20(d);};
 const _dsGo20=dsGo;dsGo=function(k){SV="";v2Close();_dsGo20(k);};
@@ -3532,8 +3544,8 @@ dsOwner=function(d){if(!canEdit())return toast(t("viewOnly"));DSOWN=true;SV="";d
 {const _qa=quickAdd;quickAdd=function(){_qa();const m=document.querySelector("#modal .tm-add");const s=m&&m.querySelector(".ds-qa");if(s&&canEdit())s.insertAdjacentHTML("afterend",`<button class="ds-qa v2-qr" onclick="closeModal();v2Rests()"><span class="ci">${I20.store}</span><span><b>${t("v2RestQa")}</b><small>${t("v2RestQaD")}</small></span></button>`);};}
 
 /* auto-update: reload when a new version is published */
-const BUILD="b20";
-async function checkUpdate(){try{const r=await fetch("version.txt?"+Date.now(),{cache:"no-store"});const v=(await r.text()).trim();if(v&&v!==BUILD){const m=document.getElementById("modal");if(m&&m.classList.contains("on"))return;location.reload();}}catch(e){}}
+const BUILD="b21";
+async function checkUpdate(){try{const r=await fetch("version.txt?"+Date.now(),{cache:"no-store"});const v=(await r.text()).trim();if(v&&v!==BUILD){const m=document.getElementById("modal");if(m&&m.classList.contains("on"))return;if(document.body.classList.contains("v2-open")||(typeof SH!=="undefined"&&SH&&SH.dirty)||(typeof DSBUSY!=="undefined"&&DSBUSY))return;location.reload();}}catch(e){}}
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"){checkUpdate();try{if(unlocked&&D)dsRoll();}catch(e){}}});setTimeout(checkUpdate,3000);
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
 document.addEventListener("click",e=>{if(e.target.id==="modal")closeModal()});
