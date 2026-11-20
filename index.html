@@ -3269,7 +3269,7 @@ Object.assign(T.en,{v2Morning:"Good morning, {n}",v2Day:"Your day",v2Steps:"4 st
  v2S1:"What you bought",v2S1d:"Kilos of chicken and what you paid",v2S2:"Costs",v2S2d:"Workers, slaughter, diesel, bags…",v2S3:"Sales",v2S3d:"Tap a restaurant, type the kilos",v2S4:"Money collected",v2S4d:"Restaurants that paid old bills",v2None:"Nothing today",
  v2Close:"Close the day",v2Closed:"Day closed and sent",v2Hint:"Each step saves by itself. Close the day when you finish.",v2HintClosed:"You can still fix today. Send it again after a change.",
  v2Price:"Today's chicken price",v2PriceBy:"Today's chicken price · set by {n}",v2PriceOld:"Last price, still for today?",v2PriceNo:"Not set yet",v2SetIt:"Set it",v2Change:"Change",v2PerKg:"{c} a kilo",
- v2PriceD:"Every sale today uses it",v2PriceNote:"Everyone on the team sees the same price. Whoever sets it first, the others see it.",v2Yday:"yesterday",v2LastP:"last price",v2UseP:"Use {p} today",v2NeedP:"Write today's price a kilo",
+ v2PriceD:"Buying and every sale today use it",v2PriceNote:"Everyone on the team sees the same price. Whoever sets it first, the others see it.",v2Yday:"yesterday",v2LastP:"last price",v2UseP:"Use {p} today",v2NeedP:"Write today's price a kilo",
  v2StepN:"Step {n} of 4",v2What:"What",v2Chicken:"Chicken",v2Liver:"Liver",v2Other:"Other",v2Kilos:"Kilos",v2PKg:"Price a kilo",v2YouPaid:"You paid (after discount)",v2From:"From",v2OtherPh:"Write it",
  v2NextCosts:"Done, next: costs",v2NextSales:"Done, next: sales",v2NextColl:"Done, next: money collected",v2NextClose:"Done, check the day",v2SaveB:"Save",
  v2TapCost:"Tap what you paid for today.",v2CostsToday:"Today's costs",v2CostsSum:"Costs today",v2HowMuch:"How much did you pay?",v2AddX:"Add {n}",v2LastTime:"last time",v2CostName:"What was it for?",
@@ -3288,7 +3288,7 @@ Object.assign(T.ar,{v2Morning:"صباح الخير يا {n}",v2Day:"يومك",v2
  v2S1:"الشراء",v2S1d:"كم كيلو دجاج وكم دفعت",v2S2:"المصاريف",v2S2d:"عمّال، ذبح، ديزل، أكياس…",v2S3:"المبيع",v2S3d:"اختر المطعم واكتب الكيلو",v2S4:"التحصيل",v2S4d:"مطاعم دفعت فواتير قديمة",v2None:"لا شيء اليوم",
  v2Close:"أغلق اليوم",v2Closed:"أُغلق اليوم وأُرسل",v2Hint:"كل خطوة تُحفظ وحدها. أغلق اليوم عندما تنتهي.",v2HintClosed:"ما زال بإمكانك تعديل اليوم. أرسله مرة أخرى بعد أي تعديل.",
  v2Price:"سعر الدجاج اليوم",v2PriceBy:"سعر الدجاج اليوم · حدّده {n}",v2PriceOld:"آخر سعر، هل هو نفسه اليوم؟",v2PriceNo:"لم يُحدد بعد",v2SetIt:"حدّده",v2Change:"غيّر",v2PerKg:"{c} للكيلو",
- v2PriceD:"كل بيع اليوم يستخدمه",v2PriceNote:"كل الفريق يرى نفس السعر. من يحدده أولًا، يراه الباقون.",v2Yday:"أمس",v2LastP:"آخر سعر",v2UseP:"استخدم {p} اليوم",v2NeedP:"اكتب سعر الكيلو اليوم",
+ v2PriceD:"الشراء وكل بيع اليوم يستخدمانه",v2PriceNote:"كل الفريق يرى نفس السعر. من يحدده أولًا، يراه الباقون.",v2Yday:"أمس",v2LastP:"آخر سعر",v2UseP:"استخدم {p} اليوم",v2NeedP:"اكتب سعر الكيلو اليوم",
  v2StepN:"الخطوة {n} من 4",v2What:"ماذا",v2Chicken:"دجاج",v2Liver:"كبدة",v2Other:"أخرى",v2Kilos:"كيلو",v2PKg:"سعر الكيلو",v2YouPaid:"دفعت (بعد الخصم)",v2From:"من",v2OtherPh:"اكتبه",
  v2NextCosts:"تم، التالي: المصاريف",v2NextSales:"تم، التالي: المبيع",v2NextColl:"تم، التالي: التحصيل",v2NextClose:"تم، راجع اليوم",v2SaveB:"احفظ",
  v2TapCost:"اضغط على ما دفعت له اليوم.",v2CostsToday:"مصاريف اليوم",v2CostsSum:"مصاريف اليوم",v2HowMuch:"كم دفعت؟",v2AddX:"أضف {n}",v2LastTime:"آخر مرة",v2CostName:"لأي شيء؟",
@@ -3408,7 +3408,7 @@ function v2BuyOpts(){const names=[],froms=[];const L=D.expenses.filter(x=>x&&x.s
  for(const k of ["v2Chicken","v2Liver"]){const n=t(k);if(!names.some(m=>v2Norm(m)===v2Norm(T.en[k])||v2Norm(m)===v2Norm(T.ar[k])))names.push(n);}
  return{names:names.slice(0,4),froms};}
 function v2BuySheet(){if(!SH)return;if(dsRoll())return;const b=SH.buy;V2B={d:SH.date,name:b.name||"",qty:b.qty||"",price:b.price||"",paid:b.paidSet?b.paid:"",paidSet:!!b.paidSet,from:b.from||"",oname:false,ofrom:false};
- const o=v2BuyOpts();if(V2B.name&&!o.names.some(n=>n===V2B.name))V2B.oname=true;if(V2B.from&&!o.froms.includes(V2B.from))V2B.ofrom=true;if(!V2B.name&&!b.rid)V2B.name=o.names[0]||t("v2Chicken");v2BuyPaint(true);}
+ const o=v2BuyOpts();if(V2B.name&&!o.names.some(n=>n===V2B.name))V2B.oname=true;if(V2B.from&&!o.froms.includes(V2B.from))V2B.ofrom=true;if(!V2B.name&&!b.rid)V2B.name=o.names[0]||t("v2Chicken");/* b27: the buy price a kilo starts from today's chicken price */if(!String(V2B.price||"").trim()&&dsN(SH.price)>0)V2B.price=String(r3(dsN(SH.price)));v2BuyPaint(true);}
 function v2BuyPaint(first){const B=V2B;if(!B)return;const lk=v2RO()||SH.buy.lock===-1;const dis=lk?" disabled":"";const o=v2BuyOpts();const cur=v2Cur();
  const calc=r3(dsN(B.qty)*dsN(B.price));
  const html=`${v2Head(t("v2S1"),esc(t("v2StepN").replace("{n}",1)),I20.cart)}
@@ -3619,7 +3619,7 @@ dsOwner=function(d){if(!canEdit())return toast(t("viewOnly"));DSOWN=true;SV="";d
 {const _qa=quickAdd;quickAdd=function(){_qa();const m=document.querySelector("#modal .tm-add");const s=m&&m.querySelector(".ds-qa");if(s&&canEdit())s.insertAdjacentHTML("afterend",`<button class="ds-qa v2-qr" onclick="closeModal();v2Rests()"><span class="ci">${I20.store}</span><span><b>${t("v2RestQa")}</b><small>${t("v2RestQaD")}</small></span></button>`);};}
 
 /* auto-update: reload when a new version is published */
-const BUILD="b26";
+const BUILD="b27";
 async function checkUpdate(){try{const r=await fetch("version.txt?"+Date.now(),{cache:"no-store"});const v=(await r.text()).trim();if(v&&v!==BUILD){const m=document.getElementById("modal");if(m&&m.classList.contains("on"))return;if(document.body.classList.contains("v2-open")||(typeof SH!=="undefined"&&SH&&SH.dirty)||(typeof DSBUSY!=="undefined"&&DSBUSY))return;try{if(sessionStorage.getItem("tamm:rl")===v)return;sessionStorage.setItem("tamm:rl",v);}catch(e){}/* b25: put the new page in the phone copy first, so the reload opens it */try{const nr=await fetch(location.pathname+"?fresh="+encodeURIComponent(v),{cache:"no-store"});if(nr.ok&&window.caches){for(const k of await caches.keys()){const ca=await caches.open(k);await ca.put(new Request(location.origin+location.pathname),nr.clone());}}}catch(e){}location.reload();}}catch(e){}}
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"){checkUpdate();try{if(unlocked&&D)dsRoll();}catch(e){}}});setTimeout(checkUpdate,3000);
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
@@ -3691,6 +3691,20 @@ async function obSave(){if(OBBUSY)return;const who=obKey((document.getElementByI
  const ok=await persist();OBBUSY=false;if(!ok){D=snap;if(b)b.disabled=false;return;}closeModal();toast(t("obDone"));render();}
 async function obDel(id){const x=D.invoices.find(r=>r.id===id);if(!x||!x.ob||paidOf(x)>0.004)return;if(ROLE==="staff"&&x.by!==dsMe())return toast(t("viewOnly"));if(!confirm(t("obDelQ")))return;
  const snap=clone(D);const who=x.party;D.invoices=D.invoices.filter(r=>r.id!==id);const ok=await persist();if(!ok){D=snap;return;}closeModal();render();if(dsCusts().some(p=>p.name===rsK(who)))dsCust(rsK(who));}
+/* ===== b27: the phone's Back button (Android) closes an open sheet first, then goes back to the previous screen.
+   Each open sheet and each screen change adds one browser history step; closing a sheet with its X removes that step again. ===== */
+let BK_SHEET=false,BK_SKIP=0,BK_T=null;const BK_TABS=[];
+const bkOpen=()=>{const m=document.getElementById("modal"),v=document.getElementById("v2s");return !!(m&&m.classList.contains("on"))||!!(v&&v.classList.contains("on"));};
+function bkSync(){const open=bkOpen();
+ if(open&&!BK_SHEET){clearTimeout(BK_T);BK_T=null;BK_SHEET=true;try{history.pushState({tm:"sheet"},"");}catch(e){}}
+ else if(!open&&BK_SHEET&&!BK_T){BK_T=setTimeout(()=>{BK_T=null;if(bkOpen()||!BK_SHEET)return;BK_SHEET=false;BK_SKIP++;try{history.back();}catch(e){BK_SKIP--;}},60);}}
+try{new MutationObserver(ms=>{for(const m of ms){const id=m.target&&m.target.id;if(id==="modal"||id==="v2s"){bkSync();return;}if(m.type==="childList")for(const n of m.addedNodes)if(n.id==="modal"||n.id==="v2s"||(n.querySelector&&n.querySelector("#modal"))){bkSync();return;}}}).observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:["class"]});}catch(e){}
+function bkTab(kind,prev){try{BK_TABS.push({kind,prev});history.pushState({tm:"tab"},"");}catch(e){}}
+const _go27=go;go=function(k){if(unlocked&&k!==tab)bkTab("own",tab);return _go27(k);};
+const _dsGo27=dsGo;dsGo=function(k){if(unlocked&&k!==STT)bkTab("staff",STT);return _dsGo27(k);};
+window.addEventListener("popstate",()=>{if(BK_SKIP>0){BK_SKIP--;return;}
+ if(BK_SHEET){BK_SHEET=false;clearTimeout(BK_T);BK_T=null;const v=document.getElementById("v2s");if(v&&v.classList.contains("on"))v2Close();else closeModal();return;}
+ const s=BK_TABS.pop();if(!s)return;if(s.kind==="own"){tab=s.prev;filter="all";q="";render();}else{if(STT==="day")dsStash();STT=s.prev;render();}try{window.scrollTo({top:0});}catch(e){}});
 render();boot();sb.auth.onAuthStateChange((ev)=>{if(ev==="PASSWORD_RECOVERY"){RECOVER=true;setTimeout(()=>render(),0);return;}if(ev==="SIGNED_OUT"){cacheDrop();SESSION=null;unlocked=false;D=null;render();}});
 window.addEventListener("focus",async()=>{if(unlocked&&BIZ&&!SYNC.pending){try{const r=await window.storage.get("tt:data");if(SYNC.pending)return;const nd=sanitizeData(JSON.parse(r.value));if(JSON.stringify(nd)!==JSON.stringify(D)){D=nd;D.contacts=D.contacts||{};D.products=D.products||[];const m=document.getElementById("modal");if(m&&m.classList.contains("on")){if(DSOWN&&document.querySelector("#modal #dsWrap")){if(!dsRoll())dsPaint();}}else render();}else if(typeof dsRoll==="function")dsRoll();}catch(e){}}});
 </script>
