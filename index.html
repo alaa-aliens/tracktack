@@ -1264,6 +1264,19 @@ label>.v2-in.v2-txt{margin-top:0}.v2-in.v2-txt:focus{border:2px solid var(--ink)
 .ob-x{display:block;margin-top:6px;border:0;background:none;padding:0;color:var(--red);font:inherit;font-size:13px;text-decoration:underline;cursor:pointer}
 
 .as-h{margin-top:22px}.as-d{color:var(--muted);font-size:13.5px;margin:-4px 0 10px}.as-bl .r>span{min-width:0}.as-bl .v{color:var(--ink)}.as-bl .r>span b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+/* b29: invoice photos, the day page, edit name */
+.ph-ths{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.ph-th{position:relative;width:64px;height:64px;border-radius:12px;overflow:hidden;background:var(--soft);border:0;padding:0;cursor:pointer;flex:none}
+.ph-th img{width:100%;height:100%;object-fit:cover;display:block}
+.ph-x{position:absolute;top:3px;inset-inline-end:3px;width:24px;height:24px;border-radius:50%;border:0;background:rgba(22,25,15,.75);color:#fff;font-size:16px;line-height:1;cursor:pointer}
+.ph-day .ph-th{width:84px;height:84px}
+#phLb{position:fixed;inset:0;z-index:200;background:rgba(10,12,8,.94);display:none;overflow-y:auto;padding:56px 12px 24px}#phLb.on{display:block}
+#phLb .ph-lbi{display:flex;flex-direction:column;gap:12px;align-items:center}#phLb img{max-width:100%;border-radius:10px;background:#222;min-height:80px}
+.ph-lx{position:fixed;top:10px;inset-inline-end:12px;width:42px;height:42px;border-radius:50%;border:0;background:rgba(255,255,255,.15);color:#fff;font-size:26px;cursor:pointer;z-index:1}
+.ph-ic{border:0;background:var(--soft);border-radius:8px;width:28px;height:24px;display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;margin-inline-start:6px;cursor:pointer;color:var(--ink);padding:0}.ph-ic svg{width:16px;height:16px}
+.dd-top{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.dd-top>div{background:#fff;border-radius:18px;box-shadow:var(--sh);padding:12px 14px}
+.dd-top span{display:block;font-size:12.5px;color:var(--muted)}.dd-top b{font-size:20px;font-weight:800;font-variant-numeric:tabular-nums}.dd-top b small{font-size:13px;font-weight:600;color:var(--muted)}
+.rs-ed{display:block;margin:-4px auto 10px;border:0;background:var(--soft);border-radius:999px;padding:8px 16px;font:inherit;font-size:14px;font-weight:700;color:var(--ink);cursor:pointer}
 </style>
 </head>
 <body>
@@ -2908,7 +2921,7 @@ Object.assign(T.en,{dsT:"Today's sheet",dsDayT:"Sheet for {d}",dsBackToday:"Back
  dsCollT:"Money collected",dsCollD:"Tap who paid you for an old bill.",dsCollNone:"No customer owes you money.",dsOwes:"owes {v}",dsCollNote:"Payments go to their oldest bills first.",dsTooMuch:"{n} only owes {v}",
  dsPhoto:"Photo of the notebook page (optional)",dsPhotoOk:"Photo added",
  dsSave:"Save the day",dsSaveCh:"Save changes",dsSaved:"Saved",dsUnsaved:"Not saved",dsSavedOk:"All saved",dsSaving:"Saving…",
- dsNeedWho:"Write the customer's name",dsNeedAmt:"Write the amount, or today's price a kilo",dsByOther:"Added by the owner. Ask them to change it.",dsRoDay:"Older days can only be viewed. Ask the owner to change them.",dsDraftDay:"You have an unsaved sheet for {d}",dsDraftTag:"Not saved",dsLockedRow:"Already paid in part. Ask the owner to change it.",dsLocked:"This day's books are closed.",dsRemove:"Remove",dsNothing:"Nothing added yet. Tap a button below.",
+ dsNeedWho:"Write the customer's name",dsNeedAmt:"Write the amount, or today's price a kilo",dsByOther:"Added by the owner. Ask them to change it.",dsRoDay:"Past days can only be viewed. Ask the owner to change them.",dsDraftDay:"You have an unsaved sheet for {d}",dsDraftTag:"Not saved",dsLockedRow:"Already paid in part. Ask the owner to change it.",dsLocked:"This day's books are closed.",dsRemove:"Remove",dsNothing:"Nothing added yet. Tap a button below.",
  dsNavDay:"Today",dsNavCust:"Customers",dsNavDays:"Days",dsNavMore:"More",
  dsCustOwe:"Customers owe you",dsPaidUp:"Paid up",dsLastBill:"Last bill {d}",dsTheyPaid:"They paid",dsBills:"Unpaid bills",dsRecentPays:"Recent payments",dsNoCust:"No customers yet. Sales you add to the sheet show up here.",dsLeft:"{v} left",dsBillN:"{n} unpaid",
  dsDaysT:"Past days",dsNoDays:"No saved days yet.",dsCollected:"Collected",
@@ -2921,7 +2934,7 @@ Object.assign(T.ar,{dsT:"ورقة اليوم",dsDayT:"ورقة يوم {d}",dsBac
  dsCollT:"التحصيل",dsCollD:"اضغط على من دفع لك عن فاتورة قديمة.",dsCollNone:"لا يوجد زبون عليه مال لك.",dsOwes:"عليه {v}",dsCollNote:"الدفعة تسدّد أقدم فواتيره أولًا.",dsTooMuch:"{n} عليه فقط {v}",
  dsPhoto:"صورة صفحة الدفتر (اختياري)",dsPhotoOk:"تمت إضافة الصورة",
  dsSave:"احفظ اليوم",dsSaveCh:"احفظ التعديلات",dsSaved:"تم الحفظ",dsUnsaved:"لم يُحفظ بعد",dsSavedOk:"كل شيء محفوظ",dsSaving:"جارٍ الحفظ…",
- dsNeedWho:"اكتب اسم الزبون",dsNeedAmt:"اكتب المبلغ، أو سعر الكيلو اليوم",dsByOther:"أضافها المالك. اطلب منه تعديلها.",dsRoDay:"الأيام الأقدم للعرض فقط. اطلب من المالك تعديلها.",dsDraftDay:"عندك ورقة غير محفوظة ليوم {d}",dsDraftTag:"غير محفوظة",dsLockedRow:"دُفع جزء منها. اطلب من المالك تعديلها.",dsLocked:"دفاتر هذا اليوم مقفلة.",dsRemove:"إزالة",dsNothing:"لم تُضف شيئًا بعد. اضغط زرًّا في الأسفل.",
+ dsNeedWho:"اكتب اسم الزبون",dsNeedAmt:"اكتب المبلغ، أو سعر الكيلو اليوم",dsByOther:"أضافها المالك. اطلب منه تعديلها.",dsRoDay:"الأيام الماضية للعرض فقط. اطلب من المالك تعديلها.",dsDraftDay:"عندك ورقة غير محفوظة ليوم {d}",dsDraftTag:"غير محفوظة",dsLockedRow:"دُفع جزء منها. اطلب من المالك تعديلها.",dsLocked:"دفاتر هذا اليوم مقفلة.",dsRemove:"إزالة",dsNothing:"لم تُضف شيئًا بعد. اضغط زرًّا في الأسفل.",
  dsNavDay:"اليوم",dsNavCust:"الزبائن",dsNavDays:"الأيام",dsNavMore:"المزيد",
  dsCustOwe:"الزبائن عليهم لك",dsPaidUp:"لا دين عليه",dsLastBill:"آخر فاتورة {d}",dsTheyPaid:"دفع لي",dsBills:"فواتير غير مدفوعة",dsRecentPays:"آخر الدفعات",dsNoCust:"لا يوجد زبائن بعد. المبيعات التي تضيفها في الورقة تظهر هنا.",dsLeft:"باقي {v}",dsBillN:"{n} غير مدفوعة",
  dsDaysT:"الأيام السابقة",dsNoDays:"لا توجد أيام محفوظة بعد.",dsCollected:"التحصيل",
@@ -2941,7 +2954,7 @@ const dsOwn=(p,d)=>p&&p.sh===d&&!p.c;/* the cash payment the sheet itself added 
 const dsForeign=(x,d)=>r3((x.pays||[]).filter(p=>!(p&&p.sh===d)).reduce((a,p)=>a+num(p.amount),0));/* paid by anything other than this day's sheet */
 const dsOthers=x=>!!(ROLE==="staff"&&x&&x.by&&x.by!==dsMe());/* a seller can't change what the owner added */
 const dsYday=()=>localDay(Date.now()-864e5);
-const dsRO=d=>lockedOn(d)||(ROLE==="staff"&&d<dsYday());/* sellers fix today and yesterday; older days are read-only */
+const dsRO=d=>lockedOn(d)||(ROLE==="staff"&&d<today());/* b29: sellers change only today; every past day is view-only (Ala'a, Nov 20) */
 let DSATT={};/* notebook photos picked but not saved yet, per day */
 function dsRecs(d){return{buy:D.expenses.find(x=>x.sh===d&&x.shk==="buy")||null,costs:D.expenses.filter(x=>x.sh===d&&x.shk==="cost"),sales:D.invoices.filter(x=>x.sh===d&&x.shk==="sale")};}
 function dsLastBuy(){let b=null;for(const x of D.expenses)if(x.shk==="buy"&&(!b||String(x.date)>String(b.date)))b=x;return b;}
@@ -3084,7 +3097,7 @@ async function dsSave(stay){if(DSBUSY||!SH)return false;const d=SH.date;if(dsRO(
   else if(bAmt>0){let x=buyRec;if(!x){x={id:uid(),no:"",date:d,due:"",notes:"",att:[],by:me,at,sh:d,shk:"buy"};D.expenses.push(x);buyRec=x;}
    const nm=String(b.name||"").trim();const op=ownPay(x);const fp=keepPays(x);const fs=r3(fp.reduce((a,p)=>a+num(p.amount),0));if(bAmt<fs-0.004)throw fail(t("dsLockedRow"));
    Object.assign(x,{date:d,party:String(b.from||"").trim(),item:nm,desc:[nm||t("dsBuyT"),bq?fq(bq)+" kg":"",bp?"× "+fq(bp):""].filter(Boolean).join(" "),cat:x.cat||T.en.expCats[7],amount:bAmt,qty:bq,price:bp,unit:"kg"});
-   x.pays=[...fp,...(bAmt-fs>0.004?[pay(bAmt-fs,0,op)]:[])];keepE.add(x.id);}
+   x.pays=[...fp,...(bAmt-fs>0.004?[pay(bAmt-fs,0,op)]:[])];keepE.add(x.id);if(typeof phSave==="function")await phSave(x,b);}
   else buyRec=null;
   /* costs */
   let firstCost=null;
@@ -3100,16 +3113,16 @@ async function dsSave(stay){if(DSBUSY||!SH)return false;const d=SH.date;if(dsRO(
    const op=ownPay(x);const fp=keepPays(x);const fs=r3(fp.reduce((q2,p)=>q2+num(p.amount),0));if(a<fs-0.004)throw fail(t("dsLockedRow"));
    const dp=r3(dsN(SH.price));const follows=q>0&&dp>0&&!r.amtSet;
    Object.assign(x,{date:d,party,desc,cat:x.cat||T.en.salesCats[0],amount:a,qty:q,unit:"kg",price:q?Math.round(a/q*1000)/1000:0,dprice:q?dp:0,items:[{d:desc||T.en.qS,q:1,p:a}]});
-   x.pays=[...fp,...((r.shop||r.paid)&&a-fs>0.004?[pay(a-fs,0,op)]:[])];keepI.add(x.id);}
+   x.pays=[...fp,...((r.shop||r.paid)&&a-fs>0.004?[pay(a-fs,0,op)]:[])];keepI.add(x.id);if(typeof phSave==="function")await phSave(x,r);}
   /* rows taken off the sheet: remove only records this sheet showed, never ones added elsewhere since */
   D.expenses=D.expenses.filter(x=>!(x.sh===d&&(x.shk==="buy"||x.shk==="cost")&&SE.has(x.id)&&!keepE.has(x.id)&&!dsForeign(x,d)));
   D.invoices=D.invoices.filter(x=>!(x.sh===d&&x.shk==="sale"&&SI.has(x.id)&&!keepI.has(x.id)&&!dsForeign(x,d)));
   /* money collected for old bills: take back the collections this sheet showed, then pay oldest bills first */
   const oldC=new Map();for(const x of D.invoices)for(const p of (x.pays||[]))if(p&&p.sh===d&&p.c&&SC.has(p.id)){if(!oldC.has(x.id))oldC.set(x.id,[]);oldC.get(x.id).push(p);}
   for(const x of D.invoices)if(oldC.has(x.id))x.pays=x.pays.filter(p=>!(p&&p.sh===d&&p.c&&SC.has(p.id)));
-  for(const r of SH.coll){let a=r3(dsN(r.amount));if(a<=0)continue;const RK=rsKeys(r.who);const open=dsInv().filter(x=>RK.includes(x.party)&&r3(num(x.amount)-paidOf(x))>0.004).sort((p,q)=>(oldC.has(q.id)?1:0)-(oldC.has(p.id)?1:0)||String(p.date).localeCompare(String(q.date))||String(p.at||"").localeCompare(String(q.at||"")));/* bills this money already paid come first, so saving again does not move it */
+  for(const r of SH.coll){let a=r3(dsN(r.amount));if(a<=0)continue;let ph1=1;const RK=rsKeys(r.who);const open=dsInv().filter(x=>RK.includes(x.party)&&r3(num(x.amount)-paidOf(x))>0.004).sort((p,q)=>(oldC.has(q.id)?1:0)-(oldC.has(p.id)?1:0)||String(p.date).localeCompare(String(q.date))||String(p.at||"").localeCompare(String(q.at||"")));/* bills this money already paid come first, so saving again does not move it */
    const owed=r3(open.reduce((q,x)=>q+num(x.amount)-paidOf(x),0));if(a>owed+0.004)throw fail(t("dsTooMuch").replace("{n}",tx(r.who)).replace("{v}",fmt(owed)+" "+D.settings.cur));
-   for(const x of open){if(a<=0.0005)break;const take=Math.min(a,r3(num(x.amount)-paidOf(x)));const prev=(oldC.get(x.id)||[]).shift();x.pays=x.pays||[];x.pays.push(pay(take,1,prev));a=r3(a-take);}}
+   for(const x of open){if(a<=0.0005)break;const take=Math.min(a,r3(num(x.amount)-paidOf(x)));const prev=(oldC.get(x.id)||[]).shift();x.pays=x.pays||[];const np=pay(take,1,prev);x.pays.push(np);if(ph1&&typeof phSave==="function"){ph1=0;await phSave(np,r);}a=r3(a-take);}}
   /* the notebook photo goes with what was bought, or the first cost */
   if(SH.att.length){const tgt=buyRec||firstCost;if(tgt){tgt.att=tgt.att||[];for(const pa of SH.att){try{await window.storage.set(ATT+pa.id,pa.d,true);tgt.att.push(pa.id);}catch(e){photoFail=true;}}}else photoFail=true;}
   {const p=r3(dsN(SH.price));const sp=D.settings.sellPrice;if(SH.priceSet&&!SH.priceOld&&p>0&&(!sp||!sp.d||sp.d<=d)&&!(sp&&sp.d===d&&r3(num(sp.p))===p))D.settings.sellPrice={d,p,by:me,n:myName()||""};}
@@ -3125,12 +3138,12 @@ function dsCustView(){const L=dsCusts();const cur=esc(D.settings.cur);const tot=
  ${L.length?`<div class="tm-card ds-list">${L.map(p=>`<button class="ds-cu" onclick="dsCust(${ja(p.name)})"><span class="av">${esc(ini(rsName(p.name)))}</span><span class="n"><b>${esc(rsName(p.name))}</b><small>${p.owed>0.004?esc(t("dsBillN").replace("{n}",p.n))+" · ":""}${esc(t("dsLastBill").replace("{d}",niceDate(p.last)))}</small></span><span class="v${p.owed>0.004?"":" ok"}">${p.owed>0.004?fmt(p.owed):t("dsPaidUp")}</span>${I18.chev}</button>`).join("")}</div>`:`<p class="st-empty tm-card">${t("dsNoCust")}</p>`}`;}
 function dsCust(name){const m=document.getElementById("modal");const cur=esc(D.settings.cur);const p=dsCusts().find(x=>x.name===name);if(!p)return;
  const NK=rsKeys(name);const bills=dsInv().filter(x=>NK.includes(x.party)&&r3(num(x.amount)-paidOf(x))>0.004).sort((a,b)=>String(a.date).localeCompare(String(b.date)));
- const pays=dsInv().filter(x=>NK.includes(x.party)).flatMap(x=>(x.pays||[]).map(q=>({d:q.date,a:num(q.amount)}))).sort((a,b)=>String(b.d).localeCompare(String(a.d))).slice(0,6);
- m.innerHTML=`<div class="sheet fm ds-cs">${sheetTop(esc(rsName(name)))}
+ const pays=dsInv().filter(x=>NK.includes(x.party)).flatMap(x=>(x.pays||[]).map(q=>({d:q.date,a:num(q.amount),att:phOf(q)}))).sort((a,b)=>String(b.d).localeCompare(String(a.d))).slice(0,6);
+ m.innerHTML=`<div class="sheet fm ds-cs">${sheetTop(esc(rsName(name)))}${ROLE==="staff"&&typeof rsCanEdit==="function"&&rsCanEdit(name)?`<button class="rs-ed" onclick="closeModal();v2RestEdit(${ja(name)})">✎ ${t("rsEdName")}</button>`:""}
  <div class="ds-hero one"><div><span class="l">${p.owed>0.004?t("gpOwes").replace("{v}",""):t("dsPaidUp")}</span><b class="v${p.owed>0.004?" ng":" lm"}">${fmt(p.owed)}</b></div><small class="cu">${cur}</small></div>
  ${p.owed>0.004&&ROLE==="staff"?`<button class="ds-big" onclick="dsTheyPaid(${ja(name)})">💰 ${t("dsTheyPaid")}</button>`:""}
- ${bills.length?`<h3 class="ds-h3">${t("dsBills")}</h3><div class="ds-bl">${bills.map(x=>`<div class="r"><span><b>${esc(niceDate(x.date))}</b><small>${x.ob?esc(t("obTag"))+" · ":""}${num(x.qty)?esc(fq(x.qty))+" "+t("dsKgU")+" · ":""}${fmt(x.amount)} ${cur}</small>${x.ob&&!(paidOf(x)>0.004)&&(ROLE!=="staff"||x.by===dsMe())?`<button class="ob-x" onclick="obDel(${ja(x.id)})">${t("obDel")}</button>`:""}</span><b class="v">${esc(t("dsLeft").replace("{v}",fmt(num(x.amount)-paidOf(x))))}</b></div>`).join("")}</div>`:""}
- ${pays.length?`<h3 class="ds-h3">${t("dsRecentPays")}</h3><div class="ds-bl">${pays.map(q=>`<div class="r"><span><b>${esc(niceDate(q.d))}</b></span><b class="v ok">+${fmt(q.a)}</b></div>`).join("")}</div>`:""}</div>`;
+ ${bills.length?`<h3 class="ds-h3">${t("dsBills")}</h3><div class="ds-bl">${bills.map(x=>`<div class="r"><span><b>${esc(niceDate(x.date))}${phOf(x).length?` <button class="ph-ic" onclick="phGal(${ja(phOf(x).join(","))},0)" aria-label="${t("phT")}">${I20.cam}</button>`:""}</b><small>${x.ob?esc(t("obTag"))+" · ":""}${num(x.qty)?esc(fq(x.qty))+" "+t("dsKgU")+" · ":""}${fmt(x.amount)} ${cur}</small>${x.ob&&!(paidOf(x)>0.004)&&(ROLE!=="staff"||x.by===dsMe())?`<button class="ob-x" onclick="obDel(${ja(x.id)})">${t("obDel")}</button>`:""}</span><b class="v">${esc(t("dsLeft").replace("{v}",fmt(num(x.amount)-paidOf(x))))}</b></div>`).join("")}</div>`:""}
+ ${pays.length?`<h3 class="ds-h3">${t("dsRecentPays")}</h3><div class="ds-bl">${pays.map(q=>`<div class="r"><span><b>${esc(niceDate(q.d))}${q.att.length?` <button class="ph-ic" onclick="phGal(${ja(q.att.join(","))},0)" aria-label="${t("phT")}">${I20.cam}</button>`:""}</b></span><b class="v ok">+${fmt(q.a)}</b></div>`).join("")}</div>`:""}</div>`;
  m.classList.remove("center");m.classList.add("on");if(WIDE())d6Dlg("d6-one");setTimeout(dsFit,0);}
 function dsTheyPaid(name){closeModal();if(!SH||SH.date!==today()){dsStash();dsLoad(today());}STT="day";render();dsAddColl(name);}
 /* ---------- past days ---------- */
@@ -3141,7 +3154,7 @@ function dsDays(){const M={};const g=d=>M[d]=M[d]||{d,sold:0,out:0,coll:0};
  return Object.values(M).sort((a,b)=>b.d.localeCompare(a.d)).slice(0,90);}
 function dsDaysView(){const L=dsDays();const cur=esc(D.settings.cur);
  return`<div class="ds-top"><div class="ds-ttl"><small>${esc(D.settings.name)}</small><h1>${t("dsDaysT")}</h1></div>${langSeg()}</div>
- ${L.length?`<div class="tm-card ds-list">${L.map(x=>{const pr=r3(x.sold-x.out);return`<button class="ds-day" onclick="dsOpenDay(${ja(x.d)})"><span class="n"><b>${esc(niceDate(x.d))}${x.draft?` <i class="ds-tag">${t("dsDraftTag")}</i>`:""}</b><small>${t("dsSold")} ${fmt(x.sold)} · ${t("dsOut")} ${fmt(x.out)}${x.coll>0.004?" · "+t("dsCollected")+" "+fmt(x.coll):""}</small></span><span class="v${pr<-0.004?" ng":""}"><small>${pr<-0.004?t("dsLoss"):t("dsProfit")}</small>${fmt(Math.abs(pr))}</span>${I18.chev}</button>`;}).join("")}</div>`:`<p class="st-empty tm-card">${t("dsNoDays")}</p>`}`;}
+ ${L.length?`<div class="tm-card ds-list">${L.map(x=>{const pr=r3(x.sold-x.out);return`<button class="ds-day" onclick="dsOpenDay(${ja(x.d)})"><span class="n"><b>${esc(niceDate(x.d))}${x.draft?` <i class="ds-tag">${t("dsDraftTag")}</i>`:""}</b><small>${t("dsSold")} ${fmt(x.sold)} · ${t("dsOut")} ${fmt(x.out)}</small></span><span class="v${pr<-0.004?" ng":""}"><small>${pr<-0.004?t("dsLoss"):t("dsProfit")}</small>${fmt(Math.abs(pr))}</span>${I18.chev}</button>`;}).join("")}</div>`:`<p class="st-empty tm-card">${t("dsNoDays")}</p>`}`;}
 /* ---------- more: name, language, the quick buttons, sign out ---------- */
 function dsMoreView(){const nm=myName();
  return`<div class="ds-top"><div class="ds-ttl"><small>${esc(D.settings.name)}</small><h1>${nm?t("stHi").replace("{n}",esc(nm)):t("hello")}</h1></div>${langSeg()}</div>${nameCard()}
@@ -3436,8 +3449,8 @@ function v2BuyDone(){const B=V2B;if(!B||!SH||v2Busy())return;if(B.d!==SH.date){v
  const calc=r3(dsN(nb.qty)*dsN(nb.price));const paidSet=B.paidSet&&String(B.paid).trim()!==""&&Math.abs(dsN(B.paid)-calc)>0.004;
  const same=nb.name===String(b.name||"")&&dsN(nb.qty)===dsN(b.qty)&&dsN(nb.price)===dsN(b.price)&&nb.from===String(b.from||"")&&paidSet===!!b.paidSet&&(!paidSet||dsN(B.paid)===dsN(b.paid));
  const next=()=>{v2Pass("buy");v2Close();v2Go("costs");};
- if(same&&!SH.dirty)return next();
- Object.assign(b,nb,{paid:paidSet?String(B.paid):"",paidSet,ch:1});dsDirty();v2Save(next);}
+ const ph=B.att&&B.att.length;if(same&&!SH.dirty&&!ph)return next();
+ Object.assign(b,nb,{paid:paidSet?String(B.paid):"",paidSet,ch:1},ph?{attNew:B.att.slice()}:{});dsDirty();v2Save(next);}
 /* ---------- step 2: costs ---------- */
 const V2C=[["work","dsCWork",5,"work",["workers","worker","labour","عمال","عامل"]],["slaughter","v2Slaughter",5,"knife",["ذبيح"]],["clean","v2Cleaning",8,"drop",["تنظيف"]],["fuel","v2Diesel",4,"fuel",["fuel","ديزل","سولار","بنزين"]],["bags","dsCBags",8,"bag",["bag","كيس"]],["ice","v2Ice",8,"ice",["ثلج"]]];
 function v2CostTile(name){const n=v2Norm(name);if(!n)return null;for(const c of V2C){if([T.en[c[1]],T.ar[c[1]],...c[4]].some(w=>v2Norm(w)===n))return c;}return null;}
@@ -3516,7 +3529,7 @@ function v2SaleAdd(){if(!SH||!V2E||v2Busy()||v2Stale())return;const q=String(v2V
  if(V2E.shop&&!V2E.amtSet){const av=dsN(v2Val("v2SA"));if(av>0){a=r3(av);V2E.amtSet=!(dsN(q)>0&&p>0&&Math.abs(av-Math.round(dsN(q)*p*100)/100)<0.005);}}
  if(!(a>0)){toast(t("dsNeedAmt"));const e=document.getElementById(dsN(q)>0&&!p&&pe?"v2SP":V2E.amtSet||V2E.shop?"v2SA":"v2SQ");if(e)e.focus();return;}
  let r=V2E.k?SH.sales.find(x=>x.k===V2E.k):null;if(!r){r={k:uid(),who:"",shop:false,qty:"",amount:"",amtSet:false,paid:false};SH.sales.push(r);V2E.k=r.k;}
- Object.assign(r,{who:V2E.shop?"":V2E.who,shop:V2E.shop,qty:q,amount:String(a),amtSet:!!V2E.amtSet||keep,paid:V2E.shop?true:!!V2E.paid,ch:1});dsDirty();v2Save(()=>{v2Pass("sales");v2Close();});}
+ Object.assign(r,{who:V2E.shop?"":V2E.who,shop:V2E.shop,qty:q,amount:String(a),amtSet:!!V2E.amtSet||keep,paid:V2E.shop?true:!!V2E.paid,ch:1},V2E.att&&V2E.att.length?{attNew:V2E.att.slice()}:{});dsDirty();v2Save(()=>{v2Pass("sales");v2Close();});}
 /* a new restaurant: two names, checked against the list so the same place is not added twice */
 function v2RestNew(prefill){if(!SH||v2RO())return;
  v2Open(`${v2Head(t("v2NewRest"),"",I20.store)}
@@ -3551,7 +3564,7 @@ function v2CollSheet(who){if(!SH)return;if(dsRoll())return;const r=SH.coll.find(
  <button class="v2-done" onclick="v2CollAdd()">${I20.check}${r?t("v2SaveB"):t("v2AddColl")}</button>${r?`<button class="v2-rm" onclick="v2Remove('coll',${ja(r.k)})">${t("v2Remove")}</button>`:""}`}`,"coll");}
 function v2CollAdd(){if(!SH||!V2E||v2Busy()||v2Stale())return;const a=r3(dsN(v2Val("v2KA")));if(!(a>0)){toast(t("avNeedAmt"));const e=document.getElementById("v2KA");if(e)e.focus();return;}
  let r=V2E.k?SH.coll.find(x=>x.k===V2E.k):SH.coll.find(x=>x.who===V2E.who);if(!r){r={k:uid(),who:V2E.who,amount:""};SH.coll.push(r);V2E.k=r.k;}
- r.amount=String(a);dsDirty();v2Save(()=>{v2Pass("coll");v2Close();});}
+ r.amount=String(a);if(V2E.att&&V2E.att.length)r.attNew=V2E.att.slice();dsDirty();v2Save(()=>{v2Pass("coll");v2Close();});}
 /* ---------- close the day: check it like the notebook, then send ---------- */
 function v2CloseV(){const s=SH,c=dsCalc(),cur=v2Cur(),lk=v2RO(),b=s.buy;const neg=c.profit<-0.004;const P=v2Passed(s.date);
  const rests=new Set(s.sales.filter(r=>!r.shop).map(r=>rsOf(String(r.who||"").trim())?rsOf(String(r.who||"").trim()).key:String(r.who||"").trim())).size;const hasShop=s.sales.some(r=>r.shop);
@@ -3587,16 +3600,18 @@ function v2RestNewOwner(){v2Open(`${v2Head(t("v2NewRest"),"",I20.store)}
  <button class="v2-done" onclick="v2RestAddOwner()">${I20.plus}${t("v2AddRest")}</button>`,"rest");}
 async function v2RestAddOwner(){const en=String(v2Val("v2RE")).trim().slice(0,60),ar=String(v2Val("v2RA")).trim().slice(0,60);if(!en&&!ar)return toast(t("v2NeedName"));if(v2RestFind(en,ar))return v2RestCheck(1);
  const snap=clone(D);D.rests=Array.isArray(D.rests)?D.rests:[];D.rests.push({id:uid(),key:en||ar,en,ar,at:new Date().toISOString(),by:dsMe(),st:""});const ok=await persist();if(!ok){D=snap;return;}toast(t("v2RestOk"));v2Rests();}
-function v2RestEdit(key){if(!canEdit())return;const r=rsList().find(x=>x.key===key);if(!r)return;const others=rsList().filter(x=>x.key!==key);
+/* b29: a seller can fix the name of a restaurant he added today; older ones stay as they are (Ala'a, Nov 20) */
+function rsCanEdit(key){if(canEdit())return true;if(ROLE!=="staff")return false;const r=rsOf(key);return!!(r&&r.by&&r.by===dsMe()&&r.at&&localDay(Date.parse(r.at))===today());}
+function v2RestEdit(key){if(!rsCanEdit(key))return;const own=canEdit();const r=rsList().find(x=>x.key===key);if(!r)return;const others=own?rsList().filter(x=>x.key!==key):[];
  v2Open(`${v2Head(t("v2RestEdit"),"",`<b class="ini">${esc(ini(r.en||r.ar||key))}</b>`)}
  <label><span class="v2-lbl">${t("v2NameEn")}</span><input id="v2RE" class="v2-in v2-txt" dir="ltr" lang="en" autocomplete="off" value="${esc(r.en||"")}"></label>
  <label><span class="v2-lbl">${t("v2NameAr")}</span><input id="v2RA" class="v2-in v2-txt" dir="rtl" lang="ar" autocomplete="off" value="${esc(r.ar||"")}"></label>
  <button class="v2-done" onclick="v2RestSave(${ja(key)})">${I20.check}${t("v2SaveB")}</button>
  ${others.length?`<div class="v2-h"><b>${t("v2JoinT")}</b></div><div class="v2-chips">${others.map(o=>`<button class="v2-chip" onclick="v2JoinAsk(${ja(key)},${ja(o.key)})">${I20.merge}${esc(o.en||o.ar||o.key)}${o.en&&o.ar?` <small dir="auto">${esc(o.ar)}</small>`:""}</button>`).join("")}</div><div id="v2JX"></div>`:""}
- <button class="v2-rm" onclick="v2Rests()">${t("v2Back")}</button>`,"rest");}
+ <button class="v2-rm" onclick="${own?"v2Rests()":`v2Close();dsCust(${ja(key)})`}">${t("v2Back")}</button>`,"rest");}
 function v2RestRec(key){D.rests=Array.isArray(D.rests)?D.rests:[];let r=D.rests.find(x=>x&&x.key===key&&!x.gone);if(!r){r={id:uid(),key,en:v2Ar(key)?"":key,ar:v2Ar(key)?key:"",alias:[],at:new Date().toISOString(),by:dsMe(),st:""};D.rests.push(r);}return r;}
-async function v2RestSave(key){const en=String(v2Val("v2RE")).trim().slice(0,60),ar=String(v2Val("v2RA")).trim().slice(0,60);if(!en&&!ar)return toast(t("v2NeedName"));
- const snap=clone(D);const r=v2RestRec(key);r.en=en;r.ar=ar;r.st="";r.eAt=new Date().toISOString();const ok=await persist();if(!ok){D=snap;return;}toast(t("v2RestOk"));render();v2Rests();}
+async function v2RestSave(key){if(!rsCanEdit(key))return;const own=canEdit();const en=String(v2Val("v2RE")).trim().slice(0,60),ar=String(v2Val("v2RA")).trim().slice(0,60);if(!en&&!ar)return toast(t("v2NeedName"));
+ const snap=clone(D);const r=v2RestRec(key);r.en=en;r.ar=ar;if(own)r.st="";r.eAt=new Date().toISOString();r.eBy=dsMe();const ok=await persist();if(!ok){D=snap;return;}toast(t("v2RestOk"));render();if(own)v2Rests();else{v2Close();dsCust(key);}}
 function v2JoinAsk(a,b){const x=document.getElementById("v2JX");if(!x)return;const an=rsOf(a)?(rsOf(a).en||rsOf(a).ar):a,bn=rsOf(b)?(rsOf(b).en||rsOf(b).ar):b;
  x.innerHTML=`<div class="v2-note on">${I20.merge}<span>${esc(t("v2JoinD").replace("{a}",an).replace("{b}",bn))}</span></div><button class="v2-done ink" onclick="v2Join(${ja(a)},${ja(b)})">${t("v2Join")}</button>`;}
 async function v2Join(a,b){if(!canEdit()||a===b)return;const snap=clone(D);const A=v2RestRec(a);const B=(D.rests||[]).find(x=>x&&x.key===b&&!x.gone);
@@ -3621,7 +3636,7 @@ dsOwner=function(d){if(!canEdit())return toast(t("viewOnly"));DSOWN=true;SV="";d
 {const _qa=quickAdd;quickAdd=function(){_qa();const m=document.querySelector("#modal .tm-add");const s=m&&m.querySelector(".ds-qa");if(s&&canEdit())s.insertAdjacentHTML("afterend",`<button class="ds-qa v2-qr" onclick="closeModal();v2Rests()"><span class="ci">${I20.store}</span><span><b>${t("v2RestQa")}</b><small>${t("v2RestQaD")}</small></span></button>`);};}
 
 /* auto-update: reload when a new version is published */
-const BUILD="b28";
+const BUILD="b29";
 async function checkUpdate(){try{const r=await fetch("version.txt?"+Date.now(),{cache:"no-store"});const v=(await r.text()).trim();if(v&&v!==BUILD){const m=document.getElementById("modal");if(m&&m.classList.contains("on"))return;if(document.body.classList.contains("v2-open")||(typeof SH!=="undefined"&&SH&&SH.dirty)||(typeof DSBUSY!=="undefined"&&DSBUSY))return;try{if(sessionStorage.getItem("tamm:rl")===v)return;sessionStorage.setItem("tamm:rl",v);}catch(e){}/* b25: put the new page in the phone copy first, so the reload opens it */try{const nr=await fetch(location.pathname+"?fresh="+encodeURIComponent(v),{cache:"no-store"});if(nr.ok&&window.caches){for(const k of await caches.keys()){const ca=await caches.open(k);await ca.put(new Request(location.origin+location.pathname),nr.clone());}}}catch(e){}location.reload();}}catch(e){}}
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"){checkUpdate();try{if(unlocked&&D)dsRoll();}catch(e){}}});setTimeout(checkUpdate,3000);
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
@@ -3696,7 +3711,7 @@ async function obDel(id){const x=D.invoices.find(r=>r.id===id);if(!x||!x.ob||pai
 /* ===== b27: the phone's Back button (Android) closes an open sheet first, then goes back to the previous screen.
    Each open sheet and each screen change adds one browser history step; closing a sheet with its X removes that step again. ===== */
 let BK_SHEET=false,BK_SKIP=0,BK_T=null;const BK_TABS=[];
-const bkOpen=()=>{const m=document.getElementById("modal"),v=document.getElementById("v2s");return !!(m&&m.classList.contains("on"))||!!(v&&v.classList.contains("on"));};
+const bkOpen=()=>{const m=document.getElementById("modal"),v=document.getElementById("v2s"),pl=document.getElementById("phLb");return !!(m&&m.classList.contains("on"))||!!(v&&v.classList.contains("on"))||!!(pl&&pl.classList.contains("on"));};
 function bkSync(){const open=bkOpen();
  if(open&&!BK_SHEET){clearTimeout(BK_T);BK_T=null;BK_SHEET=true;try{history.pushState({tm:"sheet"},"");}catch(e){}}
  else if(!open&&BK_SHEET&&!BK_T){BK_T=setTimeout(()=>{BK_T=null;if(bkOpen()||!BK_SHEET)return;BK_SHEET=false;BK_SKIP++;try{history.back();}catch(e){BK_SKIP--;}},60);}}
@@ -3705,7 +3720,7 @@ function bkTab(kind,prev){try{BK_TABS.push({kind,prev});history.pushState({tm:"t
 const _go27=go;go=function(k){if(unlocked&&k!==tab)bkTab("own",tab);return _go27(k);};
 const _dsGo27=dsGo;dsGo=function(k){if(unlocked&&k!==STT)bkTab("staff",STT);return _dsGo27(k);};
 window.addEventListener("popstate",()=>{if(BK_SKIP>0){BK_SKIP--;return;}
- if(BK_SHEET){BK_SHEET=false;clearTimeout(BK_T);BK_T=null;const v=document.getElementById("v2s");if(v&&v.classList.contains("on"))v2Close();else closeModal();return;}
+ if(BK_SHEET){BK_SHEET=false;clearTimeout(BK_T);BK_T=null;{const pl=document.getElementById("phLb");if(pl&&pl.classList.contains("on")){phClose();return;}}const v=document.getElementById("v2s");if(v&&v.classList.contains("on"))v2Close();else closeModal();return;}
  const s=BK_TABS.pop();if(!s)return;if(s.kind==="own"){tab=s.prev;filter="all";q="";render();}else{if(STT==="day")dsStash();STT=s.prev;render();}try{window.scrollTo({top:0});}catch(e){}});
 /* ===== b28: a seller sees every sale since the start (sales only; costs stay hidden), listed under Days. ===== */
 Object.assign(T.en,{asT:"All sales",asD:"Every sale since the start, newest first.",asNone:"No sales yet.",asPaid:"Paid",asLeft:"{v} left",asMore:"Show more",asN:"{n} sales · {v}"});
@@ -3718,6 +3733,76 @@ function asHTML(){const L=asList();const cur=esc(D.settings.cur);const tot=r3(L.
   return`<div class="r"><span><b>${esc(who||t("v2Shop"))}</b><small>${esc(niceDate(x.date))}${num(x.qty)?" · "+esc(fq(x.qty))+" "+t("dsKgU"):""}${left>0.004?" · "+esc(t("asLeft").replace("{v}",fmt(left))):" · "+t("asPaid")}</small></span><b class="v">${fmt(x.amount)}</b></div>`;}).join("")}</div>
  ${L.length>AS_N?`<button class="ob-add" onclick="AS_N+=100;render()">${t("asMore")}</button>`:""}`:""}`;}
 const _dsDaysView28=dsDaysView;dsDaysView=function(){return _dsDaysView28()+asHTML();};
+/* ===== b29 (Ala'a, Nov 20): a past day opens like the notebook page Anas used to photograph; an optional invoice photo on the buy,
+   each sale and each collection; a seller changes only today and can fix the name of a restaurant he added today. ===== */
+Object.assign(T.en,{rsEdName:"Edit name",phAdd:"Invoice photo",phT:"Invoice photos",phFail:"A photo couldn't be saved. Try again.",
+ ddPrice:"Buying price a kilo",ddWeight:"Chicken weight",ddCosts:"Costs",ddSales:"Sales",ddColl:"Collected",ddLeft:"Still owed",ddTot:"Total",ddNone:"Nothing was written for this day.",
+ ddPaid:"Paid",ddAcc:"On account",ddNoOwe:"Nobody owes anything.",ddOpen:"See the day"});
+Object.assign(T.ar,{rsEdName:"عدّل الاسم",phAdd:"صورة الفاتورة",phT:"صور الفواتير",phFail:"تعذّر حفظ صورة. حاول مرة أخرى.",
+ ddPrice:"سعر الصباح",ddWeight:"وزن الدجاج",ddCosts:"المصاريف",ddSales:"البيع",ddColl:"التحصيل",ddLeft:"الباقي",ddTot:"المجموع",ddNone:"لم يُكتب شيء لهذا اليوم.",
+ ddPaid:"مدفوع",ddAcc:"على الحساب",ddNoOwe:"لا أحد عليه شيء.",ddOpen:"اعرض اليوم"});
+/* the notebook days were typed in English; show them in Arabic too */
+Object.assign(AR_MAP,{"Live chicken":"دجاج حي","Chicken":"دجاج","Slaughter":"ذبح","Diesel":"ديزل","Petrol":"بنزين","Worker wage":"أجرة عامل","Cleaning the chicken":"تشحيب","Car hire":"أجرة سيارة","Phone":"هاتف",
+ "Small items":"مصروفات صغيرة","Small items and bags":"مفارش وأكياس","Cleaning supplies":"منظفات","Soap and tissues":"صابون ومحارم","Cartons and bags":"كراتين وأكياس","Chlorine, dish soap, notebook":"كلور وسائل جلي ودفتر",
+ "Transport (?)":"نقل (؟)","Item (word hard to read)":"بند غير واضح","Fee (word hard to read)":"أجرة غير واضحة","Big baskets":"سلال كبيرة","Chicken meat":"لحمة دجاج","Wings":"جناح","Liver and wings":"كبدة وجناح",
+ "Chicken pieces":"دجاج قطع","Liver, wings and gizzards":"كبدة وجناح وقوانص","Chicken pieces 14 kg":"دجاج قطع ١٤ كغ","Chicken 7.7 kg":"دجاج ٧٫٧ كغ","Garbage bags":"أكياس نفايات","Liver and gizzards":"كبدة وقوانص"});
+/* ---------- photos ---------- */
+async function phSave(rec,row){if(!row||!Array.isArray(row.attNew)||!row.attNew.length)return;rec.att=Array.isArray(rec.att)?rec.att:[];
+ for(const pa of row.attNew){if(rec.att.includes(pa.id))continue;try{await window.storage.set(ATT+pa.id,pa.d,true);rec.att.push(pa.id);}catch(e){toast(t("phFail"));}}}
+let PHC=null;/* the photo row of the open sheet: {ids:saved ids, h:holder of new ones, ro} */
+function phRowHTML(){if(!PHC)return"";const {ids,h,ro}=PHC;const pend=h&&Array.isArray(h.att)?h.att:[];if(ro&&!ids.length)return`<div id="phRow"></div>`;
+ const th=[...ids.map((id,i)=>`<button class="ph-th" onclick="phGal(${ja(ids.join(","))},${i})" aria-label="${t("phAdd")}"><img data-att="${esc(id)}" alt=""></button>`),
+  ...pend.map((p,i)=>`<span class="ph-th new"><img src="${p.d}" alt=""><button class="ph-x" aria-label="${t("v2Remove")}" onclick="phDrop(${i})">×</button></span>`)].join("");
+ return`<div id="phRow">${ro?"":`<label class="v2-note v2-photo${ids.length||pend.length?" ok":""}">${I20.cam}<span class="f">${t("phAdd")}${ids.length+pend.length?" · "+(ids.length+pend.length):""}</span><span class="v2-tag">${t("v2Opt")}</span><input type="file" accept="image/*" capture="environment" onchange="phPick(this)"></label>`}${th?`<div class="ph-ths">${th}</div>`:""}</div>`;}
+function phPaint(){const e=document.getElementById("phRow");if(e)e.outerHTML=phRowHTML();fillThumbs();}
+function phMount(sel,ids,h,ro){PHC={ids:ids||[],h,ro:!!ro};if(h&&!Array.isArray(h.att))h.att=[];const sh=document.querySelector("#v2s "+sel);if(!sh)return;
+ const old=sh.querySelector("#phRow");if(old)old.remove();const at=sh.querySelector(".v2-done")||sh.querySelector(".v2-lk");const box=document.createElement("div");box.innerHTML=phRowHTML();const el=box.firstElementChild;
+ if(at)at.before(el);else sh.appendChild(el);fillThumbs();}
+async function phPick(input){if(!PHC||!PHC.h)return;try{for(const f of [...(input.files||[])]){const d=await compressImg(f);if(!d){toast("⚠️ "+(lang==="ar"?"صيغة صورة غير مدعومة":"Unsupported image"));continue;}PHC.h.att.push({id:uid(),d});}}catch(e){}try{input.value="";}catch(e){}phPaint();}
+function phDrop(i){if(PHC&&PHC.h&&Array.isArray(PHC.h.att)){PHC.h.att.splice(i,1);phPaint();}}
+function phGal(list,i){const ids=String(list||"").split(",").filter(Boolean);if(!ids.length)return;let o=document.getElementById("phLb");if(!o){o=document.createElement("div");o.id="phLb";document.body.appendChild(o);}
+ o.innerHTML=`<button class="ph-lx" aria-label="${t("close")}" onclick="phClose()">×</button><div class="ph-lbi">${ids.map(id=>`<img data-att="${esc(id)}" alt="">`).join("")}</div>`;o.classList.add("on");try{bkSync();}catch(e){}
+ fillThumbs().then(()=>{const im=o.querySelectorAll("img")[i||0];if(im&&i)try{im.scrollIntoView({block:"start"});}catch(e){}});}
+function phClose(){const o=document.getElementById("phLb");if(o){o.classList.remove("on");o.innerHTML="";}try{bkSync();}catch(e){}}
+const phOf=x=>x&&Array.isArray(x.att)?x.att.filter(Boolean):[];
+function phCollIds(who,d){const K=rsKeys(who);const out=[];for(const x of dsInv())if(K.includes(x.party))for(const p of x.pays||[])if(p&&p.sh===d&&p.c)out.push(...phOf(p));return out;}
+/* the buy, a sale and a collection each get the photo row */
+{const _bp=v2BuyPaint;v2BuyPaint=function(first){const keep=V2B&&V2B.att;_bp(first);if(!V2B||!SH)return;if(keep)V2B.att=keep;const x=SH.buy.rid?D.expenses.find(e=>e.id===SH.buy.rid):null;phMount(".sh.buy",phOf(x),V2B,v2RO()||SH.buy.lock===-1);};}
+{const _ss=v2SaleSheet;v2SaleSheet=function(who,k,shop){_ss(who,k,shop);if(!V2E||V2E.sec!=="sales"||!SH)return;const r=V2E.k?SH.sales.find(x=>x.k===V2E.k):null;const x=r&&r.rid?D.invoices.find(i=>i.id===r.rid):null;phMount(".sh.sale",phOf(x),V2E,v2RO()||(r&&r.lock));};}
+{const _cs=v2CollSheet;v2CollSheet=function(who){_cs(who);if(!V2E||V2E.sec!=="coll"||!SH)return;phMount(".sh.coll",phCollIds(who,SH.date),V2E,v2RO());};}
+{const _vc=v2Close;v2Close=function(){PHC=null;_vc();};}
+/* ---------- a day, laid out like the notebook page ---------- */
+function ddOwedOn(d){const by={};for(const x of dsInv()){if(!x||x.party==="Shop sales"||String(x.date)>d)continue;const k=rsOf(x.party)?rsOf(x.party).key:x.party;
+ const paid=(x.pays||[]).filter(p=>p&&String(p.date)<=d).reduce((a,p)=>a+num(p.amount),0);by[k]=r3((by[k]||0)+num(x.amount)-paid);}
+ return Object.entries(by).filter(([k,v])=>v>0.004).sort((a,b)=>b[1]-a[1]);}
+function ddPhotos(d){const R=dsRecs(d);const L=[...phOf(R.buy),...R.costs.flatMap(phOf),...R.sales.flatMap(phOf)];for(const x of dsInv())for(const p of x.pays||[])if(p&&p.sh===d&&p.c)L.push(...phOf(p));return[...new Set(L)];}
+function ddHTML(d){const R=dsRecs(d);const cur=v2Cur();const b=R.buy;const bq=b?num(b.qty):0,bp=b?num(b.price):0;
+ const ln=(l,sm,v,cls)=>`<div class="v2-tl"><span>${l}${sm?`<small>${sm}</small>`:""}</span><b class="${cls||""}">${v}</b></div>`;
+ const costT=r3((b?num(b.amount):0)+R.costs.reduce((a,x)=>a+num(x.amount),0));const soldT=r3(R.sales.reduce((a,x)=>a+num(x.amount),0));const prof=r3(soldT-costT);
+ const coll={};for(const x of dsInv())for(const p of x.pays||[])if(p&&p.sh===d&&p.c){const k=rsOf(x.party)?rsOf(x.party).key:x.party;coll[k]=r3((coll[k]||0)+num(p.amount));}
+ const collT=r3(Object.values(coll).reduce((a,v)=>a+v,0));const left=ddOwedOn(d);const leftT=r3(left.reduce((a,[,v])=>a+v,0));const ph=ddPhotos(d);
+ if(!b&&!R.costs.length&&!R.sales.length&&!collT)return`<p class="v2-sub">${t("ddNone")}</p>`;
+ const sale=x=>{const shop=x.party==="Shop sales";const paid=r3(num(x.amount)-paidOf(x))<=0.004||(x.pays||[]).some(p=>p&&p.sh===d&&!p.c);const q=num(x.qty);
+  return ln(`<bdi>${esc(shop?t("v2Shop"):rsName(x.party))}</bdi>`,esc([q?fq(q)+" "+t("dsKgU"):"",x.desc&&!q&&!/^Chicken$/i.test(x.desc)?tx(x.desc):"",shop?"":(paid?t("ddPaid"):t("ddAcc"))].filter(Boolean).join(" · ")),fmt(num(x.amount)),shop||paid?"c-paid":"c-later");};
+ return`${bq||bp?`<div class="dd-top">${bp?`<div><span>${t("ddPrice")}</span><b>${esc(fq(bp))}</b></div>`:""}${bq?`<div><span>${t("ddWeight")}</span><b>${esc(fq(bq))} <small>${t("dsKgU")}</small></b></div>`:""}</div>`:""}
+ <div class="v2-h"><b>${t("ddCosts")}</b><span>${fmt(costT)} ${cur}</span></div>
+ <div class="v2-list v2-tls">${b?ln(esc(tx(b.item)||t("v2S1")),esc([bq?v2Kg(bq):"",bp?"× "+fq(bp):"",b.party||""].filter(Boolean).join(" · ")),fmt(num(b.amount))):""}
+ ${R.costs.map(x=>ln(`<bdi>${esc(tx(x.item||x.desc)||t("dsOtherCost"))}</bdi>`,"",fmt(num(x.amount)))).join("")}
+ <div class="v2-tl tot"><span>${t("ddTot")}</span><b>${fmt(costT)}</b></div></div>
+ <div class="v2-h"><b>${t("ddSales")}</b><span>${fmt(soldT)} ${cur}</span></div>
+ <div class="v2-list v2-tls">${R.sales.map(sale).join("")}<div class="v2-tl tot"><span>${t("ddTot")}</span><b>${fmt(soldT)}</b></div></div>
+ <div class="v2-profit${prof<-0.004?" ng":""}"><span>${prof<-0.004?t("v2LossT"):t("v2ProfitT")}</span><b>${fmt(Math.abs(prof))}<small>${cur}</small></b></div>
+ ${collT>0?`<div class="v2-h"><b>${t("ddColl")}</b><span>${fmt(collT)} ${cur}</span></div><div class="v2-list v2-tls">${Object.entries(coll).map(([k,v])=>ln(`<bdi>${esc(rsName(k))}</bdi>`,"",`+${fmt(v)}`,"c-paid")).join("")}</div>`:""}
+ <div class="v2-h"><b>${t("ddLeft")}</b><span>${fmt(leftT)} ${cur}</span></div>
+ <div class="v2-list v2-tls">${left.length?left.map(([k,v])=>ln(`<bdi>${esc(rsName(k))}</bdi>`,"",fmt(v),"c-later")).join(""):`<div class="v2-tl"><span>${t("ddNoOwe")}</span></div>`}</div>
+ ${ph.length?`<div class="v2-h"><b>${t("phT")}</b><span>${ph.length}</span></div><div class="ph-ths ph-day">${ph.map((id,i)=>`<button class="ph-th" onclick="phGal(${ja(ph.join(","))},${i})" aria-label="${t("phT")}"><img data-att="${esc(id)}" alt=""></button>`).join("")}</div>`:""}`;}
+{const _home=v2Home;v2Home=function(){const h=_home();if(!SH||!v2RO())return h;const i=h.indexOf(`<div class="v2-h">`);if(i<0)return h;setTimeout(fillThumbs,0);
+ const top=h.slice(0,i).replace(/<button class="v2-price need"[\s\S]*?<\/button>/,"");
+ return top+ddHTML(SH.date)+(SH.has?`<button class="v2-wa" onclick="v2Send()">${I20.wa}${t("dsSend")}</button>`:"");};}
+/* today's photos also show when closing the day */
+{const _cv=v2CloseV;v2CloseV=function(){const h=_cv();if(!SH)return h;const ph=ddPhotos(SH.date);if(!ph.length)return h;setTimeout(fillThumbs,0);const i=h.indexOf(`<button class="v2-wa"`);
+ const g=`<div class="v2-h"><b>${t("phT")}</b><span>${ph.length}</span></div><div class="ph-ths ph-day">${ph.map((id,k)=>`<button class="ph-th" onclick="phGal(${ja(ph.join(","))},${k})" aria-label="${t("phT")}"><img data-att="${esc(id)}" alt=""></button>`).join("")}</div>`;
+ return i<0?h+g:h.slice(0,i)+g+h.slice(i);};}
 render();boot();sb.auth.onAuthStateChange((ev)=>{if(ev==="PASSWORD_RECOVERY"){RECOVER=true;setTimeout(()=>render(),0);return;}if(ev==="SIGNED_OUT"){cacheDrop();SESSION=null;unlocked=false;D=null;render();}});
 window.addEventListener("focus",async()=>{if(unlocked&&BIZ&&!SYNC.pending){try{const r=await window.storage.get("tt:data");if(SYNC.pending)return;const nd=sanitizeData(JSON.parse(r.value));if(JSON.stringify(nd)!==JSON.stringify(D)){D=nd;D.contacts=D.contacts||{};D.products=D.products||[];const m=document.getElementById("modal");if(m&&m.classList.contains("on")){if(DSOWN&&document.querySelector("#modal #dsWrap")){if(!dsRoll())dsPaint();}}else render();}else if(typeof dsRoll==="function")dsRoll();}catch(e){}}});
 </script>
