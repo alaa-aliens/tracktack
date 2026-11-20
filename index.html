@@ -1286,6 +1286,58 @@ label>.v2-in.v2-txt{margin-top:0}.v2-in.v2-txt:focus{border:2px solid var(--ink)
 .se-o{text-align:start;border:1.5px solid var(--div);background:#fff;border-radius:18px;padding:14px 16px;font:inherit;cursor:pointer;color:var(--ink)}
 .se-o b{display:block;font-size:16px}.se-o small{display:block;color:var(--muted);font-size:13px;margin-top:2px}.se-o.on{border-color:var(--ink);background:var(--limebg)}
 .dd-edit{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin-top:12px;border:0;background:var(--ink);color:#fff;border-radius:999px;padding:14px;font:inherit;font-size:16px;font-weight:800;cursor:pointer}.dd-edit svg{width:18px;height:18px}
+/* b31: three prices in the price card, the sale list and picker, a past day edited on its page */
+.pr-card{margin-top:14px;background:rgba(255,255,255,.07);padding:12px 12px 14px}
+.pr-h{display:flex;align-items:center;gap:10px;margin:0 4px 10px}
+.pr-h .pi{width:28px;height:28px;border-radius:50%;background:var(--lime);color:var(--ink);display:flex;align-items:center;justify-content:center;flex:none}
+.pr-h .pi svg{width:15px;height:15px}
+.pr-h small{font-size:12.5px;color:#A9AD9F;font-weight:600}
+.pr-row{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.pr-row::-webkit-scrollbar{display:none}
+.pr-c{flex:1 1 0;min-width:64px;border:0;border-radius:16px;background:rgba(255,255,255,.1);color:#fff;font:inherit;padding:9px 12px;text-align:start;cursor:pointer;display:flex;flex-direction:column;gap:2px}
+.pr-c span{font-size:12.5px;color:#C9CCBF;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.pr-c b{font-size:17px;font-weight:800;font-variant-numeric:tabular-nums;direction:ltr;unicode-bidi:isolate;white-space:nowrap}
+.pr-c.need{background:var(--lime);color:var(--ink)}.pr-c.need span{color:#3A4020}
+.pr-c:disabled{cursor:default}
+.pr-c.add{flex:0 0 44px;min-width:44px;padding:0;align-items:center;justify-content:center;flex-direction:row;gap:6px;background:transparent;border:1.5px dashed rgba(255,255,255,.3)}
+.pr-c.add svg{width:16px;height:16px}.pr-c.add span{color:#fff}
+.pr-c.ed{background:#fff;color:var(--ink);flex:2 0 150px}.pr-c.ed>span:first-child{color:var(--muted)}
+.pr-in{display:flex;align-items:center;gap:6px}
+.pr-in .v2-in{flex:1;min-width:0;width:60px;height:34px;border:0;border-bottom:2px solid var(--ink);background:none;font:inherit;font-size:18px!important;font-weight:800;color:var(--ink);outline:none;padding:0;direction:ltr}
+.pr-ok{width:34px;height:34px;border-radius:50%;border:0;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;flex:none;cursor:pointer}
+.pr-ok svg{width:16px;height:16px}
+.sl-add{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin-top:14px;border:0;background:var(--ink);color:#fff;border-radius:22px;min-height:64px;font:inherit;font-size:17px;font-weight:800;cursor:pointer}
+.sl-add svg{width:20px;height:20px}
+.sl-add:active{transform:scale(.98)}
+.sl-q{position:static!important;margin-bottom:6px}
+.sl-l .v2-list{margin-top:6px}
+.sl-l .v2-rt.dash{width:100%;min-height:56px;margin-top:12px}
+.sl-pr{margin:4px 0 6px}
+.dd-tip{display:flex;align-items:center;justify-content:center;gap:6px;margin:12px 4px 0;font-size:13px;color:var(--muted)}
+.dd-tip svg{width:14px;height:14px}
+.dd-ln{cursor:pointer}
+.dd-ln:active{opacity:.7}
+.dd-x{width:30px;height:30px;border-radius:50%;border:0;background:var(--soft);color:var(--muted);display:flex;align-items:center;justify-content:center;flex:none;cursor:pointer;margin-inline-start:-4px}
+.dd-x svg{width:14px;height:14px}
+.dd-ln b{margin-inline-start:auto}
+.dd-adds{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.dd-add{flex:1 1 140px;display:flex;align-items:center;justify-content:center;gap:6px;border:1.5px dashed #BDBBB0;background:transparent;border-radius:16px;min-height:46px;font:inherit;font-size:14.5px;font-weight:700;color:var(--ink);cursor:pointer}
+.dd-add svg{width:16px;height:16px}
+.sv-bar{position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--lime);color:var(--ink);padding:8px 12px 8px 16px;font-size:13.5px;font-weight:700}
+.sv-bar span{display:flex;align-items:center;gap:6px;min-width:0}.sv-bar svg{width:16px;height:16px;flex:none}
+.sv-bar button{border:0;background:var(--ink);color:#fff;border-radius:999px;padding:8px 14px;font:inherit;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap}
+.sv-more{display:flex;align-items:center;gap:12px;width:100%;margin-top:12px;border:0;background:var(--ink);color:#fff;border-radius:20px;padding:14px 16px;font:inherit;text-align:start;cursor:pointer}
+.sv-more .ci{width:38px;height:38px;border-radius:50%;background:var(--lime);color:var(--ink);display:flex;align-items:center;justify-content:center;flex:none}.sv-more .ci svg{width:18px;height:18px}
+.sv-more .tx{flex:1;min-width:0}.sv-more b{display:block;font-size:16px}.sv-more small{display:block;font-size:12.5px;color:#C9CCBF;margin-top:2px}.sv-more>svg{width:18px;height:18px;flex:none}
+.rs-ph{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:6px 0 0}
+.rs-bk{display:flex;align-items:center;gap:6px;border:0;background:#fff;box-shadow:var(--sh);border-radius:999px;padding:9px 14px 9px 10px;font:inherit;font-size:14px;font-weight:700;color:var(--ink);cursor:pointer}
+.rs-bk svg{width:18px;height:18px}[dir=rtl] .rs-bk svg{transform:scaleX(-1)}
+.rs-ph .rs-ed{margin:0}
+.rs-h1{margin:14px 2px 0;font-size:28px;letter-spacing:-.5px;line-height:1.15;overflow-wrap:anywhere}
+.rs-acts{display:flex;gap:8px}.rs-acts .sl-add{flex:1;min-height:56px;font-size:15.5px;border-radius:18px}
+.sl-add.lime{background:var(--lime);color:var(--ink)}
+.rs-ed1{cursor:pointer}.rs-ed1:active{opacity:.7}
+.rs-go{display:flex;align-items:center;color:var(--muted);margin-inline-start:8px}.rs-go svg{width:15px;height:15px}
 </style>
 </head>
 <body>
@@ -2074,7 +2126,7 @@ function render(keepFocus){const app=document.getElementById("app");document.doc
  if(!unlocked){if(SESSION&&!D&&BIZ){app.innerHTML=skeleton();return;}if((!SESSION&&!LINKERR&&!RECOVER&&!INV&&!lsGet("tamm:intro"))||window.__introReplay){app.innerHTML=introHTML();if(window.__booted)hideSplash();return;}app.innerHTML=gateHTML()+`<div class="modal" id="modal"></div>`;if(window.__booted)hideSplash();setTimeout(()=>{const i=document.getElementById("em")||document.getElementById("bn");if(i&&!window.matchMedia("(max-width:900px)").matches)i.focus();},50);return;}
  if(window.__introReplay){app.innerHTML=introHTML();return;}
  if(D.onboard&&!D.onboard.done&&ROLE==="owner"){app.innerHTML=vWizard()+`<div class="modal" id="modal"></div>`;hideSplash();return;}
- if(ROLE==="staff"){app.innerHTML=vStaff()+`<div class="modal" id="modal"></div>`;hideSplash();return;}
+ if(ROLE==="staff"||(typeof SHOPV!=="undefined"&&SHOPV)){app.innerHTML=vStaff()+`<div class="modal" id="modal"></div>`;hideSplash();return;}
  const active=document.activeElement;const sel=active&&active.type==="search"?active.selectionStart:null;
  window.__still=!!keepFocus||window.__lastTab===tab;window.__lastTab=tab;
  const title=k=>({sales:t("salesInv"),exp:t("exp"),fund:t("fund"),plan:t("plan"),set:t("teamSet")})[k];
@@ -3067,7 +3119,7 @@ function dsTot(){const c=dsCalc();const set=(id,v)=>{const e=document.getElement
  const bp=document.getElementById("dsBuyPaid");if(bp&&!SH.buy.paidSet&&document.activeElement!==bp)bp.value=c.buy?String(c.buy):"";
  const bar=document.getElementById("dsBar");if(bar&&!bar.classList.contains("dirty"))dsBar();dsFit();}
 function dsDirty(){SH.dirty=true;dsStash();}
-function dsSet(sec,k,f,v){if(!SH||DSBUSY)return;if(sec==="day"){SH.price=v;SH.priceOld=false;SH.priceSet=true;const p=dsN(v);for(const r of SH.sales){if(r.lock||r.amtSet||!(dsN(r.qty)>0))continue;r.amount=p?String(Math.round(dsN(r.qty)*p*100)/100):"";r.ch=1;const a=document.getElementById("dsa-"+r.k);if(a)a.value=r.amount;dsHint(r);}dsDirty();dsTot();return;}
+function dsSet(sec,k,f,v){if(!SH||DSBUSY)return;if(sec==="day"){SH.price=v;SH.priceOld=false;SH.priceSet=true;const p=dsN(v);for(const r of SH.sales){if(r.lock||r.amtSet||!(dsN(r.qty)>0)||(r.prod&&r.prod!=="chicken"))continue;r.amount=p?String(Math.round(dsN(r.qty)*p*100)/100):"";r.ch=1;const a=document.getElementById("dsa-"+r.k);if(a)a.value=r.amount;dsHint(r);}dsDirty();dsTot();return;}
  const o=sec==="buy"?SH.buy:(SH[sec]||[]).find(r=>r.k===k);if(!o)return;o[f]=v;o.ch=1;
  if(sec==="buy"&&f==="paid")o.paidSet=String(v).trim()!==""&&Math.abs(dsN(v)-r3(dsN(o.qty)*dsN(o.price)))>0.004;
  if(sec==="sales"&&f==="amount")o.amtSet=String(v).trim()!=="";
@@ -3120,10 +3172,10 @@ async function dsSave(stay){if(DSBUSY||!SH)return false;const d=SH.date;if(dsRO(
   const bName=String(b.name||"").trim();
   for(const r of SH.sales){const old=find(D.invoices,r.rid);if(old&&(r.lock||!r.ch)){keepI.add(old.id);continue;}const a=r3(dsN(r.amount));if(a<=0)continue;
    let x=old;if(!x){x={id:uid(),no:nextNo(),date:d,due:"",notes:"",by:me,at,sh:d,shk:"sale"};D.invoices.push(x);}
-   const q=r3(dsN(r.qty));const party=r.shop?"Shop sales":rsK(String(r.who||"").trim());const desc=q?[bName,fq(q)+" kg"].filter(Boolean).join(" "):(bName||(r.shop?T.en.qS:""));
+   const q=r3(dsN(r.qty));const party=r.shop?"Shop sales":rsK(String(r.who||"").trim());const prod=!r.shop&&r.prod&&r.prod!=="chicken"&&typeof prEn==="function"?r.prod:"";const pn=prod?prEn(prod):bName;const desc=q?[pn,fq(q)+" kg"].filter(Boolean).join(" "):(pn||(r.shop?T.en.qS:""));
    const op=ownPay(x);const fp=keepPays(x);const fs=r3(fp.reduce((q2,p)=>q2+num(p.amount),0));if(a<fs-0.004)throw fail(t("dsLockedRow"));
-   const dp=r3(dsN(SH.price));const follows=q>0&&dp>0&&!r.amtSet;
-   Object.assign(x,{date:d,party,desc,cat:x.cat||T.en.salesCats[0],amount:a,qty:q,unit:"kg",price:q?Math.round(a/q*1000)/1000:0,dprice:q?dp:0,items:[{d:desc||T.en.qS,q:1,p:a}]});
+   const dp=r3(prod?prPrice(prod):dsN(SH.price));const follows=q>0&&dp>0&&!r.amtSet;
+   if(prod)x.prod=prod;else delete x.prod;Object.assign(x,{date:d,party,desc,cat:x.cat||T.en.salesCats[0],amount:a,qty:q,unit:"kg",price:q?Math.round(a/q*1000)/1000:0,dprice:q?dp:0,items:[{d:desc||T.en.qS,q:1,p:a}]});
    x.pays=[...fp,...((r.shop||r.paid)&&a-fs>0.004?[pay(a-fs,0,op)]:[])];keepI.add(x.id);if(typeof phSave==="function")await phSave(x,r);}
   /* rows taken off the sheet: remove only records this sheet showed, never ones added elsewhere since */
   D.expenses=D.expenses.filter(x=>!(x.sh===d&&(x.shk==="buy"||x.shk==="cost")&&SE.has(x.id)&&!keepE.has(x.id)&&!dsForeign(x,d)));
@@ -3506,7 +3558,7 @@ function v2Sales(){const lk=v2RO(),cur=v2Cur(),c=dsCalc(),pi=v2PriceInfo(),d=SH.
  ${!lk&&!pi.set?`<button class="v2-price need flat" onclick="v2PriceSheet()"><span class="pi">${I20.tag}</span><span class="tx"><small>${t("v2Price")}</small><b>${pi.old?esc(fq2(pi.p)):t("v2NeedPrice")}</b></span><span class="ch">${t("v2SetIt")}</span></button>`:""}
  ${lk?"":`<p class="v2-sub">${t("v2TapWho")}</p>`}
  <div class="v2-rest">${R.map(tile).join("")}${shopS.length?shop:""}</div>
- ${lk?"":`<button class="v2-rt dash wide" onclick="v2RestNew()">${I20.plus}<span>${t("v2NewRest")}</span></button>`}
+ ${lk?"":`<button class="v2-rt dash" onclick="v2RestNew()">${I20.plus}<span>${t("v2NewRest")}</span></button>`}
  ${SH.sales.length?`<div class="v2-h"><b>${t("v2SalesToday")}</b><span>${SH.sales.length}</span></div><div class="v2-list">${SH.sales.map(row).join("")}</div>`:""}
  ${v2Foot(esc(t("v2SoldN").replace("{n}",nR)),fmt(c.sold)+" "+cur,t("v2NextColl"),"v2Next('sales','coll')")}`;}
 function v2SaleSheet(who,k,shop){if(!SH)return;if(dsRoll())return;who=String(who||"").trim();
@@ -3647,7 +3699,7 @@ dsOwner=function(d){if(!canEdit())return toast(t("viewOnly"));DSOWN=true;SV="";d
 {const _qa=quickAdd;quickAdd=function(){_qa();const m=document.querySelector("#modal .tm-add");const s=m&&m.querySelector(".ds-qa");if(s&&canEdit())s.insertAdjacentHTML("afterend",`<button class="ds-qa v2-qr" onclick="closeModal();v2Rests()"><span class="ci">${I20.store}</span><span><b>${t("v2RestQa")}</b><small>${t("v2RestQaD")}</small></span></button>`);};}
 
 /* auto-update: reload when a new version is published */
-const BUILD="b30";
+const BUILD="b31";
 async function checkUpdate(){try{const r=await fetch("version.txt?"+Date.now(),{cache:"no-store"});const v=(await r.text()).trim();if(v&&v!==BUILD){const m=document.getElementById("modal");if(m&&m.classList.contains("on"))return;if(document.body.classList.contains("v2-open")||(typeof SH!=="undefined"&&SH&&SH.dirty)||(typeof DSBUSY!=="undefined"&&DSBUSY))return;try{if(sessionStorage.getItem("tamm:rl")===v)return;sessionStorage.setItem("tamm:rl",v);}catch(e){}/* b25: put the new page in the phone copy first, so the reload opens it */try{const nr=await fetch(location.pathname+"?fresh="+encodeURIComponent(v),{cache:"no-store"});if(nr.ok&&window.caches){for(const k of await caches.keys()){const ca=await caches.open(k);await ca.put(new Request(location.origin+location.pathname),nr.clone());}}}catch(e){}location.reload();}}catch(e){}}
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"){checkUpdate();try{if(unlocked&&D)dsRoll();}catch(e){}}});setTimeout(checkUpdate,3000);
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
@@ -3732,7 +3784,7 @@ const _go27=go;go=function(k){if(unlocked&&k!==tab)bkTab("own",tab);return _go27
 const _dsGo27=dsGo;dsGo=function(k){if(unlocked&&k!==STT)bkTab("staff",STT);return _dsGo27(k);};
 window.addEventListener("popstate",()=>{if(BK_SKIP>0){BK_SKIP--;return;}
  if(BK_SHEET){BK_SHEET=false;clearTimeout(BK_T);BK_T=null;{const pl=document.getElementById("phLb");if(pl&&pl.classList.contains("on")){phClose();return;}}const v=document.getElementById("v2s");if(v&&v.classList.contains("on"))v2Close();else closeModal();return;}
- const s=BK_TABS.pop();if(!s)return;if(s.kind==="own"){tab=s.prev;filter="all";q="";render();}else{if(STT==="day")dsStash();STT=s.prev;render();}try{window.scrollTo({top:0});}catch(e){}});
+ const s=BK_TABS.pop();if(!s)return;if(s.kind==="own"){tab=s.prev;filter="all";q="";render();}else{if(s.kind==="rsp"&&typeof RSP!=="undefined")RSP="";if(STT==="day")dsStash();STT=s.prev;render();}try{window.scrollTo({top:0});}catch(e){}});
 /* ===== b28: a seller sees every sale since the start (sales only; costs stay hidden), listed under Days. ===== */
 Object.assign(T.en,{asT:"All sales",asD:"Every sale since the start, newest first.",asNone:"No sales yet.",asPaid:"Paid",asLeft:"{v} left",asMore:"Show more",asN:"{n} sales · {v}"});
 Object.assign(T.ar,{asT:"كل المبيعات",asD:"كل مبيعة منذ البداية، الأحدث أولًا.",asNone:"لا توجد مبيعات بعد.",asPaid:"مدفوعة",asLeft:"باقي {v}",asMore:"عرض المزيد",asN:"{n} مبيعة · {v}"});
@@ -3741,7 +3793,7 @@ function asList(){return D.invoices.filter(x=>x&&num(x.amount)>0).sort((a,b)=>St
 function asHTML(){const L=asList();const cur=esc(D.settings.cur);const tot=r3(L.reduce((a,x)=>a+num(x.amount),0));
  return`<h3 class="ds-h3 as-h" id="allSales">${t("asT")}</h3><p class="as-d">${L.length?esc(t("asN").replace("{n}",L.length).replace("{v}",fmt(tot)+" "+D.settings.cur)):t("asNone")}</p>
  ${L.length?`<div class="tm-card ds-bl as-bl">${L.slice(0,AS_N).map(x=>{const left=r3(num(x.amount)-paidOf(x));const who=x.party?rsName(x.party):"";
-  return`<div class="r"><span><b>${esc(who||t("v2Shop"))}</b><small>${esc(niceDate(x.date))}${num(x.qty)?" · "+esc(fq(x.qty))+" "+t("dsKgU"):""}${left>0.004?" · "+esc(t("asLeft").replace("{v}",fmt(left))):" · "+t("asPaid")}</small></span><b class="v">${fmt(x.amount)}</b></div>`;}).join("")}</div>
+  return`<div class="r"><span><b>${esc(who||t("v2Shop"))}</b><small>${esc(niceDate(x.date))}${x.ob||typeof prName!=="function"?"":" · "+esc(prName(x.prod))}${num(x.qty)?" · "+esc(fq(x.qty))+" "+t("dsKgU"):""}${left>0.004?" · "+esc(t("asLeft").replace("{v}",fmt(left))):" · "+t("asPaid")}</small></span><b class="v">${fmt(x.amount)}</b></div>`;}).join("")}</div>
  ${L.length>AS_N?`<button class="ob-add" onclick="AS_N+=100;render()">${t("asMore")}</button>`:""}`:""}`;}
 const _dsDaysView28=dsDaysView;dsDaysView=function(){return _dsDaysView28()+asHTML();};
 /* ===== b29 (Ala'a, Nov 20): a past day opens like the notebook page Anas used to photograph; an optional invoice photo on the buy,
@@ -3809,9 +3861,10 @@ function ddHTML(d){const R=dsRecs(d);const cur=v2Cur();const b=R.buy;const bq=b?
  ${ph.length?`<div class="v2-h"><b>${t("phT")}</b><span>${ph.length}</span></div><div class="ph-ths ph-day">${ph.map((id,i)=>`<button class="ph-th" onclick="phGal(${ja(ph.join(","))},${i})" aria-label="${t("phT")}"><img data-att="${esc(id)}" alt=""></button>`).join("")}</div>`:""}`;}
 let DDEDIT="";/* b30: a past day the seller may still fix opens as the page first, with a button to edit it */
 {const _od=dsOpenDay;dsOpenDay=function(d){DDEDIT="";_od(d);};}
-{const _home=v2Home;v2Home=function(){const h=_home();if(!SH||DSOWN)return h;const ro=v2RO();if(!ro&&(SH.date>=today()||DDEDIT===SH.date))return h;const i=h.indexOf(`<div class="v2-h">`);if(i<0)return h;setTimeout(fillThumbs,0);
- const top=h.slice(0,i).replace(/<button class="v2-price need"[\s\S]*?<\/button>/,"");
- return top+(ro?"":`<button class="dd-edit" onclick="DDEDIT=SH.date;render()">${I20.edit}${t("ddEdit")}</button>`)+ddHTML(SH.date)+(SH.has?`<button class="v2-wa" onclick="v2Send()">${I20.wa}${t("dsSend")}</button>`:"");};}
+{const _home=v2Home;v2Home=function(){const h=_home();if(!SH||SH.date>=today())return h;const ro=v2RO();const i=h.indexOf(`<div class="v2-h">`);if(i<0)return h;setTimeout(fillThumbs,0);
+ /* b31: every past day (seller or owner) is its page; one the seller may still fix is edited right there */
+ const top=ro?h.slice(0,i).replace(/<button class="v2-price[^"]*"[\s\S]*?<\/button>/,""):h.slice(0,i);
+ return top+(ro||typeof ddEditHTML!=="function"?ddHTML(SH.date):ddEditHTML(SH.date))+(SH.has?`<button class="v2-wa" onclick="v2Send()">${I20.wa}${t("dsSend")}</button>`:"");};}
 /* today's photos also show when closing the day */
 {const _cv=v2CloseV;v2CloseV=function(){const h=_cv();if(!SH)return h;const ph=ddPhotos(SH.date);if(!ph.length)return h;setTimeout(fillThumbs,0);const i=h.indexOf(`<button class="v2-wa"`);
  const g=`<div class="v2-h"><b>${t("phT")}</b><span>${ph.length}</span></div><div class="ph-ths ph-day">${ph.map((id,k)=>`<button class="ph-th" onclick="phGal(${ja(ph.join(","))},${k})" aria-label="${t("phT")}"><img data-att="${esc(id)}" alt=""></button>`).join("")}</div>`;
@@ -3827,7 +3880,7 @@ Object.assign(T.ar,{seT:"أيام البائع السابقة",seD:"إلى مت�
 function seOpen(){if(!canEdit())return;const n=dsStaffDays();
  v2Open(`${v2Head(t("seT"),t("seD"),I20.clock)}<div class="se-opts">${[[7,"se7","se7D"],[0,"se0","se0D"]].map(([v,l,dd])=>`<button class="se-o${n===v?" on":""}" onclick="seSet(${v})"><b>${t(l)}</b><small>${t(dd)}</small></button>`).join("")}</div>`,"rest");}
 async function seSet(v){if(!canEdit())return;const snap=clone(D);D.settings.staffDays=v;const ok=await persist();if(!ok){D=snap;return;}toast(t("seOk"));v2Close();}
-{const _qa=quickAdd;quickAdd=function(){_qa();const m=document.querySelector("#modal .tm-add");const s=m&&m.querySelector(".v2-qr");if(s&&canEdit())s.insertAdjacentHTML("afterend",`<button class="ds-qa v2-qr" onclick="closeModal();seOpen()"><span class="ci">${I20.clock}</span><span><b>${t("seT")}</b><small>${esc(dsStaffDays()>0?t("seNow7"):t("seNow0"))}</small></span></button>`);};}
+{const _qa=quickAdd;quickAdd=function(){_qa();const m=document.querySelector("#modal .tm-add");const s=m&&m.querySelector(".v2-qr");if(s&&canEdit())s.insertAdjacentHTML("afterend",`<button class="ds-qa v2-qr" onclick="closeModal();seOpen()"><span class="ci">${I20.clock}</span><span><b>${t("seT")}</b><small>${esc(t(["seNow0","seNow1"][dsStaffDays()]||"seNow7"))}</small></span></button>`);};}
 /* b30: the shop is a cost, not a sale (Ala'a): it moves from the sales step to the costs step */
 V2C.push(["shop","v2ShopCost",12,"store",["shop","المحل","محل"]]);
 Object.assign(T.en,{v2ShopCost:"Shop"});Object.assign(T.ar,{v2ShopCost:"المحل"});
@@ -3854,6 +3907,185 @@ dsCust=function(name){const m=document.getElementById("modal");const cur=esc(D.s
  <h3 class="ds-h3">${t("rsSales")} · ${bills.length}</h3><div class="ds-bl rs-bl">${bills.map(bill).join("")}</div>
  <h3 class="ds-h3">${t("rsPays")}${pays.length?" · "+pays.length:""}</h3>${pays.length?`<div class="ds-bl">${pays.map(q=>`<div class="r"><span><b>${esc(niceDate(q.d))}${cam(q.att)}</b></span><b class="v ok">+${fmt(q.a)}</b></div>`).join("")}</div>`:`<p class="ds-sub">${t("rsNoPays")}</p>`}</div>`;
  m.classList.remove("center");m.classList.add("on");if(WIDE())d6Dlg("d6-one");setTimeout(()=>{dsFit();fillThumbs();},0);};
+/* ===== b31 (Ala'a, Nov 20): products with their own price for the day (chicken, liver, wings, and any he adds), the three
+   prices edited in place in the price card, a sale starts by picking the restaurant from a list, and a past day is edited
+   right on its page (add, change or delete in each section). ===== */
+Object.assign(T.en,{prT:"Today's prices a kilo",prAdd:"Product",prNewT:"New product",prNewD:"Something else you sell by the kilo",prPrice:"Price a kilo",prSaveB:"Add product",prNeedName:"Write the product's name",prSet:"Set",prOk:"Price saved",
+ slAdd:"Add a sale",slPickT:"Who are you selling to?",slFind:"Search restaurants",slNone:"No restaurant with that name.",slWhat:"What are you selling?",slPriceFor:"{p} price a kilo",slNoSales:"No sales yet today.",
+ coPickT:"Who paid you?",coNone:"Nobody owes anything.",ddAddCost:"Add a cost",ddAddSale:"Add a sale",ddAddColl:"Add a collection",ddAddBuy:"Add what was bought",ddDelQ:"Delete this line?",ddTap:"Tap a line to change it",v2S3d:"Restaurant, product and kilos"});
+Object.assign(T.ar,{prT:"أسعار اليوم للكيلو",prAdd:"صنف",prNewT:"صنف جديد",prNewD:"شيء آخر تبيعه بالكيلو",prPrice:"سعر الكيلو",prSaveB:"أضف الصنف",prNeedName:"اكتب اسم الصنف",prSet:"حدّد",prOk:"تم حفظ السعر",
+ slAdd:"أضف بيعة",slPickT:"لمن تبيع؟",slFind:"ابحث عن مطعم",slNone:"لا يوجد مطعم بهذا الاسم.",slWhat:"ماذا تبيع؟",slPriceFor:"سعر كيلو {p}",slNoSales:"لا توجد مبيعات اليوم بعد.",
+ coPickT:"من دفع لك؟",coNone:"لا أحد عليه شيء.",ddAddCost:"أضف مصروفًا",ddAddSale:"أضف بيعة",ddAddColl:"أضف تحصيلًا",ddAddBuy:"أضف الشراء",ddDelQ:"احذف هذا السطر؟",ddTap:"اضغط على أي سطر لتعديله",v2S3d:"المطعم والصنف والكيلو"});
+/* ---------- products ---------- */
+const PR_DEF=[{k:"chicken",en:"Chicken",ar:"دجاج"},{k:"liver",en:"Liver",ar:"كبدة"},{k:"wings",en:"Wings",ar:"جناح"}];
+function prList(){const S=D&&D.settings&&Array.isArray(D.settings.dsProds)?D.settings.dsProds.filter(p=>p&&p.k&&!p.gone):[];const L=[...PR_DEF];for(const p of S){const i=L.findIndex(x=>x.k===p.k);if(i>=0)L[i]=Object.assign({},L[i],p);else L.push(p);}return L;}
+function prOf(k){return prList().find(x=>x.k===(k||"chicken"))||PR_DEF[0];}
+function prName(k){const p=prOf(k);return lang==="ar"?(p.ar||p.en):(p.en||p.ar);}
+const prEn=k=>{const p=prOf(k);return p.en||p.ar||"";};
+function prRec(k){const m=D&&D.settings&&D.settings.prodPrice;return m&&m[k]?m[k]:null;}
+function prPrice(k,d){if(!k||k==="chicken")return SH?dsN(SH.price):0;const r=prRec(k);if(!r)return 0;d=d||(SH?SH.date:today());const h=r.h||{};if(h[d]>0)return num(h[d]);
+ /* the price that was in use on that day: the last one set on or before it, else the first one */
+ const ds=Object.keys(h).filter(x=>x<=d&&h[x]>0).sort();if(ds.length)return num(h[ds[ds.length-1]]);const all=Object.keys(h).sort();return all.length?num(h[all[0]]):num(r.p);}
+function prIsSet(k){if(!k||k==="chicken")return!!(SH&&dsN(SH.price)>0&&!SH.priceOld);return prPrice(k)>0;}
+async function prStore(k,p){/* liver, wings and the rest keep their last price until it is changed */
+ const snap=clone(D);const d=SH?SH.date:today();D.settings.prodPrice=Object.assign({},D.settings.prodPrice||{});const o=D.settings.prodPrice[k]||{};const h=Object.assign({},o.h||{});h[d]=r3(p);
+ const last=Object.keys(h).sort().pop();D.settings.prodPrice[k]={d:last,p:h[last],h,by:dsMe(),n:myName()||""};const ok=await persist();if(!ok){D=snap;}return ok;}
+/* the sheet remembers each sale's product */
+{const _fr=dsFromRecs;dsFromRecs=function(d){const s=_fr(d);for(const r of s.sales){const x=r.rid?D.invoices.find(i=>i.id===r.rid):null;r.prod=x&&x.prod||"chicken";}return s;};}
+/* ---------- the price card: one tap to change a price, right where it shows ---------- */
+let PREDIT="";
+function prCardHTML(){const lk=v2RO();const cur=esc(D.settings.cur);
+ const chip=p=>{const v=prPrice(p.k),set=prIsSet(p.k);if(PREDIT===p.k&&!lk)return`<div class="pr-c ed"><span>${esc(prName(p.k))}</span><span class="pr-in">${v2In("prIn",v>0?String(r3(v)):"","0.00","",` data-af="1" onkeydown="if(event.key==='Enter')prSave(${ja(p.k)});if(event.key==='Escape'){PREDIT='';prPaint();}"`)}<button class="pr-ok" aria-label="${t("v2SaveB")}" onclick="prSave(${ja(p.k)})">${I20.check}</button></span></div>`;
+  return`<button class="pr-c${set?"":" need"}" onclick="prEdit(${ja(p.k)})"${lk?" disabled":""}><span>${esc(prName(p.k))}</span><b>${v>0?esc(fq2(v)):t("prSet")}</b></button>`;};
+ return`<div class="pr-card" id="prCard"><div class="pr-h"><span class="pi">${I20.tag}</span><small>${t("prT")} · ${cur}</small></div><div class="pr-row">${prList().map(chip).join("")}${lk?"":`<button class="pr-c add" onclick="prNew()" aria-label="${t("prNewT")}">${I20.plus}</button>`}</div></div>`;}
+function prPaint(){const e=document.getElementById("prCard");if(e){e.outerHTML=prCardHTML();const i=document.getElementById("prIn");if(i){i.focus();try{i.select();}catch(x){}}}}
+function prEdit(k){if(!SH||v2RO())return;if(dsRoll())return;PREDIT=k;prPaint();}
+async function prSave(k){if(!SH||v2RO()||v2Busy())return;const p=r3(dsN(v2Val("prIn")));if(!(p>0)){toast(t("v2NeedP"));const e=document.getElementById("prIn");if(e)e.focus();return;}
+ PREDIT="";if(k==="chicken"){dsSet("day","","price",String(p));await v2Save();}else{const ok=await prStore(k,p);if(ok)toast(t("prOk"));}render();}
+function prNew(){if(!SH||v2RO())return;v2Open(`${v2Head(t("prNewT"),t("prNewD"),I20.tag)}
+ <label><span class="v2-lbl">${t("v2NameEn")}</span><input id="prNE" class="v2-in v2-txt" dir="ltr" lang="en" autocomplete="off" ${lang==="ar"?"":'data-af="1"'}></label>
+ <label><span class="v2-lbl">${t("v2NameAr")}</span><input id="prNA" class="v2-in v2-txt" dir="rtl" lang="ar" autocomplete="off" ${lang==="ar"?'data-af="1"':""}></label>
+ <label><span class="v2-lbl">${t("prPrice")}</span><span class="v2-fld">${v2In("prNP","","0.00","")}<small>${v2Cur()}</small></span></label>
+ <button class="v2-done" onclick="prNewSave()">${I20.plus}${t("prSaveB")}</button>`,"rest");}
+async function prNewSave(){const en=String(v2Val("prNE")).trim().slice(0,40),ar=String(v2Val("prNA")).trim().slice(0,40);if(!en&&!ar){toast(t("prNeedName"));return;}
+ const n=v2Norm(en||ar);const f=prList().find(p=>[p.en,p.ar,p.k].some(v=>v&&v2Norm(v)===n));if(f){v2Close();PREDIT=f.k;render();return;}
+ const snap=clone(D);const k="p"+uid().slice(0,8);D.settings.dsProds=[...(Array.isArray(D.settings.dsProds)?D.settings.dsProds:[]),{k,en,ar,at:new Date().toISOString(),by:dsMe()}];
+ const p=r3(dsN(v2Val("prNP")));if(p>0){const d=SH?SH.date:today();D.settings.prodPrice=Object.assign({},D.settings.prodPrice||{});D.settings.prodPrice[k]={d,p,h:{[d]:p},by:dsMe(),n:myName()||""};}
+ const ok=await persist();if(!ok){D=snap;return;}v2Close();render();}
+{const _home=v2Home;v2Home=function(){const h=_home();if(!SH)return h;const m=/<button class="v2-price[^"]*"[\s\S]*?<\/button>/;if(!m.test(h))return h;
+ return h.replace(m,prCardHTML());};}
+/* ---------- a sale: restaurant from a list, then the product, then the kilos ---------- */
+let SLQ="";
+function slPick(mode){if(!SH||v2RO())return;if(dsRoll())return;SLQ="";const coll=mode==="coll";
+ v2Open(`${v2Head(coll?t("coPickT"):t("slPickT"),"",coll?I20.in:I20.store)}
+ <input id="slQ" class="v2-in v2-txt sl-q" type="search" autocomplete="off" placeholder="${t("slFind")}" oninput="SLQ=this.value;slList(${coll?1:0})">
+ <div id="slL" class="sl-l">${slListHTML(coll)}</div>`,"rest");}
+function slListHTML(coll){const q=v2Norm(SLQ);const owed={};for(const p of dsCusts())owed[p.name]=p.owed;const d=SH.date;
+ let L=rsList().filter(r=>!q||[r.key,r.en,r.ar,...(r.alias||[])].some(v=>v&&v2Norm(v).includes(q)));
+ if(coll)L=L.filter(r=>v2OwedBefore(r.key,d)>0.004||SH.coll.some(c=>rsKeys(r.key).includes(c.who)));
+ const ow=r=>coll?v2OwedBefore(r.key,d):r3(rsKeys(r.key).reduce((a,k)=>a+(owed[k]||0),0));
+ return`${L.length?`<div class="v2-list">${L.map(r=>{const o=ow(r);const sub=rsSub(r.key);return`<button class="v2-li" onclick="v2Close();${coll?`v2CollSheet(${ja(r.key)})`:`v2SaleSheet(${ja(r.key)},null,false,1)`}"><span class="av">${esc(ini(rsName(r.key)))}</span><span class="tx"><b dir="auto">${esc(rsName(r.key))}</b>${sub?`<span dir="auto">${esc(sub)}</span>`:""}</span>${o>0.004?`<span class="v c-later">${fmt(o)}</span>`:""}</button>`;}).join("")}</div>`:`<p class="v2-sub">${coll&&!q?t("coNone"):t("slNone")}</p>`}
+ ${coll?"":`<button class="v2-rt dash" onclick="v2Close();v2RestNew(${ja(String(SLQ||"").trim())})">${I20.plus}<span>${t("v2NewRest")}</span></button>`}`;}
+function slList(coll){const e=document.getElementById("slL");if(e)e.innerHTML=slListHTML(!!coll);}
+v2Sales=function(){const lk=v2RO(),cur=v2Cur(),c=dsCalc(),pi=v2PriceInfo();
+ const nR=new Set(SH.sales.map(x=>x.shop?"\u0000":rsOf(String(x.who||"").trim())?rsOf(String(x.who||"").trim()).key:String(x.who||"").trim())).size;
+ const row=r=>`<button class="v2-li" onclick="v2SaleSheet(${ja(r.shop?"":r.who)},${ja(r.k)},${r.shop?"true":"false"})"><span class="av">${r.shop?I20.store:esc(ini(rsName(String(r.who||"").trim())))}</span><span class="tx"><b dir="auto">${r.shop?t("v2Shop"):esc(rsName(String(r.who||"").trim()))}</b><span>${esc(prName(r.prod))}${dsN(r.qty)?" · "+esc(v2Kg(dsN(r.qty))):""} · ${r.lock?esc(t("v2Locked")):v2Unsaved(r)?`<i class="v2-ns">${t("v2NotSaved")}</i>`:r.shop||r.paid?`<span class="c-paid">${t("dsPaidNow")}</span>`:`<span class="c-later">${t("dsOnAcc")}</span>`}</span></span><span class="v">${fmt(dsN(r.amount))}</span></button>`;
+ return`${v2Top(3,t("v2S3"),esc(t("v2StepN").replace("{n}",3))+(pi.set?" · "+esc(fq2(pi.p)+" "+t("v2PerKg").replace("{c}",D.settings.cur)):""))}${v2Warn()}
+ ${lk?"":`<button class="sl-add" onclick="slPick()">${I20.plus}<span>${t("slAdd")}</span></button>`}
+ ${SH.sales.length?`<div class="v2-h"><b>${t("v2SalesToday")}</b><span>${SH.sales.length}</span></div><div class="v2-list">${SH.sales.map(row).join("")}</div>`:`<p class="v2-sub">${t("slNoSales")}</p>`}
+ ${v2Foot(esc(t("v2SoldN").replace("{n}",nR)),fmt(c.sold)+" "+cur,t("v2NextColl"),"v2Next('sales','coll')")}`;};
+v2SaleSheet=function(who,k,shop,fresh){if(!SH)return;if(dsRoll())return;who=String(who||"").trim();
+ let r=k?SH.sales.find(x=>x.k===k):null;if(!r&&k)return;if(!r&&v2RO())return;const ro=v2RO()||!!(r&&r.lock);const key=r?(r.shop?"":String(r.who||"").trim()):who;shop=r?!!r.shop:!!shop;
+ const R=key?rsOf(key):null;const pkey=R?R.key:key;
+ V2E={d:SH.date,sec:"sales",k:r?r.k:null,q0:r?String(r.qty||""):null,who:pkey,shop,prod:r?(r.prod||"chicken"):"chicken",amtSet:r?!!r.amtSet:false,paid:r?!!r.paid:shop,att:V2E&&V2E.sec==="sales"&&V2E.k===(r?r.k:null)&&Array.isArray(V2E.att)?V2E.att:[]};
+ const ob=shop?0:v2OwedBefore(pkey,SH.date);
+ v2Open(`${v2Head(shop?t("v2Shop"):esc(t("v2SaleTo").replace("{n}",rsName(pkey))),shop?"":esc(t("v2OwesBefore").replace("{v}",fmt(ob)+" "+D.settings.cur)),shop?I20.store:`<b class="ini">${esc(ini(rsName(pkey)))}</b>`)}
+ ${shop?"":`<span class="v2-lbl">${t("slWhat")}</span><div class="v2-chips sl-pr">${prList().map(p=>`<button class="v2-chip${V2E.prod===p.k?" on":""}" data-pr="${esc(p.k)}" onclick="slProd(${ja(p.k)})"${ro?" disabled":""}>${esc(prName(p.k))}</button>`).join("")}</div>`}
+ <div id="slPin"></div>
+ <span class="v2-lbl">${shop?t("v2KgOpt"):t("v2HowKg")}</span>
+ <label class="v2-big">${v2In("v2SQ",r?r.qty:"","0","v2SaleLive()",(ro?" disabled":' data-af="1"'))}<small>${t("dsKgU")}</small></label>
+ <div class="v2-sumrow" id="v2SX"></div>
+ <div id="v2SAw" class="${V2E.amtSet||shop?"":"hide"}"><span class="v2-lbl">${shop?t("v2ShopAmt"):t("v2Amount")}</span><span class="v2-fld">${v2In("v2SA",r?r.amount:"","0.00","V2E.amtSet=this.value.trim()!=='';v2SaleLive(1)",ro?" disabled":"")}<small>${v2Cur()}</small></span></div>
+ ${shop?"":`<div class="v2-seg" role="group"><button id="v2SL" class="${V2E.paid?"":"on"}" aria-pressed="${!V2E.paid}" onclick="v2SalePaid(false)"${ro?" disabled":""}>${I20.clock}${t("dsOnAcc")}</button><button id="v2SN" class="${V2E.paid?"on":""}" aria-pressed="${!!V2E.paid}" onclick="v2SalePaid(true)"${ro?" disabled":""}>${I20.cash}${t("dsPaidNow")}</button></div>`}
+ ${shop||ro||V2E.amtSet?"":`<p class="v2-alt" id="v2SAlt">${t("v2DiffP")} <button onclick="v2SaleAmt()">${t("v2ChAmt")}</button></p>`}
+ ${ro?(r&&r.lock?`<p class="v2-lk">${r.lock===-1?t("dsByOther"):t("dsLockedRow")}</p>`:""):`<button class="v2-done" onclick="v2SaleAdd()">${r?I20.check+t("v2SaveB"):I20.check+t("v2AddSale")}</button>${r?`<button class="v2-rm" onclick="v2Remove('sales',${ja(r.k)})">${t("v2Remove")}</button>`:""}`}`,"sale");
+ slPin();v2SaleLive();
+ if(!shop&&typeof phMount==="function"){const x=r&&r.rid?D.invoices.find(i=>i.id===r.rid):null;phMount(".sh.sale",phOf(x),V2E,ro);}};
+/* the price box shows only when the product has no price yet */
+function slPin(){const e=document.getElementById("slPin");if(!e||!V2E)return;const k=V2E.prod||"chicken";const ro=v2RO();
+ e.innerHTML=!ro&&!V2E.shop&&!prIsSet(k)?`<label class="v2-pin"><span>${esc(t("slPriceFor").replace("{p}",prName(k)))}</span><span class="v2-fld">${v2In("v2SP",prPrice(k)>0?String(prPrice(k)):"","0.00","v2SaleLive()")}<small>${v2Cur()}</small></span></label>`:"";}
+function slProd(k){if(!V2E||v2RO())return;V2E.prod=k;document.querySelectorAll("#v2s .sl-pr .v2-chip").forEach(b=>b.classList.toggle("on",b.dataset.pr===k));slPin();if(!V2E.amtSet){const a=document.getElementById("v2SA");if(a)a.value="";}v2SaleLive();}
+v2SalePrice=function(){const e=document.getElementById("v2SP");if(e&&dsN(e.value)>0)return dsN(e.value);return prPrice(V2E&&V2E.prod);};
+v2SaleAdd=async function(){if(!SH||!V2E||v2Busy()||v2Stale())return;const q=String(v2Val("v2SQ")||"").trim();const prod=V2E.shop?"chicken":(V2E.prod||"chicken");const pe=document.getElementById("v2SP");
+ if(pe){const p=r3(dsN(pe.value));if(p>0){if(prod==="chicken"){if(p!==dsN(SH.price)||SH.priceOld||!SH.priceSet)dsSet("day","","price",String(p));}else if(p!==prPrice(prod)){const ok=await prStore(prod,p);if(!ok)return;}}}
+ const p=prPrice(prod);const calc=dsN(q)>0&&p>0?Math.round(dsN(q)*p*100)/100:0;let a=V2E.amtSet?r3(dsN(v2Val("v2SA"))):calc;
+ let keep=false;{const r0=V2E.k?SH.sales.find(x=>x.k===V2E.k):null;if(r0&&!V2E.amtSet&&!V2E.shop&&(r0.prod||"chicken")===prod&&dsN(r0.amount)>0&&dsN(q)===dsN(V2E.q0)&&!(pe&&dsN(pe.value)>0)){a=r3(dsN(r0.amount));keep=Math.abs(a-calc)>0.004;}}
+ if(V2E.shop&&!V2E.amtSet){const av=dsN(v2Val("v2SA"));if(av>0){a=r3(av);V2E.amtSet=!(calc>0&&Math.abs(av-calc)<0.005);}}
+ if(!(a>0)){toast(t("dsNeedAmt"));const e=document.getElementById(dsN(q)>0&&!p&&pe?"v2SP":V2E.amtSet||V2E.shop?"v2SA":"v2SQ");if(e)e.focus();return;}
+ let r=V2E.k?SH.sales.find(x=>x.k===V2E.k):null;if(!r){r={k:uid(),who:"",shop:false,qty:"",amount:"",amtSet:false,paid:false};SH.sales.push(r);V2E.k=r.k;}
+ Object.assign(r,{who:V2E.shop?"":V2E.who,shop:V2E.shop,prod,qty:q,amount:String(a),amtSet:!!V2E.amtSet||keep,paid:V2E.shop?true:!!V2E.paid,ch:1},V2E.att&&V2E.att.length?{attNew:V2E.att.slice()}:{});dsDirty();v2Save(()=>{v2Pass("sales");v2Close();});};
+/* ---------- a past day: change it right on its page ---------- */
+const ddPage=()=>!!(SH&&SH.date<today());
+{const _go=v2Go;v2Go=function(v){if(ddPage()&&v){SV="";v2Close();render();return;}_go(v);};}
+function ddDel(sec,k){if(!SH||v2RO()||v2Busy())return;if(!confirm(t("ddDelQ")))return;v2Remove(sec,k);}
+const ddX=(sec,k)=>`<button class="dd-x" aria-label="${t("v2Remove")}" onclick="event.stopPropagation();ddDel('${sec}',${ja(k)})">${I20.x}</button>`;
+function ddEditHTML(d){const R=dsRecs(d);const cur=v2Cur();const b=R.buy;const bq=b?num(b.qty):0,bp=b?num(b.price):0;
+ const ln=(on,l,sm,v,cls,x)=>`<div class="v2-tl dd-ln" role="button" tabindex="0" onclick="${on}"><span>${l}${sm?`<small>${sm}</small>`:""}</span><b class="${cls||""}">${v}</b>${x||""}</div>`;
+ const costT=r3((b?num(b.amount):0)+R.costs.reduce((a,x)=>a+num(x.amount),0));const soldT=r3(R.sales.reduce((a,x)=>a+num(x.amount),0));const prof=r3(soldT-costT);
+ const collT=r3(SH.coll.reduce((a,r)=>a+dsN(r.amount),0));const left=ddOwedOn(d);const leftT=r3(left.reduce((a,[,v])=>a+v,0));const ph=ddPhotos(d);
+ const add=(lab,on)=>`<button class="dd-add" onclick="${on}">${I20.plus}<span>${lab}</span></button>`;
+ const sale=x=>{const shop=x.party==="Shop sales";const paid=r3(num(x.amount)-paidOf(x))<=0.004||(x.pays||[]).some(p=>p&&p.sh===d&&!p.c);const q=num(x.qty);
+  return ln(`v2SaleSheet(${ja(shop?"":x.party)},${ja(x.id)},${shop?"true":"false"})`,`<bdi>${esc(shop?t("v2Shop"):rsName(x.party))}</bdi>`,esc([prName(x.prod),q?fq(q)+" "+t("dsKgU"):"",shop?"":(paid?t("ddPaid"):t("ddAcc"))].filter(Boolean).join(" · ")),fmt(num(x.amount)),shop||paid?"c-paid":"c-later",ddX("sales",x.id));};
+ return`<p class="dd-tip">${I20.edit}${t("ddTap")}</p>
+ ${bq||bp?`<div class="dd-top">${bp?`<div><span>${t("ddPrice")}</span><b>${esc(fq(bp))}</b></div>`:""}${bq?`<div><span>${t("ddWeight")}</span><b>${esc(fq(bq))} <small>${t("dsKgU")}</small></b></div>`:""}</div>`:""}
+ <div class="v2-h"><b>${t("ddCosts")}</b><span>${fmt(costT)} ${cur}</span></div>
+ <div class="v2-list v2-tls">${b?ln("v2BuySheet()",esc(tx(b.item)||t("v2S1")),esc([bq?v2Kg(bq):"",bp?"× "+fq(bp):"",b.party||""].filter(Boolean).join(" · ")),fmt(num(b.amount))):""}
+ ${R.costs.map(x=>ln(`v2CostSheet('',${ja(x.id)})`,`<bdi>${esc(tx(x.item||x.desc)||t("dsOtherCost"))}</bdi>`,"",fmt(num(x.amount)),"",ddX("costs",x.id))).join("")}
+ <div class="v2-tl tot"><span>${t("ddTot")}</span><b>${fmt(costT)}</b></div></div>
+ <div class="dd-adds">${b?"":add(t("ddAddBuy"),"v2BuySheet()")}${add(t("ddAddCost"),"v2CostSheet('')")}</div>
+ <div class="v2-h"><b>${t("ddSales")}</b><span>${fmt(soldT)} ${cur}</span></div>
+ <div class="v2-list v2-tls">${R.sales.map(sale).join("")}<div class="v2-tl tot"><span>${t("ddTot")}</span><b>${fmt(soldT)}</b></div></div>
+ <div class="dd-adds">${add(t("ddAddSale"),"slPick()")}</div>
+ <div class="v2-profit${prof<-0.004?" ng":""}"><span>${prof<-0.004?t("v2LossT"):t("v2ProfitT")}</span><b>${fmt(Math.abs(prof))}<small>${cur}</small></b></div>
+ <div class="v2-h"><b>${t("ddColl")}</b><span>${fmt(collT)} ${cur}</span></div>
+ ${SH.coll.length?`<div class="v2-list v2-tls">${SH.coll.map(r=>ln(`v2CollSheet(${ja(r.who)})`,`<bdi>${esc(rsName(r.who))}</bdi>`,"",`+${fmt(dsN(r.amount))}`,"c-paid",ddX("coll",r.k))).join("")}</div>`:""}
+ <div class="dd-adds">${add(t("ddAddColl"),"slPick('coll')")}</div>
+ <div class="v2-h"><b>${t("ddLeft")}</b><span>${fmt(leftT)} ${cur}</span></div>
+ <div class="v2-list v2-tls">${left.length?left.map(([k,v])=>`<div class="v2-tl"><span><bdi>${esc(rsName(k))}</bdi></span><b class="c-later">${fmt(v)}</b></div>`).join(""):`<div class="v2-tl"><span>${t("ddNoOwe")}</span></div>`}</div>
+ ${ph.length?`<div class="v2-h"><b>${t("phT")}</b><span>${ph.length}</span></div><div class="ph-ths ph-day">${ph.map((id,i)=>`<button class="ph-th" onclick="phGal(${ja(ph.join(","))},${i})" aria-label="${t("phT")}"><img data-att="${esc(id)}" alt=""></button>`).join("")}</div>`:""}`;}
+
+/* ===== b31 part 2 (Ala'a, Nov 20): the owner can look at and use the seller's screens ("View as seller"), the restaurant
+   page is a full page with its sales (chicken, liver, wings) and collections, each changed right there, and the owner
+   picks how far back the seller can change days (7 days, today and yesterday, or today only). ===== */
+Object.assign(T.en,{svBtn:"View as seller",svBtnD:"See and use the screens Anas sees",svBar:"You're viewing as the seller",svBack:"Back to my books",
+ rsBack:"Restaurants",rsAddSale:"Add a sale",rsTapEdit:"Tap a sale or a collection to change it",se1:"Today and yesterday",se1D:"He can change today and fix yesterday",seNow1:"Today and yesterday"});
+Object.assign(T.ar,{svBtn:"اعرض كبائع",svBtnD:"شاهد واستخدم الشاشات التي يراها أنس",svBar:"أنت تشاهد كبائع",svBack:"ارجع لدفاتري",
+ rsBack:"المطاعم",rsAddSale:"أضف بيعة",rsTapEdit:"اضغط على أي بيعة أو تحصيل لتعديله",se1:"اليوم وأمس",se1D:"يعدّل اليوم ويصحّح أمس",seNow1:"اليوم وأمس"});
+var SHOPV=false;let RSP="",RSDAY=false;
+const shopUI=()=>ROLE==="staff"||SHOPV;
+/* the owner's daily sheet is now the seller's own screens, with a bar to go back */
+dsOwner=function(d){if(!canEdit())return toast(t("viewOnly"));try{closeModal();}catch(e){}DSOWN=false;SV="";RSP="";RSDAY=false;SHOPV=true;STT="day";dsStash();dsLoad(d||today());render();try{window.scrollTo({top:0});}catch(e){}};
+function svExit(){if(STT==="day")dsStash();SHOPV=false;RSP="";RSDAY=false;SV="";STT="day";v2Close();render();try{window.scrollTo({top:0});}catch(e){}}
+{const _vs=vStaff;vStaff=function(){const h=_vs();if(!SHOPV)return h;return`<div class="sv-bar"><span>${I19.me}${t("svBar")}</span><button onclick="svExit()">${t("svBack")}</button></div>`+h;};}
+{const _qa=quickAdd;quickAdd=function(){_qa();const m=document.querySelector("#modal .tm-add");if(!m||!canEdit())return;const s=m.querySelector('.ds-qa[onclick="dsOwner()"]');
+ const b=`<button class="ds-qa sv-qa" onclick="dsOwner()"><span class="ci">${I19.me}</span><span><b>${t("svBtn")}</b><small>${t("svBtnD")}</small></span></button>`;
+ if(s)s.outerHTML=b;else m.insertAdjacentHTML("afterbegin",b);};}
+{const _vm=vMore;vMore=function(){const h=_vm();if(!canEdit())return h;const i=h.indexOf(`<div class="tm-grid2">`);if(i<0)return h;return h.slice(0,i)+`<button class="sv-more" onclick="dsOwner()"><span class="ci">${I19.me}</span><span class="tx"><b>${t("svBtn")}</b><small>${t("svBtnD")}</small></span>${I18.chev}</button>`+h.slice(i);};}
+/* tabs: leaving a restaurant page, and coming back to today after changing an older day from it */
+{const _g=dsGo;dsGo=function(k){RSP="";if(k==="day"&&RSDAY&&SH&&SH.date!==today()&&!SH.dirty){RSDAY=false;dsLoad(today());}return _g(k);};}
+/* ---------- the restaurant page ---------- */
+const _dsCustModal=dsCust;
+dsCust=function(name){if(!shopUI())return _dsCustModal(name);if(!dsCusts().some(p=>p.name===name))return;try{closeModal();}catch(e){}const same=RSP===name&&STT==="cust";RSP=name;STT="cust";if(!same)bkTab("rsp","cust");render();try{window.scrollTo({top:0});}catch(e){}};
+function rsAt(d,fn){/* open a sheet for any day without leaving the restaurant page */
+ if(!SH||SH.date!==d){if(SH&&SH.dirty&&!dsRO(SH.date))dsStash();dsLoad(d);}RSDAY=d!==today();fn();}
+function rsSaleEdit(id){const x=D.invoices.find(i=>i.id===id);if(!x||!x.sh||x.shk!=="sale"||dsRO(x.sh))return;rsAt(x.sh,()=>{const r=SH.sales.find(s=>s.rid===id||s.k===id);if(r)v2SaleSheet(r.shop?"":r.who,r.k,!!r.shop);});}
+function rsCollEdit(name,d){if(dsRO(d))return;rsAt(d,()=>{const K=rsKeys(name);const r=SH.coll.find(c=>K.includes(String(c.who||"").trim()));v2CollSheet(r?r.who:name);});}
+function rsPageHTML(name){const cur=esc(D.settings.cur);const p=dsCusts().find(x=>x.name===name);if(!p)return"";
+ const NK=rsKeys(name);const mine=dsInv().filter(x=>NK.includes(x.party));
+ const bills=[...mine].sort((a,b)=>String(b.date).localeCompare(String(a.date))||String(b.at||"").localeCompare(String(a.at||"")));
+ const PM={};for(const x of mine)for(const q of x.pays||[]){if(!q)continue;const k=String(q.date);const g=PM[k]=PM[k]||{d:q.date,a:0,att:[],sh:false};g.a=r3(g.a+num(q.amount));g.att.push(...phOf(q));if(q.sh===q.date&&q.c)g.sh=true;}
+ const pays=Object.values(PM).sort((a,b)=>String(b.d).localeCompare(String(a.d)));
+ const sold=r3(bills.reduce((a,x)=>a+num(x.amount),0)),coll=r3(pays.reduce((a,q)=>a+q.a,0));
+ const cam=ids=>ids.length?` <button class="ph-ic" onclick="event.stopPropagation();phGal(${ja(ids.join(","))},0)" aria-label="${t("phT")}">${I20.cam}</button>`:"";
+ const canS=x=>!!(x.sh&&x.shk==="sale"&&!dsRO(x.sh));
+ const bill=x=>{const left=r3(num(x.amount)-paidOf(x));const q=num(x.qty);const sub=[x.ob?t("obTag"):prName(x.prod),q?fq(q)+" "+t("dsKgU"):"",left>0.004?t("dsLeft").replace("{v}",fmt(left)):t("rsAllPaid")].filter(Boolean).join(" · ");const ed=canS(x);
+  return`<div class="r${ed?" rs-ed1":""}"${ed?` role="button" tabindex="0" onclick="rsSaleEdit(${ja(x.id)})"`:""}><span><b>${esc(niceDate(x.date))}${cam(phOf(x))}</b><small>${esc(sub)}</small>${x.ob&&!(paidOf(x)>0.004)&&(ROLE!=="staff"||x.by===dsMe())?`<button class="ob-x" onclick="event.stopPropagation();obDel(${ja(x.id)})">${t("obDel")}</button>`:""}</span><b class="v${left>0.004?"":" ok"}">${fmt(x.amount)}</b>${ed?`<span class="rs-go">${I20.edit}</span>`:""}</div>`;};
+ const payRow=q=>{const ed=q.sh&&!dsRO(q.d);return`<div class="r${ed?" rs-ed1":""}"${ed?` role="button" tabindex="0" onclick="rsCollEdit(${ja(name)},${ja(q.d)})"`:""}><span><b>${esc(niceDate(q.d))}${cam(q.att)}</b></span><b class="v ok">+${fmt(q.a)}</b>${ed?`<span class="rs-go">${I20.edit}</span>`:""}</div>`;};
+ const can=!dsRO(today());const anyEd=bills.some(canS)||pays.some(q=>q.sh&&!dsRO(q.d));setTimeout(fillThumbs,0);
+ return`<div class="rs-ph"><button class="rs-bk" onclick="history.back()" aria-label="${t("rsBack")}">${I20.back}<span>${t("rsBack")}</span></button>${rsCanEdit(name)?`<button class="rs-ed" onclick="v2RestEdit(${ja(name)})">✎ ${t("rsEdName")}</button>`:""}</div>
+ <h1 class="rs-h1" dir="auto">${esc(rsName(name))}</h1>
+ <div class="ds-hero one"><div><span class="l">${p.owed>0.004?t("gpOwes").replace("{v}",""):t("dsPaidUp")}</span><b class="v${p.owed>0.004?" ng":" lm"}">${fmt(p.owed)}</b></div><small class="cu">${cur}</small></div>
+ <div class="dd-top"><div><span>${t("rsSold")}</span><b>${fmt(sold)}</b></div><div><span>${t("rsColl")}</span><b>${fmt(coll)}</b></div></div>
+ ${can?`<div class="rs-acts"><button class="sl-add" onclick="rsAt(today(),()=>v2SaleSheet(${ja(name)},null,false,1))">${I20.plus}<span>${t("rsAddSale")}</span></button>${p.owed>0.004?`<button class="sl-add lime" onclick="rsAt(today(),()=>v2CollSheet(${ja(name)}))">${I20.cash}<span>${t("dsTheyPaid")}</span></button>`:""}</div>`:""}
+ ${anyEd?`<p class="dd-tip">${I20.edit}${t("rsTapEdit")}</p>`:""}
+ <h3 class="ds-h3">${t("rsSales")} · ${bills.length}</h3><div class="tm-card ds-bl rs-bl">${bills.map(bill).join("")}</div>
+ <h3 class="ds-h3">${t("rsPays")}${pays.length?" · "+pays.length:""}</h3>${pays.length?`<div class="tm-card ds-bl">${pays.map(payRow).join("")}</div>`:`<p class="ds-sub">${t("rsNoPays")}</p>`}`;}
+{const _cv=dsCustView;dsCustView=function(){if(RSP&&shopUI()){const h=rsPageHTML(RSP);if(h)return h;RSP="";}return _cv();};}
+/* ---------- how far back the seller can change days ---------- */
+dsStaffDays=function(){const v=D&&D.settings?D.settings.staffDays:undefined;if(v===0||v==="0")return 0;if(v===1||v==="1")return 1;return 7;};
+seOpen=function(){if(!canEdit())return;const n=dsStaffDays();
+ v2Open(`${v2Head(t("seT"),t("seD"),I20.clock)}<div class="se-opts">${[[7,"se7","se7D"],[1,"se1","se1D"],[0,"se0","se0D"]].map(([v,l,dd])=>`<button class="se-o${n===v?" on":""}" onclick="seSet(${v})"><b>${t(l)}</b><small>${t(dd)}</small></button>`).join("")}</div>`,"rest");};
+
 render();boot();sb.auth.onAuthStateChange((ev)=>{if(ev==="PASSWORD_RECOVERY"){RECOVER=true;setTimeout(()=>render(),0);return;}if(ev==="SIGNED_OUT"){cacheDrop();SESSION=null;unlocked=false;D=null;render();}});
 window.addEventListener("focus",async()=>{if(unlocked&&BIZ&&!SYNC.pending){try{const r=await window.storage.get("tt:data");if(SYNC.pending)return;const nd=sanitizeData(JSON.parse(r.value));if(JSON.stringify(nd)!==JSON.stringify(D)){D=nd;D.contacts=D.contacts||{};D.products=D.products||[];const m=document.getElementById("modal");if(m&&m.classList.contains("on")){if(DSOWN&&document.querySelector("#modal #dsWrap")){if(!dsRoll())dsPaint();}}else render();}else if(typeof dsRoll==="function")dsRoll();}catch(e){}}});
 </script>
