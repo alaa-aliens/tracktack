@@ -1345,6 +1345,9 @@ label>.v2-in.v2-txt{margin-top:0}.v2-in.v2-txt:focus{border:2px solid var(--ink)
 .ds-big.me-pw{display:flex;align-items:center;justify-content:center;gap:8px;background:#fff;color:var(--ink);box-shadow:var(--sh);font-size:16px!important}
 .ds-big.me-pw svg{width:18px;height:18px}
 #v2s #mp1,#v2s #mp2{position:static!important;height:56px;margin-top:0}
+.dd-edit.dd-done{background:var(--lime);color:var(--ink)}
+.v2-dt{display:inline-flex;align-items:center;gap:6px;flex:none;background:#fff;border-radius:999px;padding:8px 13px;font-size:13.5px;font-weight:700;box-shadow:var(--sh);white-space:nowrap;margin-top:2px}.v2-dt svg{width:16px;height:16px}
+.me-lang{cursor:default}.me-lang .tm-seg{margin-inline-start:auto}.dd-edit.dd-save{margin:18px 0 6px}
 </style>
 </head>
 <body>
@@ -3202,7 +3205,7 @@ async function dsSave(stay){if(DSBUSY||!SH)return false;const d=SH.date;if(dsRO(
  if(stay){if(DSOWN)dsPaint();else render();}else if(DSOWN){DSOWN=false;closeModal();render();}else{render();}toast(t("dsSaved"));if(photoFail)setTimeout(()=>toast(t("photoFail")),1800);return true;}
 /* ---------- customers ---------- */
 function dsCustView(){const L=dsCusts();const cur=esc(D.settings.cur);const tot=r3(L.reduce((a,p)=>a+p.owed,0));
- return`<div class="ds-top"><div class="ds-ttl"><small>${esc(D.settings.name)}</small><h1>${t("dsNavCust")}</h1></div>${langSeg()}</div>
+ return`<div class="ds-top"><div class="ds-ttl"><small>${esc(D.settings.name)}</small><h1>${t("dsNavCust")}</h1></div></div>
  <div class="ds-hero one"><div><span class="l">${t("dsCustOwe")}</span><b class="v lm">${fmt(tot)}</b></div><small class="cu">${cur}</small></div>
  <button class="ob-add" onclick="obOpen()">${I2.plus}<span>${t("obBtn")}</span></button>
  ${L.length?`<div class="tm-card ds-list">${L.map(p=>`<button class="ds-cu" onclick="dsCust(${ja(p.name)})"><span class="av">${esc(ini(rsName(p.name)))}</span><span class="n"><b>${esc(rsName(p.name))}</b><small>${p.owed>0.004?esc(t("dsBillN").replace("{n}",p.n))+" · ":""}${esc(t("dsLastBill").replace("{d}",niceDate(p.last)))}</small></span><span class="v${p.owed>0.004?"":" ok"}">${p.owed>0.004?fmt(p.owed):t("dsPaidUp")}</span>${I18.chev}</button>`).join("")}</div>`:`<p class="st-empty tm-card">${t("dsNoCust")}</p>`}`;}
@@ -3223,7 +3226,7 @@ function dsDays(){const M={};const g=d=>M[d]=M[d]||{d,sold:0,out:0,coll:0};
  for(const dd of dsDrafts())g(dd).draft=true;
  return Object.values(M).sort((a,b)=>b.d.localeCompare(a.d)).slice(0,90);}
 function dsDaysView(){const L=dsDays();const cur=esc(D.settings.cur);
- return`<div class="ds-top"><div class="ds-ttl"><small>${esc(D.settings.name)}</small><h1>${t("dsDaysT")}</h1></div>${langSeg()}</div>
+ return`<div class="ds-top"><div class="ds-ttl"><small>${esc(D.settings.name)}</small><h1>${t("dsDaysT")}</h1></div></div>
  ${L.length?`<div class="tm-card ds-list">${L.map(x=>{const pr=r3(x.sold-x.out);return`<button class="ds-day" onclick="dsOpenDay(${ja(x.d)})"><span class="n"><b>${esc(niceDate(x.d))}${x.draft?` <i class="ds-tag">${t("dsDraftTag")}</i>`:""}</b><small>${t("dsSold")} ${fmt(x.sold)} · ${t("dsOut")} ${fmt(x.out)}</small></span><span class="v${pr<-0.004?" ng":""}"><small>${pr<-0.004?t("dsLoss"):t("dsProfit")}</small>${fmt(Math.abs(pr))}</span>${I18.chev}</button>`;}).join("")}</div>`:`<p class="st-empty tm-card">${t("dsNoDays")}</p>`}`;}
 /* ---------- more: name, language, the quick buttons, sign out ---------- */
 function dsMoreView(){const nm=myName();
@@ -3270,14 +3273,14 @@ function avTot(L){return r3(L.reduce((a,x)=>a+num(x.amount),0));}
 function dsMeView(){const nm=myName();const cur=esc(D.settings.cur);const u=avUid();const L=avOf(u);const tot=avTot(L);
  const R=avReqs().filter(r=>r.uid===u);const wait=R.filter(r=>r.st==="ask").sort((a,b)=>String(b.at||"").localeCompare(String(a.at||"")));
  const cut=localDay(Date.now()-30*864e5);const no=R.filter(r=>r.st==="no"&&String(r.dAt||r.at||"").slice(0,10)>=cut);
- return`<div class="ds-top"><div class="ds-ttl"><small>${esc(D.settings.name)}</small><h1>${nm?t("stHi").replace("{n}",esc(nm)):t("hello")}</h1></div>${langSeg()}</div>${nameCard()}
+ return`<div class="ds-top"><div class="ds-ttl"><small>${esc(D.settings.name)}</small><h1>${nm?t("stHi").replace("{n}",esc(nm)):t("hello")}</h1></div></div>${nameCard()}
  <div class="ds-hero one av-hero"><div><span class="l">${t("avGot")}</span><b class="v lm">${fmt(tot)}</b><span class="av-n">${esc(tn("avCount",L.length))}</span></div><small class="cu">${cur}</small></div>
  <button class="ds-big av-ask" onclick="avAsk()">${I19.cash}<span>${t("avAsk")}</span></button>
  ${wait.length?`<h3 class="ds-h3">${t("avWait")}</h3><div class="ds-bl">${wait.map(r=>`<div class="r"><span><b>${fmt(r.amount)} ${cur}</b><small>${esc(t("avAsked").replace("{d}",niceDate(r.d)))}${r.note?` · <bdi>${esc(r.note)}</bdi>`:""}</small></span><button class="av-wa" onclick="avTell(${ja(r.id)})">${I19.wa}<span>${t("avTell")}</span></button></div>`).join("")}</div>`:""}
  <h3 class="ds-h3">${t("avT")}</h3>${L.length?`<div class="ds-bl">${L.map(x=>`<div class="r"><span><b>${esc(niceDate(x.date))}</b>${x.notes?`<small dir="auto">${esc(x.notes)}</small>`:""}</span><b class="v av-v">${fmt(x.amount)}</b></div>`).join("")}</div>`:`<p class="ds-sub av-empty">${t("avNone")}</p>`}
  ${no.length?`<h3 class="ds-h3">${t("avNo")}</h3><div class="ds-bl">${no.map(r=>`<div class="r"><span><b>${fmt(r.amount)} ${cur}</b><small>${esc(t("avAsked").replace("{d}",niceDate(r.d)))}</small></span><b class="v av-x">${t("avNo")}</b></div>`).join("")}</div>`:""}
  <p class="st-note" style="margin-top:18px">${t("stNote")}</p>
- <div class="tm-list" style="margin-top:14px"><button class="tm-li red" onclick="lock()">${I2.exit}<span class="f">${t("lout")}</span></button></div>`;}
+ <div class="tm-list" style="margin-top:14px"><div class="tm-li me-lang">${I2.globe}<span class="f">${t("language")}</span>${langSeg()}</div><button class="tm-li red" onclick="lock()">${I2.exit}<span class="f">${t("lout")}</span></button></div>`;}
 dsMoreView=dsMeView;
 function avOpen(html){const m=document.getElementById("modal");m.innerHTML=html;m.classList.remove("center");m.classList.add("on");if(WIDE())d6Dlg("d6-one");}
 function avAsk(){avOpen(`<div class="sheet fm ds-cs av-sh">${sheetTop(t("avAsk"))}
@@ -3464,7 +3467,7 @@ function v2Home(){const s=SH,td=today(),lk=v2RO(),c=dsCalc(),cur=v2Cur(),nm=myNa
  const steps=v2StepList();const nx=lk?-1:steps.findIndex(x=>!x.done);const nd=steps.filter(x=>x.done).length;
  const card=(x,i)=>`<button class="v2-step${x.done?" done":""}${i===nx?" next":""}" onclick="${x.k==="buy"?"v2BuySheet()":`v2Go('${x.k}')`}"><span class="n">${x.done?I20.check:i+1}</span><span class="tx"><b>${x.t}</b><span>${esc(x.done?x.sub:x.d)}</span></span>${x.done&&x.v>0?`<span class="v">${fmt(x.v)}</span>`:""}<span class="go">${I20.chev}</span></button>`;
  const closed=!!P.closed&&s.has;
- return`<div class="v2-top"><div class="tt"><label class="v2-eye">${esc(D.settings.name)} · ${esc(niceDate(s.date))}${I20.down}<input type="date" aria-label="${t("dsPickDay")}" max="${td}" value="${esc(s.date)}" onchange="if(this.value)dsOpenDay(this.value)"></label><h1>${h1}</h1></div>${DSOWN?"":langSeg()}</div>
+ return`<div class="v2-top"><div class="tt"><span class="v2-eye">${esc(D.settings.name)}</span><h1>${h1}</h1></div><span class="v2-dt">${I18.cal}<span>${esc(shortDate(s.date))}</span></span></div>
  ${isT?"":`<button class="v2-today" onclick="dsOpenDay(today())">${t("dsBackToday")}</button>`}
  ${lk?`<p class="ds-lock">🔒 ${lockedOn(s.date)?t("dsLocked"):t("dsRoDay")}</p>`:""}${dsDraftNote()}
  <div class="v2-hero"><div class="v2-stats"><div><span class="l">${t("dsSold")}</span><b class="v lm${c.sold>0?"":" dim"}">${fmt(c.sold)}</b></div><div><span class="l">${t("dsOut")}</span><b class="v${c.out>0?"":" dim"}">${fmt(c.out)}</b></div><div><span class="l">${neg?t("dsLoss"):t("dsProfit")}</span><b class="v${neg?" ng":" lm"}${c.sold>0||c.out>0?"":" dim"}">${fmt(Math.abs(c.profit))}</b></div></div><small class="cu">${cur}</small>${price}</div>
@@ -3706,7 +3709,7 @@ dsOwner=function(d){if(!canEdit())return toast(t("viewOnly"));DSOWN=true;SV="";d
 {const _qa=quickAdd;quickAdd=function(){_qa();const m=document.querySelector("#modal .tm-add");const s=m&&m.querySelector(".ds-qa");if(s&&canEdit())s.insertAdjacentHTML("afterend",`<button class="ds-qa v2-qr" onclick="closeModal();v2Rests()"><span class="ci">${I20.store}</span><span><b>${t("v2RestQa")}</b><small>${t("v2RestQaD")}</small></span></button>`);};}
 
 /* auto-update: reload when a new version is published */
-const BUILD="b33";
+const BUILD="b35";
 async function checkUpdate(){try{const r=await fetch("version.txt?"+Date.now(),{cache:"no-store"});const v=(await r.text()).trim();if(v&&v!==BUILD){const m=document.getElementById("modal");if(m&&m.classList.contains("on"))return;if(document.body.classList.contains("v2-open")||(typeof SH!=="undefined"&&SH&&SH.dirty)||(typeof DSBUSY!=="undefined"&&DSBUSY))return;try{if(sessionStorage.getItem("tamm:rl")===v)return;sessionStorage.setItem("tamm:rl",v);}catch(e){}/* b25: put the new page in the phone copy first, so the reload opens it */try{const nr=await fetch(location.pathname+"?fresh="+encodeURIComponent(v),{cache:"no-store"});if(nr.ok&&window.caches){for(const k of await caches.keys()){const ca=await caches.open(k);await ca.put(new Request(location.origin+location.pathname),nr.clone());}}}catch(e){}location.reload();}}catch(e){}}
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"){checkUpdate();try{if(unlocked&&D)dsRoll();}catch(e){}}});setTimeout(checkUpdate,3000);
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
@@ -3870,8 +3873,9 @@ let DDEDIT="";/* b30: a past day the seller may still fix opens as the page firs
 {const _od=dsOpenDay;dsOpenDay=function(d){DDEDIT="";_od(d);};}
 {const _home=v2Home;v2Home=function(){const h=_home();if(!SH||SH.date>=today())return h;const ro=v2RO();const i=h.indexOf(`<div class="v2-h">`);if(i<0)return h;setTimeout(fillThumbs,0);
  /* b31: every past day (seller or owner) is its page; one the seller may still fix is edited right there */
- const top=ro?h.slice(0,i).replace(/<button class="v2-price[^"]*"[\s\S]*?<\/button>/,""):h.slice(0,i);
- return top+(ro||typeof ddEditHTML!=="function"?ddHTML(SH.date):ddEditHTML(SH.date))+(SH.has?`<button class="v2-wa" onclick="v2Send()">${I20.wa}${t("dsSend")}</button>`:"");};}
+ const ed=!ro&&DDEDIT===SH.date&&typeof ddEditHTML==="function";/* b35: a past day opens to read; Edit turns on changing it (no accidental taps) */
+ const top=ed?h.slice(0,i):h.slice(0,i).replace(/<button class="v2-price[^"]*"[\s\S]*?<\/button>/,"");
+ return top+(ed?ddEditHTML(SH.date)+`<button class="dd-edit dd-done dd-save" onclick="DDEDIT='';v2Close();render();toast(t('ddSaved'))">${I20.check}${t("ddSave")}</button>`:(ro?"":`<button class="dd-edit" onclick="DDEDIT=SH.date;render()">${I20.edit}${t("ddEdit")}</button>`)+ddHTML(SH.date))+(SH.has?`<button class="v2-wa" onclick="v2Send()">${I20.wa}${t("dsSend")}</button>`:"");};}
 /* today's photos also show when closing the day */
 {const _cv=v2CloseV;v2CloseV=function(){const h=_cv();if(!SH)return h;const ph=ddPhotos(SH.date);if(!ph.length)return h;setTimeout(fillThumbs,0);const i=h.indexOf(`<button class="v2-wa"`);
  const g=`<div class="v2-h"><b>${t("phT")}</b><span>${ph.length}</span></div><div class="ph-ths ph-day">${ph.map((id,k)=>`<button class="ph-th" onclick="phGal(${ja(ph.join(","))},${k})" aria-label="${t("phT")}"><img data-att="${esc(id)}" alt=""></button>`).join("")}</div>`;
@@ -4048,7 +4052,7 @@ Object.assign(T.en,{svBtn:"View as seller",svBtnD:"See and use the screens Anas 
  rsBack:"Restaurants",rsAddSale:"Add a sale",rsTapEdit:"Tap a sale or a collection to change it",se1:"Today and yesterday",se1D:"He can change today and fix yesterday",seNow1:"Today and yesterday"});
 Object.assign(T.ar,{svBtn:"اعرض كبائع",svBtnD:"شاهد واستخدم الشاشات التي يراها أنس",svBar:"أنت تشاهد كبائع",svBack:"ارجع لدفاتري",
  rsBack:"المطاعم",rsAddSale:"أضف بيعة",rsTapEdit:"اضغط على أي بيعة أو تحصيل لتعديله",se1:"اليوم وأمس",se1D:"يعدّل اليوم ويصحّح أمس",seNow1:"اليوم وأمس"});
-var SHOPV=false;let RSP="",RSDAY=false;
+var SHOPV=false;let RSP="",RSDAY=false,RSED="";
 const shopUI=()=>ROLE==="staff"||SHOPV;
 /* the owner's daily sheet is now the seller's own screens, with a bar to go back */
 dsOwner=function(d){if(!canEdit())return toast(t("viewOnly"));try{closeModal();}catch(e){}DSOWN=false;SV="";RSP="";RSDAY=false;SHOPV=true;STT="day";dsStash();dsLoad(d||today());render();try{window.scrollTo({top:0});}catch(e){}};
@@ -4062,7 +4066,7 @@ function svExit(){if(STT==="day")dsStash();SHOPV=false;RSP="";RSDAY=false;SV="";
 {const _g=dsGo;dsGo=function(k){RSP="";if(k==="day"&&RSDAY&&SH&&SH.date!==today()&&!SH.dirty){RSDAY=false;dsLoad(today());}return _g(k);};}
 /* ---------- the restaurant page ---------- */
 const _dsCustModal=dsCust;
-dsCust=function(name){if(!shopUI())return _dsCustModal(name);if(!dsCusts().some(p=>p.name===name))return;try{closeModal();}catch(e){}const same=RSP===name&&STT==="cust";RSP=name;STT="cust";if(!same)bkTab("rsp","cust");render();try{window.scrollTo({top:0});}catch(e){}};
+dsCust=function(name){if(!shopUI())return _dsCustModal(name);if(!dsCusts().some(p=>p.name===name))return;try{closeModal();}catch(e){}const same=RSP===name&&STT==="cust";if(!same)RSED="";RSP=name;STT="cust";if(!same)bkTab("rsp","cust");render();try{window.scrollTo({top:0});}catch(e){}};
 function rsAt(d,fn){/* open a sheet for any day without leaving the restaurant page */
  if(!SH||SH.date!==d){if(SH&&SH.dirty&&!dsRO(SH.date))dsStash();dsLoad(d);}RSDAY=d!==today();fn();}
 function rsSaleEdit(id){const x=D.invoices.find(i=>i.id===id);if(!x||!x.sh||x.shk!=="sale"||dsRO(x.sh))return;rsAt(x.sh,()=>{const r=SH.sales.find(s=>s.rid===id||s.k===id);if(r)v2SaleSheet(r.shop?"":r.who,r.k,!!r.shop);});}
@@ -4074,19 +4078,19 @@ function rsPageHTML(name){const cur=esc(D.settings.cur);const p=dsCusts().find(x
  const pays=Object.values(PM).sort((a,b)=>String(b.d).localeCompare(String(a.d)));
  const sold=r3(bills.reduce((a,x)=>a+num(x.amount),0)),coll=r3(pays.reduce((a,q)=>a+q.a,0));
  const cam=ids=>ids.length?` <button class="ph-ic" onclick="event.stopPropagation();phGal(${ja(ids.join(","))},0)" aria-label="${t("phT")}">${I20.cam}</button>`:"";
- const canS=x=>!!(x.sh&&x.shk==="sale"&&!dsRO(x.sh));
+ const canS0=x=>!!(x.sh&&x.shk==="sale"&&!dsRO(x.sh));const canS=x=>RSED===name&&canS0(x);
  const bill=x=>{const left=r3(num(x.amount)-paidOf(x));const q=num(x.qty);const sub=[x.ob?t("obTag"):prName(x.prod),q?fq(q)+" "+t("dsKgU"):"",left>0.004?t("dsLeft").replace("{v}",fmt(left)):t("rsAllPaid")].filter(Boolean).join(" · ");const ed=canS(x);
   return`<div class="r${ed?" rs-ed1":""}"${ed?` role="button" tabindex="0" onclick="rsSaleEdit(${ja(x.id)})"`:""}><span><b>${esc(niceDate(x.date))}${cam(phOf(x))}</b><small>${esc(sub)}</small>${x.ob&&!(paidOf(x)>0.004)&&(ROLE!=="staff"||x.by===dsMe())?`<button class="ob-x" onclick="event.stopPropagation();obDel(${ja(x.id)})">${t("obDel")}</button>`:""}</span><b class="v${left>0.004?"":" ok"}">${fmt(x.amount)}</b>${ed?`<span class="rs-go">${I20.edit}</span>`:""}</div>`;};
- const payRow=q=>{const ed=q.sh&&!dsRO(q.d);return`<div class="r${ed?" rs-ed1":""}"${ed?` role="button" tabindex="0" onclick="rsCollEdit(${ja(name)},${ja(q.d)})"`:""}><span><b>${esc(niceDate(q.d))}${cam(q.att)}</b></span><b class="v ok">+${fmt(q.a)}</b>${ed?`<span class="rs-go">${I20.edit}</span>`:""}</div>`;};
- const can=!dsRO(today());const anyEd=bills.some(canS)||pays.some(q=>q.sh&&!dsRO(q.d));setTimeout(fillThumbs,0);
+ const payRow=q=>{const ed=RSED===name&&q.sh&&!dsRO(q.d);return`<div class="r${ed?" rs-ed1":""}"${ed?` role="button" tabindex="0" onclick="rsCollEdit(${ja(name)},${ja(q.d)})"`:""}><span><b>${esc(niceDate(q.d))}${cam(q.att)}</b></span><b class="v ok">+${fmt(q.a)}</b>${ed?`<span class="rs-go">${I20.edit}</span>`:""}</div>`;};
+ const can=!dsRO(today());const anyEd=bills.some(canS0)||pays.some(q=>q.sh&&!dsRO(q.d));const on=anyEd&&RSED===name;setTimeout(fillThumbs,0);
  return`<div class="rs-ph"><button class="rs-bk" onclick="history.back()" aria-label="${t("rsBack")}">${I20.back}<span>${t("rsBack")}</span></button>${rsCanEdit(name)?`<button class="rs-ed" onclick="v2RestEdit(${ja(name)})">✎ ${t("rsEdName")}</button>`:""}</div>
  <h1 class="rs-h1" dir="auto">${esc(rsName(name))}</h1>
  <div class="ds-hero one"><div><span class="l">${p.owed>0.004?t("gpOwes").replace("{v}",""):t("dsPaidUp")}</span><b class="v${p.owed>0.004?" ng":" lm"}">${fmt(p.owed)}</b></div><small class="cu">${cur}</small></div>
  <div class="dd-top"><div><span>${t("rsSold")}</span><b>${fmt(sold)}</b></div><div><span>${t("rsColl")}</span><b>${fmt(coll)}</b></div></div>
  ${can?`<div class="rs-acts"><button class="sl-add" onclick="rsAt(today(),()=>v2SaleSheet(${ja(name)},null,false,1))">${I20.plus}<span>${t("rsAddSale")}</span></button>${p.owed>0.004?`<button class="sl-add lime" onclick="rsAt(today(),()=>v2CollSheet(${ja(name)}))">${I20.cash}<span>${t("dsTheyPaid")}</span></button>`:""}</div>`:""}
- ${anyEd?`<p class="dd-tip">${I20.edit}${t("rsTapEdit")}</p>`:""}
+ ${anyEd?(on?`<p class="dd-tip">${I20.edit}${t("rsTapEdit")}</p>`:`<button class="dd-edit" onclick="RSED=${ja(name)};render()">${I20.edit}${t("rsEditB")}</button>`):""}
  <h3 class="ds-h3">${t("rsSales")} · ${bills.length}</h3><div class="tm-card ds-bl rs-bl">${bills.map(bill).join("")}</div>
- <h3 class="ds-h3">${t("rsPays")}${pays.length?" · "+pays.length:""}</h3>${pays.length?`<div class="tm-card ds-bl">${pays.map(payRow).join("")}</div>`:`<p class="ds-sub">${t("rsNoPays")}</p>`}`;}
+ <h3 class="ds-h3">${t("rsPays")}${pays.length?" · "+pays.length:""}</h3>${pays.length?`<div class="tm-card ds-bl">${pays.map(payRow).join("")}</div>`:`<p class="ds-sub">${t("rsNoPays")}</p>`}${on?`<button class="dd-edit dd-done dd-save" onclick="RSED='';render();toast(t('ddSaved'))">${I20.check}${t("ddSave")}</button>`:""}`;}
 {const _cv=dsCustView;dsCustView=function(){if(RSP&&shopUI()){const h=rsPageHTML(RSP);if(h)return h;RSP="";}return _cv();};}
 /* ---------- how far back the seller can change days ---------- */
 dsStaffDays=function(){const v=D&&D.settings?D.settings.staffDays:undefined;if(v===0||v==="0")return 0;if(v===1||v==="1")return 1;return 7;};
@@ -4171,6 +4175,14 @@ async function mePwSave(){if(v2Busy())return;const a=v2Val("mp1"),b=v2Val("mp2")
  try{const {error}=await sb.auth.updateUser({password:a});if(error)throw error;v2Close();toast(t("mePwOk"));}catch(e){if(msg)msg.textContent=e&&e.message||String(e);}}
 {const _me=dsMoreView;dsMoreView=function(){const h=_me();const i=h.indexOf(`<p class="st-note"`);const add=meWeekHTML()+`<button class="ds-big me-pw" onclick="mePwOpen()">${I20.edit}<span>${t("mePw")}</span></button>`;return i<0?h+add:h.slice(0,i)+add+h.slice(i);};}
 
+Object.assign(T.en,{ddSave:"Save",ddSaved:"Saved",ddDone:"Done editing",rsEditB:"Edit sales and collections"});Object.assign(T.ar,{ddSave:"حفظ",ddSaved:"تم الحفظ",ddDone:"انتهيت من التعديل",rsEditB:"عدّل المبيعات والتحصيل"});
+/* b35 (Ala'a, Nov 20): the language is kept on the person's account, so it follows them to any phone */
+function shortDate(d){try{return new Date(d+"T12:00:00").toLocaleDateString(lang==="ar"?"ar-JO-u-nu-latn":"en",{weekday:"short",day:"numeric",month:"short"});}catch(e){return d;}}
+{const _sl=setLang;setLang=function(l){_sl(l);try{const u=SESSION&&SESSION.user;if(u&&(u.user_metadata||{}).lang!==lang){u.user_metadata=Object.assign({},u.user_metadata,{lang});sb.auth.updateUser({data:{lang}}).catch(()=>{});}}catch(e){}};}
+{const _b=boot;boot=async function(){try{const {data}=await sb.auth.getSession();const u=data&&data.session&&data.session.user;const l=u&&u.user_metadata&&u.user_metadata.lang;if((l==="ar"||l==="en")&&l!==lang){lang=l;try{localStorage.setItem("tamm:lang",lang);}catch(e){}}}catch(e){}const r=await _b.apply(this,arguments);try{const u=SESSION&&SESSION.user;if(u&&!(u.user_metadata||{}).lang){u.user_metadata=Object.assign({},u.user_metadata,{lang});sb.auth.updateUser({data:{lang}}).catch(()=>{});}}catch(e){}return r;};}
+/* b35 (Ala'a, Nov 20): the Today tab always goes to today's start screen, even from inside a day or one of its steps */
+{const _g=dsGo;dsGo=function(k){RSED="";if(k==="day"&&SH&&!DSBUSY){const was=STT==="day";v2Close();SV="";RSDAY=false;DDEDIT="";if(SH.date!==today()){dsStash();dsLoad(today());}
+ if(was){render();try{window.scrollTo({top:0});}catch(e){}return;}}return _g(k);};}
 render();boot();sb.auth.onAuthStateChange((ev)=>{if(ev==="PASSWORD_RECOVERY"){RECOVER=true;setTimeout(()=>render(),0);return;}if(ev==="SIGNED_OUT"){cacheDrop();SESSION=null;unlocked=false;D=null;render();}});
 window.addEventListener("focus",async()=>{if(unlocked&&BIZ&&!SYNC.pending){try{const r=await window.storage.get("tt:data");if(SYNC.pending)return;const nd=sanitizeData(JSON.parse(r.value));if(JSON.stringify(nd)!==JSON.stringify(D)){D=nd;D.contacts=D.contacts||{};D.products=D.products||[];const m=document.getElementById("modal");if(m&&m.classList.contains("on")){if(DSOWN&&document.querySelector("#modal #dsWrap")){if(!dsRoll())dsPaint();}}else render();}else if(typeof dsRoll==="function")dsRoll();}catch(e){}}});
 </script>
