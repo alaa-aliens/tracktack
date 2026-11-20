@@ -1262,6 +1262,8 @@ label>.v2-in.v2-txt{margin-top:0}.v2-in.v2-txt:focus{border:2px solid var(--ink)
 .ob-d{color:var(--muted);font-size:14px;line-height:1.5;margin:0 0 12px}
 .ob-chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 2px}.ob-c{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:8px 13px;font:inherit;font-size:14px;color:var(--ink);cursor:pointer}.ob-c[aria-pressed=true]{border-color:var(--ink);background:var(--paper)}
 .ob-x{display:block;margin-top:6px;border:0;background:none;padding:0;color:var(--red);font:inherit;font-size:13px;text-decoration:underline;cursor:pointer}
+
+.as-h{margin-top:22px}.as-d{color:var(--muted);font-size:13.5px;margin:-4px 0 10px}.as-bl .r>span{min-width:0}.as-bl .v{color:var(--ink)}.as-bl .r>span b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 </style>
 </head>
 <body>
@@ -3160,7 +3162,7 @@ const _quickAdd18=quickAdd;quickAdd=function(){_quickAdd18();const m=document.qu
    A request is kept in D.advreq until the owner pays it (it then becomes a normal expense, category Salaries,
    tagged adv=<user id>) or says no. ===== */
 LISTS.push("advreq");
-const DS_DAYS=14;const dsVis=x=>ROLE!=="staff"||!!(x&&(x.sh||String(x.date||"")>=localDay(Date.now()-(DS_DAYS-1)*864e5)||(x.party&&x.party!=="Shop sales"&&r3(num(x.amount)-paidOf(x))>0.004)));/* b25: sellers see their daily-sheet bills plus every sale from the last 2 weeks; b26: and every restaurant bill still waiting to be paid, however old */
+const dsVis=x=>!!x;/* b28: Ala'a wants the seller to see every sale since the start (sales only; costs stay hidden). Earlier: b25 last 2 weeks, b26 plus unpaid. *//* b25: sellers see their daily-sheet bills plus every sale from the last 2 weeks; b26: and every restaurant bill still waiting to be paid, however old */
 function dsInv(){return D.invoices.filter(dsVis);}
 Object.assign(T.en,{dsNavMe:"Me",avT:"Advances",avGot:"Advances you got",avNone:"No advances yet.",avAsk:"Ask for an advance",avAmt:"How much?",avWhy:"What is it for? (optional)",avWhyPh:"e.g. rent",
  avSend:"Send request",avSent:"Request sent",avWait:"Waiting for an answer",avNo:"Not approved",avTell:"Tell on WhatsApp",avMsg:"Hi, I asked for an advance of {v} {c} in Tamm.",avMsgWhy:"It is for: {w}",
@@ -3619,7 +3621,7 @@ dsOwner=function(d){if(!canEdit())return toast(t("viewOnly"));DSOWN=true;SV="";d
 {const _qa=quickAdd;quickAdd=function(){_qa();const m=document.querySelector("#modal .tm-add");const s=m&&m.querySelector(".ds-qa");if(s&&canEdit())s.insertAdjacentHTML("afterend",`<button class="ds-qa v2-qr" onclick="closeModal();v2Rests()"><span class="ci">${I20.store}</span><span><b>${t("v2RestQa")}</b><small>${t("v2RestQaD")}</small></span></button>`);};}
 
 /* auto-update: reload when a new version is published */
-const BUILD="b27";
+const BUILD="b28";
 async function checkUpdate(){try{const r=await fetch("version.txt?"+Date.now(),{cache:"no-store"});const v=(await r.text()).trim();if(v&&v!==BUILD){const m=document.getElementById("modal");if(m&&m.classList.contains("on"))return;if(document.body.classList.contains("v2-open")||(typeof SH!=="undefined"&&SH&&SH.dirty)||(typeof DSBUSY!=="undefined"&&DSBUSY))return;try{if(sessionStorage.getItem("tamm:rl")===v)return;sessionStorage.setItem("tamm:rl",v);}catch(e){}/* b25: put the new page in the phone copy first, so the reload opens it */try{const nr=await fetch(location.pathname+"?fresh="+encodeURIComponent(v),{cache:"no-store"});if(nr.ok&&window.caches){for(const k of await caches.keys()){const ca=await caches.open(k);await ca.put(new Request(location.origin+location.pathname),nr.clone());}}}catch(e){}location.reload();}}catch(e){}}
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"){checkUpdate();try{if(unlocked&&D)dsRoll();}catch(e){}}});setTimeout(checkUpdate,3000);
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
@@ -3705,6 +3707,17 @@ const _dsGo27=dsGo;dsGo=function(k){if(unlocked&&k!==STT)bkTab("staff",STT);retu
 window.addEventListener("popstate",()=>{if(BK_SKIP>0){BK_SKIP--;return;}
  if(BK_SHEET){BK_SHEET=false;clearTimeout(BK_T);BK_T=null;const v=document.getElementById("v2s");if(v&&v.classList.contains("on"))v2Close();else closeModal();return;}
  const s=BK_TABS.pop();if(!s)return;if(s.kind==="own"){tab=s.prev;filter="all";q="";render();}else{if(STT==="day")dsStash();STT=s.prev;render();}try{window.scrollTo({top:0});}catch(e){}});
+/* ===== b28: a seller sees every sale since the start (sales only; costs stay hidden), listed under Days. ===== */
+Object.assign(T.en,{asT:"All sales",asD:"Every sale since the start, newest first.",asNone:"No sales yet.",asPaid:"Paid",asLeft:"{v} left",asMore:"Show more",asN:"{n} sales · {v}"});
+Object.assign(T.ar,{asT:"كل المبيعات",asD:"كل مبيعة منذ البداية، الأحدث أولًا.",asNone:"لا توجد مبيعات بعد.",asPaid:"مدفوعة",asLeft:"باقي {v}",asMore:"عرض المزيد",asN:"{n} مبيعة · {v}"});
+let AS_N=60;
+function asList(){return D.invoices.filter(x=>x&&num(x.amount)>0).sort((a,b)=>String(b.date).localeCompare(String(a.date))||String(b.at||"").localeCompare(String(a.at||"")));}
+function asHTML(){const L=asList();const cur=esc(D.settings.cur);const tot=r3(L.reduce((a,x)=>a+num(x.amount),0));
+ return`<h3 class="ds-h3 as-h" id="allSales">${t("asT")}</h3><p class="as-d">${L.length?esc(t("asN").replace("{n}",L.length).replace("{v}",fmt(tot)+" "+D.settings.cur)):t("asNone")}</p>
+ ${L.length?`<div class="tm-card ds-bl as-bl">${L.slice(0,AS_N).map(x=>{const left=r3(num(x.amount)-paidOf(x));const who=x.party?rsName(x.party):"";
+  return`<div class="r"><span><b>${esc(who||t("v2Shop"))}</b><small>${esc(niceDate(x.date))}${num(x.qty)?" · "+esc(fq(x.qty))+" "+t("dsKgU"):""}${left>0.004?" · "+esc(t("asLeft").replace("{v}",fmt(left))):" · "+t("asPaid")}</small></span><b class="v">${fmt(x.amount)}</b></div>`;}).join("")}</div>
+ ${L.length>AS_N?`<button class="ob-add" onclick="AS_N+=100;render()">${t("asMore")}</button>`:""}`:""}`;}
+const _dsDaysView28=dsDaysView;dsDaysView=function(){return _dsDaysView28()+asHTML();};
 render();boot();sb.auth.onAuthStateChange((ev)=>{if(ev==="PASSWORD_RECOVERY"){RECOVER=true;setTimeout(()=>render(),0);return;}if(ev==="SIGNED_OUT"){cacheDrop();SESSION=null;unlocked=false;D=null;render();}});
 window.addEventListener("focus",async()=>{if(unlocked&&BIZ&&!SYNC.pending){try{const r=await window.storage.get("tt:data");if(SYNC.pending)return;const nd=sanitizeData(JSON.parse(r.value));if(JSON.stringify(nd)!==JSON.stringify(D)){D=nd;D.contacts=D.contacts||{};D.products=D.products||[];const m=document.getElementById("modal");if(m&&m.classList.contains("on")){if(DSOWN&&document.querySelector("#modal #dsWrap")){if(!dsRoll())dsPaint();}}else render();}else if(typeof dsRoll==="function")dsRoll();}catch(e){}}});
 </script>
