@@ -1282,6 +1282,10 @@ label>.v2-in.v2-txt{margin-top:0}.v2-in.v2-txt:focus{border:2px solid var(--ink)
 .rs-seg button{flex:1;border:0;background:none;border-radius:999px;padding:10px 8px;font:inherit;font-size:15px;font-weight:700;color:var(--muted);cursor:pointer}
 .rs-seg button.on{background:#fff;color:var(--ink);box-shadow:var(--sh)}
 .rs-bl .v{color:var(--ink)}.rs-bl .v.ok{color:var(--green)}
+.se-opts{display:flex;flex-direction:column;gap:10px;margin-top:6px}
+.se-o{text-align:start;border:1.5px solid var(--div);background:#fff;border-radius:18px;padding:14px 16px;font:inherit;cursor:pointer;color:var(--ink)}
+.se-o b{display:block;font-size:16px}.se-o small{display:block;color:var(--muted);font-size:13px;margin-top:2px}.se-o.on{border-color:var(--ink);background:var(--limebg)}
+.dd-edit{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin-top:12px;border:0;background:var(--ink);color:#fff;border-radius:999px;padding:14px;font:inherit;font-size:16px;font-weight:800;cursor:pointer}.dd-edit svg{width:18px;height:18px}
 </style>
 </head>
 <body>
@@ -2957,9 +2961,11 @@ const dsMe=()=>(SESSION&&SESSION.user&&SESSION.user.id)||null;
 const dsKey=d=>"tamm:ds:"+((typeof BIZ!=="undefined"&&BIZ&&BIZ.id)||"")+":"+(dsMe()||"")+":"+d;
 const dsOwn=(p,d)=>p&&p.sh===d&&!p.c;/* the cash payment the sheet itself added to its own record */
 const dsForeign=(x,d)=>r3((x.pays||[]).filter(p=>!(p&&p.sh===d)).reduce((a,p)=>a+num(p.amount),0));/* paid by anything other than this day's sheet */
-const dsOthers=x=>!!(ROLE==="staff"&&x&&x.by&&x.by!==dsMe());/* a seller can't change what the owner added */
+const dsOthers=x=>!!(ROLE==="staff"&&x&&x.by&&x.by!==dsMe()&&!(typeof dsStaffDays==="function"&&dsStaffDays()>0));/* a seller can't change what the owner added, unless the owner lets him fix recent days (b30) */
 const dsYday=()=>localDay(Date.now()-864e5);
-const dsRO=d=>lockedOn(d)||(ROLE==="staff"&&d<today());/* b29: sellers change only today; every past day is view-only (Ala'a, Nov 20) */
+const dsRO=d=>lockedOn(d)||(ROLE==="staff"&&d<dsEditFrom());/* b29: sellers changed only today; b30: the owner lets them fix the last 7 days, and can switch that off */
+function dsStaffDays(){const v=D&&D.settings?D.settings.staffDays:undefined;return v===0||v==="0"?0:7;}
+function dsEditFrom(){const n=dsStaffDays();return n>0?localDay(Date.now()-n*864e5):today();}
 let DSATT={};/* notebook photos picked but not saved yet, per day */
 function dsRecs(d){return{buy:D.expenses.find(x=>x.sh===d&&x.shk==="buy")||null,costs:D.expenses.filter(x=>x.sh===d&&x.shk==="cost"),sales:D.invoices.filter(x=>x.sh===d&&x.shk==="sale")};}
 function dsLastBuy(){let b=null;for(const x of D.expenses)if(x.shk==="buy"&&(!b||String(x.date)>String(b.date)))b=x;return b;}
@@ -3499,7 +3505,7 @@ function v2Sales(){const lk=v2RO(),cur=v2Cur(),c=dsCalc(),pi=v2PriceInfo(),d=SH.
  return`${v2Top(3,t("v2S3"),esc(t("v2StepN").replace("{n}",3))+(pi.set?" · "+esc(fq2(pi.p)+" "+t("v2PerKg").replace("{c}",D.settings.cur)):""))}${v2Warn()}
  ${!lk&&!pi.set?`<button class="v2-price need flat" onclick="v2PriceSheet()"><span class="pi">${I20.tag}</span><span class="tx"><small>${t("v2Price")}</small><b>${pi.old?esc(fq2(pi.p)):t("v2NeedPrice")}</b></span><span class="ch">${t("v2SetIt")}</span></button>`:""}
  ${lk?"":`<p class="v2-sub">${t("v2TapWho")}</p>`}
- <div class="v2-rest">${R.map(tile).join("")}${shop}</div>
+ <div class="v2-rest">${R.map(tile).join("")}${shopS.length?shop:""}</div>
  ${lk?"":`<button class="v2-rt dash wide" onclick="v2RestNew()">${I20.plus}<span>${t("v2NewRest")}</span></button>`}
  ${SH.sales.length?`<div class="v2-h"><b>${t("v2SalesToday")}</b><span>${SH.sales.length}</span></div><div class="v2-list">${SH.sales.map(row).join("")}</div>`:""}
  ${v2Foot(esc(t("v2SoldN").replace("{n}",nR)),fmt(c.sold)+" "+cur,t("v2NextColl"),"v2Next('sales','coll')")}`;}
@@ -3742,10 +3748,10 @@ const _dsDaysView28=dsDaysView;dsDaysView=function(){return _dsDaysView28()+asHT
    each sale and each collection; a seller changes only today and can fix the name of a restaurant he added today. ===== */
 Object.assign(T.en,{rsEdName:"Edit name",phAdd:"Invoice photo",phT:"Invoice photos",phFail:"A photo couldn't be saved. Try again.",
  ddPrice:"Buying price a kilo",ddWeight:"Chicken weight",ddCosts:"Costs",ddSales:"Sales",ddColl:"Collected",ddLeft:"Still owed",ddTot:"Total",ddNone:"Nothing was written for this day.",
- ddPaid:"Paid",ddAcc:"On account",ddNoOwe:"Nobody owes anything.",ddOpen:"See the day"});
+ ddPaid:"Paid",ddAcc:"On account",ddEdit:"Edit this day",ddNoOwe:"Nobody owes anything.",ddOpen:"See the day"});
 Object.assign(T.ar,{rsEdName:"عدّل الاسم",phAdd:"صورة الفاتورة",phT:"صور الفواتير",phFail:"تعذّر حفظ صورة. حاول مرة أخرى.",
  ddPrice:"سعر الصباح",ddWeight:"وزن الدجاج",ddCosts:"المصاريف",ddSales:"البيع",ddColl:"التحصيل",ddLeft:"الباقي",ddTot:"المجموع",ddNone:"لم يُكتب شيء لهذا اليوم.",
- ddPaid:"مدفوع",ddAcc:"على الحساب",ddNoOwe:"لا أحد عليه شيء.",ddOpen:"اعرض اليوم"});
+ ddPaid:"مدفوع",ddAcc:"على الحساب",ddEdit:"عدّل هذا اليوم",ddNoOwe:"لا أحد عليه شيء.",ddOpen:"اعرض اليوم"});
 /* the notebook days were typed in English; show them in Arabic too */
 Object.assign(AR_MAP,{"Live chicken":"دجاج حي","Chicken":"دجاج","Slaughter":"ذبح","Diesel":"ديزل","Petrol":"بنزين","Worker wage":"أجرة عامل","Cleaning the chicken":"تشحيب","Car hire":"أجرة سيارة","Phone":"هاتف",
  "Small items":"مصروفات صغيرة","Small items and bags":"مفارش وأكياس","Cleaning supplies":"منظفات","Soap and tissues":"صابون ومحارم","Cartons and bags":"كراتين وأكياس","Chlorine, dish soap, notebook":"كلور وسائل جلي ودفتر",
@@ -3801,9 +3807,11 @@ function ddHTML(d){const R=dsRecs(d);const cur=v2Cur();const b=R.buy;const bq=b?
  <div class="v2-h"><b>${t("ddLeft")}</b><span>${fmt(leftT)} ${cur}</span></div>
  <div class="v2-list v2-tls">${left.length?left.map(([k,v])=>ln(`<bdi>${esc(rsName(k))}</bdi>`,"",fmt(v),"c-later")).join(""):`<div class="v2-tl"><span>${t("ddNoOwe")}</span></div>`}</div>
  ${ph.length?`<div class="v2-h"><b>${t("phT")}</b><span>${ph.length}</span></div><div class="ph-ths ph-day">${ph.map((id,i)=>`<button class="ph-th" onclick="phGal(${ja(ph.join(","))},${i})" aria-label="${t("phT")}"><img data-att="${esc(id)}" alt=""></button>`).join("")}</div>`:""}`;}
-{const _home=v2Home;v2Home=function(){const h=_home();if(!SH||!v2RO())return h;const i=h.indexOf(`<div class="v2-h">`);if(i<0)return h;setTimeout(fillThumbs,0);
+let DDEDIT="";/* b30: a past day the seller may still fix opens as the page first, with a button to edit it */
+{const _od=dsOpenDay;dsOpenDay=function(d){DDEDIT="";_od(d);};}
+{const _home=v2Home;v2Home=function(){const h=_home();if(!SH||DSOWN)return h;const ro=v2RO();if(!ro&&(SH.date>=today()||DDEDIT===SH.date))return h;const i=h.indexOf(`<div class="v2-h">`);if(i<0)return h;setTimeout(fillThumbs,0);
  const top=h.slice(0,i).replace(/<button class="v2-price need"[\s\S]*?<\/button>/,"");
- return top+ddHTML(SH.date)+(SH.has?`<button class="v2-wa" onclick="v2Send()">${I20.wa}${t("dsSend")}</button>`:"");};}
+ return top+(ro?"":`<button class="dd-edit" onclick="DDEDIT=SH.date;render()">${I20.edit}${t("ddEdit")}</button>`)+ddHTML(SH.date)+(SH.has?`<button class="v2-wa" onclick="v2Send()">${I20.wa}${t("dsSend")}</button>`:"");};}
 /* today's photos also show when closing the day */
 {const _cv=v2CloseV;v2CloseV=function(){const h=_cv();if(!SH)return h;const ph=ddPhotos(SH.date);if(!ph.length)return h;setTimeout(fillThumbs,0);const i=h.indexOf(`<button class="v2-wa"`);
  const g=`<div class="v2-h"><b>${t("phT")}</b><span>${ph.length}</span></div><div class="ph-ths ph-day">${ph.map((id,k)=>`<button class="ph-th" onclick="phGal(${ja(ph.join(","))},${k})" aria-label="${t("phT")}"><img data-att="${esc(id)}" alt=""></button>`).join("")}</div>`;
@@ -3813,6 +3821,18 @@ function ddHTML(d){const R=dsRecs(d);const cur=v2Cur();const b=R.buy;const bq=b?
 Object.assign(T.en,{dsCustOwe:"Restaurants' debts",rsTabList:"Restaurants",rsTabSales:"All sales",rsSold:"Sold",rsColl:"Collected",rsSales:"Sales",rsPays:"Collections",rsNoPays:"No collections yet.",rsAllPaid:"Paid"});
 Object.assign(T.ar,{dsCustOwe:"ديون المطاعم",rsTabList:"المطاعم",rsTabSales:"كل المبيعات",rsSold:"المبيعات",rsColl:"المحصّل",rsSales:"المبيعات",rsPays:"التحصيل",rsNoPays:"لا يوجد تحصيل بعد.",rsAllPaid:"مدفوعة"});
 dsDaysView=_dsDaysView28;
+/* b30: the owner decides whether the seller can fix the last 7 days (Ala'a, Nov 20) */
+Object.assign(T.en,{seT:"Seller's past days",seD:"How far back the seller can change days",se7:"Last 7 days",se7D:"He can change everything on the last 7 days",se0:"Today only",se0D:"Past days are view-only for him",seOk:"Saved",seNow7:"Last 7 days",seNow0:"Today only"});
+Object.assign(T.ar,{seT:"أيام البائع السابقة",seD:"إلى متى يستطيع البائع تعديل الأيام",se7:"آخر ٧ أيام",se7D:"يستطيع تعديل كل شيء في آخر ٧ أيام",se0:"اليوم فقط",se0D:"الأيام الماضية للعرض فقط عنده",seOk:"تم الحفظ",seNow7:"آخر ٧ أيام",seNow0:"اليوم فقط"});
+function seOpen(){if(!canEdit())return;const n=dsStaffDays();
+ v2Open(`${v2Head(t("seT"),t("seD"),I20.clock)}<div class="se-opts">${[[7,"se7","se7D"],[0,"se0","se0D"]].map(([v,l,dd])=>`<button class="se-o${n===v?" on":""}" onclick="seSet(${v})"><b>${t(l)}</b><small>${t(dd)}</small></button>`).join("")}</div>`,"rest");}
+async function seSet(v){if(!canEdit())return;const snap=clone(D);D.settings.staffDays=v;const ok=await persist();if(!ok){D=snap;return;}toast(t("seOk"));v2Close();}
+{const _qa=quickAdd;quickAdd=function(){_qa();const m=document.querySelector("#modal .tm-add");const s=m&&m.querySelector(".v2-qr");if(s&&canEdit())s.insertAdjacentHTML("afterend",`<button class="ds-qa v2-qr" onclick="closeModal();seOpen()"><span class="ci">${I20.clock}</span><span><b>${t("seT")}</b><small>${esc(dsStaffDays()>0?t("seNow7"):t("seNow0"))}</small></span></button>`);};}
+/* b30: the shop is a cost, not a sale (Ala'a): it moves from the sales step to the costs step */
+V2C.push(["shop","v2ShopCost",12,"store",["shop","المحل","محل"]]);
+Object.assign(T.en,{v2ShopCost:"Shop"});Object.assign(T.ar,{v2ShopCost:"المحل"});
+Object.assign(AR_MAP,{"Shop: Chicken 7.7 kg":"المحل: دجاج ٧٫٧ كغ","Shop: Chicken":"المحل: دجاج","Shop: Liver and wings":"المحل: كبدة وجناح","Shop: Chicken meat":"المحل: لحمة دجاج","Shop: Wings":"المحل: جناح",
+ "Shop: Chicken pieces":"المحل: دجاج قطع","Shop: Chicken pieces 14 kg":"المحل: دجاج قطع ١٤ كغ","Shop: Liver, wings and gizzards":"المحل: كبدة وجناح وقوانص","Shop: Chicken 16 kg":"المحل: دجاج ١٦ كغ","Shop: Liver, gizzards and wings":"المحل: كبدة وقوانص وجناح","Garbage bags":"أكياس نفايات"});
 let RSTAB="list";
 function rsSeg(){return`<div class="rs-seg" role="tablist">${[["list","rsTabList"],["sales","rsTabSales"]].map(([k,l])=>`<button role="tab" aria-selected="${RSTAB===k}" class="${RSTAB===k?"on":""}" onclick="RSTAB='${k}';render();try{window.scrollTo({top:0})}catch(e){}">${t(l)}</button>`).join("")}</div>`;}
 {const _cv=dsCustView;dsCustView=function(){const h=_cv();const i=h.indexOf(`<div class="ds-hero`);if(i<0)return h;
