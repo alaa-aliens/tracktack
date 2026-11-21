@@ -1542,6 +1542,50 @@ button.v2-dt{border:0;font:inherit;color:var(--ink)}
 @media(max-width:1100px){.pl-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}.pl-grid{grid-template-columns:1fr}}
 @media(min-width:901px) and (max-height:1000px){.d6-side .dk-it{min-height:36px}.d6-side .dk-lbl{padding-top:6px;padding-bottom:2px}.d6-side .d6-new{margin-bottom:6px}}
 .d6-tag.t{background:#EEF3DF;color:#4A5A10}
+
+/* b40 */
+#v2s .sh.rest,#v2s .sh.ah,#v2s .sh.sv,#v2s .sh.add2,#v2s .sh.dv{min-height:0}
+.ra-g{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:4px}
+.ra-t{display:flex;flex-direction:column;align-items:flex-start;gap:6px;border:0;border-radius:22px;background:#fff;box-shadow:var(--sh);padding:18px 16px;min-height:156px;text-align:start;font:inherit;color:var(--ink);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.ra-t:active{transform:scale(.98)}
+.ra-t .ic{width:52px;height:52px;border-radius:18px;background:var(--soft);display:grid;place-items:center;margin-bottom:auto}
+.ra-t.lime .ic{background:var(--lime)}
+.ra-t b{font-size:17px;font-weight:800;margin-top:14px}
+.ra-t small{font-size:13px;color:var(--muted);line-height:1.35}
+.ui-li.tap{cursor:pointer;-webkit-tap-highlight-color:transparent}.ui-li.tap:active{background:var(--soft)}
+.v2-clr{flex:none;width:30px;height:30px;border-radius:50%;border:0;background:var(--soft);color:var(--muted);display:grid;place-items:center;cursor:pointer;padding:0}
+#v2s .v2-clr svg{width:16px;height:16px}
+.v2-in:placeholder-shown+.v2-clr,.v2-in:disabled+.v2-clr{display:none}
+.bs-stock.bs40{align-items:center}.bs-stock.bs40 .tx{flex:1;min-width:0}
+.bs-ed{flex:none;display:flex;align-items:center;gap:6px;border:0;border-radius:999px;background:#fff;box-shadow:inset 0 0 0 1.5px var(--line);padding:0 14px;min-height:40px;font:inherit;font-size:14px;font-weight:700;color:var(--ink);cursor:pointer}
+#v2s .bs-ed svg{width:16px;height:16px}
+.st-btns{display:flex;gap:10px;align-items:stretch;margin-top:16px}.st-btns .v2-done{flex:1;margin-top:0}
+.v2-foot .st-btns{margin-top:0}
+.st-bk{flex:none;display:flex;align-items:center;justify-content:center;gap:6px;border:0;border-radius:999px;background:#fff;box-shadow:inset 0 0 0 1.5px var(--line);padding:0 18px;font:inherit;font-size:15px!important;font-weight:700;color:var(--ink);cursor:pointer;min-height:56px}
+.st-only .st-bk{flex:1}
+.ui-foot>.st-bk{width:auto;flex:none}.ui-foot>.st-bk+.v2-done{flex:1;width:auto}
+#v2s .sh.step{min-height:min(90vh,90dvh);padding-bottom:0}
+#v2s .sh.step .st-body{flex:1}
+#v2s .sh.step .v2-foot{position:sticky;left:auto;right:auto;transform:none;width:auto;bottom:0;margin:16px -20px 0;padding:12px 20px calc(16px + env(safe-area-inset-bottom));background:linear-gradient(rgba(251,250,246,0),var(--paper) 24%);z-index:2}
+#v2s .sh.step .v2-pg{position:sticky;top:-20px;z-index:2;background:var(--paper);margin:-20px -20px 0;padding:16px 20px 10px}
+.dv-sum{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:4px 0 6px}
+.dv-sum>div{background:#fff;border-radius:16px;box-shadow:var(--sh);padding:12px}
+.dv-sum span{display:block;font-size:12.5px;color:var(--muted);font-weight:700}.dv-sum b{display:block;font-size:19px;font-weight:800;margin-top:2px}
+.dv-sum .ok{background:var(--limebg)}.dv-sum .ng b{color:#c2410c}
+.eo-lock{display:flex;align-items:center;gap:12px;background:var(--soft);border-radius:18px;padding:12px 14px;margin:12px 0}
+.eo-lock .tx{flex:1;min-width:0}.eo-lock b{display:block;font-size:15px}.eo-lock small{display:block;font-size:13px;color:var(--muted);margin-top:2px;line-height:1.35}
+.eo-lock .ui-btn{width:auto;flex:none}
+.eo-i{flex:none;display:grid;place-items:center}.eo-i svg{width:20px;height:20px}
+.eo-hint{display:flex;gap:10px;align-items:flex-start;background:#fff7e0;border-radius:16px;padding:12px 14px;margin:10px 0 0;font-size:13.5px;line-height:1.45;color:var(--ink)}
+.eo-card{margin-top:12px;padding:16px;background:#fff7e0}
+.eo-h{display:flex;align-items:center;gap:10px}.eo-h b{flex:1;font-size:16px}.eo-h i{font-style:normal;font-weight:800;background:var(--ink);color:#fff;border-radius:999px;min-width:24px;height:24px;display:grid;place-items:center;font-size:13px}
+.eo-r{display:flex;align-items:center;gap:12px;padding:12px 0 0;margin-top:12px;border-top:1px solid rgba(22,25,15,.08);flex-wrap:wrap}
+.eo-r .tx{flex:1;min-width:180px}.eo-r b{display:block;font-size:14.5px}.eo-r small{display:block;font-size:12.5px;color:var(--muted);margin-top:2px}
+.eo-b{display:flex;gap:8px}.eo-b .ui-btn{width:auto;min-width:72px}
+.ah-tabs{margin:2px 0 14px}
+.ov-how .ov-h1{margin:6px 0 4px;font-size:13px;color:var(--muted)}
+.ov-kg{margin:10px 0 0;font-size:13.5px;font-weight:700}
+.ov-miss{margin:8px 0 4px;font-size:13px;line-height:1.45;background:#fff7e0;border-radius:12px;padding:10px 12px}
 </style>
 </head>
 <body>
@@ -1969,7 +2013,7 @@ const I2={
  chart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 20V10M12 20V4M18 20v-6"/></svg>',
  bag:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9h18l-2 11H5zM8 9V6a4 4 0 0 1 8 0v3"/></svg>',
  globe:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>',
- gear:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>',
+ gear:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>',
  dl:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3M7 10l5 5 5-5M5 21h14"/></svg>',
  exit:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>',
  target:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg>'};
@@ -2613,7 +2657,7 @@ const I5=(()=>{const s=(p,w)=>`<svg viewBox="0 0 24 24" fill="none" stroke="curr
  review:s('<rect x="4" y="4" width="16" height="16" rx="4"/><path d="m8.5 12 2.5 2.5 4.5-5"/>'),
  bars:s('<path d="M6 20v-6M12 20V5M18 20v-9"/>'),
  ledger:s('<path d="M6 3h11a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M4 17a2 2 0 0 1 2-2h12M9 7h5"/>'),
- gear:s('<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M2 12h3M19 12h3M4.9 19.1 7 17M17 7l2.1-2.1"/>'),
+ gear:s('<path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/>'),
  lock:s('<rect x="5" y="11" width="14" height="10" rx="2.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>'),
  unlock:s('<rect x="5" y="11" width="14" height="10" rx="2.5"/><path d="M8 11V8a4 4 0 0 1 7.6-1.7"/>'),
  cal:s('<rect x="4" y="5" width="16" height="16" rx="3"/><path d="M4 10h16M9 3v4M15 3v4"/>'),
@@ -3219,7 +3263,7 @@ const dsOwn=(p,d)=>p&&p.sh===d&&!p.c;/* the cash payment the sheet itself added 
 const dsForeign=(x,d)=>r3((x.pays||[]).filter(p=>!(p&&p.sh===d)).reduce((a,p)=>a+num(p.amount),0));/* paid by anything other than this day's sheet */
 const dsOthers=x=>!!(ROLE==="staff"&&x&&x.by&&x.by!==dsMe()&&!(typeof dsStaffDays==="function"&&dsStaffDays()>0));/* a seller can't change what the owner added, unless the owner lets him fix recent days (b30) */
 const dsYday=()=>localDay(Date.now()-864e5);
-const dsRO=d=>lockedOn(d)||(ROLE==="staff"&&d<dsEditFrom());/* b29: sellers changed only today; b30: the owner lets them fix the last 7 days, and can switch that off */
+const dsRO=d=>lockedOn(d)||(ROLE==="staff"&&d<dsEditFrom()&&!eoOpen(d));/* b29: sellers changed only today; b30: the owner lets them fix the last 7 days, and can switch that off */
 function dsStaffDays(){const v=D&&D.settings?D.settings.staffDays:undefined;return v===0||v==="0"?0:7;}
 function dsEditFrom(){const n=dsStaffDays();return n>0?localDay(Date.now()-n*864e5):today();}
 let DSATT={};/* notebook photos picked but not saved yet, per day */
@@ -3903,7 +3947,7 @@ dsOwner=function(d){if(!canEdit())return toast(t("viewOnly"));DSOWN=true;SV="";d
 {const _qa=quickAdd;quickAdd=function(){_qa();const m=document.querySelector("#modal .tm-add");const s=m&&m.querySelector(".ds-qa");if(s&&canEdit())s.insertAdjacentHTML("afterend",`<button class="ds-qa v2-qr" onclick="closeModal();v2Rests()"><span class="ci">${I20.store}</span><span><b>${t("v2RestQa")}</b><small>${t("v2RestQaD")}</small></span></button>`);};}
 
 /* auto-update: reload when a new version is published */
-const BUILD="b39";
+const BUILD="b40";
 async function checkUpdate(){try{const r=await fetch("version.txt?"+Date.now(),{cache:"no-store"});const v=(await r.text()).trim();if(v&&v!==BUILD){const m=document.getElementById("modal");if(m&&m.classList.contains("on"))return;if(document.body.classList.contains("v2-open")||(typeof SH!=="undefined"&&SH&&SH.dirty)||(typeof DSBUSY!=="undefined"&&DSBUSY))return;try{if(sessionStorage.getItem("tamm:rl")===v)return;sessionStorage.setItem("tamm:rl",v);}catch(e){}/* b25: put the new page in the phone copy first, so the reload opens it */try{const nr=await fetch(location.pathname+"?fresh="+encodeURIComponent(v),{cache:"no-store"});if(nr.ok&&window.caches){for(const k of await caches.keys()){const ca=await caches.open(k);await ca.put(new Request(location.origin+location.pathname),nr.clone());}}}catch(e){}location.reload();}}catch(e){}}
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"){checkUpdate();try{if(unlocked&&D)dsRoll();}catch(e){}}});setTimeout(checkUpdate,3000);
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
@@ -4506,8 +4550,8 @@ rsPageHTML=function(name){const cur=esc(D.settings.cur);const p=dsCusts().find(x
  const bill=x=>{const left=r3(num(x.amount)-paidOf(x));const q=num(x.qty);const e=on&&canS(x);
   const sub=[x.ob?t("obTag"):prName(x.prod),q?fq(q)+" "+t("dsKgU"):"",left>0.004?`<span class="owe">${esc(t("rsLeftV").replace("{v}",fmt(left)))}</span>`:t("rsAllPaid")].filter(Boolean).join(" · ");
   const obx=obOk(x);
-  return`<div class="ui-li"><span class="t"><b>${esc(niceDate(x.date))}${cam(phOf(x))}</b><small>${sub}</small></span><b class="amt">${fmt(x.amount)}</b>${e?`<button class="ui-ic" aria-label="${t("rsEdit")}" onclick="rsSaleEdit(${ja(x.id)})">${I20.edit}</button><button class="ui-ic del" aria-label="${t("uiDelete")}" onclick="rsSaleDel(${ja(x.id)})">${I20.trash}</button>`:on&&obx?`<button class="ui-ic del" aria-label="${t("uiDelete")}" onclick="obDel(${ja(x.id)})">${I20.trash}</button>`:""}</div>`;};
- const payRow=q=>{const e=on&&canP(q);return`<div class="ui-li"><span class="t"><b>${esc(niceDate(q.d))}${cam(q.att)}</b></span><b class="amt">+${fmt(q.a)}</b>${e?`<button class="ui-ic" aria-label="${t("rsEdit")}" onclick="rsCollEdit(${ja(name)},${ja(q.d)})">${I20.edit}</button><button class="ui-ic del" aria-label="${t("uiDelete")}" onclick="rsCollDel(${ja(name)},${ja(q.d)})">${I20.trash}</button>`:""}</div>`;};
+  return`<div class="ui-li${on?"":" tap"}"${on?"":` role="button" tabindex="0" onclick="saleView(${ja(x.id)})"`}><span class="t"><b>${esc(niceDate(x.date))}${cam(phOf(x))}</b><small>${sub}</small></span><b class="amt">${fmt(x.amount)}</b>${e?`<button class="ui-ic" aria-label="${t("rsEdit")}" onclick="rsSaleEdit(${ja(x.id)})">${I20.edit}</button><button class="ui-ic del" aria-label="${t("uiDelete")}" onclick="rsSaleDel(${ja(x.id)})">${I20.trash}</button>`:on&&obx?`<button class="ui-ic del" aria-label="${t("uiDelete")}" onclick="obDel(${ja(x.id)})">${I20.trash}</button>`:""}</div>`;};
+ const payRow=q=>{const e=on&&canP(q);return`<div class="ui-li${on?"":" tap"}"${on?"":` role="button" tabindex="0" onclick="payView(${ja(name)},${ja(q.d)})"`}><span class="t"><b>${esc(niceDate(q.d))}${cam(q.att)}</b></span><b class="amt">+${fmt(q.a)}</b>${e?`<button class="ui-ic" aria-label="${t("rsEdit")}" onclick="rsCollEdit(${ja(name)},${ja(q.d)})">${I20.edit}</button><button class="ui-ic del" aria-label="${t("uiDelete")}" onclick="rsCollDel(${ja(name)},${ja(q.d)})">${I20.trash}</button>`:""}</div>`;};
  const tabS=RST!=="c";
  const list=tabS?(bills.length?bills.map(bill).join(""):`<p class="ui-empty">${t("rsNoSales")}</p>`):(pays.length?pays.map(payRow).join(""):`<p class="ui-empty">${t("rsNoPays")}</p>`);
  const addRow=on&&can?(tabS?`<button class="ui-add" onclick="rsAt(today(),()=>v2SaleSheet(${ja(name)},null,false,1))">${I20.plus}<span>${t("rsAddSale")}</span></button>`:`<button class="ui-add" onclick="rsAt(today(),()=>v2CollSheet(${ja(name)}))">${I20.plus}<span>${t("rsAddPay")}</span></button>`):"";
@@ -4834,6 +4878,167 @@ D6V.plan=function(){const s=D.settings,c=calc();const m=num(s.margin)/100;const 
  <section class="tm-card dk-card"><h2 class="dk-h2">${t("setup")}</h2><div class="pl-big"><bdi class="b5-num">${fmt(c.setup)}</bdi> <small>${cur}</small></div><p class="b5-mutedp">${t("setupH")}</p><div class="pl-cats">${T.en.setupCats.map(x=>`<span>${esc(trCat(x))}</span>`).join("")}</div></section></div>`;};
 
 function pIsTeam(p){try{const n=p.name,lk=String(n).toLowerCase();const U=(D.settings&&D.settings.unm)||{};if(Object.values(U).some(o=>o&&[o.en,o.ar].some(v=>v&&String(v).toLowerCase()===lk)))return true;const E=D.expenses.filter(x=>x.party===n);return!!E.length&&E.every(x=>/salar|رواتب|advance|سلف/i.test(String(x.cat)+" "+String(x.desc)));}catch(e){return false;}}
+
+/* ===== b40 (Ala'a, Nov 21): seller fixes round 3. Day steps as bottom sheets with Back | Next, a calendar day is a view
+   sheet, restaurant sales and payments open in sheets, ask to open a locked day, clear buttons, leftover hint, install tabs ===== */
+Object.assign(T.en,{dvEdit:"Edit this day",dvLocked:"This day is locked",dvAsk:"Ask {n} to open it",dvAsked:"You asked {n}. Waiting for an answer.",dvNo:"{n} said no to opening this day.",dvSales:"Sales",dvCosts:"Costs",dvColl:"Collected",dvNone:"Nothing was entered on this day",
+ eoHintNow:"For now you can fix every day of this week, until Friday 27 November. From Saturday 28 November, each day locks 24 hours after it ends. To change an older day, ask {n} to open it.",
+ eoHint:"You can change this day until the end of {d}. After that it locks, and {n} has to open it for you.",eoHintOpen:"{n} opened this day for you until midnight.",eoOwner:"the owner",eoStaff:"Your seller",eoSent:"Sent to {n}",
+ eoCardT:"Days to open",eoReqT:"{n} asks to change {d}",eoReqD:"If you open it, he can change that day until midnight tonight.",eoYes:"Open it",eoNoB:"No",eoOpened:"{d} is open until midnight",
+ pvT:"Payment",pvTot:"Amount",pvFor:"Paid for",pvBill:"Bill of {d}",pvEdit:"Edit this payment",
+ ahIos:"iPhone",ahAnd:"Android",ahPcT:"Computer",ahPc1:"Open this page in Chrome or Edge",ahPc2:"Click the install icon at the end of the address bar",ahPc3:"Click “Install”. Tamm opens in its own window",
+ bsLeftT:"{p} left from yesterday: {k} kg",bsLeftT2:"{p} left from {d}: {k} kg",bsLeftD:"Already paid for. It adds to what you can sell today.",bsLeftNo:"{p} left from yesterday isn't weighed yet",bsLeftNo2:"{p} left from {d} isn't weighed yet",lf2T:"What's left",lfPKg:"{p} left (kg)",dvLeft:"Left at the end of the day",bsLeftEst:"By the numbers about {k} kg",bsEdit:"Edit",bsWeigh:"Weigh it",clrL:"Clear",
+ ovHowT:"How this is worked out",ovHow1:"Sales minus everything paid on the daily sheets.",ovChk:"Chicken bought",ovOth:"Other costs",ovRes:"Result",ovKgLine:"Chicken bought {b} kg live · sold {s} kg cleaned",ovLfMiss:"Leftovers aren't entered for {n} of these {m} days, so chicken still in stock counts as spent. The real result is likely better than this."});
+Object.assign(T.ar,{dvEdit:"عدّل هذا اليوم",dvLocked:"هذا اليوم مقفل",dvAsk:"اطلب من {n} فتحه",dvAsked:"طلبت من {n}. بانتظار الرد.",dvNo:"رفض {n} فتح هذا اليوم.",dvSales:"المبيعات",dvCosts:"المصاريف",dvColl:"التحصيل",dvNone:"لم يُسجّل شيء في هذا اليوم",
+ eoHintNow:"حاليًا يمكنك تصحيح كل أيام هذا الأسبوع حتى الجمعة 27 نوفمبر. من السبت 28 نوفمبر يُقفل كل يوم بعد 24 ساعة من انتهائه. لتعديل يوم أقدم اطلب من {n} فتحه.",
+ eoHint:"يمكنك تعديل هذا اليوم حتى نهاية {d}. بعدها يُقفل، ويجب أن يفتحه لك {n}.",eoHintOpen:"فتح {n} هذا اليوم لك حتى منتصف الليل.",eoOwner:"المالك",eoStaff:"البائع",eoSent:"أُرسل الطلب إلى {n}",
+ eoCardT:"أيام مطلوب فتحها",eoReqT:"{n} يطلب تعديل {d}",eoReqD:"إذا فتحته يستطيع تعديل هذا اليوم حتى منتصف الليل.",eoYes:"افتحه",eoNoB:"لا",eoOpened:"{d} مفتوح حتى منتصف الليل",
+ pvT:"دفعة",pvTot:"المبلغ",pvFor:"دُفعت عن",pvBill:"فاتورة {d}",pvEdit:"عدّل الدفعة",
+ ahIos:"آيفون",ahAnd:"أندرويد",ahPcT:"كمبيوتر",ahPc1:"افتح هذه الصفحة في Chrome أو Edge",ahPc2:"اضغط أيقونة التثبيت في آخر شريط العنوان",ahPc3:"اضغط «تثبيت». يفتح التطبيق في نافذة خاصة به",
+ bsLeftT:"باقي {p} من أمس: {k} كغ",bsLeftT2:"باقي {p} من {d}: {k} كغ",bsLeftD:"مدفوع ثمنه من قبل. يُضاف لما تبيعه اليوم.",bsLeftNo:"لم يُوزن باقي {p} من أمس بعد",bsLeftNo2:"لم يُوزن باقي {p} من {d} بعد",lf2T:"الباقي آخر اليوم",lfPKg:"الباقي من {p} (كغ)",dvLeft:"الباقي آخر اليوم",bsLeftEst:"حسب الأرقام حوالي {k} كغ",bsEdit:"عدّل",bsWeigh:"زِنه",clrL:"امسح",
+ ovHowT:"كيف حسبناها",ovHow1:"المبيعات ناقص كل ما دُفع في الشيتات اليومية.",ovChk:"شراء الدجاج",ovOth:"مصاريف أخرى",ovRes:"النتيجة",ovKgLine:"دجاج مشترى {b} كغ حي · مباع {s} كغ منظّف",ovLfMiss:"الباقي لم يُسجّل في {n} من {m} أيام، لذلك يُحسب الدجاج الموجود في المخزن كأنه مصروف. النتيجة الحقيقية غالبًا أفضل من هذا."});
+
+/* ---------- the edit window: this week stays open until Nov 27, then a day locks 24 hours after it ends ---------- */
+const EO_FROM="2026-11-14",EO_TILL="2026-11-27";
+function eoOpen(d){try{const u=D&&D.settings&&D.settings.eopen&&D.settings.eopen[d];return!!u&&Date.now()<Date.parse(u);}catch(e){return false;}}
+{const _ef=dsEditFrom;dsEditFrom=function(){const f=_ef();if(dsStaffDays()===0)return f;return today()<=EO_TILL&&EO_FROM<f?EO_FROM:f;};}
+function eoOwnNm(){try{const u=(D.settings&&D.settings.unm)||{};const me=dsMe();const o=D.settings.ownerUid;if(o&&u[o])return unmOf(o,"")||t("eoOwner");for(const k of Object.keys(u))if(k!==me){const v=unmOf(k,"");if(v)return v;}}catch(e){}return t("eoOwner");}
+function eoReq(d){const m=D&&D.settings&&D.settings.ereq;return(m&&m[d])||null;}
+function eoMid(){const x=new Date();x.setHours(23,59,59,0);return x.toISOString();}
+async function eoAsk(d){if(ROLE!=="staff"||!dsRO(d)||lockedOn(d)||v2Busy())return;const snap=clone(D);
+ const m=Object.assign({},D.settings.ereq||{});m[d]={u:dsMe(),n:myName()||"",at:new Date().toISOString(),st:"new"};D.settings.ereq=m;
+ const ok=await persist();if(!ok){D=snap;return;}toast(t("eoSent").replace("{n}",eoOwnNm()));if(document.querySelector("#v2s .sh.dv"))dvOpen(d);else render();}
+async function eoAns(d,yes){if(ROLE!=="owner"||v2Busy())return;const m=Object.assign({},D.settings.ereq||{});if(!m[d])return;const snap=clone(D);
+ m[d]=Object.assign({},m[d],{st:yes?"ok":"no",ans:new Date().toISOString()});D.settings.ereq=m;
+ if(yes){const o=Object.assign({},D.settings.eopen||{});o[d]=eoMid();D.settings.eopen=o;}
+ const ok=await persist();if(!ok){D=snap;return;}if(yes)toast(t("eoOpened").replace("{d}",shortDate(d)));render();}
+function eoPending(){const m=(D&&D.settings&&D.settings.ereq)||{};return Object.keys(m).filter(d=>m[d]&&m[d].st==="new").sort().map(d=>Object.assign({d},m[d]));}
+function eoCard(){if(ROLE!=="owner")return"";const L=eoPending();if(!L.length)return"";
+ return`<section class="tm-card eo-card"><div class="eo-h"><span class="eo-i">${I20.clock}</span><b>${t("eoCardT")}</b><i>${L.length}</i></div>${L.map(r=>`<div class="eo-r"><div class="tx"><b>${esc(t("eoReqT").replace("{n}",unmOf(r.u,r.n)||t("eoStaff")).replace("{d}",shortDate(r.d)))}</b><small>${t("eoReqD")}</small></div><div class="eo-b"><button class="ui-btn ui-sec ui-sm" onclick="eoAns(${ja(r.d)},false)">${t("eoNoB")}</button><button class="ui-btn ui-pri ui-sm" onclick="eoAns(${ja(r.d)},true)">${t("eoYes")}</button></div></div>`).join("")}</section>`;}
+{const _vh=vHome;vHome=function(){const h=_vh();const c=eoCard();if(!c)return h;const k=Math.max(0,h.indexOf('<button class="tm-sum"'));const L=['<section class="tm-card','<div class="tm-card'].map(x=>h.indexOf(x,k)).filter(x=>x>=0);const i=L.length?Math.min(...L):-1;return i<0?h+c:h.slice(0,i)+c+h.slice(i);};}
+{const _dh=d6Home;d6Home=function(){const h=_dh();const c=eoCard();if(!c||!h)return h;const i=h.indexOf('<section class="tm-card dk-card d6-needs"');return i<0?c+h:h.slice(0,i)+c+h.slice(i);};}
+function eoHint(d){if(ROLE!=="staff")return"";const n=eoOwnNm();if(eoOpen(d)&&d<dsEditFrom())return t("eoHintOpen").replace("{n}",n);
+ if(today()<=EO_TILL&&dsStaffDays()!==0)return t("eoHintNow").replace("{n}",n);
+ const last=localDay(Date.parse(d+"T12:00:00")+Math.max(1,dsStaffDays())*864e5);return t("eoHint").replace("{d}",shortDate(last)).replace("{n}",n);}
+function eoLockHTML(d){if(ROLE!=="staff"||!dsRO(d)||lockedOn(d))return"";const r=eoReq(d);const n=eoOwnNm();const st=r&&r.st;
+ return`<div class="eo-lock"><span class="eo-i">${I20.clock}</span><div class="tx"><b>${t("dvLocked")}</b>${st==="new"?`<small>${esc(t("dvAsked").replace("{n}",n))}</small>`:st==="no"?`<small>${esc(t("dvNo").replace("{n}",n))}</small>`:""}</div>${st==="new"?"":`<button class="ui-btn ui-pri ui-sm" onclick="eoAsk(${ja(d)})">${esc(t("dvAsk").replace("{n}",n))}</button>`}</div>`;}
+
+/* ---------- a calendar day opens a view sheet; Edit goes to the full edit page, and Back from there goes home ---------- */
+let DDFROM="";
+calPick=function(d){v2Close();if(!d)return;if(d>=today()){dsGo("day");return;}dvOpen(d);};
+function dvOpen(d){const R=dsRecs(d);const day=dsDays().find(x=>x.d===d)||{sold:0,out:0,coll:0};const cur=v2Cur();const pr=r3(num(day.sold)-num(day.out));const ng=pr<-0.004;
+ const li=(a,s,v,c)=>`<div class="ui-li"><span class="t"><b dir="auto">${a}</b>${s?`<small>${s}</small>`:""}</span><b class="amt${c?" "+c:""}">${v}</b></div>`;
+ const kg=q=>num(q)?esc(fq(num(q)))+" "+t("dsKgU"):"";
+ const S=R.sales.map(x=>li(esc(!x.party||x.party==="Shop sales"?t("v2Shop"):rsName(x.party)),[x.ob?"":esc(prName(x.prod)),kg(x.qty)].filter(Boolean).join(" · "),fmt(x.amount)));
+ const C=[R.buy,...R.costs].filter(Boolean).map(x=>li(esc(tx(x.item||x.desc||"")),kg(x.qty),fmt(x.amount)));
+ const P=[];for(const x of D.invoices)for(const p of (x&&x.pays)||[])if(p&&p.sh===d&&p.c)P.push(li(esc(rsName(x.party)),"","+"+fmt(p.amount),"ok"));
+ const sec=(h,L)=>L.length?`<h3 class="ds-h3">${h} · ${L.length}</h3><div class="ui-card">${L.join("")}</div>`:"";
+ const can=!dsRO(d)&&!lockedOn(d);
+ v2Open(`${v2Head(esc(shortDate(d)),"",I18.cal)}
+ <div class="dv-sum"><div><span>${t("dsSold")}</span><b>${fmt(day.sold)}</b></div><div><span>${t("dsOut")}</span><b>${fmt(day.out)}</b></div><div class="${ng?"ng":"ok"}"><span>${ng?t("dsLoss"):t("dsProfit")}</span><b>${fmt(Math.abs(pr))}</b></div></div>
+ ${S.length||C.length||P.length?sec(t("dvSales"),S)+sec(t("dvCosts"),C)+sec(t("dvColl"),P):`<p class="ui-empty">${t("dvNone")}</p>`}
+ ${dvLeftHTML(d)} ${eoLockHTML(d)}
+ <div class="ui-row ui-foot">${can?`<button class="ui-btn ui-pri" onclick="dvEdit(${ja(d)})">${I20.edit}<span>${t("dvEdit")}</span></button>`:`<button class="ui-btn ui-sec" onclick="v2Close()">${t("close")}</button>`}</div>`,"dv");}
+function dvLeftHTML(d){const r=lfMap()[d];if(!r)return"";const L=[["chicken",num(r.k)],...Object.entries(r.p||{})].filter(x=>num(x[1])>0);if(!L.length)return"";
+ return`<h3 class="ds-h3">${t("dvLeft")}</h3><div class="ui-card">${L.map(([k,v])=>`<div class="ui-li"><span class="t"><b>${esc(prName(k))}</b></span><b class="amt">${esc(fq(num(v)))} <small>${t("dsKgU")}</small></b></div>`).join("")}</div>`;}
+function dvEdit(d){v2Close();dsOpenDay(d,1);DDFROM=d;if(SH&&SH.date===d&&!v2RO())ddEdStart();else render();}
+{const _od=dsOpenDay;dsOpenDay=function(d,pg){DDFROM="";return _od(d,pg);};}
+{const _h=v2Home;v2Home=function(){let h=_h();if(!SH||!ddPage())return h;const d=SH.date;
+ if(DDFROM===d)h=h.replace(`<button class="rs-bk" onclick="dsGo('days')">${I20.back}<span>${t("dsNavDays")}</span></button>`,`<button class="rs-bk" onclick="DDFROM='';dsGo('day')">${I20.back}<span>${t("dsNavDay")}</span></button>`);
+ const hint=eoHint(d);const eh=`<div class="ui-edhd">${I20.edit}<span>${t("ddEditHint")}</span></div>`;
+ if(DDEDIT===d){if(hint)h=h.replace(eh,eh+`<p class="eo-hint"><span class="eo-i">${I20.clock}</span><span>${esc(hint)}</span></p>`);}
+ else{const lk=eoLockHTML(d);if(lk)h=h.replace('<div class="dd-info">',lk+'<div class="dd-info">');}
+ return h;};}
+
+/* ---------- restaurant page: a sale or a payment opens in a sheet; the Add sheet is two big tiles ---------- */
+function payView(name,d){const K=rsKeys(name);const L=[];let tot=0,sh=false;const att=[];
+ for(const x of dsInv().filter(x=>K.includes(x.party)))for(const q of x.pays||[]){if(!q||String(q.date)!==String(d))continue;tot=r3(tot+num(q.amount));att.push(...phOf(q));if(q.sh===q.date&&q.c)sh=true;L.push({x,a:num(q.amount)});}
+ const cur=v2Cur();const can=sh&&!dsRO(d);const row=(l,v,c)=>`<div class="ui-li"><span class="t"><small>${l}</small></span><b class="amt${c?" "+c:""}">${v}</b></div>`;
+ v2Open(`${v2Head(esc(rsName(name)),esc(t("pvT")),I20.cash)}
+ <div class="ui-card sv-card">${row(t("svDate"),esc(niceDate(d)))}${row(t("pvTot"),"+"+fmt(tot)+" "+cur,"ok")}</div>
+ ${L.length?`<h3 class="ds-h3">${t("pvFor")}</h3><div class="ui-card">${L.map(r=>`<div class="ui-li"><span class="t"><b>${esc(t("pvBill").replace("{d}",niceDate(r.x.date)))}</b><small>${esc(r.x.ob?t("obTag"):prName(r.x.prod))} · ${fmt(r.x.amount)}</small></span><b class="amt ok">+${fmt(r.a)}</b></div>`).join("")}</div>`:""}
+ ${att.length?`<button class="ui-add sv-ph" onclick="phGal(${ja(att.join(","))},0)">${I20.cam}<span>${t("phT")}</span></button>`:""}
+ ${can?`<div class="ui-row ui-foot"><button class="ui-btn ui-pri" onclick="v2Close();rsCollEdit(${ja(name)},${ja(d)})">${I20.edit}<span>${t("pvEdit")}</span></button></div>`:`<p class="ui-hint">${t("svNoEdit")}</p>`}`,"sv pv");}
+{const _sv=saleView;saleView=function(id){_sv(id);const x=D.invoices.find(i=>i&&i.id===id);if(!x||!RSP)return;const f=document.querySelector("#v2s .sh.sv .ui-foot");if(!f)return;const b=[...f.querySelectorAll(".ui-sec")].find(e=>/dsCust\(/.test(e.getAttribute("onclick")||""));if(b)b.remove();if(!f.children.length)f.remove();};}
+rsAddAsk=function(name){if(dsRO(today()))return;
+ v2Open(`${v2Head(t("rsAddWhat"),esc(rsName(name)),I20.plus)}<div class="ra-g">
+ <button class="ra-t" onclick="v2Close();rsAt(today(),()=>v2SaleSheet(${ja(name)},null,false,1))"><span class="ic">${I20.store}</span><b>${t("rsAddSale")}</b><small>${t("rsAddSaleD")}</small></button>
+ <button class="ra-t lime" onclick="v2Close();rsAt(today(),()=>v2CollSheet(${ja(name)}))"><span class="ic">${I20.cash}</span><b>${t("dsTheyPaid")}</b><small>${t("rsAddPayD")}</small></button></div>`,"add2");};
+
+/* ---------- a clear button on every number field in a sheet ---------- */
+function v2Clr(b){const i=b.previousElementSibling;if(!i||i.disabled)return;i.value="";i.dispatchEvent(new Event("input",{bubbles:true}));try{i.focus();}catch(e){}}
+function clrDom(root){if(!root)return;root.querySelectorAll(".v2-fld>input.v2-in,.v2-big>input.v2-in").forEach(i=>{const n=i.nextElementSibling;if(i.disabled||(n&&n.classList.contains("v2-clr")))return;
+ i.insertAdjacentHTML("afterend",`<button type="button" class="v2-clr" tabindex="-1" aria-label="${t("clrL")}" onmousedown="event.preventDefault()" onclick="v2Clr(this)">${I20.x}</button>`);});}
+let CLRMO=null;
+{const _o=v2Open;v2Open=function(html,cls){const o0=document.getElementById("v2s");const s0=o0&&o0.classList.contains("on")&&o0.querySelector(".sh.step");if(s0)STY={sv:s0.dataset.sv,y:s0.scrollTop};
+ _o(html,cls);const o=document.getElementById("v2s");if(!o)return;clrDom(o);if(!CLRMO&&window.MutationObserver){CLRMO=new MutationObserver(()=>clrDom(o));CLRMO.observe(o,{childList:true,subtree:true});}};}
+
+/* ---------- buy sheet: what's left from yesterday, with Edit; Back next to Next ---------- */
+let LFRET=null;
+function bsPrevDay(d){const L=dsDays().map(x=>x.d).filter(x=>x<d).sort();return L.pop()||localDay(Date.parse(d+"T12:00:00")-864e5);}
+function bsLeftEdit(p,pk){if(!V2B||!SH)return;LFRET={d:SH.date,b:Object.assign({},V2B)};lfOpen(p,pk);if(!document.querySelector("#v2s #lfK"))LFRET=null;}
+function bsLeftBack(){const r=LFRET;LFRET=null;if(!r||!SH||SH.date!==r.d||document.querySelector("#v2s.on"))return;v2BuySheet();if(V2B){Object.assign(V2B,r.b);v2BuyPaint();}}
+function bsProdOf(n){const s=String(n||"");if(!s.trim())return"";if(bsChick(s))return"chicken";const q=v2Norm(s);
+ for(const p of prList()){if(p.k==="chicken")continue;if([p.en,p.ar].filter(Boolean).some(x=>{const v=v2Norm(x);return v&&(q===v||q.includes(v));}))return p.k;}
+ if(/liver|كبد/i.test(s))return"liver";if(/wing|جناح|جوانح/i.test(s))return"wings";return"";}
+function lfKgOf(r,k){if(!r)return null;if(k==="chicken")return num(r.k);const v=r.p&&r.p[k];return v==null?null:num(v);}
+{const _bp=v2BuyPaint;v2BuyPaint=function(first){_bp(first);const sh=document.querySelector("#v2s .sh.buy");if(!sh||!SH)return;sh.querySelectorAll(".bs-stock").forEach(e=>e.remove());
+ const pk=V2B?bsProdOf(V2B.name):"";const p=bsPrevDay(SH.date);const y=localDay(Date.parse(SH.date+"T12:00:00")-864e5);const m=lfMap();const r=m[p];
+ if(pk&&(dsDays().some(x=>x.d===p)||r)){const kv=lfKgOf(r,pk);const set=kv!=null&&!!r;const k=set?kv:(pk==="chicken"?lfSug(p,0).r:0);const ed=!dsRO(p)&&!lockedOn(p);const dn=shortDate(p);const pn=prName(pk);
+  const ttl=(set?(p===y?t("bsLeftT"):t("bsLeftT2").replace("{d}",dn)).replace("{k}",fq(k)):(p===y?t("bsLeftNo"):t("bsLeftNo2").replace("{d}",dn))).replace("{p}",pn);
+  const html=`<div class="bs-stock bs40${set?"":" no"}">${I20.store}<div class="tx"><b>${esc(ttl)}</b>${set?`<small>${esc(t("bsLeftD"))}</small>`:k>0?`<small>${esc(t("bsLeftEst").replace("{k}",fq(k)))}</small>`:""}</div>${ed?`<button class="bs-ed" onclick="bsLeftEdit(${ja(p)},${ja(pk)})">${I20.edit}<span>${set?t("bsEdit"):t("bsWeigh")}</span></button>`:""}</div>`;
+  const h=sh.querySelector(".v2-sht");if(h)h.insertAdjacentHTML("afterend",html);}
+ const dn=sh.querySelector(".v2-done");if(dn&&!sh.querySelector(".st-bk"))dn.insertAdjacentHTML("beforebegin",`<button class="st-bk" onclick="v2Close()" aria-label="${t("v2Back")}">${I20.back}<span>${t("v2Back")}</span></button>`);};}
+/* the leftover sheet: chicken (counts in profit) plus liver, wings and any other product (kilos only, for now) */
+{const _lo=lfOpen;lfOpen=function(d,pk){_lo(d);const sh=document.querySelector("#v2s .sh.rest");if(!sh||!document.getElementById("lfK"))return;const r=lfMap()[d]||{};
+ const h2=sh.querySelector(".v2-sht h2");if(h2)h2.textContent=t("lf2T");const lb=sh.querySelector("#lfK");const l0=lb&&lb.closest("label");const lbl=l0&&l0.previousElementSibling;if(lbl&&lbl.classList.contains("v2-lbl"))lbl.textContent=t("lfPKg").replace("{p}",prName("chicken"));
+ const P=prList().filter(p=>p.k!=="chicken");const html=P.map(p=>{const v=r.p&&r.p[p.k];return`<span class="v2-lbl">${esc(t("lfPKg").replace("{p}",prName(p.k)))}</span><span class="v2-fld">${v2In("lfP_"+p.k,v>0?String(v):"","0","")}<small>${t("dsKgU")}</small></span>`;}).join("");
+ const w=sh.querySelector("#lfW");const wl=w&&w.closest(".v2-fld");const wt=wl&&wl.previousElementSibling&&wl.previousElementSibling.classList.contains("v2-lbl")?wl.previousElementSibling:wl;if(wt&&html)wt.insertAdjacentHTML("beforebegin",html);
+ if(pk&&pk!=="chicken"){const f=document.getElementById("lfP_"+pk);if(f)setTimeout(()=>{try{f.focus();}catch(e){}},80);}};}
+{const _ls=lfSave;lfSave=function(d,clear,ok){if(clear||!document.getElementById("lfK"))return _ls(d,clear,ok);return lfSave40(d);};}
+async function lfSave40(d){if(dsRO(d)||v2Busy())return;const k=r3(dsN(v2Val("lfK"))),w=r3(dsN(v2Val("lfW")));if(k<0||w<0)return;const p={};
+ document.querySelectorAll('#v2s input[id^="lfP_"]').forEach(i=>{const v=r3(dsN(i.value));if(v>0)p[i.id.slice(4)]=v;});
+ const snap=clone(D);const m=Object.assign({},lfMap());m[d]=Object.assign({k,w,by:dsMe(),n:myName()||"",at:new Date().toISOString()},Object.keys(p).length?{p}:{});D.settings.lf=m;
+ const ok=await persist();if(!ok){D=snap;return;}toast(t("lfOk"));v2Close();render();}
+
+/* ---------- the day steps (costs, sales, collected, close) open as tall bottom sheets over home, with Back | Next ---------- */
+const ST_STEPS=["costs","sales","coll","close"],ST_PREV={costs:"buy",sales:"costs",coll:"sales",close:"coll"};let STY=null;
+function stOn(){try{return!DSOWN&&STT==="day"&&!!SV&&ST_STEPS.includes(SV)&&!!SH&&!ddPage();}catch(e){return false;}}
+{const _vs=vStaff;vStaff=function(){if(!stOn())return _vs();const sv=SV;SV="";let h;try{h=_vs();}finally{SV=sv;}setTimeout(v2StepOpen,0);return h;};}
+function v2StepBack(){const p=ST_PREV[SV];const go=()=>{if(p==="buy"){SV="";v2Close();render();setTimeout(v2BuySheet,0);return;}v2Go(p||"");};if(SH&&SH.dirty&&!v2RO())return v2Save(go);go();}
+function v2StepOpen(){if(!stOn())return;const o=document.getElementById("v2s");const cur=o&&o.classList.contains("on")?o.querySelector(".sh"):null;if(cur&&!cur.classList.contains("step"))return;
+ V2FOOT="";let body=SV==="costs"?v2Costs():SV==="sales"?v2Sales():SV==="coll"?v2Coll():v2CloseV();let foot=V2FOOT;V2FOOT="";
+ body=body.replace(/(<div class="v2-pg"><button class="v2-back"[^>]*>)[\s\S]*?(<\/button>)/,`$1${I20.x}$2`);
+ const bk=`<button class="st-bk" onclick="v2StepBack()" aria-label="${t("v2Back")}">${I20.back}<span>${t("v2Back")}</span></button>`;
+ foot=foot?foot.replace('<button class="v2-done"',`<div class="st-btns">${bk}<button class="v2-done"`).replace(/<\/div>\s*$/,"</div></div>"):`<div class="v2-foot st-only"><div class="st-btns">${bk}</div></div>`;
+ const html=`<div class="st-body">${body}</div>${foot}`;
+ if(cur){const y=cur.scrollTop,same=cur.dataset.sv===SV;cur.innerHTML=html;cur.className="sh step st-"+SV;cur.dataset.sv=SV;cur.scrollTop=same?y:0;clrDom(cur);return;}
+ v2Open(html,"step st-"+SV);const s=document.querySelector("#v2s .sh");if(!s)return;s.dataset.sv=SV;if(STY&&STY.sv===SV){s.scrollTop=STY.y;}STY=null;
+ const dm=document.querySelector("#v2s .dim");if(dm)dm.setAttribute("onclick","v2Go('')");}
+{const _c=v2Close;v2Close=function(){const o=document.getElementById("v2s");const s=o&&o.classList.contains("on")?o.querySelector(".sh"):null;const sub=!!s&&!s.classList.contains("step");const lf=!!s&&!!s.querySelector("#lfK");_c();
+ if(lf&&LFRET)setTimeout(bsLeftBack,0);else if(sub&&stOn())setTimeout(()=>{if(!document.querySelector("#v2s.on"))v2StepOpen();},0);};}
+
+/* ---------- add to home screen: iPhone | Android | Computer, the same look everywhere ---------- */
+const I_PC=V2SVG('<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M12 7v5.5M9.5 10.5 12 13l2.5-2.5M8 20h8"/>');
+ahOpen=function(k){const os=k||ahOs();const step=(n,s,ic)=>`<li><span class="n">${n}</span><span class="tx">${s}</span>${ic?`<span class="ic">${ic}</span>`:""}</li>`;
+ const st=os==="ios"?[step(1,t("ahIos1")),step(2,t("ahIos2"),I_SHARE),step(3,t("ahIos3"),V2SVG('<rect x="4" y="4" width="16" height="16" rx="3"/><path d="M12 8v8M8 12h8"/>')),step(4,t("ahIos4"))]
+  :os==="and"?[step(1,t("ahAnd1"),"⋮"),step(2,t("ahAnd2"),I_HOME),step(3,t("ahAnd3"))]:[step(1,t("ahPc1")),step(2,t("ahPc2"),I_PC),step(3,t("ahPc3"))];
+ const tb=[["ios","ahIos"],["and","ahAnd"],["pc","ahPcT"]];
+ v2Open(`${v2Head(t("ahT"),t("ahD"),I_HOME)}<div class="ui-tabs ah-tabs" role="tablist">${tb.map(([v,l])=>`<button role="tab" class="${os===v?"on":""}" aria-selected="${os===v}" onclick="ahOpen('${v}')">${t(l)}</button>`).join("")}</div>
+ <div class="ah-b"><img class="biz-lg ah-lg" src="tamm-icon-192.png" alt="" onerror="this.remove()"><ol class="ah-st">${st.join("")}</ol></div>
+ <div class="ui-row ui-foot">${AHP&&os===ahOs()?`<button class="ui-btn ui-pri" onclick="ahGo()">${I20.plus}<span>${t("ahGo")}</span></button>`:""}<button class="ui-btn ui-sec" onclick="v2Close()">${t("close")||"OK"}</button></div>`,"ah");};
+
+/* ---------- overview: how the number is worked out, kilos bought vs sold, and a note when leftovers are missing ---------- */
+{const _ov=ovHTML;ovHTML=function(){const h=_ov();try{const td=today();const from=OVP==="w"?localDay(Date.now()-6*864e5):OVP==="m"?td.slice(0,8)+"01":"";
+ const L=dsDays().filter(x=>!from||x.d>=from);if(!L.length)return h;const ds=new Set(L.map(x=>x.d));
+ const buys=D.expenses.filter(x=>x&&ds.has(x.sh)&&x.shk==="buy");const chk=r3(buys.reduce((a,x)=>a+num(x.amount),0));
+ const oth=r3(D.expenses.filter(x=>x&&ds.has(x.sh)&&x.shk==="cost").reduce((a,x)=>a+num(x.amount),0));const sold=r3(L.reduce((a,x)=>a+num(x.sold),0));
+ const kgB=r3(buys.filter(x=>bsChick(x.item||"")).reduce((a,x)=>a+num(x.qty),0));const kgS=r3(D.invoices.filter(x=>x&&ds.has(x.sh)&&x.shk==="sale"&&lfIsChk(x.prod)).reduce((a,x)=>a+num(x.qty),0));
+ const m=lfMap();const miss=L.filter(x=>!m[x.d]).length;const res=r3(sold-chk-oth);
+ const li=(a,v,c)=>`<div class="ui-li"><span class="t"><b>${a}</b></span><b class="amt${c?" "+c:""}">${v}</b></div>`;
+ const card=`<h3 class="ds-h3">${t("ovHowT")}</h3><div class="ui-card ov-how"><p class="ov-h1">${t("ovHow1")}</p>${li(t("ovSold"),fmt(sold))}${li(t("ovChk"),"−"+fmt(chk))}${li(t("ovOth"),"−"+fmt(oth))}${li(t("ovRes"),(res<-0.004?"−":"")+fmt(Math.abs(res)),res<-0.004?"owe":"")}
+ <p class="ov-kg">${esc(t("ovKgLine").replace("{b}",fq(kgB)).replace("{s}",fq(kgS)))}</p>${miss?`<p class="ov-miss">${esc(t("ovLfMiss").replace("{n}",miss).replace("{m}",L.length))}</p>`:""}</div>`;
+ const i=h.indexOf('<div class="ov-g two">');if(i<0)return h+card;const j=h.indexOf("</div></div>",i);return j<0?h+card:h.slice(0,j+12)+card+h.slice(j+12);}catch(e){return h;}};}
 </script>
 </body>
 </html>
