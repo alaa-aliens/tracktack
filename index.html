@@ -4104,7 +4104,7 @@ dsOwner=function(d){if(!canEdit())return toast(t("viewOnly"));DSOWN=true;SV="";d
 {const _qa=quickAdd;quickAdd=function(){_qa();const m=document.querySelector("#modal .tm-add");const s=m&&m.querySelector(".ds-qa");if(s&&canEdit())s.insertAdjacentHTML("afterend",`<button class="ds-qa v2-qr" onclick="closeModal();v2Rests()"><span class="ci">${I20.store}</span><span><b>${t("v2RestQa")}</b><small>${t("v2RestQaD")}</small></span></button>`);};}
 
 /* auto-update: reload when a new version is published */
-const BUILD="b47";
+const BUILD="b48";
 async function checkUpdate(){try{const r=await fetch("version.txt?"+Date.now(),{cache:"no-store"});const v=(await r.text()).trim();if(v&&v!==BUILD){const m=document.getElementById("modal");if(m&&m.classList.contains("on"))return;if(document.body.classList.contains("v2-open")||(typeof SH!=="undefined"&&SH&&SH.dirty)||(typeof DSBUSY!=="undefined"&&DSBUSY))return;try{if(sessionStorage.getItem("tamm:rl")===v)return;sessionStorage.setItem("tamm:rl",v);}catch(e){}/* b25: put the new page in the phone copy first, so the reload opens it */try{const nr=await fetch(location.pathname+"?fresh="+encodeURIComponent(v),{cache:"no-store"});if(nr.ok&&window.caches){for(const k of await caches.keys()){const ca=await caches.open(k);await ca.put(new Request(location.origin+location.pathname),nr.clone());}}}catch(e){}location.reload();}}catch(e){}}
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"){checkUpdate();try{if(unlocked&&D)dsRoll();}catch(e){}}});setTimeout(checkUpdate,3000);
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
@@ -5822,6 +5822,88 @@ function prBar(){let b=document.getElementById("prBar");document.body.classList.
 function prRow(cls){return`<button class="${cls} pr-go${PRAC47.on?" on":""}" onclick="${PRAC47.on?"prEnd()":"prStart()"}"><span class="ci">${I6.bulb}</span><span class="tx"><b>${t("pmT")}</b><small>${t("pmD")}</small></span><span class="pr-st">${PRAC47.on?t("pmOn"):t("pmOff")}</span></button>`;}
 {const _mv=dsMoreView;dsMoreView=function(){const h=_mv();const i=h.indexOf(`<button class="me-row me-pw"`);const b=prRow("me-row");return i<0?h+b:h.slice(0,i)+b+h.slice(i);};}
 {const _vb=vaBtns;vaBtns=function(){const h=_vb();return h?h+prRow("sv-more"):h;};}
+/* ---------- b48: books groups (option B, Ala'a 21/11): 6 groups -> sub-categories -> accountant code ---------- */
+const GRP48=[
+ ["owner",{own_in:3000,own_out:3100}],
+ ["setup",{assets:1500,fitout:1550,setup_run:6950,prepaid:1600,unsorted:6990}],
+ ["sales",{s_rest:4000,s_shop:4100,s_left:4200}],
+ ["chicken",{c_live:5000,c_clean:5010,c_liver:5020,c_wings:5030}],
+ ["run",{r_lab:6000,r_trans:6100,r_pack:6200,r_staff:6300,r_rent:6400,r_util:6500,r_rep:6600,r_oth:6900}],
+ ["owed",{o_open:1100,o_pay:2000,o_fam:2100}]];
+const SETUP_END48="2026-09-15",TRIAL48=["2026-10-01","2026-10-31"];
+function per48(d){d=d||"";return d<=SETUP_END48?"setup":(d>=TRIAL48[0]&&d<=TRIAL48[1]?"trial":"trade");}
+function g48(s){for(const [g,m] of GRP48)if(m[s])return g;return "run";}
+function code48(s){for(const [,m] of GRP48)if(m[s])return m[s];return 6900;}
+function expSub48(x){if(x.sub&&code48(x.sub)&&g48(x.sub))return x.sub;
+ const c=x.cat||"",t=((x.item||"")+" "+(x.desc||"")).toLowerCase(),per=per48(x.date);
+ if(per==="setup"){if(c==="Equipment"||(c==="Contractors & labour"&&/cold room|الثلاجة/.test(t)))return"assets";if(c==="Rent")return"prepaid";
+  if(c==="Other"&&/not itemised|to check/.test(t+" "+String(x.party||"").toLowerCase()))return"unsorted";if(/^(Fit-out|Plumbing|Contractors)/.test(c))return"fitout";return"setup_run";}
+ if(x.shk==="buy"||c==="Stock / goods"){if(/حب|clean/.test(t))return"c_clean";if(/كبد|liver/.test(t))return"c_liver";if(/جناح|wing/.test(t))return"c_wings";return"c_live";}
+ if(c==="Salaries"||x.adv||/phone|هاتف|staff/.test(t))return"r_staff";
+ if(c==="Contractors & labour")return"r_lab";if(c==="Transport")return"r_trans";if(c==="Supplies")return"r_pack";if(c==="Rent")return"r_rent";if(c==="Utilities")return"r_util";
+ if(c==="Equipment")return"assets";if(c==="Fit-out & construction"||/repair/.test(t))return"r_rep";return"r_oth";}
+function invSub48(x){if(x.sub&&g48(x.sub))return x.sub;if(x.ob)return"o_open";
+ const p=String(x.party||"").toLowerCase(),t=((x.desc||"")+" "+(x.items||[]).map(i=>i.d||"").join(" ")).toLowerCase();
+ if(/^shop|المحل/.test(p))return(/liver|wing|gizzard|كبد|جناح/.test(t)&&!/chicken|دجاج/.test(t))?"s_left":"s_shop";return"s_rest";}
+Object.assign(T.en,{rpGrp:"Groups",g_owner:"Owner money",g_setup:"Setup",g_sales:"Sales",g_chicken:"Chicken bought",g_run:"Running costs",g_owed:"Owed",
+ own_in:"Money in from owners",own_out:"Money taken out by owners",assets:"Equipment and car",fitout:"Shop fit-out",setup_run:"Setup running costs",prepaid:"Rent paid ahead",unsorted:"Still to sort",
+ s_rest:"Restaurant sales",s_shop:"Shop cash sales",s_left:"Liver, wings and leftovers",c_live:"Live chicken",c_clean:"Cleaned chicken",c_liver:"Liver",c_wings:"Wings",
+ r_lab:"Labour",r_trans:"Transport and fuel",r_pack:"Packaging and cleaning",r_staff:"Staff",r_rent:"Rent",r_util:"Electricity and water",r_rep:"Repairs",r_oth:"Other costs",
+ o_open:"Owed from before Tamm",o_pay:"We owe suppliers",o_fam:"We owe family",o_rest:"Restaurants owe us",
+ per_setup:"Setup",per_trial:"Trial run",per_trade:"Trading",per_all:"All",per_setupS:"16/8–15/9",per_trialS:"October",per_tradeS:"From 9/11",per_allS:"Everything",
+ g48Profit:"Trading profit",g48ProfitD:"Sales minus chicken and running costs. Setup, owner money and old bills are not counted.",g48Note:"Each record files itself into a group by its cost name, customer or date. Codes are for the accountant's export.",g48None:"Nothing here",g48Now:"Today"});
+Object.assign(T.ar,{rpGrp:"المجموعات",g_owner:"أموال المالك",g_setup:"التأسيس",g_sales:"المبيعات",g_chicken:"تكلفة الدجاج",g_run:"مصاريف التشغيل",g_owed:"الذمم",
+ own_in:"مال دخل من المالك",own_out:"مال أخذه المالك",assets:"معدات وسيارة",fitout:"تجهيز المحل",setup_run:"مصاريف التأسيس",prepaid:"إيجار مدفوع مقدمًا",unsorted:"بانتظار الفرز",
+ s_rest:"مبيعات المطاعم",s_shop:"المحل (نقدًا)",s_left:"كبدة وجناح وبواقي",c_live:"دجاج حي",c_clean:"دجاج حب",c_liver:"كبدة",c_wings:"جناح",
+ r_lab:"أجور",r_trans:"نقل ووقود",r_pack:"تغليف وتنظيف",r_staff:"الموظفون",r_rent:"الإيجار",r_util:"كهرباء وماء",r_rep:"صيانة",r_oth:"مصاريف أخرى",
+ o_open:"ذمم من قبل تمّ",o_pay:"علينا للموردين",o_fam:"علينا للعائلة",o_rest:"على المطاعم لنا",
+ per_setup:"التأسيس",per_trial:"فترة التجربة",per_trade:"التشغيل",per_all:"الكل",per_setupS:"16/8–15/9",per_trialS:"تشرين الأول",per_tradeS:"من 9/11",per_allS:"كل شيء",
+ g48Profit:"ربح التشغيل",g48ProfitD:"المبيعات ناقص الدجاج ومصاريف التشغيل. لا يدخل فيه التأسيس ولا أموال المالك ولا الذمم القديمة.",g48Note:"كل حركة تذهب إلى مجموعتها حسب اسم المصروف أو الزبون أو التاريخ. الأرقام للمحاسب عند التصدير.",g48None:"لا شيء هنا",g48Now:"اليوم"});
+let GPER48="trade";
+function grpData48(per){const inP=d=>per==="all"||per48(d)===per;const s={},L={};const add=(k,v,r,kd)=>{s[k]=(s[k]||0)+num(v);(L[k]=L[k]||[]).push([kd,r]);};
+ D.expenses.forEach(x=>{if(inP(x.date))add(expSub48(x),x.amount,x,"exp");});
+ D.invoices.forEach(x=>{if(inP(x.date)){const k=invSub48(x);if(k!=="o_open")add(k,x.amount,x,"inv");}});
+ (D.funding||[]).forEach(x=>{if(inP(x.date))add(x.out?"own_out":"own_in",x.amount,x,"fund");});
+ /* Owed is a balance as of today, whatever the period */
+ s.o_rest=0;s.o_open=0;s.o_pay=0;D.invoices.forEach(x=>{const r=num(x.amount)-paidOf(x);if(r>0.004){const k=invSub48(x)==="o_open"?"o_open":"o_rest";s[k]+=r;(L[k]=L[k]||[]).push(["inv",x,r]);}});
+ D.expenses.forEach(x=>{const r=num(x.amount)-paidOf(x);if(r>0.004){s.o_pay+=r;(L.o_pay=L.o_pay||[]).push(["exp",x,r]);}});
+ s.L=L;return s;}
+const G48=[["sales",["s_rest","s_shop","s_left"],"cg"],["chicken",["c_live","c_clean","c_liver","c_wings"],"k"],["run",["r_lab","r_trans","r_pack","r_staff","r_rent","r_util","r_rep","r_oth"],"k"],["setup",["assets","fitout","setup_run","prepaid","unsorted"],"k"],["owner",["own_in","own_out"],"k"],["owed",["o_rest","o_open","o_pay","o_fam"],"k"]];
+let G48OPEN={};
+function rpGrp(k,desk){const s=grpData48(GPER48);const acc=ROLE==="accountant";const showCode=acc||desk;
+ const chips=`<div class="b5-per" role="group">${["trade","trial","setup","all"].map(p=>`<button class="${GPER48===p?"on":""}" aria-pressed="${GPER48===p}" onclick="GPER48='${p}';render(true)"><span class="b5-pl">${t("per_"+p)}</span><span class="b5-ps">${t("per_"+p+"S")}</span></button>`).join("")}</div>`;
+ const sum=l=>l.reduce((a,x)=>a+num(s[x]||0),0);
+ const recName=(kd,x)=>kd==="fund"?tx(x.from||""):tx(x.party||x.item||x.desc||cat5(x.cat));
+ const recRow=([kd,x,rem])=>`<button class="g48-rec" onclick="${kd==="fund"?"":`openDetail('${kd}',${ja(x.id)})`}"><span>${esc(sDate(x.date))}</span><span class="g48-rn">${esc(recName(kd,x))}${x.no?` <small class="no-u">${esc(x.no)}</small>`:""}</span><b>${AMT(rem!=null?rem:x.amount)}</b></button>`;
+ const subRow=(g,x,tot,cls)=>{const v=num(s[x]||0);const pc=tot>0?Math.round(v/tot*100):0;const l=(s.L[x]||[]).slice().sort((p,q)=>q[1].date.localeCompare(p[1].date));
+  return`<details class="g48-sub"${G48OPEN[x]?" open":""} ontoggle="G48OPEN['${x}']=this.open"><summary><span class="g48-sn">${esc(t(x))}${showCode?` <small class="no-u">${code48(x==="o_rest"?"o_open":x)}</small>`:""}</span><small class="g48-ct no-u">${l.length}</small><b class="${cls}">${AMT(v)}</b></summary>${g==="owed"?"":`<i class="b5-pb ${cls==="cg"?"cg":"k"}"><i style="width:${Math.max(pc,1)}%"></i></i>`}<div class="g48-recs">${l.map(recRow).join("")}</div></details>`;};
+ const cards=G48.map(([g,subs,cls])=>{const live=subs.filter(x=>Math.abs(s[x]||0)>0.004);const tot=g==="owed"?0:sum(subs);
+  return`<details class="tm-card g48 g48-${g}"${G48OPEN["g:"+g]?" open":""} ontoggle="G48OPEN['g:${g}']=this.open"><summary class="g48-h"><span class="g48-gn"><b>${t("g_"+g)}</b><small>${live.map(x=>t(x)).join(" · ")||t("g48None")}</small></span>${g==="owed"?`<small class="g48-now">${t("g48Now")}</small>`:`<b class="${cls}">${AMT(tot)}</b>`}</summary>${live.map(x=>subRow(g,x,tot,cls)).join("")||`<p class="b5-mutedp">${t("g48None")}</p>`}</details>`;});
+ const sales=sum(["s_rest","s_shop","s_left"]),cost=sum(["c_live","c_clean","c_liver","c_wings","r_lab","r_trans","r_pack","r_staff","r_rent","r_util","r_rep","r_oth"]);const net=sales-cost;
+ const hero=GPER48==="setup"?"":`<section class="b5-hero"><div class="b5-th"><small>${t("g48Profit")} · ${t("per_"+GPER48)}</small></div><div class="b5-hv"><span class="${net<-0.004?"crd":""}">${AMT(net,"-")}</span><span>${esc(curL())}</span></div><small class="b5-hd">${t("g48ProfitD")}</small></section>`;
+ const n=note5(t("g48Note"));
+ if(desk)return chips+`<div class="dk-grid half"><div class="dk-col">${hero}${cards.slice(0,3).join("")}</div><div class="dk-col">${cards.slice(3).join("")}${n}</div></div>`;
+ return chips+hero+cards.join("")+n;}
+{const _vr=vReports;vReports=function(){if(RPT!=="grp"){const h=_vr();return h.replace(/(<div class="b5-tabs" role="tablist">)/,`$1<button role="tab" aria-selected="false" onclick="RPT='grp';render(true)">${t("rpGrp")}</button>`);}
+ const save=RPT;RPT="pnl";let h=_vr();RPT=save;const k=bk2();const desk=useDk();
+ h=h.replace(/(<div class="b5-tabs" role="tablist">)/,`$1<button role="tab" aria-selected="true" class="on" onclick="RPT='grp';render(true)">${t("rpGrp")}</button>`).replace(/<button role="tab" aria-selected="true" class="on" onclick="RPT='pnl'/,`<button role="tab" aria-selected="false" class="" onclick="RPT='pnl'`);
+ const i=h.indexOf('<div class="b5-per"');const j=h.indexOf('<div class="b5-rp">');const head=h.slice(0,i>=0&&i<j?i:j);return head+`<div class="b5-rp">${rpGrp(k,desk)}</div>`;};}
+/* CSV: add group, sub-category, accountant code and period */
+{const cell=v=>{let x=String(v??"");if(/^[=+\-@\t\r]/.test(x))x="'"+x;return`"${x.replace(/"/g,'""')}"`;};
+ bkExport=function(){const k=bkData();const cols=["type","no","date","period","group","sub","code","party","desc","cat","amount","tax_pct","tax_amount","paid","remaining","receipt","checked","question"];
+ const rows=[...k.I.map(r=>["sale",r]),...k.E.map(r=>["expense",r]),...(k.F||[]).map(r=>["owner_money",r])].sort((p,q)=>p[1].date.localeCompare(q[1].date)).map(([ty,r])=>{const sb=ty==="sale"?invSub48(r):ty==="expense"?expSub48(r):(r.out?"own_out":"own_in");const tr=num(r.tax);
+  return{type:ty,no:r.no||"",date:r.date,period:per48(r.date),group:T.en["g_"+g48(sb)],sub:T.en[sb],code:code48(sb),party:r.party||r.from||"",desc:r.desc||r.ref||"",cat:r.cat||"",amount:num(r.amount).toFixed(2),tax_pct:r.tax||"",tax_amount:tr>0?(num(r.amount)-num(r.amount)/(1+tr/100)).toFixed(2):"",paid:ty==="owner_money"?num(r.amount).toFixed(2):paidOf(r).toFixed(2),remaining:ty==="owner_money"?"0.00":(num(r.amount)-paidOf(r)).toFixed(2),receipt:r.att&&r.att.length?"yes":"no",checked:r.rv?"yes":"no",question:r.ask?r.ask.t:""};});
+ const csv="﻿"+[cols.join(",")].concat(rows.map(o=>cols.map(c=>cell(o[c])).join(","))).join("\n");
+ const a=document.createElement("a");a.href="data:text/csv;charset=utf-8,"+encodeURIComponent(csv);a.download=`tamm-books-${BK==="all"?"all":k.a+"_"+k.b}.csv`;a.click();};}
+
+/* b48 groups */
+(function(){const st=document.createElement("style");st.textContent=`.g48{padding:0;overflow:hidden}.g48>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:12px;padding:16px}.g48>summary::-webkit-details-marker,.g48-sub>summary::-webkit-details-marker{display:none}
+.g48-gn{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}.g48-gn b{font-size:16px}.g48-gn small{color:var(--mut,#6b6b6b);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.g48>summary>b{font-size:18px}
+.g48-now{color:var(--mut,#6b6b6b)}.g48[open]>summary{border-bottom:1px solid rgba(0,0,0,.06)}
+.g48-sub{padding:0 16px}.g48-sub>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:8px;padding:12px 0 6px}.g48-sn{flex:1}.g48-sn small,.g48-ct{color:var(--mut,#6b6b6b);font-size:12px}
+.g48-ct{background:rgba(0,0,0,.05);border-radius:10px;padding:1px 7px}.g48-sub .b5-pb{display:block;margin-bottom:10px}.g48-sub:last-child{padding-bottom:8px}
+.g48-recs{display:flex;flex-direction:column;margin-bottom:10px}.g48-rec{display:flex;gap:10px;align-items:center;background:none;border:0;border-top:1px solid rgba(0,0,0,.05);padding:9px 0;text-align:start;font:inherit;color:inherit;cursor:pointer}
+.g48-rec>span:first-child{color:var(--mut,#6b6b6b);font-size:13px;min-width:44px}.g48-rn{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.g48-rn small{color:var(--mut,#6b6b6b)}`;document.head.appendChild(st);})();
 </script>
 </body>
 </html>
