@@ -1349,7 +1349,10 @@ label>.v2-in.v2-txt{margin-top:0}.v2-in.v2-txt:focus{border:2px solid var(--ink)
 .v2-dt{display:inline-flex;align-items:center;gap:6px;flex:none;background:#fff;border-radius:999px;padding:8px 13px;font-size:13.5px;font-weight:700;box-shadow:var(--sh);white-space:nowrap;margin-top:2px}.v2-dt svg{width:16px;height:16px}
 .me-lang{cursor:default}.me-lang .tm-seg{margin-inline-start:auto}.dd-edit.dd-save{margin:18px 0 6px}
 </style>
-<style id="ds">
+<style id="ds">[dir=rtl] svg.dir-ic{transform:scaleX(-1)}
+.v2-top h1{font-size:20px!important;line-height:1.35}
+.sh.set{min-height:78vh}.st-sec{margin-top:18px}.st-sec h3{font-size:13px;font-weight:800;color:var(--muted);margin:0 4px 0;letter-spacing:.02em}.st-sec .ui-card{margin-top:8px}.st-none{color:var(--muted);font-size:14px;margin:14px 0}.st-sec .ui-add{margin-top:10px}.ds-big.st-go small{display:block;font-size:12.5px;font-weight:500;color:var(--muted);margin-top:2px}.ds-big.st-go span{text-align:start}
+
 /* ===== Tamm design system (b36, Ala'a Nov 21): one set of buttons, cards, rows, chips and sheets for every seller screen =====
    Buttons: .ui-btn + .ui-pri (main action, ink) | .ui-acc (save, lime) | .ui-sec (white, outline) | .ui-del (delete, soft red) | .ui-delf (confirm delete, red)
    Pairs at the end of a page or sheet: .ui-row (side by side, equal width). Cards: .ui-card. Rows: .ui-li with .t (title + small) and .amt.
@@ -1682,7 +1685,7 @@ function donut(cats,total){const tot=total||cats.reduce((a,[,v])=>a+v,0)||1;let 
  let paths="";cats.forEach(([k,v],i)=>{const a1=ang+Math.max(0.0001,v/tot*2*Math.PI-0.02);paths+=arc(ang,a1,COLORS[i%COLORS.length]);ang+=v/tot*2*Math.PI;});
  return`<svg viewBox="0 0 150 150">${paths}<text x="75" y="72" text-anchor="middle" font-size="15" font-weight="700" fill="#101828">${fmt0(tot)}</text><text x="75" y="88" text-anchor="middle" font-size="10" fill="#667085">${esc(D.settings.cur)}</text></svg>`;}
 const AR_MAP={"Landlord – Moath Jaradat":"المالك – معاذ جرادات","Al-Jamal Ceramics & Porcelain":"الجمال للسيراميك والبورسلان","Faleh Musa Qassas (water)":"فالح موسى قصاص (ماء)","Hammode Mohamed":"حمودة محمد","Qais Al-Zu'bi (plumber)":"قيس الزعبي (سباك)","Hardware shop":"محل عدد وأدوات","Ziad Ababneh Building Materials":"زياد عبابنة لمواد البناء","Building materials":"مواد بناء","Louay Al-Sirisi Sanitary":"لؤي السريسي للأدوات الصحية","Petrol station":"محطة وقود","Rent down-payment, Sep–Nov 2026":"عربون إيجار، أيلول – تشرين الثاني 2026","Balance of rent, 1 Sep–1 Dec 2026":"باقي الإيجار، 1 أيلول – 1 كانون الأول 2026","Ceramic tiles 60x60 (~122 m²), adhesive, grout, corners":"سيراميك 60×60 (~122 م²)، لاصق، روبة، زوايا","Water":"ماء","Car rental – 15 days":"إيجار سيارة – 15 يوم","Down-payment for plumbing work":"عربون أعمال السباكة","Plumbing & hardware fittings":"تمديدات سباكة وعدد","Small item":"قطعة صغيرة","PVC elbows, pipe, check valve":"أكواع PVC، ماسورة، صمام عدم رجوع","Cement + sand":"إسمنت ورمل","Sink, 2 mixers, 2 drains":"مغسلة، خلاطان، صرفان","Petrol for rental car":"بنزين لسيارة الإيجار","Lease 250/month, 2 years from 1 Sep 2026, quarterly":"عقد 250/شهر، سنتان من 1 أيلول 2026، يُدفع كل 3 أشهر","Balance still due":"ما زال هناك رصيد مستحق","Rent Sep–Nov":"إيجار أيلول – تشرين الثاني","Bank transfer":"حوالة بنكية","Ala'a":"علاء","Anas":"أنس"};
-const tx=s=>{if(lang!=="ar"||!s)return s||"";if(AR_MAP[s])return AR_MAP[s];const k=String(s).trim().toLowerCase();for(const q in AR_MAP)if(q.toLowerCase()===k)return AR_MAP[q];return s;};
+const tx=s=>{if(s){const o=nmOv(s);if(o)return lang==="ar"?(o.ar||o.en||s):(o.en||o.ar||s);}if(lang!=="ar"||!s)return s||"";if(AR_MAP[s])return AR_MAP[s];const k=String(s).trim().toLowerCase();for(const q in AR_MAP)if(q.toLowerCase()===k)return AR_MAP[q];return s;};
 function rowHTML(x){const isF=x.k==="f";const st=isF?null:statusOf(x);const sign=x.k==="e"?"−":"+";const col=x.k==="e"?"var(--red)":x.k==="f"?"var(--teal2)":"var(--green)";
  const click=`openDetail('${isF?"fund":x.k==="i"?"inv":"exp"}',${ja(x.id)})`;
  const pn=x.party||cat5(x.cat)||"—";return`<div class="row" onclick="${click}"><div class="av" style="background:${avColor(pn)}">${esc(ini(pn))}</div><div class="txt"><b>${esc(tx(pn))}</b><span>${x.date}${x.desc?" · "+esc(tx(x.desc)):""}${x.att&&x.att.length?" · 📎"+x.att.length:""}</span></div><div class="amt" style="color:${col}">${sign}${fmt(x.amount)}${st?`<span><span class="pill ${st}">${t(st)}</span>${st!=="paid"?" "+fmt(num(x.amount)-paidOf(x)):""}</span>`:""}</div></div>`;}
@@ -1879,7 +1882,7 @@ Object.assign(T.ar,{act:"الحركات",more:"المزيد",hello:"أهلًا",
  tagline:"أموال محلك، تمّ.",done:"تمّ!",isSaved:"تم حفظه",language:"اللغة",teamSet:"الفريق والإعدادات",exportX:"تصدير المبيعات والمصاريف",salesInv:"المبيعات والفواتير",repPlan:"التقارير والخطة",
  everyone:"الكل",owner:"المالك",noAct:"لا شيء بعد. اضغط + لإضافة أول حركة.",yesterday:"أمس",todayL:"اليوم"});
 const I2={
- back:'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 6-6 6 6 6"/></svg>',
+ back:'<svg class="dir-ic" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 6-6 6 6 6"/></svg>',
  home:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>',
  act:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>',
  people:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>',
@@ -2543,8 +2546,8 @@ const I5=(()=>{const s=(p,w)=>`<svg viewBox="0 0 24 24" fill="none" stroke="curr
  unlock:s('<rect x="5" y="11" width="14" height="10" rx="2.5"/><path d="M8 11V8a4 4 0 0 1 7.6-1.7"/>'),
  cal:s('<rect x="4" y="5" width="16" height="16" rx="3"/><path d="M4 10h16M9 3v4M15 3v4"/>'),
  check:s('<path d="m5 12.5 4.5 4.5L19 7.5"/>',2.2),
- chev:s('<path d="m9 6 6 6-6 6"/>',2),
- chevL:s('<path d="m15 6-6 6 6 6"/>',2),
+ chev:s('<path d="m9 6 6 6-6 6"/>',2).replace("<svg ","<svg class=\"dir-ic\" "),
+ chevL:s('<path d="m15 6-6 6 6 6"/>',2).replace("<svg ","<svg class=\"dir-ic\" "),
  down:s('<path d="m6 9 6 6 6-6"/>',2),
  rc:s('<path d="M7 3h10v18l-2.5-1.5L12 21l-2.5-1.5L7 21z"/><path d="M10 8h4M10 12h4"/>'),
  norc:s('<path d="M7 7v14l2.5-1.5L12 21l2.5-1.5L17 21v-4M7 3h10v10"/><path d="M3 3l18 18"/>'),
@@ -3132,7 +3135,7 @@ Object.assign(T.ar,{dsT:"ورقة اليوم",dsDayT:"ورقة يوم {d}",dsBac
 const I18={sheet:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2.5"/><path d="M9 4V2.8h6V4M8.5 10h7M8.5 14h7M8.5 18h4"/></svg>',
  cal:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>',
  x:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>',
- chev:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>'};
+ chev:'<svg class="dir-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>'};
 let STT="day";let SH=null;let DSBUSY=false;let DSOWN=false;
 /* numbers typed on an Arabic keyboard use Arabic digits and ٫ */
 const dsN=v=>{let s=String(v??"").trim().replace(/[٠-٩]/g,c=>"٠١٢٣٤٥٦٧٨٩".indexOf(c)).replace(/[۰-۹]/g,c=>"۰۱۲۳۴۵۶۷۸۹".indexOf(c)).replace(/[٫،,]/g,".").replace(/[^\d.]/g,"");const p=s.split(".");if(p.length>2)s=p[0]+"."+p.slice(1).join("");const n=parseFloat(s);return isFinite(n)&&n>0?n:0;};
@@ -3513,7 +3516,7 @@ Object.assign(T.ar,{v2Morning:"صباح الخير يا {n}",v2Day:"يومك",v2
 LISTS.push("rests");
 const V2SVG=p=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;
 const I20={cart:V2SVG('<path d="M3 4h2.5l2.2 10.2a1.5 1.5 0 0 0 1.5 1.2h8.4a1.5 1.5 0 0 0 1.5-1.1L21 8H6.2"/><circle cx="10" cy="19.5" r="1.3"/><circle cx="17" cy="19.5" r="1.3"/>'),
- tag:V2SVG('<path d="M3 12V4h8l9 9-8 8z"/><circle cx="7.5" cy="7.5" r="1.5"/>'),check:V2SVG('<path d="M5 12.5l4.5 4.5L19 7.5"/>'),chev:V2SVG('<path d="M9 5l7 7-7 7"/>'),back:V2SVG('<path d="M15 5l-7 7 7 7"/>'),
+ tag:V2SVG('<path d="M3 12V4h8l9 9-8 8z"/><circle cx="7.5" cy="7.5" r="1.5"/>'),check:V2SVG('<path d="M5 12.5l4.5 4.5L19 7.5"/>'),chev:V2SVG('<path d="M9 5l7 7-7 7"/>').replace("<svg ","<svg class=\"dir-ic\" "),back:V2SVG('<path d="M15 5l-7 7 7 7"/>').replace("<svg ","<svg class=\"dir-ic\" "),
  edit:V2SVG('<path d="M4 20h4L19 9l-4-4L4 16z"/>'),x:V2SVG('<path d="M6 6l12 12M18 6L6 18"/>'),plus:V2SVG('<path d="M12 5v14M5 12h14"/>'),
  work:V2SVG('<circle cx="12" cy="7" r="3.5"/><path d="M5 21c.8-4 3.5-6.5 7-6.5s6.2 2.5 7 6.5"/>'),knife:V2SVG('<path d="M3 7h12v8H3z"/><path d="M15 11h6"/><circle cx="6.5" cy="10" r="1"/>'),
  drop:V2SVG('<path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/>'),fuel:V2SVG('<path d="M5 20V5a1.5 1.5 0 0 1 1.5-1.5h7A1.5 1.5 0 0 1 15 5v15"/><path d="M4 20h12"/><path d="M8 8h4"/><path d="M15 9l3 2v6a1.5 1.5 0 0 0 3 0V8l-3-3"/>'),
@@ -3652,7 +3655,7 @@ function v2CostExtra(){const out=[];const seen=new Set();const L=D.expenses.filt
 function v2CostsOf(match){return SH.costs.filter(r=>match(String(r.name||"").trim()));}
 function v2Costs(){const lk=v2RO(),cur=v2Cur(),c=dsCalc();
  const tile=(key,label,icon,match,on)=>{const a=r3(v2CostsOf(match).reduce((q,r)=>q+dsN(r.amount),0));return`<button class="v2-tile${a>0?" on":""}" onclick="${on}"${lk?" disabled":""}>${a>0?`<span class="amt">${esc(fq(a))}</span>`:""}<span class="ti">${icon}</span><b dir="auto">${esc(label)}</b></button>`;};
- const tiles=V2C.map(cc=>tile(cc[0],t(cc[1]),I20[cc[3]],n=>v2CostTile(n)===cc,`v2CostSheet('${cc[0]}')`)).join("")+v2CostExtra().map(n=>tile("",tx(n),I20.dots,m=>v2Norm(m)===v2Norm(n),`v2CostSheet('',null,${ja(n)})`)).join("")+(lk?"":`<button class="v2-tile dash" onclick="v2CostSheet('')"><span class="ti">${I20.plus}</span><b>${t("v2Other")}</b></button>`);
+ const tiles=V2C.map(cc=>tile(cc[0],ccName(cc),I20[cc[3]],n=>v2CostTile(n)===cc,`v2CostSheet('${cc[0]}')`)).join("")+v2CostExtra().map(n=>tile("",tx(n),I20.dots,m=>v2Norm(m)===v2Norm(n),`v2CostSheet('',null,${ja(n)})`)).join("")+(lk?"":`<button class="v2-tile dash" onclick="v2CostSheet('')"><span class="ti">${I20.plus}</span><b>${t("v2Other")}</b></button>`);
  const row=r=>{const cc=v2CostTile(r.name);return`<button class="v2-li" onclick="v2CostSheet('',${ja(r.k)})"${lk?" disabled":""}><span class="av">${cc?I20[cc[3]]:I20.dots}</span><span class="tx"><b dir="auto">${esc(tx(r.name)||t("dsOtherCost"))}</b><span>${r.lock?esc(t("v2Locked")):v2Unsaved(r)?`<i class="v2-ns">${t("v2NotSaved")}</i>`:t("v2Cash")}</span></span><span class="v">${fmt(dsN(r.amount))}</span></button>`;};
  return`${v2Top(2,t("v2S2"),esc(t("v2StepN").replace("{n}",2)))}${v2Warn()}
  ${lk?"":`<p class="v2-sub">${t("v2TapCost")}</p>`}<div class="v2-grid">${tiles}</div>
@@ -3664,7 +3667,7 @@ function v2CostSheet(key,k,name){if(!SH||v2RO())return;if(dsRoll())return;const 
  V2E={d:SH.date,sec:"costs",k:r?r.k:null,cat:cc?T.en.expCats[cc[2]]:(r&&r.cat)||""};
  const lastX=D.expenses.filter(x=>x&&x.shk==="cost"&&x.sh!==SH.date&&v2Norm(x.item)===v2Norm(nm)&&nm).sort((a,b)=>String(b.date).localeCompare(String(a.date)))[0];const last=lastX?r3(num(lastX.amount)):0;
  const ro=r&&r.lock;
- v2Open(`${v2Head(free&&!r?t("v2Other"):esc(nm||t("dsOtherCost")),t("v2HowMuch"),cc?I20[cc[3]]:I20.dots)}
+ v2Open(`${v2Head(free&&!r?t("v2Other"):esc(cc?ccName(cc):(tx(nm)||t("dsOtherCost"))),t("v2HowMuch"),cc?I20[cc[3]]:I20.dots)}
  ${free?`<span class="v2-lbl">${t("v2CostName")}</span><input id="v2CN" class="v2-in v2-txt" value="${esc(nm)}" placeholder="${t("dsCostPh")}" ${r?"":'data-af="1"'}${ro?" disabled":""} oninput="v2CostLive()">`:`<input type="hidden" id="v2CN" value="${esc(nm)}">`}
  <label class="v2-big">${v2In("v2CA",r?r.amount:"","0.00","",(free&&!r?"":' data-af="1"')+(ro?" disabled":"")+' onkeydown="if(event.key===\'Enter\')v2CostAdd()"')}<small>${v2Cur()}</small></label>
  ${last>0&&!ro?`<div class="v2-chips"><button class="v2-chip" onclick="document.getElementById('v2CA').value='${last}'">${esc(fq(last))} <small>${t("v2LastTime")}</small></button></div>`:""}
@@ -4397,7 +4400,7 @@ function ddCancel(){if(!SH)return;const s=DDSNAP;const quit=()=>{DDEDIT="";DDSNA
  const head=`<div class="dd36${ed?" ed":""}"><div class="rs-ph">${ed?"":`<button class="rs-bk" onclick="dsGo('days')">${I20.back}<span>${t("dsNavDays")}</span></button>`}</div>
  <div class="v2-top dd-hd"><div class="tt"><span class="v2-eye">${esc(bizNm())}</span><h1>${ed?t("ddEditT"):t("ddSheetT")}</h1></div></div>
  ${ed?`<div class="ui-edhd">${I20.edit}<span>${t("ddEditHint")}</span></div>`:""}
- <div class="dd-info"><label class="dd-dt"><span>${t("ddDate")}</span><b>${I18.cal}${esc(shortDate(d))}</b>${ed?"":`<input type="date" aria-label="${t("dsPickDay")}" max="${td}" value="${esc(d)}" onchange="if(this.value&&this.value!==SH.date){if(this.value>=today())dsGo('day');else dsOpenDay(this.value);}">`}</label>${bp?cell(t("ddPrice"),esc(fq(bp))):""}${bq?cell(t("ddWeight"),`${esc(fq(bq))} <small>${t("dsKgU")}</small>`):""}</div>`;
+ <div class="dd-info"><label class="dd-dt"><span>${t("ddDate")}</span><b>${I18.cal}${esc(ddDM(d))}</b>${ed?"":`<input type="date" aria-label="${t("dsPickDay")}" max="${td}" value="${esc(d)}" onchange="if(this.value&&this.value!==SH.date){if(this.value>=today())dsGo('day');else dsOpenDay(this.value);}">`}</label>${bp?cell(t("ddPrice"),esc(fq(bp))):""}${bq?cell(t("ddWeight"),`${esc(fq(bq))} <small>${t("dsKgU")}</small>`):""}</div>`;
  return head+h+`</div>`;};}
 
 /* ---------- days: one card a day, sales and costs big ---------- */
@@ -4481,6 +4484,67 @@ let SLBK=null;
 function slBack(){const h=document.querySelector("#v2s .v2-sht");if(!h)return;const m=SLBK;const i=h.querySelector(".v2-shi");const b=document.createElement("button");b.className="v2-back sl-bk";b.setAttribute("aria-label",t("v2Back"));b.innerHTML=I20.back;b.onclick=()=>{v2Close();slPick(m==="coll"?"coll":undefined);};if(i)i.replaceWith(b);else h.prepend(b);}
 {const _ss=v2SaleSheet;v2SaleSheet=function(who,k,shop,fresh){const m=SLBK;SLBK=null;const r=_ss.apply(this,arguments);if(m==="sale"&&!k&&V2E&&V2E.sec==="sales"){SLBK=m;slBack();SLBK=null;}return r;};}
 {const _cs=v2CollSheet;v2CollSheet=function(who){const m=SLBK;SLBK=null;const r=_cs.apply(this,arguments);if(m==="coll"&&V2E&&V2E.sec==="coll"){SLBK=m;slBack();SLBK=null;}return r;};}
+
+/* b36: Settings in Me: names everyone sees (products, restaurants, costs, suppliers, shop) */
+Object.assign(T.en,{stT:"Settings",stD:"Names everyone sees in the app",stProds:"Products",stRests:"Restaurants",stCosts:"Costs",stSups:"Suppliers",stShop:"Shop name",stAddP:"Add a product",stAddR:"Add a restaurant",stAddC:"Add a cost",stAddS:"Add a supplier",stEdT:"Edit name",stNewT:"New name",stAr:"Arabic name",stEn:"English name (optional)",stNeed:"Write a name",stExists:"This name is already there",stShopAr:"Shop name in Arabic",stShopEn:"Shop name in English",stNone:"Nothing here yet",stBtn:"Settings",stBtnD:"Products, restaurants, costs and suppliers"});
+Object.assign(T.ar,{stT:"الإعدادات",stD:"الأسماء التي تظهر في التطبيق",stProds:"المنتجات",stRests:"المطاعم",stCosts:"المصاريف",stSups:"الموردون",stShop:"اسم المحل",stAddP:"أضف منتج",stAddR:"أضف مطعم",stAddC:"أضف مصروف",stAddS:"أضف مورد",stEdT:"عدّل الاسم",stNewT:"اسم جديد",stAr:"الاسم بالعربي",stEn:"الاسم بالإنجليزي (اختياري)",stNeed:"اكتب الاسم",stExists:"هذا الاسم موجود",stShopAr:"اسم المحل بالعربي",stShopEn:"اسم المحل بالإنجليزي",stNone:"لا يوجد شيء بعد",stBtn:"الإعدادات",stBtnD:"المنتجات والمطاعم والمصاريف والموردون"});
+function stNmKey(s){const c=v2CostTile(s);return c?"c:"+c[0]:v2Norm(s);}
+function nmOv(s){const M=typeof D!=="undefined"&&D&&D.settings&&D.settings.nm;if(!M||!s)return null;try{return M[stNmKey(String(s))]||null;}catch(e){return null;}}
+function ccName(cc){const o=nmOv(T.en[cc[1]]);return o?(lang==="ar"?(o.ar||o.en):(o.en||o.ar)):t(cc[1]);}
+function arOf(s){s=String(s||"").trim();if(!s)return"";if(v2Ar(s))return s;if(AR_MAP[s])return AR_MAP[s];const k=s.toLowerCase();for(const q in AR_MAP)if(q.toLowerCase()===k)return AR_MAP[q];return"";}
+function stCostNames(){const out=[];const seen=new Set();const add=n=>{n=String(n||"").trim();const k=v2Norm(n);if(!n||seen.has(k)||v2CostTile(n)||k===v2Norm(T.en.dsOtherCost)||k===v2Norm(T.ar.dsOtherCost))return;seen.add(k);out.push(n);};
+ for(const n of (D.settings.costX||[]))add(n);for(const x of D.expenses)if(x&&x.shk==="cost")add(x.item);return out;}
+function stSupNames(){const out=[];const seen=new Set();const add=n=>{n=String(n||"").trim();const k=v2Norm(n);if(!n||seen.has(k))return;seen.add(k);out.push(n);};
+ for(const n of (D.settings.supX||[]))add(n);for(const x of D.expenses)if(x&&x.shk==="buy")add(x.party);return out;}
+{const _ce=v2CostExtra;v2CostExtra=function(){const o=_ce();const seen=new Set(o.map(v2Norm));for(const n of (D.settings.costX||[])){const k=v2Norm(n);if(n&&!seen.has(k)&&!v2CostTile(n)){seen.add(k);o.push(n);}}return o;};}
+{const _bo=v2BuyOpts;v2BuyOpts=function(){const o=_bo();for(const n of (D.settings.supX||[]))if(n&&!o.froms.some(f=>v2Norm(f)===v2Norm(n)))o.froms.push(n);return o;};}
+function stOther(ar,en){if(lang==="ar"&&!canEdit())return"";return lang==="ar"?(en&&en!==ar?en:""):(ar&&ar!==en?ar:"");}
+function stRow(name,sub,fn){return`<div class="ui-li"><span class="t"><b dir="auto">${esc(name)}</b>${sub?`<small dir="auto">${esc(sub)}</small>`:""}</span><button class="ui-ic" aria-label="${t("stEdT")}" onclick="${fn}">${I20.edit}</button></div>`;}
+function stSec(title,rows,addLbl,addFn){return`<div class="st-sec"><h3>${title}</h3><div class="ui-card">${rows.length?rows.join(""):`<p class="st-none">${t("stNone")}</p>`}</div><button class="ui-add" onclick="${addFn}">${I20.plus}<span>${addLbl}</span></button></div>`;}
+function stHTML(){const P=prList().map(p=>stRow(lang==="ar"?(p.ar||p.en):(p.en||p.ar),stOther(p.ar,p.en),`stEdit('p',${ja(p.k)})`));
+ const R=rsList().map(r=>stRow(rsName(r.key),rsSub(r.key),`stEdit('r',${ja(r.key)})`));
+ const C=[...V2C.map(cc=>{const o=nmOv(T.en[cc[1]]);return stRow(ccName(cc),o?stOther(o.ar,o.en):stOther(T.ar[cc[1]],T.en[cc[1]]),`stEdit('c',${ja(T.en[cc[1]])})`);}),...stCostNames().map(n=>{const o=nmOv(n);return stRow(tx(n),o?stOther(o.ar,o.en):stOther(arOf(n),v2Ar(n)?"":n),`stEdit('c',${ja(n)})`);})];
+ const S=stSupNames().map(n=>{const o=nmOv(n);return stRow(tx(n),o?stOther(o.ar,o.en):stOther(arOf(n),v2Ar(n)?"":n),`stEdit('s',${ja(n)})`);});
+ const own=canEdit();const s=D.settings;
+ return`${v2Head(t("stT"),t("stD"),I20.edit)}
+ ${stSec(t("stProds"),P,t("stAddP"),"stEdit('p')")}${stSec(t("stRests"),R,t("stAddR"),"stEdit('r')")}${stSec(t("stCosts"),C,t("stAddC"),"stEdit('c')")}${stSec(t("stSups"),S,t("stAddS"),"stEdit('s')")}
+ ${own?`<div class="st-sec"><h3>${t("stShop")}</h3><div class="ui-card">${stRow(String(s.nameAr||"").trim()||s.name||"",String(s.nameAr||"").trim()?s.name:"","stEdit('b')")}</div></div>`:""}`;}
+function stOpen(){v2Open(stHTML(),"set");}
+let STE=null;
+function stEdit(kind,id){let ar="",en="",title=id==null?t("stNewT"):t("stEdT");
+ if(kind==="b"){if(!canEdit())return;ar=D.settings.nameAr||"";en=D.settings.name||"";}
+ else if(id!=null){if(kind==="p"){const p=prOf(id);ar=p.ar||"";en=p.en||"";}
+  else if(kind==="r"){const r=rsList().find(x=>x.key===id);if(!r)return;ar=r.ar||(v2Ar(r.key)?r.key:"");en=r.en||(v2Ar(r.key)?"":r.key);}
+  else{const o=nmOv(id);const c=v2CostTile(id);ar=o?o.ar||"":c?T.ar[c[1]]:arOf(id);en=o?o.en||"":c?T.en[c[1]]:(v2Ar(id)?"":id);}}
+ STE={kind,id};
+ v2Open(`${v2Head(title,kind==="b"?t("stShop"):t({p:"stProds",r:"stRests",c:"stCosts",s:"stSups"}[kind]),I20.edit)}
+ <span class="v2-lbl">${kind==="b"?t("stShopAr"):t("stAr")}</span><input id="stA" class="v2-in v2-txt" dir="rtl" lang="ar" maxlength="80" value="${esc(ar)}" data-af="1">
+ <span class="v2-lbl">${kind==="b"?t("stShopEn"):t("stEn")}</span><input id="stE" class="v2-in v2-txt" dir="ltr" lang="en" maxlength="80" value="${esc(en)}">
+ <div class="ui-row ui-foot"><button class="ui-btn ui-sec" onclick="stOpen()">${t("uiCancel")}</button><button class="ui-btn ui-pri st-ok" onclick="stSave()">${I20.check}<span>${t("uiSave")}</span></button></div>`,"set");}
+async function stSave(){if(!STE)return;const {kind,id}=STE;const ar=String(v2Val("stA")).trim().slice(0,60),en=String(v2Val("stE")).trim().slice(0,60);if(!ar&&!en)return toast(t("stNeed"));
+ const snap=clone(D);const now=new Date().toISOString(),me=dsMe();
+ if(kind==="b"){if(!canEdit())return;D.settings.nameAr=ar;if(en)D.settings.name=en;}
+ else if(kind==="p"){D.settings.dsProds=Array.isArray(D.settings.dsProds)?D.settings.dsProds:[];
+  if(id==null){if(prList().some(p=>(ar&&v2Norm(p.ar)===v2Norm(ar))||(en&&v2Norm(p.en)===v2Norm(en))))return toast(t("stExists"));D.settings.dsProds.push({k:"p"+uid().slice(0,8),en,ar,at:now,by:me});}
+  else{const x=D.settings.dsProds.find(p=>p&&p.k===id);if(x){x.en=en;x.ar=ar;x.eAt=now;x.eBy=me;}else D.settings.dsProds.push({k:id,en,ar,eAt:now,eBy:me});}}
+ else if(kind==="r"){if(id==null){if(v2RestFind(en,ar))return toast(t("stExists"));const r=v2RestRec(en||ar);r.en=en;r.ar=ar;r.st=canEdit()?"":"new";}
+  else{const r=v2RestRec(id);r.en=en;r.ar=ar;r.eAt=now;r.eBy=me;}}
+ else{const M=D.settings.nm=D.settings.nm&&typeof D.settings.nm==="object"?D.settings.nm:{};
+  if(id==null){const L=kind==="c"?stCostNames():stSupNames();if(L.some(n=>[n,tx(n),arOf(n),(nmOv(n)||{}).ar,(nmOv(n)||{}).en].some(v=>v&&((ar&&v2Norm(v)===v2Norm(ar))||(en&&v2Norm(v)===v2Norm(en)))))||(kind==="c"&&v2CostTile(en||ar)))return toast(t("stExists"));
+   const f=kind==="c"?"costX":"supX";D.settings[f]=[...(Array.isArray(D.settings[f])?D.settings[f]:[]),en||ar];M[stNmKey(en||ar)]={en,ar,at:now,by:me};}
+  else M[stNmKey(id)]={en,ar,at:now,by:me};}
+ const ok=await persist();if(!ok){D=snap;return;}toast(t("ddSaved"));render();stOpen();}
+{const _mv=dsMoreView;dsMoreView=function(){const h=_mv();const b=`<button class="ds-big st-go" onclick="stOpen()">${I20.edit}<span>${t("stBtn")}<small>${t("stBtnD")}</small></span></button>`;const i=h.indexOf(`<button class="ds-big me-pw"`);return i<0?h+b:h.slice(0,i)+b+h.slice(i);};}
+function ddDM(d){try{return new Date(d+"T12:00:00").toLocaleDateString(lang==="ar"?"ar-JO-u-nu-latn":"en",{day:"numeric",month:"short"});}catch(e){return d;}}
+
+/* b36: owner can view the app as the accountant */
+Object.assign(T.en,{avBtn:"View as accountant",avBtnD:"See the books the way your accountant does",avBar:"You're viewing as the accountant",avBack:"Back to my books"});
+Object.assign(T.ar,{avBtn:"اعرض كمحاسب",avBtnD:"شاهد الدفاتر كما يراها المحاسب",avBar:"أنت تشاهد كمحاسب",avBack:"ارجع لدفاتري"});
+let ACCV=null;
+function avAcct(){if(ROLE!=="owner"||ACCV)return;try{closeModal();}catch(e){}v2Close();if(typeof SHOPV!=="undefined"&&SHOPV)svExit();ACCV=ROLE;ROLE="accountant";go("books");}
+function avAcctExit(){if(!ACCV)return;ROLE=ACCV;ACCV=null;try{closeModal();}catch(e){}go("home");}
+{const _r=render;render=function(k){_r(k);if(!ACCV)return;const app=document.getElementById("app");if(app&&!app.querySelector(".av-bar"))app.insertAdjacentHTML("afterbegin",`<div class="sv-bar av-bar"><span>${I5.ledger}${t("avBar")}</span><button onclick="avAcctExit()">${t("avBack")}</button></div>`);};}
+{const _vm=vMore;vMore=function(){const h=_vm();if(ROLE!=="owner")return h;const i=h.indexOf(`<div class="tm-grid2">`);if(i<0)return h;return h.slice(0,i)+`<button class="sv-more av-more" onclick="avAcct()"><span class="ci">${I5.ledger}</span><span class="tx"><b>${t("avBtn")}</b><small>${t("avBtnD")}</small></span>${I18.chev}</button>`+h.slice(i);};}
 </script>
 </body>
 </html>
