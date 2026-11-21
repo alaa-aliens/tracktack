@@ -1586,6 +1586,33 @@ button.v2-dt{border:0;font:inherit;color:var(--ink)}
 .ov-how .ov-h1{margin:6px 0 4px;font-size:13px;color:var(--muted)}
 .ov-kg{margin:10px 0 0;font-size:13.5px;font-weight:700}
 .ov-miss{margin:8px 0 4px;font-size:13px;line-height:1.45;background:#fff7e0;border-radius:12px;padding:10px 12px}
+
+/* b41: a bottom sheet is half the screen, or almost full when what's in it needs more room */
+@media (max-width:759px){
+#v2s .sh,#v2s .sh.sale,#v2s .sh.buy,#v2s .sh.coll,#v2s .sh.cost,#v2s .sh.set,#v2s .sh.rest,#v2s .sh.ah,#v2s .sh.sv,#v2s .sh.add2,#v2s .sh.dv,#v2s .sh.cal,#v2s .sh.tall,#v2s .sh.step{min-height:min(50vh,50dvh);height:auto}
+#v2s .sh.full,#v2s .sh.sale,#v2s .sh.buy,#v2s .sh.coll,#v2s .sh.cost,#v2s .sh.set,#v2s .sh.step{height:min(92vh,92dvh);min-height:0}
+#v2s .sh>.v2-sht{margin-bottom:6px}
+}
+
+/* b41: Back is an outline button at the start side; step 1 has none */
+.st-bk{background:transparent!important;box-shadow:none!important;border:1.5px solid rgba(22,25,15,.28)!important;font-weight:600!important;min-height:52px;padding:0 16px}
+#v2s .st-bk svg{width:18px;height:18px}
+.st-btns{align-items:center}
+
+.bs41{padding:14px 16px;gap:12px}.bs41 .l{display:block;font-size:13px;font-weight:700;color:var(--muted)}
+.bs41 .big{display:block;font-size:30px;font-weight:800;line-height:1.15;margin-top:2px;letter-spacing:-.01em}.bs41 .big small{font-size:15px;font-weight:700;color:var(--muted)}
+.bs41 .est{display:block;font-size:12.5px;color:var(--muted);margin-top:2px}
+.v2-sumrow.bs-tot .l{font-size:14px;font-weight:700}.v2-sumrow.bs-tot .l small{display:block;font-size:12.5px;font-weight:600;color:var(--muted);margin-top:2px}.v2-sumrow.bs-tot b{font-size:22px;font-weight:800}.v2-sumrow.bs-tot b small{font-size:13px;color:var(--muted)}
+.v2-done{position:relative}.v2-done .ic{position:absolute;inset-inline-end:22px;top:50%;transform:translateY(-50%)}
+
+.dd-mg{margin-top:12px}.dd-mg .dd-info{margin-top:0}
+.dd-mgl{display:flex;align-items:center;gap:6px;margin:14px 2px 8px;font-size:13px;font-weight:700;color:var(--muted)}.dd-mgl svg{width:16px;height:16px}
+.dd-mg .pr-c{background:#fff;color:var(--ink);box-shadow:var(--sh);border-radius:18px;padding:12px 14px}.dd-mg .pr-c span{color:var(--muted);font-size:13px}.dd-mg .pr-c b{font-size:18px}
+.dd-mg .pr-c.need{background:var(--limebg);color:var(--ink)}.dd-mg .pr-c.need span{color:#3A4020}
+.dd-mg .pr-add{border-color:var(--line);color:var(--ink);background:transparent}
+
+/* b41: a little less padding in the dark totals card */
+.v2-hero{padding-top:29px!important}.v2-hero .cu{top:10px!important}.v2-stats{padding-bottom:14px}
 </style>
 </head>
 <body>
@@ -3597,7 +3624,7 @@ Object.assign(T.en,{v2Morning:"Good morning, {n}",v2Day:"Your day",v2Steps:"4 st
  v2Price:"Today's chicken price",v2PriceBy:"Today's chicken price · set by {n}",v2PriceOld:"Last price, still for today?",v2PriceNo:"Not set yet",v2SetIt:"Set it",v2Change:"Change",v2PerKg:"{c} a kilo",
  v2PriceD:"Buying and every sale today use it",v2PriceNote:"Everyone on the team sees the same price. Whoever sets it first, the others see it.",v2Yday:"yesterday",v2LastP:"last price",v2UseP:"Use {p} today",v2NeedP:"Write today's price a kilo",
  v2StepN:"Step {n} of 4",v2What:"What",v2Chicken:"Chicken",v2Liver:"Liver",v2Other:"Other",v2Kilos:"Kilos",v2PKg:"Price a kilo",v2YouPaid:"You paid (after discount)",v2From:"From",v2OtherPh:"Write it",
- v2NextCosts:"Done, next: costs",v2NextSales:"Done, next: sales",v2NextColl:"Done, next: money collected",v2NextClose:"Done, check the day",v2SaveB:"Save",
+ v2NextCosts:"Next: costs",v2NextSales:"Next: sales",v2NextColl:"Next: money collected",v2NextClose:"Next: check the day",v2SaveB:"Save",
  v2TapCost:"Tap what you paid for today.",v2CostsToday:"Today's costs",v2CostsSum:"Costs today",v2HowMuch:"How much did you pay?",v2AddX:"Add {n}",v2LastTime:"last time",v2CostName:"What was it for?",
  v2Slaughter:"Slaughter",v2Cleaning:"Cleaning",v2Diesel:"Diesel",v2Ice:"Ice",v2Cash:"Cash",
  v2TapWho:"Tap who you sold to.",v2Shop:"Shop (cash)",v2NewRest:"New restaurant",v2SaleTo:"Sale to {n}",v2OwesBefore:"Owes from before: {v}",v2HowKg:"How many kilos?",v2KgOpt:"Kilos (optional)",v2TodayP:"today's price",
@@ -3616,7 +3643,7 @@ Object.assign(T.ar,{v2Morning:"صباح الخير {n}",v2Day:"يومك",v2Steps
  v2Price:"سعر الدجاج اليوم",v2PriceBy:"سعر الدجاج اليوم · حدّده {n}",v2PriceOld:"آخر سعر، هل هو نفسه اليوم؟",v2PriceNo:"لم يُحدد بعد",v2SetIt:"حدّده",v2Change:"غيّر",v2PerKg:"{c} للكيلو",
  v2PriceD:"الشراء وكل بيع اليوم يستخدمانه",v2PriceNote:"كل الفريق يرى نفس السعر. من يحدده أولًا، يراه الباقون.",v2Yday:"أمس",v2LastP:"آخر سعر",v2UseP:"استخدم {p} اليوم",v2NeedP:"اكتب سعر الكيلو اليوم",
  v2StepN:"الخطوة {n} من 4",v2What:"ماذا",v2Chicken:"دجاج",v2Liver:"كبدة",v2Other:"أخرى",v2Kilos:"كيلو",v2PKg:"سعر الكيلو",v2YouPaid:"دفعت (بعد الخصم)",v2From:"من",v2OtherPh:"اكتبه",
- v2NextCosts:"تم، التالي: المصاريف",v2NextSales:"تم، التالي: المبيع",v2NextColl:"تم، التالي: التحصيل",v2NextClose:"تم، راجع اليوم",v2SaveB:"احفظ",
+ v2NextCosts:"التالي: المصاريف",v2NextSales:"التالي: المبيع",v2NextColl:"التالي: التحصيل",v2NextClose:"التالي: راجع اليوم",v2SaveB:"احفظ",
  v2TapCost:"اضغط على ما دفعت له اليوم.",v2CostsToday:"مصاريف اليوم",v2CostsSum:"مصاريف اليوم",v2HowMuch:"كم دفعت؟",v2AddX:"أضف {n}",v2LastTime:"آخر مرة",v2CostName:"لأي شيء؟",
  v2Slaughter:"ذبح",v2Cleaning:"تنظيف",v2Diesel:"ديزل",v2Ice:"ثلج",v2Cash:"نقدًا",
  v2TapWho:"اضغط على من بعت له.",v2Shop:"المحل (نقدًا)",v2NewRest:"مطعم جديد",v2SaleTo:"بيع لِـ {n}",v2OwesBefore:"عليه من قبل: {v}",v2HowKg:"كم كيلو؟",v2KgOpt:"كيلو (اختياري)",v2TodayP:"سعر اليوم",
@@ -3947,7 +3974,7 @@ dsOwner=function(d){if(!canEdit())return toast(t("viewOnly"));DSOWN=true;SV="";d
 {const _qa=quickAdd;quickAdd=function(){_qa();const m=document.querySelector("#modal .tm-add");const s=m&&m.querySelector(".ds-qa");if(s&&canEdit())s.insertAdjacentHTML("afterend",`<button class="ds-qa v2-qr" onclick="closeModal();v2Rests()"><span class="ci">${I20.store}</span><span><b>${t("v2RestQa")}</b><small>${t("v2RestQaD")}</small></span></button>`);};}
 
 /* auto-update: reload when a new version is published */
-const BUILD="b40";
+const BUILD="b41";
 async function checkUpdate(){try{const r=await fetch("version.txt?"+Date.now(),{cache:"no-store"});const v=(await r.text()).trim();if(v&&v!==BUILD){const m=document.getElementById("modal");if(m&&m.classList.contains("on"))return;if(document.body.classList.contains("v2-open")||(typeof SH!=="undefined"&&SH&&SH.dirty)||(typeof DSBUSY!=="undefined"&&DSBUSY))return;try{if(sessionStorage.getItem("tamm:rl")===v)return;sessionStorage.setItem("tamm:rl",v);}catch(e){}/* b25: put the new page in the phone copy first, so the reload opens it */try{const nr=await fetch(location.pathname+"?fresh="+encodeURIComponent(v),{cache:"no-store"});if(nr.ok&&window.caches){for(const k of await caches.keys()){const ca=await caches.open(k);await ca.put(new Request(location.origin+location.pathname),nr.clone());}}}catch(e){}location.reload();}}catch(e){}}
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"){checkUpdate();try{if(unlocked&&D)dsRoll();}catch(e){}}});setTimeout(checkUpdate,3000);
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
@@ -4888,7 +4915,7 @@ Object.assign(T.en,{dvEdit:"Edit this day",dvLocked:"This day is locked",dvAsk:"
  pvT:"Payment",pvTot:"Amount",pvFor:"Paid for",pvBill:"Bill of {d}",pvEdit:"Edit this payment",
  ahIos:"iPhone",ahAnd:"Android",ahPcT:"Computer",ahPc1:"Open this page in Chrome or Edge",ahPc2:"Click the install icon at the end of the address bar",ahPc3:"Click “Install”. Tamm opens in its own window",
  bsLeftT:"{p} left from yesterday: {k} kg",bsLeftT2:"{p} left from {d}: {k} kg",bsLeftD:"Already paid for. It adds to what you can sell today.",bsLeftNo:"{p} left from yesterday isn't weighed yet",bsLeftNo2:"{p} left from {d} isn't weighed yet",lf2T:"What's left",lfPKg:"{p} left (kg)",dvLeft:"Left at the end of the day",bsLeftEst:"By the numbers about {k} kg",bsEdit:"Edit",bsWeigh:"Weigh it",clrL:"Clear",
- ovHowT:"How this is worked out",ovHow1:"Sales minus everything paid on the daily sheets.",ovChk:"Chicken bought",ovOth:"Other costs",ovRes:"Result",ovKgLine:"Chicken bought {b} kg live · sold {s} kg cleaned",ovLfMiss:"Leftovers aren't entered for {n} of these {m} days, so chicken still in stock counts as spent. The real result is likely better than this."});
+ lf3Y:"Left from yesterday",lf3D:"Left from {d}",lf3Est:"Not weighed yet, worked out from the numbers",lf3Tot:"Chicken in total",lf3TotD:"{a} left + {b} bought today",ovHowT:"How this is worked out",ovHow1:"Sales minus everything paid on the daily sheets.",ovChk:"Chicken bought",ovOth:"Other costs",ovRes:"Result",ovKgLine:"Chicken bought {b} kg live · sold {s} kg cleaned",ovLfMiss:"Leftovers aren't entered for {n} of these {m} days, so chicken still in stock counts as spent. The real result is likely better than this."});
 Object.assign(T.ar,{dvEdit:"عدّل هذا اليوم",dvLocked:"هذا اليوم مقفل",dvAsk:"اطلب من {n} فتحه",dvAsked:"طلبت من {n}. بانتظار الرد.",dvNo:"رفض {n} فتح هذا اليوم.",dvSales:"المبيعات",dvCosts:"المصاريف",dvColl:"التحصيل",dvNone:"لم يُسجّل شيء في هذا اليوم",
  eoHintNow:"حاليًا يمكنك تصحيح كل أيام هذا الأسبوع حتى الجمعة 27 نوفمبر. من السبت 28 نوفمبر يُقفل كل يوم بعد 24 ساعة من انتهائه. لتعديل يوم أقدم اطلب من {n} فتحه.",
  eoHint:"يمكنك تعديل هذا اليوم حتى نهاية {d}. بعدها يُقفل، ويجب أن يفتحه لك {n}.",eoHintOpen:"فتح {n} هذا اليوم لك حتى منتصف الليل.",eoOwner:"المالك",eoStaff:"البائع",eoSent:"أُرسل الطلب إلى {n}",
@@ -4896,7 +4923,7 @@ Object.assign(T.ar,{dvEdit:"عدّل هذا اليوم",dvLocked:"هذا الي�
  pvT:"دفعة",pvTot:"المبلغ",pvFor:"دُفعت عن",pvBill:"فاتورة {d}",pvEdit:"عدّل الدفعة",
  ahIos:"آيفون",ahAnd:"أندرويد",ahPcT:"كمبيوتر",ahPc1:"افتح هذه الصفحة في Chrome أو Edge",ahPc2:"اضغط أيقونة التثبيت في آخر شريط العنوان",ahPc3:"اضغط «تثبيت». يفتح التطبيق في نافذة خاصة به",
  bsLeftT:"باقي {p} من أمس: {k} كغ",bsLeftT2:"باقي {p} من {d}: {k} كغ",bsLeftD:"مدفوع ثمنه من قبل. يُضاف لما تبيعه اليوم.",bsLeftNo:"لم يُوزن باقي {p} من أمس بعد",bsLeftNo2:"لم يُوزن باقي {p} من {d} بعد",lf2T:"الباقي آخر اليوم",lfPKg:"الباقي من {p} (كغ)",dvLeft:"الباقي آخر اليوم",bsLeftEst:"حسب الأرقام حوالي {k} كغ",bsEdit:"عدّل",bsWeigh:"زِنه",clrL:"امسح",
- ovHowT:"كيف حسبناها",ovHow1:"المبيعات ناقص كل ما دُفع في الشيتات اليومية.",ovChk:"شراء الدجاج",ovOth:"مصاريف أخرى",ovRes:"النتيجة",ovKgLine:"دجاج مشترى {b} كغ حي · مباع {s} كغ منظّف",ovLfMiss:"الباقي لم يُسجّل في {n} من {m} أيام، لذلك يُحسب الدجاج الموجود في المخزن كأنه مصروف. النتيجة الحقيقية غالبًا أفضل من هذا."});
+ lf3Y:"الباقي من أمس",lf3D:"الباقي من {d}",lf3Est:"لم يُوزن بعد، محسوب من الأرقام",lf3Tot:"مجموع الدجاج",lf3TotD:"{a} باقي + {b} اشتريت اليوم",ovHowT:"كيف حسبناها",ovHow1:"المبيعات ناقص كل ما دُفع في الشيتات اليومية.",ovChk:"شراء الدجاج",ovOth:"مصاريف أخرى",ovRes:"النتيجة",ovKgLine:"دجاج مشترى {b} كغ حي · مباع {s} كغ منظّف",ovLfMiss:"الباقي لم يُسجّل في {n} من {m} أيام، لذلك يُحسب الدجاج الموجود في المخزن كأنه مصروف. النتيجة الحقيقية غالبًا أفضل من هذا."});
 
 /* ---------- the edit window: this week stays open until Nov 27, then a day locks 24 hours after it ends ---------- */
 const EO_FROM="2026-11-14",EO_TILL="2026-11-27";
@@ -4985,10 +5012,16 @@ function lfKgOf(r,k){if(!r)return null;if(k==="chicken")return num(r.k);const v=
 {const _bp=v2BuyPaint;v2BuyPaint=function(first){_bp(first);const sh=document.querySelector("#v2s .sh.buy");if(!sh||!SH)return;sh.querySelectorAll(".bs-stock").forEach(e=>e.remove());
  const pk=V2B?bsProdOf(V2B.name):"";const p=bsPrevDay(SH.date);const y=localDay(Date.parse(SH.date+"T12:00:00")-864e5);const m=lfMap();const r=m[p];
  if(pk&&(dsDays().some(x=>x.d===p)||r)){const kv=lfKgOf(r,pk);const set=kv!=null&&!!r;const k=set?kv:(pk==="chicken"?lfSug(p,0).r:0);const ed=!dsRO(p)&&!lockedOn(p);const dn=shortDate(p);const pn=prName(pk);
-  const ttl=(set?(p===y?t("bsLeftT"):t("bsLeftT2").replace("{d}",dn)).replace("{k}",fq(k)):(p===y?t("bsLeftNo"):t("bsLeftNo2").replace("{d}",dn))).replace("{p}",pn);
-  const html=`<div class="bs-stock bs40${set?"":" no"}">${I20.store}<div class="tx"><b>${esc(ttl)}</b>${set?`<small>${esc(t("bsLeftD"))}</small>`:k>0?`<small>${esc(t("bsLeftEst").replace("{k}",fq(k)))}</small>`:""}</div>${ed?`<button class="bs-ed" onclick="bsLeftEdit(${ja(p)},${ja(pk)})">${I20.edit}<span>${set?t("bsEdit"):t("bsWeigh")}</span></button>`:""}</div>`;
-  const h=sh.querySelector(".v2-sht");if(h)h.insertAdjacentHTML("afterend",html);}
- const dn=sh.querySelector(".v2-done");if(dn&&!sh.querySelector(".st-bk"))dn.insertAdjacentHTML("beforebegin",`<button class="st-bk" onclick="v2Close()" aria-label="${t("v2Back")}">${I20.back}<span>${t("v2Back")}</span></button>`);};}
+  const lbl=(p===y?t("lf3Y"):t("lf3D").replace("{d}",dn))+(pk==="chicken"?"":" · "+pn);
+  const html=`<div class="bs-stock bs40 bs41${set?"":" no"}"><div class="tx"><span class="l">${esc(lbl)}</span><b class="big">${esc(fq(k))} <small>${t("dsKgU")}</small></b>${set?"":`<small class="est">${esc(t("lf3Est"))}</small>`}</div>${ed?`<button class="bs-ed" onclick="bsLeftEdit(${ja(p)},${ja(pk)})">${I20.edit}<span>${t("bsEdit")}</span></button>`:""}</div>`;
+  BSLK={pk,k};const h=sh.querySelector(".v2-sht");if(h)h.insertAdjacentHTML("afterend",html);}else BSLK=null;
+ bsTotPaint();};}
+let BSLK=null;
+function bsTotPaint(){const sh=document.querySelector("#v2s .sh.buy");if(!sh||!V2B)return;const row=sh.querySelector(".v2-sumrow");if(!row)return;
+ if(row.dataset.o===undefined)row.dataset.o=row.innerHTML;
+ const pk=bsProdOf(V2B.name);if(!BSLK||BSLK.pk!==pk){if(row.classList.contains("bs-tot")){row.classList.remove("bs-tot");row.innerHTML=row.dataset.o;}return;}const q=r3(dsN(V2B.qty)),tot=r3(BSLK.k+q);
+ row.classList.add("bs-tot");row.innerHTML=`<span class="l">${esc(t("lf3Tot"))}<small>${esc(t("lf3TotD").replace("{a}",fq(BSLK.k)).replace("{b}",fq(q)))}</small></span><b>${esc(fq(tot))} <small>${t("dsKgU")}</small></b><b id="v2BC" hidden>${fmt(r3(dsN(V2B.qty)*dsN(V2B.price)))}</b>`;}
+{const _bl=v2BuyLive;v2BuyLive=function(){_bl();bsTotPaint();};}
 /* the leftover sheet: chicken (counts in profit) plus liver, wings and any other product (kilos only, for now) */
 {const _lo=lfOpen;lfOpen=function(d,pk){_lo(d);const sh=document.querySelector("#v2s .sh.rest");if(!sh||!document.getElementById("lfK"))return;const r=lfMap()[d]||{};
  const h2=sh.querySelector(".v2-sht h2");if(h2)h2.textContent=t("lf2T");const lb=sh.querySelector("#lfK");const l0=lb&&lb.closest("label");const lbl=l0&&l0.previousElementSibling;if(lbl&&lbl.classList.contains("v2-lbl"))lbl.textContent=t("lfPKg").replace("{p}",prName("chicken"));
@@ -5039,6 +5072,32 @@ ahOpen=function(k){const os=k||ahOs();const step=(n,s,ic)=>`<li><span class="n">
  const card=`<h3 class="ds-h3">${t("ovHowT")}</h3><div class="ui-card ov-how"><p class="ov-h1">${t("ovHow1")}</p>${li(t("ovSold"),fmt(sold))}${li(t("ovChk"),"−"+fmt(chk))}${li(t("ovOth"),"−"+fmt(oth))}${li(t("ovRes"),(res<-0.004?"−":"")+fmt(Math.abs(res)),res<-0.004?"owe":"")}
  <p class="ov-kg">${esc(t("ovKgLine").replace("{b}",fq(kgB)).replace("{s}",fq(kgS)))}</p>${miss?`<p class="ov-miss">${esc(t("ovLfMiss").replace("{n}",miss).replace("{m}",L.length))}</p>`:""}</div>`;
  const i=h.indexOf('<div class="ov-g two">');if(i<0)return h+card;const j=h.indexOf("</div></div>",i);return j<0?h+card:h.slice(0,j+12)+card+h.slice(j+12);}catch(e){return h;}};}
+
+/* ===== b41 (Ala'a, Nov 21): two sheet sizes on the phone, half the screen or almost full, picked by how much is in it ===== */
+const SH_FULL=["sale","buy","coll","cost","set","step"];
+function shSize(){const s=document.querySelector("#v2s.on .sh");if(!s||innerWidth>=760)return;if(SH_FULL.some(c=>s.classList.contains(c)))return;
+ const y=s.scrollTop;s.classList.remove("full");if(s.scrollHeight>innerHeight*0.5+4)s.classList.add("full");s.scrollTop=y;}
+let SHRAF=0;const shSizeSoon=()=>{cancelAnimationFrame(SHRAF);SHRAF=requestAnimationFrame(shSize);};
+{const _o=v2Open;v2Open=function(html,cls){_o(html,cls);shSize();const o=document.getElementById("v2s");if(o&&!o.dataset.sz&&window.MutationObserver){o.dataset.sz="1";new MutationObserver(shSizeSoon).observe(o,{childList:true,subtree:true});}};}
+addEventListener("resize",shSizeSoon);
+
+/* b41: Back on the edit-day page; asks first if anything changed */
+function ddBack(){if(!SH)return;const from=DDFROM;const s=DDSNAP;const go=()=>{DDEDIT="";DDSNAP=null;v2Close();DDFROM="";dsGo(from?"day":"days");};
+ const changed=!!(s&&s.d===SH.date&&ddSig(SH.date)!==s.sig);
+ if(!changed&&!SH.dirty)return go();
+ uiConfirm({danger:1,icon:I20.back,okIcon:I20.back,title:t("ddCancelQ"),body:t("ddCancelD"),ok:t("ddUndoB"),no:t("uiKeep")},async()=>{if(v2Busy())return;if(changed){const ok=await ddRestore(s);if(!ok)return;}SH.dirty=false;dsLoad(SH.date);go();});}
+{const _h=v2Home;v2Home=function(){const h=_h();if(!SH||!ddPage()||DDEDIT!==SH.date)return h;
+ return h.replace('<div class="dd36 ed"><div class="rs-ph"></div>',`<div class="dd36 ed"><div class="rs-ph"><button class="rs-bk dd-bk" onclick="ddBack()">${I20.back}<span>${t("v2Back")}</span></button></div>`);};}
+
+/* b41: on a day page the date, weight and buying price sit with the selling prices in one block, in the white tile style */
+Object.assign(T.en,{ddBuyP:"Buying price",ddBuyW:"Weight bought",ddSellP:"Selling prices a kilo"});
+Object.assign(T.ar,{ddBuyP:"سعر الشراء",ddBuyW:"الوزن المشترى",ddSellP:"أسعار البيع للكيلو"});
+{const _h=v2Home;v2Home=function(){let h=_h();if(!SH||!ddPage())return h;
+ h=h.replace(`<div><span>${t("ddPrice")}</span>`,`<div><span>${t("ddBuyP")}</span>`).replace(`<div><span>${t("ddWeight")}</span>`,`<div><span>${t("ddBuyW")}</span>`);
+ const m=h.match(/<div class="dd-info">(?:<label[\s\S]*?<\/label>)(?:<div><span>[^<]*<\/span><b>[\s\S]*?<\/b><\/div>)*<\/div>/);const a=h.indexOf('<div class="v2-hero pr-only">');if(!m||a<0)return h;
+ const e=h.indexOf('<div class="v2-h"',a);if(e<0)return h;const seg=h.slice(a,e);const row=(seg.match(/<div class="pr-row">[\s\S]*?<\/div>/)||[""])[0];const add=(seg.match(/<button class="pr-add"[\s\S]*?<\/button>/)||[""])[0];if(!row)return h;
+ const blk=`<div class="dd-mg" id="prCard">${m[0]}<div class="dd-mgl">${I18.tag||""}<span>${t("ddSellP")} · ${esc(D.settings.cur)}</span></div>${row}${add}</div>`;
+ h=h.slice(0,a)+blk+h.slice(e);return h.replace(m[0],"").replace(blk,blk);};}
 </script>
 </body>
 </html>
