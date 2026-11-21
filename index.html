@@ -1696,6 +1696,7 @@ textarea.v2-in.v2-txt.cm-in{height:auto;min-height:92px;padding:14px 16px;font-s
 small.u-cur,b small.u,span small.u{font-size:.74em;font-weight:600;opacity:.72;margin-inline-start:3px;letter-spacing:0}
 .v2-profit b small.u-cur{display:none}
 small.u-cur{display:inline!important;margin-top:0!important}
+small.u-pre{margin-inline-start:0!important;margin-inline-end:3px!important;unicode-bidi:isolate}
 .v2-hero .cu,.ds-hero .cu,.ui-hero .cu{display:none!important}
 .v2-hero b small.u-cur,.ds-hero b small.u-cur,.ui-hero b small.u-cur{font-size:.52em;opacity:.8}
 .d6-tbl{overflow-x:auto}
@@ -1730,12 +1731,16 @@ small.u-cur{display:inline!important;margin-top:0!important}
 .al-start svg{width:16px;height:16px;flex:none}
 .al-h{margin-top:6px}
 .al-go{margin-top:12px}
-.pr-bar{position:fixed;top:0;left:0;right:0;z-index:90;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:calc(7px + env(safe-area-inset-top)) 14px 7px;background:repeating-linear-gradient(-45deg,#FFC94D 0 14px,#FFD873 14px 28px);color:#1d1a0f;font-size:13.5px;box-shadow:0 2px 10px rgba(0,0,0,.12)}
+.pr-bar{position:fixed;top:0;left:0;right:0;z-index:90;display:flex;align-items:center;justify-content:space-between;gap:10px;height:calc(44px + env(safe-area-inset-top));box-sizing:border-box;padding:env(safe-area-inset-top) 14px 0;background:repeating-linear-gradient(-45deg,#FFC94D 0 14px,#FFD873 14px 28px);color:#1d1a0f;font-size:13.5px;box-shadow:0 2px 10px rgba(0,0,0,.12)}
 .pr-bar span{display:flex;align-items:center;gap:7px;min-width:0}
 .pr-bar svg{width:17px;height:17px;flex:none}
-.pr-bar button{border:0;background:#1d1a0f;color:#fff;border-radius:999px;padding:7px 14px;font:inherit;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap}
+.pr-bar button{border:0;background:#1d1a0f;color:#fff;border-radius:999px;padding:6px 14px;line-height:1.25;font:inherit;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap}
 body.prac{padding-top:calc(44px + env(safe-area-inset-top))}
 body.prac .tm-main{scroll-margin-top:44px}
+body.prac #v2s,body.prac .modal{top:calc(44px + env(safe-area-inset-top))}
+body.prac #v2s .sh{max-height:min(92vh,92dvh,calc(100% - 6px))}
+@media (min-width:760px){body.prac #v2s .sh{max-height:min(88vh,calc(100% - 6px))}}
+body.prac .modal .sheet{max-height:100%}
 .pr-go .pr-st{flex:none;font-size:12.5px;font-weight:700;padding:4px 10px;border-radius:999px;background:var(--soft);color:var(--muted)}
 .pr-go.on .pr-st{background:#FFC94D;color:#1d1a0f}
 </style>
@@ -1754,7 +1759,7 @@ const blobToDataUrl=b=>new Promise(r=>{const fr=new FileReader();fr.onload=()=>r
    If someone else saved in between, their version is fetched, this phone's own changes are
    replayed on top of it (record by record), and the save is tried again. */
 const clone=o=>JSON.parse(JSON.stringify(o??null));
-const SYNC={base:null,at:null,q:Promise.resolve(),pending:0};
+const SYNC={base:null,at:null,q:Promise.resolve(),pending:0,job:null};
 const LISTS=["invoices","expenses","funding","products"],MAPS=["settings","contacts","dir","onboard"];
 function merge3(base,mine,theirs){base=base||{};mine=mine||{};theirs=theirs||{};const out=clone(theirs);const same=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
  for(const k of new Set([...Object.keys(mine),...Object.keys(base)])){
@@ -1778,18 +1783,24 @@ function merge3(base,mine,theirs){base=base||{};mine=mine||{};theirs=theirs||{};
   else if(!same(mine[k],base[k])){if(k in mine)out[k]=clone(mine[k]);else delete out[k];}
  }
  return out;}
-function saveData(local){const run=async()=>{let mine=clone(local);
+function saveData(local){const prev=SYNC.job,pend=!!(prev&&!prev.done),job={local,ok:false,done:false,base:SYNC.base};SYNC.job=job;
+ const run=async()=>{try{
+ /* saved again before the last save finished: this one was made on top of that one, so only its own changes go on top of
+    what that save left on the server (or of the copy it started from, if it failed). Another phone's save in between stays. */
+ if(pend)job.base=prev.ok?prev.local:prev.base;
+ let mine=job.base&&SYNC.base&&SYNC.base!==job.base?merge3(job.base,local,SYNC.base):clone(local);
  for(let tries=0;tries<4;tries++){const now=new Date().toISOString();
   if(SYNC.at==null){const {data:ins,error}=await sb.from("business_data").insert({business_id:BIZ.id,data:mine,updated_at:now,updated_by:SESSION.user.id}).select("updated_at");
-   if(!error){SYNC.base=clone(mine);SYNC.at=ins&&ins[0]?ins[0].updated_at:now;return;}if(error.code!=="23505")throw error;}
+   if(!error){SYNC.base=clone(mine);SYNC.at=ins&&ins[0]?ins[0].updated_at:now;job.ok=true;return;}if(error.code!=="23505")throw error;}
   else{const {data,error}=await sb.from("business_data").update({data:mine,updated_at:now,updated_by:SESSION.user.id}).eq("business_id",BIZ.id).eq("updated_at",SYNC.at).select("updated_at");
-   if(error)throw error;if(data&&data.length){SYNC.base=clone(mine);SYNC.at=data[0].updated_at;return;}}
+   if(error)throw error;if(data&&data.length){SYNC.base=clone(mine);SYNC.at=data[0].updated_at;job.ok=true;return;}}
   /* someone else saved first: fetch theirs and replay my changes on top */
   const {data:cur,error:e2}=await sb.from("business_data").select("data,updated_at").eq("business_id",BIZ.id).maybeSingle();if(e2)throw e2;
-  mine=merge3(SYNC.base,mine,cur?cur.data:{});SYNC.at=cur?cur.updated_at:null;SYNC.base=cur?clone(cur.data):null;
-  if(typeof D!=="undefined"&&D){D=sanitizeData(clone(mine));try{render();}catch(e){}}
+  const sent=mine;mine=merge3(SYNC.base,mine,cur?cur.data:{});SYNC.at=cur?cur.updated_at:null;SYNC.base=cur?clone(cur.data):null;
+  /* what was typed while this save was on its way stays on the screen */
+  if(typeof D!=="undefined"&&D){D=sanitizeData(merge3(sent,D,mine));try{render();}catch(e){}}
  }
- throw new Error(lang==="ar"?"تعذّر الحفظ، حاول مجددًا":"Couldn't save, please try again");};
+ throw new Error(lang==="ar"?"تعذّر الحفظ، حاول مجددًا":"Couldn't save, please try again");}finally{job.done=true;}};
  SYNC.pending++;const p=SYNC.q.then(run,run).finally(()=>{SYNC.pending--;});SYNC.q=p.catch(()=>{});return p;}
 /* Record ids and photo ids end up inside buttons, so only allow plain letters, digits, - and _ */
 const SAFEID=/^[A-Za-z0-9_-]{1,64}$/;
@@ -3256,7 +3267,7 @@ function d6Row(x,noOpen,dated){const w=d6Who(x);const rem=x.k!=="f"?num(x.amount
 function d6Home(){const c=calc();const cur=esc(curL());const nm=myName()||whoName();const ed=canEdit();
  const [a,b]=bkRange("month");const mS=D.invoices.filter(x=>x.date>=a&&x.date<=b).reduce((s,x)=>s+num(x.amount),0),mE=D.expenses.filter(x=>x.date>=a&&x.date<=b).reduce((s,x)=>s+num(x.amount),0);const mx=Math.max(mS,mE)||1;
  const needs=d6Needs();const deb=gpDebtors()[0],ow=d6Owing()[0],qs=openQs(),ms=d6Miss();
- const imp=c.cash<-0.5?t("d6ImpCash").replace("{v}",fmt(-c.cash)+" "+curL()):deb?t("d6ImpOwes").replace("{p}",esc(tx(deb.name))).replace("{v}",fmt(deb.owed)+" "+curL()):qs.length?(qs.length===1?t("d6ImpQ1"):t("d6ImpQs").replace("{n}",qs.length)):ow?t("d6ImpOwe").replace("{p}",esc(tx(ow.name))).replace("{v}",fmt(ow.owed)+" "+curL()):ms.length?t("d6ImpMiss").replace("{n}",ms.length):t("d6ImpOk");
+ const imp=c.cash<-0.5?t("d6ImpCash").replace("{v}",fmt(-c.cash)+" "+esc(curL())):deb?t("d6ImpOwes").replace("{p}",esc(tx(deb.name))).replace("{v}",fmt(deb.owed)+" "+esc(curL())):qs.length?(qs.length===1?t("d6ImpQ1"):t("d6ImpQs").replace("{n}",qs.length)):ow?t("d6ImpOwe").replace("{p}",esc(tx(ow.name))).replace("{v}",fmt(ow.owed)+" "+esc(curL())):ms.length?t("d6ImpMiss").replace("{n}",ms.length):t("d6ImpOk");
  const head=d6Head(`${t("hello")}${nm?(lang==="ar"?"، ":", ")+esc(nm):""}`,`<span class="d6-imp">${t("d6Important")} <b>${imp}</b></span>`,ed?`<button class="d6-lime" onclick="openSell()">${I2.bag}${t("d6NewSale")}</button>`:d6ViewPill(),esc(lDate(today())));
  const hero=`<section class="d6-hero"><div class="d6-hl"><small>${t("d6Cash")}</small><div class="d6-cash${c.cash<-0.004?" neg":""}">${AMT(c.cash,"-")}<span>${cur}</span></div><p>${t("d6CashD")}</p></div>
  <div class="d6-hr"><small>${t("d6Month")}</small><div class="d6-br"><span>${t("salesL")}</span><b>${AMT(mS)}</b></div><i class="d6-bar"><i style="width:${(mS/mx*100).toFixed(1)}%"></i></i>
@@ -3422,7 +3433,7 @@ let DSATT={};/* notebook photos picked but not saved yet, per day */
 function dsRecs(d){return{buy:D.expenses.find(x=>x.sh===d&&x.shk==="buy")||null,costs:D.expenses.filter(x=>x.sh===d&&x.shk==="cost"),sales:D.invoices.filter(x=>x.sh===d&&x.shk==="sale")};}
 function dsLastBuy(){let b=null;for(const x of D.expenses)if(x.shk==="buy"&&(!b||String(x.date)>String(b.date)))b=x;return b;}
 function dsFromRecs(d){const R=dsRecs(d);const b=R.buy;const lb=b||dsLastBuy();
- const auto=b&&num(b.qty)>0&&num(b.price)>0?Math.abs(num(b.amount)-r3(num(b.qty)*num(b.price)))<0.005:false;
+ const auto=b&&num(b.qty)>0&&num(b.price)>0?(Math.abs(num(b.amount)-r3(num(b.qty)*num(b.price)))<0.005||Math.abs(num(b.amount)-qp2(num(b.qty)*num(b.price)))<0.0005):false;
  const s={v:3,date:d,dirty:false,att:[],
   buy:{name:lb?String(lb.item||""):"",qty:b&&num(b.qty)?String(b.qty):"",price:b&&num(b.price)?String(b.price):(lb&&num(lb.price)?String(lb.price):""),paid:b?String(num(b.amount)):"",paidSet:!!b&&!auto,from:b?String(b.party||""):(lb?String(lb.party||""):""),rid:b?b.id:null,lock:b?(dsOthers(b)?-1:dsForeign(b,d)):0},
   costs:R.costs.map(x=>({k:x.id,name:String(x.item||x.desc||""),memo:String(x.memo||""),amount:String(num(x.amount)),cat:x.cat||"",rid:x.id,lock:dsOthers(x)?-1:dsForeign(x,d)})),
@@ -3442,7 +3453,9 @@ function dsStash(){if(!SH||DSOWN&&!SH.dirty)return;if(SH.att&&SH.att.length)DSAT
 function dsRoll(){if(SH&&!SH.dirty&&!DSBUSY&&SH.auto&&SH.date!==today()){dsLoad(today());if(!DSOWN)render();else dsPaint();return true;}return false;}
 function dsEnsure(){if(!D)return;if(SH&&(SH.dirty||DSBUSY))return;const d=SH&&!(SH.auto&&SH.date!==today())?SH.date:today();dsLoad(d);}
 /* what each part adds up to */
-function dsBuyAmt(){const b=SH.buy;return b.paidSet?r3(dsN(b.paid)):r3(dsN(b.qty)*dsN(b.price));}
+/* kilos × price kept to the fils that are shown (the same rounding the screen uses), so every card adds up */
+function qp2(v){return Math.round((v+1e-9)*100)/100;}
+function dsBuyAmt(){const b=SH.buy;return b.paidSet?r3(dsN(b.paid)):qp2(dsN(b.qty)*dsN(b.price));}
 function dsCalc(){const buy=dsBuyAmt(),costs=r3(SH.costs.reduce((a,r)=>a+dsN(r.amount),0)),sold=r3(SH.sales.reduce((a,r)=>a+dsN(r.amount),0)),coll=r3(SH.coll.reduce((a,r)=>a+dsN(r.amount),0));return{buy,costs,out:r3(buy+costs),sold,coll,profit:r3(sold-buy-costs)};}
 function dsCusts(){const M={};for(const x of dsInv()){if(!x.party||x.party==="Shop sales")continue;const pk=rsK(x.party);const o=M[pk]=M[pk]||{name:pk,owed:0,n:0,last:"",old:""};const r=r3(num(x.amount)-paidOf(x));if(r>0.004){o.owed=r3(o.owed+r);o.n++;if(!o.old||String(x.date)<o.old)o.old=x.date;}if(String(x.date)>o.last)o.last=x.date;}
  return Object.values(M).sort((a,b)=>((b.owed>0.004)-(a.owed>0.004))||(b.owed-a.owed)||String(b.last).localeCompare(String(a.last)));}
@@ -3521,7 +3534,7 @@ function dsTot(){const c=dsCalc();const set=(id,v)=>{const e=document.getElement
 function dsDirty(){SH.dirty=true;dsStash();}
 function dsSet(sec,k,f,v){if(!SH||DSBUSY)return;if(sec==="day"){SH.price=v;SH.priceOld=false;SH.priceSet=true;const p=dsN(v);for(const r of SH.sales){if(r.lock||r.amtSet||!(dsN(r.qty)>0)||(r.prod&&r.prod!=="chicken"))continue;r.amount=p?String(Math.round(dsN(r.qty)*p*100)/100):"";r.ch=1;const a=document.getElementById("dsa-"+r.k);if(a)a.value=r.amount;dsHint(r);}dsDirty();dsTot();return;}
  const o=sec==="buy"?SH.buy:(SH[sec]||[]).find(r=>r.k===k);if(!o)return;o[f]=v;o.ch=1;
- if(sec==="buy"&&f==="paid")o.paidSet=String(v).trim()!==""&&Math.abs(dsN(v)-r3(dsN(o.qty)*dsN(o.price)))>0.004;
+ if(sec==="buy"&&f==="paid")o.paidSet=String(v).trim()!==""&&Math.abs(dsN(v)-r3(dsN(o.qty)*dsN(o.price)))>0.004&&Math.abs(dsN(v)-qp2(dsN(o.qty)*dsN(o.price)))>0.0005;
  if(sec==="sales"&&f==="amount")o.amtSet=String(v).trim()!=="";
  if(sec==="sales"&&f==="qty"){const p=dsN(SH.price);if(p&&!o.amtSet){o.amount=dsN(o.qty)>0?String(Math.round(dsN(o.qty)*p*100)/100):"";const a=document.getElementById("dsa-"+k);if(a)a.value=o.amount;}}
  if(sec==="sales")dsHint(o);
@@ -3909,7 +3922,7 @@ function v2BuyLive(){const B=V2B;const calc=r3(dsN(B.qty)*dsN(B.price));const x=
 function v2BuyName(n){if(!V2B)return;if(n===null){V2B.oname=true;if(!V2B.name||v2BuyOpts().names.includes(V2B.name))V2B.name="";v2BuyPaint();setTimeout(()=>{const e=document.getElementById("v2BN");if(e)e.focus();},30);return;}V2B.oname=false;V2B.name=n;v2BuyPaint();}
 function v2BuyFrom(n){if(!V2B)return;if(n===null){V2B.ofrom=true;if(v2BuyOpts().froms.includes(V2B.from))V2B.from="";v2BuyPaint();setTimeout(()=>{const e=document.getElementById("v2BF");if(e)e.focus();},30);return;}V2B.ofrom=false;V2B.from=V2B.from===n?"":n;v2BuyPaint();}
 function v2BuyDone(){const B=V2B;if(!B||!SH||v2Busy())return;if(B.d!==SH.date){v2Close();return;}const b=SH.buy;const nb={name:String(B.name||"").trim(),qty:String(B.qty||"").trim(),price:String(B.price||"").trim(),from:String(B.from||"").trim()};
- const calc=r3(dsN(nb.qty)*dsN(nb.price));const paidSet=B.paidSet&&String(B.paid).trim()!==""&&Math.abs(dsN(B.paid)-calc)>0.004;
+ const calc=r3(dsN(nb.qty)*dsN(nb.price));const paidSet=B.paidSet&&String(B.paid).trim()!==""&&Math.abs(dsN(B.paid)-calc)>0.004&&Math.abs(dsN(B.paid)-qp2(dsN(nb.qty)*dsN(nb.price)))>0.0005;
  const same=nb.name===String(b.name||"")&&dsN(nb.qty)===dsN(b.qty)&&dsN(nb.price)===dsN(b.price)&&nb.from===String(b.from||"")&&paidSet===!!b.paidSet&&(!paidSet||dsN(B.paid)===dsN(b.paid));
  const next=()=>{v2Pass("buy");v2Close();v2Go("costs");};
  const ph=B.att&&B.att.length;if(same&&!SH.dirty&&!ph)return next();
@@ -3986,7 +3999,7 @@ function v2SalePrice(){const e=document.getElementById("v2SP");return e?dsN(e.va
 function v2SaleLive(fromAmt){if(!V2E)return;const q=dsN(v2Val("v2SQ")),p=v2SalePrice();const a=document.getElementById("v2SA");const x=document.getElementById("v2SX");
  const calc=q>0&&p>0?Math.round(q*p*100)/100:0;if(a&&!V2E.amtSet&&!fromAmt)a.value=calc?String(calc):"";
  const amt=V2E.amtSet&&a?dsN(a.value):calc;
- if(x)x.innerHTML=q>0&&p>0&&!V2E.amtSet?`<span>${esc(fq(q)+" × "+fq2(p))} ${t("v2TodayP")}</span><b>${fmt(calc)} ${v2Cur()}</b>`:V2E.amtSet&&amt>0?`<span>${q>0?esc(fq(q)+" "+t("dsKgU")+" · "+fq2(amt/q)+" / "+t("dsKgU")):""}</span><b>${fmt(amt)} ${v2Cur()}</b>`:"";
+ if(x)x.innerHTML=q>0&&p>0&&!V2E.amtSet?`<span>${esc(fq(q)+" "+t("dsKgU")+" × "+fq2(p))} ${t("v2TodayP")}</span><b>${fmt(calc)} ${v2Cur()}</b>`:V2E.amtSet&&amt>0?`<span>${q>0?esc(fq(q)+" "+t("dsKgU")+" · "+fq2(amt/q)+" / "+t("dsKgU")):""}</span><b>${fmt(amt)} ${v2Cur()}</b>`:"";
  x&&x.classList.toggle("hide",!x.innerHTML);}
 function v2SaleAmt(){if(!V2E)return;V2E.amtSet=true;const w=document.getElementById("v2SAw");if(w)w.classList.remove("hide");const l=document.getElementById("v2SAlt");if(l)l.remove();const a=document.getElementById("v2SA");if(a){a.focus();try{a.select();}catch(e){}}v2SaleLive(1);}
 function v2SalePaid(v){if(!V2E)return;V2E.paid=v;const a=document.getElementById("v2SL"),b=document.getElementById("v2SN");if(a){a.classList.toggle("on",!v);a.setAttribute("aria-pressed",String(!v));}if(b){b.classList.toggle("on",v);b.setAttribute("aria-pressed",String(v));}}
@@ -4254,7 +4267,7 @@ function ddHTML(d){const R=dsRecs(d);const cur=v2Cur();const b=R.buy;const bq=b?
   return ln(`<bdi>${esc(shop?t("v2Shop"):rsName(x.party))}</bdi>`,esc([q?fq(q)+" "+t("dsKgU"):"",x.desc&&!q&&!/^Chicken$/i.test(x.desc)?tx(x.desc):"",shop?"":(paid?t("ddPaid"):t("ddAcc"))].filter(Boolean).join(" · ")),fmt(num(x.amount)),shop||paid?"c-paid":"c-later");};
  return`${bq||bp?`<div class="dd-top">${bp?`<div><span>${t("ddPrice")}</span><b>${esc(fq(bp))}</b></div>`:""}${bq?`<div><span>${t("ddWeight")}</span><b>${esc(fq(bq))} <small>${t("dsKgU")}</small></b></div>`:""}</div>`:""}
  <div class="v2-h"><b>${t("ddCosts")}</b><span>${fmt(costT)} ${cur}</span></div>
- <div class="v2-list v2-tls">${b?ln(esc(tx(b.item)||t("v2S1")),esc([bq?v2Kg(bq):"",bp?"× "+fq(bp):"",tx(b.party||"")].filter(Boolean).join(" · ")),fmt(num(b.amount))):""}
+ <div class="v2-list v2-tls">${b?ln(esc(tx(b.item)||t("v2S1")),esc([[bq?v2Kg(bq):"",bp?"× "+fq(bp):""].filter(Boolean).join(" "),tx(b.party||"")].filter(Boolean).join(" · ")),fmt(num(b.amount))):""}
  ${R.costs.map(x=>ln(`<bdi>${esc(tx(x.item||x.desc)||t("dsOtherCost"))}</bdi>`,"",fmt(num(x.amount)))).join("")}
  <div class="v2-tl tot"><span>${t("ddTot")}</span><b>${fmt(costT)}</b></div></div>
  <div class="v2-h"><b>${t("ddSales")}</b><span>${fmt(soldT)} ${cur}</span></div>
@@ -4426,7 +4439,7 @@ function ddEditHTML(d){const R=dsRecs(d);const cur=v2Cur();const b=R.buy;const b
  return`<p class="dd-tip">${I20.edit}${t("ddTap")}</p>
  ${bq||bp?`<div class="dd-top">${bp?`<div><span>${t("ddPrice")}</span><b>${esc(fq(bp))}</b></div>`:""}${bq?`<div><span>${t("ddWeight")}</span><b>${esc(fq(bq))} <small>${t("dsKgU")}</small></b></div>`:""}</div>`:""}
  <div class="v2-h"><b>${t("ddCosts")}</b><span>${fmt(costT)} ${cur}</span></div>
- <div class="v2-list v2-tls">${b?ln("v2BuySheet()",esc(tx(b.item)||t("v2S1")),esc([bq?v2Kg(bq):"",bp?"× "+fq(bp):"",tx(b.party||"")].filter(Boolean).join(" · ")),fmt(num(b.amount))):""}
+ <div class="v2-list v2-tls">${b?ln("v2BuySheet()",esc(tx(b.item)||t("v2S1")),esc([[bq?v2Kg(bq):"",bp?"× "+fq(bp):""].filter(Boolean).join(" "),tx(b.party||"")].filter(Boolean).join(" · ")),fmt(num(b.amount))):""}
  ${R.costs.map(x=>ln(`v2CostSheet('',${ja(x.id)})`,`<bdi>${esc(tx(x.item||x.desc)||t("dsOtherCost"))}</bdi>`,x.memo?esc(x.memo):"",fmt(num(x.amount)),"",ddX("costs",x.id))).join("")}
  <div class="v2-tl tot"><span>${t("ddTot")}</span><b>${fmt(costT)}</b></div></div>
  <div class="dd-adds">${b?"":add(t("ddAddBuy"),"v2BuySheet()")}${add(t("ddAddCost"),"v2CostSheet('')")}</div>
@@ -4525,7 +4538,8 @@ function lfOf(d){return lfAll()[d]||LF0;}
 {const _c=dsCalc;dsCalc=function(){const c=_c();if(!SH)return c;const l=lfOf(SH.date);c.lf=l;if(Math.abs(l.adj)>0.004){c.out=r3(c.out+l.adj);c.profit=r3(c.profit-l.adj);}return c;};}
 {const _d=dsDays;dsDays=function(){const L=_d();const A=lfAll();for(const x of L){const a=A[x.d];if(a&&Math.abs(a.adj)>0.004)x.out=r3(x.out+a.adj);}return L;};}
 {const _s=dsSummary;dsSummary=function(d){const txt=_s(d);const l=lfAll()[d];if(!l||(!(l.inV>0)&&!(l.outV>0)))return txt;const fm=v=>fmt(v).replace(/\.00$/,"");
- const add=[l.inV>0?`↪️ ${t("lfIn")}: ${fq(l.inKg)} ${t("dsKgU")} = +${fm(l.inV)}`:"",l.outV>0?`📦 ${t("lfOut")}: ${fq(l.outKg)} ${t("dsKgU")} = −${fm(l.outV)}`:""].filter(Boolean).map(s=>(lang==="ar"?"‏":"")+s);
+ const kgs=(ch,o)=>[`${fq(num(ch))} ${t("dsKgU")}`,...Object.entries(o||{}).filter(e=>num(e[1])>0).map(([p,q])=>`${typeof prName==="function"?prName(p):p} ${fq(num(q))} ${t("dsKgU")}`)].join(" · ");
+ const add=[l.inV>0?`↪️ ${t("lfIn")}: ${kgs(l.inCh!=null?l.inCh:l.inKg,l.inO)} = −${fm(l.inV)} ${curL()}`:"",l.outV>0?`📦 ${t("lfOut")}: ${kgs(l.chKg!=null?l.chKg:l.outKg,l.oKg)} = +${fm(l.outV)} ${curL()}`:""].filter(Boolean).map(s=>(lang==="ar"?"‏":"")+s);
  const lines=txt.split("\n");const i=lines.findIndex(s=>/(✅|🔻)/.test(s));if(i<0)return txt;lines.splice(i-1>0?i-1:i,0,...add);return lines.join("\n");};}
 /* ---------- the lines shown on a day ---------- */
 function lfLines(d,edit){const l=lfOf(d);const ro=!edit;
@@ -4560,7 +4574,7 @@ function meWeekHTML(){const me=dsMe();if(!me)return"";const since=localDay(Date.
  const S=D.invoices.filter(x=>x&&x.by===me&&x.sh&&x.shk==="sale"&&x.sh>=since&&x.party!=="Shop sales");
  const kg=r3(S.filter(x=>lfIsChk(x.prod)).reduce((a,x)=>a+num(x.qty),0)),sold=r3(S.reduce((a,x)=>a+num(x.amount),0));
  let coll=0;for(const x of D.invoices)for(const p of x.pays||[])if(p&&p.c&&p.sh&&p.sh>=since&&p.by===me)coll=r3(coll+num(p.amount));
- return`<h3 class="ds-h3">${t("meWeek")}</h3><div class="dd-top me-wk"><div><span>${t("meSalesN")}</span><b>${S.length}</b></div><div><span>${t("meKg")}</span><b>${esc(fq(kg))}</b></div><div><span>${t("meSold")}</span><b>${fmt(sold)}</b></div><div><span>${t("meColl")}</span><b>${fmt(coll)}</b></div></div>`;}
+ return`<h3 class="ds-h3">${t("meWeek")}</h3><div class="dd-top me-wk"><div><span>${t("meSalesN")}</span><b>${S.length}</b></div><div><span>${t("meKg")}</span><b>${esc(fq(kg))} <small class="u">${esc(t("dsKgU"))}</small></b></div><div><span>${t("meSold")}</span><b>${fmt(sold)}</b></div><div><span>${t("meColl")}</span><b>${fmt(coll)}</b></div></div>`;}
 function mePwOpen(){v2Open(`${v2Head(t("mePw"),t("mePwD"),I20.edit)}
  <label><span class="v2-lbl">${t("newPw")}</span>${pwBox("mp1",'class="v2-in v2-txt" autocomplete="new-password" minlength="8" data-af="1"')}</label>
  <label><span class="v2-lbl">${t("newPw2")}</span>${pwBox("mp2",'class="v2-in v2-txt" autocomplete="new-password" onkeydown="if(event.key===\'Enter\')mePwSave()"')}</label>
@@ -5492,7 +5506,7 @@ Object.assign(T.ar,{svPays:"الدفعات على هذه المبيعات",svNoP
  const rows=ds.map(d=>{const all=day(d);const sub=all>G[d]+0.004?t("svPayOf").replace("{a}",fmt(G[d])).replace("{t}",fmt(all)):t("svPayL");
   return`<div class="ui-li dy-r rs-dy tap" role="button" tabindex="0" onclick="payView(${ja(x.party)},${ja(d)})">${rsTile(d)}<span class="dy-m"><b>${esc(rsWd(d))}</b><small>${esc(sub)}</small></span><span class="dy-pf rs-am in"><b>+${fmt(G[d])}</b></span>${I18.chev}</div>`;}).join("");
  card.insertAdjacentHTML("afterend",`<div id="svPays"><h3 class="ds-h3">${t("svPays")}</h3>${rows?`<div class="dy-l dyA sv-pl">${rows}</div>`:`<p class="ui-hint sv-np">${t("svNoPay")}</p>`}</div>`);};}
-{const _pv=payView;payView=function(name,d){_pv(name,d);const K=rsKeys(name);const L=[];for(const x of dsInv().filter(x=>K.includes(x.party)))for(const q of x.pays||[])if(q&&String(q.date)===String(d)){L.push(x);break;}
+{const _pv=payView;payView=function(name,d){_pv(name,d);const K=rsKeys(name);const L=[];for(const x of dsInv().filter(x=>K.includes(x.party)))for(const q of x.pays||[])if(q&&String(q.date)===String(d))L.push(x);
  const rows=[...document.querySelectorAll("#v2s .sh.pv .ui-card")].pop();if(!rows||rows.classList.contains("sv-card"))return;
  [...rows.querySelectorAll(".ui-li")].forEach((r,i)=>{const x=L[i];if(!x)return;r.classList.add("tap");r.setAttribute("role","button");r.setAttribute("tabindex","0");r.onclick=()=>saleView(x.id);r.insertAdjacentHTML("beforeend",I18.chev);});};}
 
@@ -5551,24 +5565,24 @@ Object.assign(T.en,{lf3TotD:"{a} kg left + {b} kg bought today",lf3TotW:"{a} kg 
  lfGapLess:"{g} kg less than the numbers say",lfGapMore:"{g} kg more than the numbers say",
  clSalesL:"Sales",clIn:"Chicken from the day before",clOut:"Chicken left for the next day",clNoLeft:"Not weighed yet",
  kgT:"Chicken by the kilo",kgIn:"From the day before",kgBuy:"Bought today",kgSold:"Sold",kgWaste:"Waste",kgExp:"Should be left",kgLeft:"Weighed left",kgMiss:"Missing",kgExtra:"Extra",
- kgMissD:"Record the waste or fix the weighed leftover. Until then, each kilo looks more expensive than it is.",kgCpk:"Cost of a kilo today",kgFix:"Fix the leftover",
- alTab:"Log",alDet:"Details",alNone:"Nothing recorded yet.",alStart:"{n} started this day",alOld:"Things added before the log started show only who added them and when.",alDay:"Today's log",
+ kgMissD:"Record the waste or fix the weighed leftover. Until then, each kilo looks more expensive than it is.",kgExtraD:"More chicken was weighed than the numbers say. Check the leftover from the day before, today's purchase and the kilos of each sale. Until then, each kilo looks cheaper than it is.",kgOver:"More went out than came in",kgOverD:"More chicken was sold or wasted than there was. Check the leftover from the day before, today's purchase and the kilos of each sale.",kgNoQ:"Some sales have no kilos, so this check isn't complete. Add the kilos to each sale.",lfOver:"The waste and the sales are more than the chicken you had, by {g} kg.",kgCpk:"Cost of a kilo today",kgFix:"Fix the leftover",
+ alTab:"Log",alDet:"Details",alNone:"Nothing recorded yet.",alStart:"{n} started this day",alOld:"Things added before the log started show who added them and when, but not the changes made before it.",alDay:"Today's log",
  alA:"added",alLA:"recorded",alE:"edited",alX:"deleted",alS:"a sale",alB:"a purchase",alC:"a cost",alP:"a collection",alL:"the leftover",
  alQ:"Kilos",alAm:"Amount",alPr:"Price",alNm:"Name",alPd:"Payment",alIt:"Item",alMm:"Note",alK:"Left",alW:"Waste",alProd:"Product",alSup:"Supplier",alPs:"Other products",
  alFT:"{a} → {b}",alPaidNow:"paid",alOnAcc:"on account",alHist:"History",alYou:"You",
  pmT:"Practice mode",pmD:"Try anything. Nothing is saved to the real books.",pmOn:"On",pmOff:"Off",pmBar:"Practice mode: nothing is saved",pmEnd:"End practice",
- pmStartQ:"Start practice mode?",pmStartB:"Everything works as usual, but nothing reaches the real books and nobody else sees it. Ending practice brings the real books back.",pmStart:"Start practice",pmStarted:"Practice mode is on"});
+ pmNo:"Practice mode is on, so this isn't saved.",pmWait:"Wait for the last save to finish, then try again.",pmStartQ:"Start practice mode?",pmStartB:"Everything works as usual, but nothing reaches the real books and nobody else sees it. Ending practice brings the real books back.",pmStart:"Start practice",pmStarted:"Practice mode is on"});
 Object.assign(T.ar,{lf3TotD:"باقي {a} كغ + اشتريت اليوم {b} كغ",lf3TotW:"باقي {a} كغ (بعد تالف {w} كغ) + اشتريت اليوم {b} كغ",
  lfGapLess:"أقل من المتوقع بـ {g} كغ",lfGapMore:"أكثر من المتوقع بـ {g} كغ",
  clSalesL:"المبيعات",clIn:"دجاج من اليوم السابق",clOut:"دجاج باقٍ لليوم التالي",clNoLeft:"لم يُوزن بعد",
  kgT:"الدجاج بالكيلو",kgIn:"من اليوم السابق",kgBuy:"اشتريت اليوم",kgSold:"بعت",kgWaste:"تالف",kgExp:"المفروض يبقى",kgLeft:"الباقي الموزون",kgMiss:"ناقص",kgExtra:"زيادة",
- kgMissD:"سجّل التالف أو صحّح الباقي الموزون. حتى ذلك الحين يظهر الكيلو أغلى من حقيقته.",kgCpk:"كلفة الكيلو اليوم",kgFix:"صحّح الباقي",
- alTab:"السجل",alDet:"التفاصيل",alNone:"لا يوجد شيء مسجّل بعد.",alStart:"{n} بدأ هذا اليوم",alOld:"ما أُضيف قبل بدء السجل يظهر فيه من أضافه ومتى فقط.",alDay:"سجل اليوم",
+ kgMissD:"سجّل التالف أو صحّح الباقي الموزون. حتى ذلك الحين يظهر الكيلو أغلى من حقيقته.",kgExtraD:"الباقي الموزون أكثر مما تقوله الأرقام. راجع باقي اليوم السابق وشراء اليوم وكيلو كل مبيعات. حتى ذلك الحين يظهر الكيلو أرخص من حقيقته.",kgOver:"خرج أكثر مما دخل",kgOverD:"بعت أو أتلفت دجاجًا أكثر مما كان عندك. راجع باقي اليوم السابق وشراء اليوم وكيلو كل مبيعات.",kgNoQ:"بعض المبيعات بلا كيلو، لذلك هذا الحساب غير مكتمل. أضف الكيلو لكل مبيعات.",lfOver:"التالف والمبيعات أكثر من الدجاج الذي كان عندك بـ {g} كغ.",kgCpk:"كلفة الكيلو اليوم",kgFix:"صحّح الباقي",
+ alTab:"السجل",alDet:"التفاصيل",alNone:"لا يوجد شيء مسجّل بعد.",alStart:"{n} بدأ هذا اليوم",alOld:"ما أُضيف قبل بدء السجل يظهر فيه من أضافه ومتى، دون التعديلات التي سبقته.",alDay:"سجل اليوم",
  alA:"أضاف",alLA:"سجّل",alE:"عدّل",alX:"حذف",alS:"مبيعات",alB:"شراء",alC:"مصروف",alP:"تحصيل",alL:"الباقي",
  alQ:"الكمية",alAm:"المبلغ",alPr:"السعر",alNm:"الاسم",alPd:"الدفع",alIt:"البند",alMm:"الوصف",alK:"الباقي",alW:"التالف",alProd:"الصنف",alSup:"المورّد",alPs:"أصناف أخرى",
  alFT:"من {a} إلى {b}",alPaidNow:"مدفوع",alOnAcc:"على الحساب",alHist:"السجل",alYou:"أنت",
  pmT:"وضع التجربة",pmD:"جرّب ما تريد. لا شيء يُحفظ في الدفاتر الحقيقية.",pmOn:"يعمل",pmOff:"متوقف",pmBar:"وضع التجربة: لا شيء يُحفظ",pmEnd:"أنهِ التجربة",
- pmStartQ:"تبدأ وضع التجربة؟",pmStartB:"كل شيء يعمل كالعادة، لكن لا شيء يصل للدفاتر الحقيقية ولا يراه أحد غيرك. عند إنهاء التجربة ترجع الدفاتر الحقيقية.",pmStart:"ابدأ التجربة",pmStarted:"وضع التجربة يعمل"});
+ pmNo:"وضع التجربة يعمل، لذلك لا يُحفظ هذا.",pmWait:"انتظر حتى ينتهي الحفظ، ثم حاول مرة أخرى.",pmStartQ:"تبدأ وضع التجربة؟",pmStartB:"كل شيء يعمل كالعادة، لكن لا شيء يصل للدفاتر الحقيقية ولا يراه أحد غيرك. عند إنهاء التجربة ترجع الدفاتر الحقيقية.",pmStart:"ابدأ التجربة",pmStarted:"وضع التجربة يعمل"});
 
 /* ---------- 1. stock carried from day to day, kept to the fils that are shown, so every card adds up;
    inCh = the chicken (only) that came from the day before ---------- */
@@ -5578,13 +5592,13 @@ lfAll=function(){const B={},K={},KP={},S=new Set();const r2=v=>Math.round((num(v
  for(const x of D.invoices)if(x&&x.sh&&x.shk==="sale"){if(lfIsChk(x.prod))K[x.sh]=r3((K[x.sh]||0)+num(x.qty));else addP(x.sh,x.prod,num(x.qty));S.add(x.sh);}
  if(SH&&SH.date){const d=SH.date;B[d]=dsBuyAmt();K[d]=r3(SH.sales.filter(r=>lfIsChk(r.prod)).reduce((a,r)=>a+dsN(r.qty),0));delete KP[d];for(const r of SH.sales)if(!lfIsChk(r.prod))addP(d,r.prod,dsN(r.qty));S.add(d);}
  const L=lfMap();for(const d in L)if(/^\d{4}-\d{2}-\d{2}$/.test(d))S.add(d);
- const out={};let ck=0,cv=0,cc=0;
+ const out={};let ck=0,cv=0,cc=0,co={};
  for(const d of [...S].sort()){const r=L[d]||null;const kc=r?Math.max(0,num(r.k)):0,w=r?Math.max(0,num(r.w)):0;
   const sp=KP[d]||{};let ko=0,so=0;const po={};
   for(const pk in sp){so=r3(so+sp[pk]);const left=r&&r.p&&num(r.p[pk])>0?num(r.p[pk]):0;if(left>0){ko=r3(ko+left);po[pk]=left;}}
   const k=r3(kc+ko);const pool=r3((B[d]||0)+cv);const kg=r3((K[d]||0)+so+k+w);
   const cpk=(k>0||w>0)&&kg>0?pool/kg:0;const outV=r2(k*cpk),wV=r2(w*cpk);
-  out[d]={inKg:ck,inV:cv,inCh:cc,outKg:k,outV,wKg:w,wV,cpk:Math.round(cpk*1000)/1000,set:!!r,adj:r2(cv-outV),chKg:kc,oKg:po};ck=k;cv=outV;cc=kc;}
+  out[d]={inKg:ck,inV:cv,inCh:cc,inO:co,outKg:k,outV,wKg:w,wV,cpk:Math.round(cpk*1000)/1000,set:!!r,adj:r2(cv-outV),chKg:kc,oKg:po};ck=k;cv=outV;cc=kc;co=po;}
  return out;};
 /* "from yesterday" in the leftover sum is chicken only (liver and wings have their own lines) */
 lfSug=function(d,w){const l=lfAll()[d]||LF0;const a=num(l.inCh!=null?l.inCh:l.inKg),b=lfBuyKg(d),c=lfSoldKg(d);w=num(w)||0;return{a,b,c,w,r:Math.max(0,r3(a+b-c-w))};};
@@ -5607,7 +5621,8 @@ lfSug=function(d,w){const l=lfAll()[d]||LF0;const a=num(l.inCh!=null?l.inCh:l.in
  const g=lfSug(d,dsN(v2Val("lfW")));const kv=String(k.value).trim();const btn=e.querySelector("button");const same=kv!==""&&Math.abs(dsN(kv)-g.r)<0.0005;
  if(btn){btn.hidden=same;btn.style.display=same?"none":"";if(!btn.dataset.wf){btn.dataset.wf="1";btn.addEventListener("click",()=>setTimeout(()=>lfSugPaint(d),0));}}
  e.querySelectorAll(".lf-gap").forEach(x=>x.remove());
- if(kv!==""&&!same){const gap=r3(dsN(kv)-g.r);const p=document.createElement("p");p.className="lf-gap"+(gap<0?" neg":"");p.textContent=t(gap<0?"lfGapLess":"lfGapMore").replace("{g}",fq(Math.abs(gap)));e.insertBefore(p,btn||null);}}catch(e){}};}
+ const raw=r3(g.a+g.b-g.c-g.w);if(raw<-0.0005){const p=document.createElement("p");p.className="lf-gap neg";p.textContent=t("lfOver").replace("{g}",fq(-raw));e.insertBefore(p,btn||null);}
+ else if(kv!==""&&!same){const gap=r3(dsN(kv)-g.r);const p=document.createElement("p");p.className="lf-gap"+(gap<0?" neg":"");p.textContent=t(gap<0?"lfGapLess":"lfGapMore").replace("{g}",fq(Math.abs(gap)));e.insertBefore(p,btn||null);}}catch(e){}};}
 
 /* ---------- 3. the buy sheet: the chicken total says what came off as waste ---------- */
 {const _tp=bsTotPaint;bsTotPaint=function(){_tp();try{const sh=document.querySelector("#v2s .sh.buy");const row=sh&&sh.querySelector(".v2-sumrow.bs-tot");if(!row||!BSLK||BSLK.pk!=="chicken"||!SH||!V2B)return;
@@ -5624,11 +5639,14 @@ function clLines(){const s=SH,c=dsCalc(),cur=v2Cur(),b=s.buy,d=s.date;const l=lf
   for(const r of sales){const q=dsN(r.qty),a=dsN(r.amount);const who=r.shop?t("v2Shop"):rsName(String(r.who||"").trim());const pn=lfIsChk(r.prod)?"":prName(r.prod);
    h+=ln(`<bdi>${esc(who)}</bdi>`,esc([pn,q?`${fq(q)} ${t("dsKgU")} × ${fq2(a/q)} ${cur}`:""].filter(Boolean).join(" · ")),U(a),"",0,1);}}
  const bq=dsN(b.qty),bp=dsN(b.price);
- if(c.buy>0)h+=ln(esc(tx(b.name)||t("v2S1")),esc([bq?`${fq(bq)} ${t("dsKgU")}`:"",bp?`× ${fq(bp)} ${cur}`:""].filter(Boolean).join(" ")),"−"+U(c.buy));
+ const paidNote=b.paidSet&&bq>0&&bp>0&&Math.abs(c.buy-qp2(bq*bp))>0.004?`· ${t("dsPaid")} ${fmt(c.buy)} ${cur}`:"";
+ if(c.buy>0)h+=ln(esc(tx(b.name)||t("v2S1")),esc([bq?`${fq(bq)} ${t("dsKgU")}`:"",bp?`× ${fq(bp)} ${cur}`:"",paidNote].filter(Boolean).join(" ")),"−"+U(c.buy));
  if(c.costs>0)h+=ln(t("v2S2"),esc(s.costs.filter(r=>dsN(r.amount)>0).map(r=>`${tx(r.name)||t("dsOtherCost")} ${fq(dsN(r.amount))} ${cur}`).join(" · ")),"−"+U(c.costs));
- if(l.inV>0||l.inKg>0)h+=ln(t("clIn"),esc(`${fq(l.inKg)} ${t("dsKgU")}`),"−"+U(l.inV));
- if(l.set)h+=ln(t("clOut"),esc([`${fq(l.outKg)} ${t("dsKgU")}`,l.wKg>0?`${t("kgWaste")} ${fq(l.wKg)} ${t("dsKgU")}`:""].filter(Boolean).join(" · ")),"+"+U(l.outV),"c-paid",ro?"":`lfOpen(${ja(d)})`);
- else if(!ro&&(l.inKg>0||lfBuyKg(d)>0))h+=ln(t("clOut"),t("clNoLeft"),`<span class="lf-ask">${t("lfAsk")}</span>`,"",`lfOpen(${ja(d)})`);
+ /* the chicken on its own, then any liver or wings carried with it */
+ const kgs=(ch,o)=>[`${fq(num(ch))} ${t("dsKgU")}`,...Object.entries(o||{}).filter(e=>num(e[1])>0).map(([p,q])=>`${prName(p)} ${fq(num(q))} ${t("dsKgU")}`)];
+ if(l.inV>0||l.inKg>0)h+=ln(t("clIn"),esc(kgs(l.inCh!=null?l.inCh:l.inKg,l.inO).join(" · ")),"−"+U(l.inV));
+ if(l.set)h+=ln(t("clOut"),esc([...kgs(l.chKg!=null?l.chKg:l.outKg,l.oKg),l.wKg>0?`${t("kgWaste")} ${fq(l.wKg)} ${t("dsKgU")}`:""].filter(Boolean).join(" · ")),"+"+U(l.outV),"c-paid",ro?"":`lfOpen(${ja(d)})`);
+ else if(!ro)h+=ln(t("clOut"),t("clNoLeft"),`<span class="lf-ask">${t("lfAsk")}</span>`,"",`lfOpen(${ja(d)})`);
  const neg=c.profit<-0.004;
  h+=`<div class="v2-tl tot"><span>${neg?t("dsLoss"):t("dsProfit")}</span><b>${U(Math.abs(c.profit))}</b></div>`;
  return`<div class="v2-list v2-tls cl-pl">${h}</div>`;}
@@ -5636,11 +5654,17 @@ function clKgCard(){const s=SH,d=s.date;const l=lfOf(d);const ro=v2RO()||dsRO(d)
  const a=num(l.inCh),b=lfBuyKg(d),c=lfSoldKg(d),w=num(l.wKg);if(!(a>0||b>0||c>0))return"";
  const exp=r3(a+b-c-w);const K=v=>`${fq(v)} <small class="u">${esc(t("dsKgU"))}</small>`;
  const ln=(l1,v,cls)=>`<div class="v2-tl"><span>${l1}</span><b class="${cls||""}">${v}</b></div>`;
- let h=ln(t("kgIn"),K(a))+ln(t("kgBuy"),(b>0?"+":"")+K(b))+ln(t("kgSold"),(c>0?"−":"")+K(c))+ln(t("kgWaste"),(w>0?"−":"")+K(w))+`<div class="v2-tl tot"><span>${t("kgExp")}</span><b>${K(exp)}</b></div>`;
+ /* chicken sales typed as money only: their kilos aren't in "sold", so the check can't be complete */
+ const nq=s.sales.filter(r=>lfIsChk(r.prod)&&dsN(r.amount)>0&&!(dsN(r.qty)>0)).length;
+ let h=ln(t("kgIn"),K(a))+ln(t("kgBuy"),(b>0?"+":"")+K(b))+ln(t("kgSold"),(c>0?"−":"")+K(c))+ln(t("kgWaste"),(w>0?"−":"")+K(w))+`<div class="v2-tl tot"><span>${t("kgExp")}</span><b>${K(Math.max(0,exp))}</b></div>`;
+ const hint=(k,fix)=>`<p class="eo-hint kg-warn"><span class="eo-i">${I5.warn}</span><span>${esc(t(k))}</span></p>${fix&&!ro?`<button class="ui-btn ui-sec ui-sm kg-fix" onclick="lfOpen(${ja(d)})">${I20.edit}<span>${t("kgFix")}</span></button>`:""}`;
  let warn="";
- if(l.set){const left=num(l.chKg);h+=ln(t("kgLeft"),K(left));const gap=r3(left-exp);
-  if(Math.abs(gap)>=0.05){h+=ln(gap<0?t("kgMiss"):t("kgExtra"),K(Math.abs(gap)),"kg-gap");
-   warn=`<p class="eo-hint kg-warn"><span class="eo-i">${I5.warn}</span><span>${esc(t("kgMissD"))}</span></p>${ro?"":`<button class="ui-btn ui-sec ui-sm kg-fix" onclick="lfOpen(${ja(d)})">${I20.edit}<span>${t("kgFix")}</span></button>`}`;}}
+ if(l.set)h+=ln(t("kgLeft"),K(num(l.chKg)));
+ /* more went out than came in: say so, instead of a minus "should be left" and a made-up gap */
+ if(exp<-0.04){h+=ln(t("kgOver"),K(-exp),"kg-gap");warn=hint(nq?"kgNoQ":"kgOverD",1);}
+ else if(l.set){const gap=r3(num(l.chKg)-exp);
+  if(Math.abs(gap)>=0.05){h+=ln(gap<0?t("kgMiss"):t("kgExtra"),K(Math.abs(gap)),"kg-gap");warn=hint(nq?"kgNoQ":gap<0?"kgMissD":"kgExtraD",1);}}
+ else if(nq)warn=hint("kgNoQ",0);
  if(l.cpk>0)h+=ln(t("kgCpk"),`${fmt(l.cpk)} <small class="u">${esc(cur)}</small>`);
  return`<div class="v2-h"><b>${t("kgT")}</b></div><div class="v2-list v2-tls kg-l">${h}</div>${warn}`;}
 /* collected for old bills, and who will pay later: one line per restaurant, each amount with its unit */
@@ -5658,52 +5682,86 @@ function clCollLater(){const s=SH,cur=v2Cur();const U=v=>`${fmt(v)} <small class
  if(m)h=h.replace(m[0],()=>clLines()+clKgCard());
  const m2=h.match(/<div class="v2-list v2-tls">[\s\S]*?<\/div><\/div>/);
  if(m2&&(m2[0].includes(t("v2CollOld"))||m2[0].includes(t("v2Later"))))h=h.replace(m2[0],()=>clCollLater());}catch(e){}return h;};}
-/* the WhatsApp summary: the chicken carried in is a cost (−), what's carried out is kept (+) */
-{const _s=dsSummary;dsSummary=function(d){let txt=_s(d);try{const l=lfAll()[d];if(!l)return txt;const fm=v=>fmt(v).replace(/\.00$/,"");const cur=curL();
- if(l.inV>0)txt=txt.replace(`= +${fm(l.inV)}`,`= −${fm(l.inV)} ${cur}`);if(l.outV>0)txt=txt.replace(`= −${fm(l.outV)}`,`= +${fm(l.outV)} ${cur}`);}catch(e){}return txt;};}
 
 /* ---------- 5. no number stands alone (Ala'a 21/11): every amount on screen gets the currency next to it.
-   An amount is a text-only element showing a number with 2 decimals; one that already has the currency beside it is left alone. ---------- */
-const U47={dec:/^[+\-−]?\d{1,3}(,\d{3})*\.\d{2}$/,int:/^[+\-−]?\d{1,3}(,\d{3})*$/,unit:/^\s*(د\.أ|JOD|كغ|kg|%|\$|€)/i,unitEnd:/(د\.أ|JOD|كغ|kg|%|\$|€)\s*$/i,
+   An amount is a number with 2 decimals, a whole number inside an amount box, or a number right after a money word;
+   one that already has a unit beside it is left alone. In Arabic the unit is read after the number, so inside the
+   left-to-right number boxes it sits on the number's left, the same side as everywhere else on the screen.
+   Only what was added or changed since the last pass is looked at, and the pass's own changes don't start another one. ---------- */
+const U47={dec:/^[+\-−]?\d{1,3}(,\d{3})*\.\d{2}$/,int:/^[+\-−]?\d{1,3}(,\d{3})*$/,
  box:".v,.bv,.num,.b5-num,.mid,.big,.amt,.lbl",skip:".no-u,svg,script,style,input,textarea,select,[contenteditable],.cal-g,.u-cur,small.u,#prBar,.v2-big,.ui-tabs"};
-function u47Near(el,cur){let a=el.parentElement;for(let i=0;i<3&&a;i++,a=a.parentElement){for(const ch of a.children){if(ch===el||ch.contains(el)||ch.matches(U47C))continue;if(ch.classList.contains("cu"))return true;if(!ch.childElementCount&&ch.textContent.trim()===cur)return true;}}return false;}
-/* the text right after a node (skipping blanks), and right before it */
 const U47C=".v2-hero .cu,.ds-hero .cu,.ui-hero .cu";
+const U47S=new WeakMap();let U47R=null;
+/* the patterns, built from the shop's own currency so any currency is recognised as a unit */
+function u47Rx(cur){const k=cur+"|"+lang;if(U47R&&U47R.k===k)return U47R;const es=x=>String(x).replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
+ const alt=a=>[...new Set(a.filter(Boolean).map(String))].sort((x,y)=>y.length-x.length).map(es).join("|");
+ const U=alt(["د.أ","JOD","كغ","kg","%","$","€",cur,t("dsKgU")]),C=alt(["د.أ","JOD","$","€",cur]),F=alt([cur,t("dsKgU"),"د.أ","كغ"]);
+ const ML=[...new Set(["coll","paid","setup","owesYou","owesYouL","youOwe","rev","spend","overdue","rem","burn","dyS","dyO"].map(x=>String(t(x)||"").replace(/[:：]\s*$/,"").trim()).filter(x=>x&&x.length<24))];
+ const N="[+\\-−]?\\d[\\d,]*(?:\\.\\d+)?";
+ U47R={k,unit:new RegExp(`^\\s*(?:${U})`,"i"),curEnd:new RegExp(`(?:${C})\\s*$`,"i"),
+  flip:new RegExp(`(${N})(\\s*)(${F})\\s*$`),flipOnly:new RegExp(`^\\s*(?:${F})\\s*$`),numEnd:new RegExp(`(${N})\\s*$`),
+  RL:ML.length?new RegExp(`(?:^|[\\s·(])(?:${ML.map(es).join("|")})\\s+([+\\-−]?\\d{1,3}(?:,\\d{3})*(?:\\.\\d{1,2})?)(?![\\d.,/:%])`,"g"):null,
+  RD:/(^|[^\d.,/:\w])([+\-−]?\d{1,3}(?:,\d{3})*\.\d{2})(?![\d.,/:%])/g};
+ return U47R;}
+/* a currency shown somewhere in the amount's own small box (not in a long list around it) */
+function u47Near(el,cur){let a=el.parentElement;for(let i=0;i<3&&a;i++,a=a.parentElement){if(a.childElementCount>8)break;for(const ch of a.children){if(ch===el||ch.contains(el)||ch.matches(U47C)||ch.classList.contains("u-cur"))continue;if(ch.classList.contains("cu"))return true;if(!ch.childElementCount&&ch.textContent.trim()===cur)return true;}}return false;}
+/* the text right after a node (skipping blanks), and right before it */
 function u47Skip(x){return x&&(x.nodeType===3?!x.textContent.trim():x.nodeType===1&&x.matches(U47C));}
 function u47After(n){let x=n.nextSibling;while(x&&u47Skip(x))x=x.nextSibling;if(x)return String(x.textContent||"");let e=n.parentElement;
  for(let i=0;i<2&&e;i++,e=e.parentElement){if(e.lastChild&&e.lastChild!==n&&!e.lastChild.contains(n))break;let y=e.nextSibling;while(y&&u47Skip(y))y=y.nextSibling;if(y)return String(y.textContent||"");}return"";}
 function u47Before(n){let x=n.previousSibling;while(x&&x.nodeType===3&&!x.textContent.trim())x=x.previousSibling;return x?String(x.textContent||""):"";}
-function uPass(){try{if(typeof D==="undefined"||!D||!document.body)return;const cur=curL();if(!cur)return;
- /* words that always come right before an amount ("Collected 5,437", "Sold 1,325 · Spent 852") */
- const ML=[...new Set(["coll","paid","setup","owesYou","owesYouL","youOwe","rev","spend","overdue","rem","burn","dyS","dyO"].map(k=>String(t(k)||"").replace(/[:：]\s*$/,"").trim()).filter(x=>x&&x.length<24))];
- const esR=x=>x.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
- const RL=ML.length?new RegExp(`(?:^|[\\s·(])(?:${ML.map(esR).join("|")})\\s+[+\\-−]?\\d{1,3}(?:,\\d{3})*(?:\\.\\d{1,2})?(?![\\d.,/:%])`,"g"):null;
- const RD=/(?:^|[^\d.,/:\w])[+\-−]?\d{1,3}(?:,\d{3})*\.\d{2}(?![\d.,/:%])/g;
- const qty=String(t("qty")||"");const todo=[];const w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);let n;
- while((n=w.nextNode())){const tx=n.textContent;if(!tx||tx.length>240||!/\d/.test(tx))continue;const el=n.parentElement;if(!el||el.closest(U47.skip))continue;
-  const ends=new Set();let m;
-  RD.lastIndex=0;while((m=RD.exec(tx)))ends.add(m.index+m[0].length);
-  if(RL){RL.lastIndex=0;while((m=RL.exec(tx)))ends.add(m.index+m[0].length);}
-  const s=tx.trim();
-  if(s.length<=14&&U47.int.test(s)&&el.matches(U47.box)&&!(el.dataset&&el.dataset.l===qty)){const tl=el.closest(".tile");const l=tl&&tl.querySelector(".l");if(!(l&&(l.textContent===t("payback")||l.textContent===t("runway"))))ends.add(tx.length-(tx.length-tx.trimEnd().length));}
-  if(!ends.size)continue;
-  const whole=U47.dec.test(s)||U47.int.test(s);
-  if(whole&&(U47.unitEnd.test(u47Before(n))||u47Near(el,cur)))continue;
-  const keep=[];for(const e of ends){const rest=tx.slice(e);const after=rest.trim()?rest:rest+u47After(n);if(U47.unit.test(after))continue;keep.push(e);}
-  if(keep.length)todo.push([n,keep.sort((x,y)=>y-x)]);}
- for(const [x,ks] of todo){let node=x;for(const e of ks){const tail=e<node.textContent.length?node.splitText(e):null;const sm=document.createElement("small");sm.className="u-cur";sm.textContent=" "+cur;if(tail)tail.before(sm);else node.after(sm);}}}catch(e){}}
-let U47T=0;try{new MutationObserver(()=>{if(U47T)return;U47T=requestAnimationFrame(()=>{U47T=0;uPass();});}).observe(document.body,{childList:true,subtree:true,characterData:true});}catch(e){}
+function u47Sib(n,k){let x=n[k];while(x&&x.nodeType===3&&!x.textContent.trim())x=x[k];return x&&x.nodeType===1?x:null;}
+function uPass(roots){try{if(typeof D==="undefined"||!D||!document.body)return;const cur=curL();if(!cur)return;const R=u47Rx(cur);
+ const ar=lang==="ar",qty=String(t("qty")||"");const dirs=new Map();
+ const ltr=el=>{if(!ar)return false;let v=dirs.get(el);if(v===undefined){v=getComputedStyle(el).direction==="ltr";dirs.set(el,v);}return v;};
+ const add=[],flipT=[],flipE=[];
+ for(const root of roots||[document.body]){if(!root||!root.isConnected)continue;const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);let n;
+  while((n=w.nextNode())){const tx=n.textContent;if(!tx||tx.length>240||!/\d/.test(tx)||U47S.get(n)===tx)continue;U47S.set(n,tx);
+   const el=n.parentElement;if(!el||el.closest(U47.skip))continue;const L2R=ltr(el);let m;
+   /* in a left-to-right number box, a unit written after the number moves to the number's left */
+   if(L2R){if((m=R.flip.exec(tx))){flipT.push([n,m.index,m[1],m[3]]);continue;}
+    const nx=u47Sib(n,"nextSibling");if(nx&&nx.tagName==="SMALL"&&!nx.childElementCount&&R.flipOnly.test(nx.textContent)&&(m=R.numEnd.exec(tx))){flipE.push([n,m.index,nx]);continue;}}
+   const sp=[];
+   R.RD.lastIndex=0;while((m=R.RD.exec(tx))){const s=m.index+m[1].length;sp.push([s,s+m[2].length]);}
+   if(R.RL){R.RL.lastIndex=0;while((m=R.RL.exec(tx))){const e=m.index+m[0].length;sp.push([e-m[1].length,e]);}}
+   const s0=tx.trim();
+   if(s0.length<=14&&U47.int.test(s0)){const pe=el.parentElement;const bx=el.matches(U47.box)?el:(/^(B|STRONG|SPAN)$/.test(el.tagName)&&pe&&pe.matches(U47.box)&&pe.childElementCount===1&&pe.textContent.trim()===s0)?pe:null;
+    if(bx&&!(bx.dataset&&bx.dataset.l===qty)){const tl=bx.closest(".tile");const l=tl&&tl.querySelector(".l");if(!(l&&(l.textContent===t("payback")||l.textContent===t("runway")))){const st=tx.indexOf(s0);sp.push([st,st+s0.length]);}}}
+   if(!sp.length)continue;
+   const whole=U47.dec.test(s0)||U47.int.test(s0),nxE=u47Sib(n,"nextSibling"),pvE=u47Sib(n,"previousSibling");
+   if(whole&&(R.curEnd.test(u47Before(n))||(pvE&&pvE.classList.contains("u-pre"))||u47Near(el,cur)))continue;
+   const seen=new Set(),keep=[];
+   for(const [s,e] of sp){if(seen.has(e))continue;seen.add(e);
+    const rest=tx.slice(e);const after=rest.trim()?rest:rest+(nxE&&nxE.classList.contains("u-cur")?" "+cur:u47After(n));
+    /* it already has a unit after it, or it is the kilos in "kilos × price" */
+    if(R.unit.test(after)||/^\s*[×✕]/.test(after))continue;
+    /* a currency written before it ("$12.00", or one already put on its left) */
+    const pre=tx.slice(0,s);if(R.curEnd.test(pre.trim()?pre:u47Before(n)+pre))continue;
+    keep.push(L2R?s:e);}
+   if(keep.length)add.push([n,[...new Set(keep)].sort((x,y)=>y-x),L2R]);}}
+ const at=(node,p,sm)=>{if(p<=0)node.before(sm);else if(p>=node.textContent.length)node.after(sm);else{const tl=node.splitText(p);tl.before(sm);U47S.set(tl,tl.textContent);}U47S.set(node,node.textContent);};
+ const mk=(u,pre)=>{const sm=document.createElement("small");sm.className=pre?"u-cur u-pre":"u-cur";sm.textContent=pre?u:" "+u;return sm;};
+ for(const [n,i,v,u] of flipT){if(!n.isConnected)continue;n.textContent=n.textContent.slice(0,i)+v;at(n,i,mk(u,1));}
+ for(const [n,i,sm] of flipE){if(!n.isConnected||!sm.isConnected)continue;sm.classList.add("u-pre");at(n,i,sm);}
+ for(const [n,ks,pre] of add){if(!n.isConnected)continue;for(const p of ks)at(n,p,mk(cur,pre));}}catch(e){}}
+/* look only at what was added or changed; the pass's own insertions are taken back off the queue */
+const U47Q=new Set();let U47T=0,U47O=null;
+function u47Q(x){const e=x&&(x.nodeType===1?x:x.parentElement);if(e)U47Q.add(e);}
+function u47Run(){U47T=0;const qs=[...U47Q].filter(e=>e.isConnected);U47Q.clear();if(!qs.length)return;const S=new Set(qs);
+ uPass(qs.filter(e=>{for(let a=e.parentElement;a;a=a.parentElement)if(S.has(a))return false;return true;}));if(U47O)U47O.takeRecords();}
+try{U47O=new MutationObserver(rs=>{for(const r of rs){if(r.type==="characterData")u47Q(r.target);else for(const a of r.addedNodes)u47Q(a);}if(U47Q.size&&!U47T)U47T=requestAnimationFrame(u47Run);});
+ U47O.observe(document.body,{childList:true,subtree:true,characterData:true});u47Q(document.body);U47T=requestAnimationFrame(u47Run);}catch(e){}
 
 /* the owner's lists: numeric dates (21/11/2026), and a cost with no supplier is named by what it was, not "—" */
 function dmy47(d){const dt=new Date(String(d||"").slice(0,10)+"T12:00:00");return isNaN(dt)?String(d||""):dt.getDate()+"/"+(dt.getMonth()+1)+"/"+dt.getFullYear();}
 {const _rh=rowHTML;rowHTML=function(x){if(!x)return _rh(x);let y=x;if(!x.party&&x.k!=="f"&&!cat5(x.cat)){const nm=x.item||x.desc||"";if(nm)y=Object.assign({},x,{party:nm,desc:x.desc===nm?"":x.desc});}
  let h=_rh(y);const d=String(x.date||"");if(/^\d{4}-\d{2}-\d{2}$/.test(d))h=h.replace(`<span>${d}`,`<span>${dmy47(d)}`);return h;};}
-{const _th=tableHTML;tableHTML=function(kind,rows){let h=_th(kind,rows);for(const x of rows||[]){const d=String(x&&x.date||"");if(/^\d{4}-\d{2}-\d{2}$/.test(d))h=h.split(`<div class="rmeta">${d}`).join(`<div class="rmeta">${dmy47(d)}`);}return h;};}
+{const _th=tableHTML;tableHTML=function(kind,rows){return _th(kind,rows).replace(/(<div class="rmeta">)([^<]*)/g,(m,a,b)=>a+b.replace(/\b(\d{4}-\d{2}-\d{2})\b/g,(z,d)=>dmy47(d)));};}
 
 /* ---------- 6. the activity log: every save records who added, edited or deleted what, and when.
    Kept in D.alog (merged by id like the other lists, so two people saving at once both keep their lines). ---------- */
 if(!LISTS.includes("alog"))LISTS.push("alog");
-const AL={done:{}};
+const AL={prev:null,D:null};
 function alKey(p){const r=rsOf(p);return r?r.key:String(p||"");}
 function alSnap(src){const S={};if(!src||typeof src!=="object")return S;const pr=p=>!p||lfIsChk(p)?"chicken":String(p);
  for(const x of src.invoices||[]){if(!x||!x.sh||x.shk!=="sale")continue;S["s:"+x.id]={d:x.sh,t:"s",r:x.id,v:{p:String(x.party||""),pr:pr(x.prod),q:r3(num(x.qty)),a:r3(num(x.amount)),pd:(x.pays||[]).some(p=>p&&p.sh===x.sh&&!p.c)?1:0}};}
@@ -5715,60 +5773,81 @@ function alSnap(src){const S={};if(!src||typeof src!=="object")return S;const pr
  const lf=(src.settings&&src.settings.lf)||{};for(const d in lf){const r=lf[d];if(!r||!/^\d{4}-\d{2}-\d{2}$/.test(d))continue;const ps={};for(const k in (r.p||{}))if(num(r.p[k])>0)ps[k]=r3(num(r.p[k]));
   S["l:"+d]={d,t:"l",r:d,v:{k:r3(num(r.k)),w:r3(num(r.w)),ps}};}
  return S;}
+/* a restaurant's other names count as the same restaurant, so joining two names is not an edit of every sale */
+function alSame(t0,f,a,b){return f==="p"&&(t0==="s"||t0==="p")?alKey(a)===alKey(b):JSON.stringify(a)===JSON.stringify(b);}
+/* collections are grouped by restaurant: group the older copy again with today's names, so a join moves nothing */
+function alRekey(S){const O={};for(const k in S){const s=S[k];if(!s||s.t!=="p"){O[k]=s;continue;}const p=alKey(s.v.p),r=s.d+"|"+p,nk="p:"+r;
+  O[nk]=O[nk]?Object.assign({},O[nk],{v:{p,a:r3(O[nk].v.a+num(s.v.a))}}):Object.assign({},s,{r,v:{p,a:num(s.v.a)}});}return O;}
 function alDiff(B,M){const out=[];const J=JSON.stringify;
- for(const k in M){const m=M[k],b=B[k];const js=J(m.v);if(AL.done[k]===js)continue;
-  if(!b){out.push({k:"a",e:m});AL.done[k]=js;continue;}
-  if(J(b.v)!==js){const o={};for(const f of new Set([...Object.keys(b.v),...Object.keys(m.v)]))if(J(b.v[f])!==J(m.v[f]))o[f]=b.v[f];out.push({k:"e",e:m,o});AL.done[k]=js;}}
- for(const k in B){if(M[k]||AL.done[k]==="x")continue;out.push({k:"x",e:B[k]});AL.done[k]="x";}
+ for(const k in M){const m=M[k],b=B[k];
+  if(!b){out.push({k:"a",e:m});continue;}
+  if(J(b.v)===J(m.v))continue;const o={};for(const f of new Set([...Object.keys(b.v),...Object.keys(m.v)]))if(!alSame(m.t,f,b.v[f],m.v[f]))o[f]=b.v[f];
+  if(Object.keys(o).length)out.push({k:"e",e:m,o});}
+ for(const k in B)if(!M[k])out.push({k:"x",e:B[k]});
  return out;}
-{const _ps=persist;persist=async function(){let prev=null;try{if(typeof D!=="undefined"&&D&&SYNC.base){prev=Object.assign({},AL.done);const ch=alDiff(alSnap(SYNC.base),alSnap(D));
-  if(ch.length&&ch.length<=80){const me=dsMe()||"",n=myName()||unmOf(me,""),at=new Date().toISOString();if(!Array.isArray(D.alog))D.alog=[];
-   for(const c of ch){const en={id:uid(),d:c.e.d,at,by:me,n,k:c.k,t:c.e.t,r:c.e.r,v:c.e.v};if(c.o)en.o=c.o;D.alog.push(en);}
+/* each save is compared with this phone's last save (the log already has that one), or with the server's copy when the books
+   were reloaded or put back in between. A save that fails takes its lines back, so trying again logs it once. */
+{const _ps=persist;persist=async function(){let mine=null,keep=null;
+ try{if(typeof D!=="undefined"&&D&&(SYNC.base||AL.prev)){try{nmLinkAll();}catch(e){}
+  const B=alRekey(AL.D===D&&AL.prev?AL.prev:alSnap(SYNC.base)),M=alSnap(D);keep={prev:AL.prev,D:AL.D};const ch=alDiff(B,M);AL.prev=M;AL.D=D;
+  if(ch.length&&ch.length<=80){const me=dsMe()||"",n=myName()||unmOf(me,""),at=new Date().toISOString();if(!Array.isArray(D.alog))D.alog=[];mine=new Set();
+   for(const c of ch){const en={id:uid(),d:c.e.d,at,by:me,n,k:c.k,t:c.e.t,r:c.e.r,v:c.e.v};if(c.o)en.o=c.o;D.alog.push(en);mine.add(en.id);}
    if(D.alog.length>3000)D.alog=D.alog.slice(-3000);}}}catch(e){}
- const ok=await _ps.apply(this,arguments);if(!ok&&prev)AL.done=prev;return ok;};}
+ const ok=await _ps.apply(this,arguments);
+ if(!ok&&keep){AL.prev=keep.prev;AL.D=keep.D;if(mine&&typeof D!=="undefined"&&D&&Array.isArray(D.alog))D.alog=D.alog.filter(e=>!(e&&mine.has(e.id)));}
+ return ok;};}
 /* the lines of one day: what the log recorded, plus (for things added before the log) who added them and when, from the record itself */
-function alFor(d){const L=(Array.isArray(D.alog)?D.alog:[]).filter(e=>e&&e.d===d);const added=new Set(L.filter(e=>e.k==="a").map(e=>e.t+":"+e.r));const out=L.slice();const S=alSnap(D);
- for(const k in S){const s=S[k];if(s.d!==d||added.has(s.t+":"+s.r))continue;let by="",at="";
+/* newest first; a line with no time sits at the start of its day */
+const alSK=e=>String(e&&e.at||((e&&e.d)||"")+"T00:00:00"),alCmp=(a,b)=>alSK(b).localeCompare(alSK(a));
+/* what a record looked like before the edits the log has: undo them newest first */
+function alOrig(t0,r,v){const o=Object.assign({},v);for(const e of (Array.isArray(D.alog)?D.alog:[]).filter(e=>e&&e.k==="e"&&e.t===t0&&e.r===r&&e.o&&typeof e.o==="object").sort(alCmp))Object.assign(o,e.o);return o;}
+function alFor(d){const L=(Array.isArray(D.alog)?D.alog:[]).filter(e=>e&&e.d===d);const added=new Set(L.filter(e=>e.k==="a").map(e=>e.t+":"+e.r)),edited=new Set(L.filter(e=>e.k==="e").map(e=>e.t+":"+e.r));const out=L.slice();const S=alSnap(D);
+ for(const k in S){const s=S[k];const sk=s.t+":"+s.r;if(s.d!==d||added.has(sk))continue;let by="",at="";
   if(s.t==="s"){const x=D.invoices.find(i=>i&&i.id===s.r);if(x){by=x.by||"";at=x.at||"";}}
   else if(s.t==="b"||s.t==="c"){const x=D.expenses.find(i=>i&&i.id===s.r);if(x){by=x.by||"";at=x.at||"";}}
-  else if(s.t==="l"){const r=lfMap()[d];if(r){by=r.by||"";at=r.at||"";}}
+  /* a leftover keeps only its last save, so it tells who added it only until someone changes it */
+  else if(s.t==="l"){const r=lfMap()[d];if(r&&!edited.has(sk)){by=r.by||"";at=r.at||"";}}
   else if(s.t==="p"){for(const x of D.invoices)for(const p of (x&&x.pays)||[])if(p&&p.sh===d&&p.c&&alKey(x.party)===s.v.p){if(!by)by=p.by||"";if(p.at&&(!at||p.at<at))at=p.at;}}
-  out.push({id:"o_"+k,d,at:at||(d+"T12:00:00"),by,n:"",k:"a",t:s.t,r:s.r,v:s.v,old:1});}
- return out.sort((a,b)=>String(b.at).localeCompare(String(a.at)));}
+  out.push({id:"o_"+k,d,at,by,n:"",k:"a",t:s.t,r:s.r,v:edited.has(sk)?alOrig(s.t,s.r,s.v):s.v,old:1});}
+ return out.sort(alCmp);}
 function alOf(t0,r){const L=(Array.isArray(D.alog)?D.alog:[]).filter(e=>e&&e.t===t0&&e.r===r);
  if(!L.some(e=>e.k==="a")){const s=alSnap(D)[t0+":"+r];if(s){const o=alFor(s.d).find(e=>e.old&&e.t===t0&&e.r===r);if(o)L.push(o);}}
- return L.sort((a,b)=>String(b.at).localeCompare(String(a.at)));}
+ return L.sort(alCmp);}
+/* a product joined into another still shows its own name in the log */
+function alPN(k){if(!k||k==="chicken"||prList().some(x=>x.k===k))return prName(k);
+ const g=(D&&D.settings&&Array.isArray(D.settings.dsProds)?D.settings.dsProds:[]).find(p=>p&&p.k===k),o=Object.assign({},PR_DEF.find(x=>x.k===k)||{},g||{});
+ return(lang==="ar"?(o.ar||o.en):(o.en||o.ar))||"—";}
 function alWho(e){const n=unmOf(e.by,"")||e.n||"";if(n)return n;if(e.by&&e.by===dsMe())return myName()||t("alYou");return"—";}
 function alWhen(at){if(!at)return"";const dt=new Date(at);if(isNaN(dt))return"";const h=dt.getHours(),m=String(dt.getMinutes()).padStart(2,"0");const hh=((h+11)%12)+1;
  return`${dt.getDate()}/${dt.getMonth()+1} · ${hh}:${m} ${lang==="ar"?(h<12?"ص":"م"):(h<12?"am":"pm")}`;}
 function alNm(e,p){if(e.t==="s")return!p||p==="Shop sales"?t("v2Shop"):rsName(p);if(e.t==="p")return rsName(p);return tx(p)||"—";}
 function alWhat(e){const v=e.v||{},cur=v2Cur(),K=t("dsKgU");
- if(e.t==="s")return{nm:alNm(e,v.p),det:[v.pr&&v.pr!=="chicken"?prName(v.pr):"",v.q?`${fq(v.q)} ${K} × ${fq2(v.a/v.q)} ${cur}`:"",`${fmt(v.a)} ${cur}`,!v.p||v.p==="Shop sales"?"":(v.pd?t("alPaidNow"):t("alOnAcc"))].filter(Boolean).join(" · ")};
+ if(e.t==="s")return{nm:alNm(e,v.p),det:[v.pr&&v.pr!=="chicken"?alPN(v.pr):"",v.q?`${fq(v.q)} ${K} × ${fq2(v.a/v.q)} ${cur}`:"",`${fmt(v.a)} ${cur}`,!v.p||v.p==="Shop sales"?"":(v.pd?t("alPaidNow"):t("alOnAcc"))].filter(Boolean).join(" · ")};
  if(e.t==="b")return{nm:tx(v.i)||t("v2S1"),det:[v.q?`${fq(v.q)} ${K}`+(v.pr?` × ${fq(v.pr)} ${cur}`:""):"",`${fmt(v.a)} ${cur}`,v.p?tx(v.p):""].filter(Boolean).join(" · ")};
  if(e.t==="c")return{nm:tx(v.i)||t("dsOtherCost"),det:[`${fmt(v.a)} ${cur}`,v.m||""].filter(Boolean).join(" · ")};
  if(e.t==="p")return{nm:alNm(e,v.p),det:`${fmt(v.a)} ${cur}`};
- if(e.t==="l")return{nm:"",det:[`${prName("chicken")} ${fq(v.k)} ${K}`,v.w>0?`${t("alW")} ${fq(v.w)} ${K}`:"",...Object.entries(v.ps||{}).map(([k,q])=>`${prName(k)} ${fq(q)} ${K}`)].filter(Boolean).join(" · ")};
+ if(e.t==="l")return{nm:"",det:[`${prName("chicken")} ${fq(v.k)} ${K}`,v.w>0?`${t("alW")} ${fq(v.w)} ${K}`:"",...Object.entries(v.ps||{}).map(([k,q])=>`${alPN(k)} ${fq(q)} ${K}`)].filter(Boolean).join(" · ")};
  return{nm:"",det:""};}
 function alChg(e){const o=e.o||{},v=e.v||{},cur=v2Cur(),K=t("dsKgU");const F=[];const ft=(a,b)=>t("alFT").replace("{a}",a).replace("{b}",b);const pd=x=>x?t("alPaidNow"):t("alOnAcc");
  for(const f in o){const a=o[f],b=v[f];
   const kg=x=>`${fq(x)} ${K}`,jd=x=>`${fmt(x)} ${cur}`;
   if(f==="q")F.push(`${t("alQ")} ${ft(kg(a),kg(b))}`);
   else if(f==="a")F.push(`${t("alAm")} ${ft(jd(a),jd(b))}`);
-  else if(f==="pr")F.push(e.t==="b"?`${t("alPr")} ${ft(`${fq(a)} ${cur}`,`${fq(b)} ${cur}`)}`:`${t("alProd")} ${ft(prName(a),prName(b))}`);
+  else if(f==="pr")F.push(e.t==="b"?`${t("alPr")} ${ft(`${fq(a)} ${cur}`,`${fq(b)} ${cur}`)}`:`${t("alProd")} ${ft(alPN(a),alPN(b))}`);
   else if(f==="p")F.push(`${e.t==="b"?t("alSup"):t("alNm")} ${ft(alNm(e,a),alNm(e,b))}`);
   else if(f==="pd")F.push(`${t("alPd")} ${ft(pd(a),pd(b))}`);
   else if(f==="i")F.push(`${t("alIt")} ${ft(tx(a)||"—",tx(b)||"—")}`);
   else if(f==="m")F.push(`${t("alMm")} ${ft(a||"—",b||"—")}`);
   else if(f==="k")F.push(`${prName("chicken")} ${ft(kg(a),kg(b))}`);
   else if(f==="w")F.push(`${t("alW")} ${ft(kg(a),kg(b))}`);
-  else if(f==="ps"){const ks=new Set([...Object.keys(a||{}),...Object.keys(b||{})]);for(const k of ks)if(num((a||{})[k])!==num((b||{})[k]))F.push(`${prName(k)} ${ft(kg(num((a||{})[k])),kg(num((b||{})[k])))}`);}}
+  else if(f==="ps"){const ks=new Set([...Object.keys(a||{}),...Object.keys(b||{})]);for(const k of ks)if(num((a||{})[k])!==num((b||{})[k]))F.push(`${alPN(k)} ${ft(kg(num((a||{})[k])),kg(num((b||{})[k])))}`);}}
  return F.join(" · ");}
-function alRow(e){const w=alWhat(e);const ic=e.k==="a"?I20.plus:e.k==="e"?I20.edit:I20.trash;
+function alRow(e){const kd=e.k==="e"||e.k==="x"?e.k:"a";e=Object.assign({},e,{k:kd});const w=alWhat(e);const ic=e.k==="a"?I20.plus:e.k==="e"?I20.edit:I20.trash;
  const head=`${alWho(e)} ${t(e.k==="a"?(e.t==="l"?"alLA":"alA"):e.k==="e"?"alE":"alX")} ${t({s:"alS",b:"alB",c:"alC",p:"alP",l:"alL"}[e.t]||"alS")}`;
  const det=e.k==="e"?(alChg(e)||w.det):w.det;
- return`<div class="al-r al-${e.k}${e.old?" al-old":""}"><span class="al-i">${ic}</span><span class="al-t"><b>${esc(head)}${w.nm?` · <bdi>${esc(w.nm)}</bdi>`:""}</b>${det?`<small class="al-d${e.k==="x"?" al-del":""}">${esc(det)}</small>`:""}</span><time>${esc(alWhen(e.at))}</time></div>`;}
+ return`<div class="al-r al-${kd}${e.old?" al-old":""}"><span class="al-i">${ic}</span><span class="al-t"><b>${esc(head)}${w.nm?` · <bdi>${esc(w.nm)}</bdi>`:""}</b>${det?`<small class="al-d${e.k==="x"?" al-del":""}">${esc(det)}</small>`:""}</span><time>${esc(alWhen(e.at))}</time></div>`;}
 function alListHTML(L){if(!L.length)return`<p class="ui-empty">${t("alNone")}</p>`;return`<div class="ui-card al-l">${L.map(alRow).join("")}</div>${L.some(e=>e.old)?`<p class="al-note1">${esc(t("alOld"))}</p>`:""}`;}
-function alDayHTML(d){const L=alFor(d);const first=L.slice().sort((a,b)=>String(a.at).localeCompare(String(b.at)))[0];
+function alDayHTML(d){const L=alFor(d);const first=L.filter(e=>e.at).sort((a,b)=>String(a.at).localeCompare(String(b.at)))[0];
  return(first?`<div class="al-start">${I20.clock}<span>${esc(t("alStart").replace("{n}",alWho(first)))} · ${esc(alWhen(first.at))}</span></div>`:"")+alListHTML(L);}
 function alHistHTML(L){return L.length?`<div class="al-h"><h3 class="ds-h3">${t("alHist")}</h3>${alListHTML(L)}</div>`:"";}
 function alSheet(d){if(!d)return;v2Open(`${v2Head(esc(t("alDay")),esc(shortDate(d)),I20.clock)}${alDayHTML(d)}<div class="ui-row ui-foot"><button class="ui-btn ui-sec" onclick="v2Close()">${t("close")}</button></div>`,"al");}
@@ -5796,26 +5875,49 @@ function alHubBtn(){try{const st=document.querySelector("#app .v2-steps");if(!st
 function alHistInto(sel,L){try{const sh=document.querySelector(sel);if(!sh||sh.querySelector(".al-h"))return;const h=alHistHTML(L);if(!h)return;const f=sh.querySelector(".ui-foot")||sh.querySelector(".v2-done");if(f)f.insertAdjacentHTML("beforebegin",h);else sh.insertAdjacentHTML("beforeend",h);}catch(e){}}
 {const _sv=saleView;saleView=function(id){_sv(id);alHistInto("#v2s .sh.sv",alOf("s",id));};}
 {const _pv=payView;payView=function(name,d){_pv(name,d);try{const K=rsKeys(name);const days=new Set();for(const x of dsInv().filter(x=>K.includes(x.party)))for(const q of x.pays||[])if(q&&q.c&&q.sh&&String(q.date)===String(d))days.add(q.sh);
- const L=[];for(const sd of days)L.push(...alOf("p",sd+"|"+alKey(name)));alHistInto("#v2s .sh.pv",L.sort((a,b)=>String(b.at).localeCompare(String(a.at))));}catch(e){}};}
+ const ks=new Set([alKey(name),...K.map(String)]),L=[],seen=new Set();for(const sd of days)for(const k of ks)for(const e of alOf("p",sd+"|"+k))if(!seen.has(e.id)){seen.add(e.id);L.push(e);}
+alHistInto("#v2s .sh.pv",L.sort(alCmp));}catch(e){}};}
 {const _cs=v2CostSheet;v2CostSheet=function(key,k){const r=_cs.apply(this,arguments);try{const row=k&&SH?SH.costs.find(x=>x.k===k):null;if(row&&row.rid){const sh=document.querySelector("#v2s .sh");if(sh)alHistInto("#v2s .sh",alOf("c",row.rid));}}catch(e){}return r;};}
 
 /* ---------- 7. practice mode (Ala'a picked it, 21/11): everything works, nothing reaches the real books.
-   Saves, photos and day drafts stay on this phone in memory; refreshing from the server is paused; ending it reloads the real books. ---------- */
-const PRAC47={on:false,ls:{}};try{PRAC47.on=localStorage.getItem("tamm:prac")==="1";}catch(e){}
-{const st=window.storage,_set=st.set,_del=st.delete,_get=st.get;
- st.set=async function(key,value){if(PRAC47.on)return{key,value};return _set.apply(this,arguments);};
- st.delete=async function(key){if(PRAC47.on)return{};return _del.apply(this,arguments);};
- st.get=async function(key){if(PRAC47.on&&key==="tt:data"&&typeof D!=="undefined"&&D)return{value:JSON.stringify(D)};return _get.apply(this,arguments);};}
+   Saves, photos and day drafts stay on this phone in memory; once something is saved in practice, refreshing from the server
+   is paused; ending it reloads the real books. ---------- */
+const PRAC47={on:false,w:false,ls:{},att:{}};
+/* it stays on until it is ended, also through a reload or a restart of the app, so a test entry never reaches the books by
+   surprise (the striped banner shows on every screen). Signing out ends it. */
+try{PRAC47.on=localStorage.getItem("tamm:prac")==="1";}catch(e){}
+function prOff(){PRAC47.on=false;PRAC47.w=false;PRAC47.ls={};PRAC47.att={};try{localStorage.removeItem("tamm:prac");}catch(e){}}
+/* one phone, one mode: another tab of the app starting or ending practice does the same here */
+window.addEventListener("storage",e=>{if(e.key&&e.key!=="tamm:prac")return;let v=null;try{v=localStorage.getItem("tamm:prac");}catch(x){}
+ if(v==="1"&&!PRAC47.on){PRAC47.on=true;PRAC47.w=false;PRAC47.ls={};PRAC47.att={};render();}else if(v!=="1"&&PRAC47.on){PRAC47.on=false;location.reload();}});
+{const st=window.storage,_set=st.set,_del=st.delete,_get=st.get;const own=(o,k)=>Object.prototype.hasOwnProperty.call(o,k);
+ st.set=async function(key,value){if(PRAC47.on){PRAC47.w=true;if(String(key).startsWith("tt:att:"))PRAC47.att[key]=value;return{key,value};}return _set.apply(this,arguments);};
+ st.delete=async function(key){if(PRAC47.on){delete PRAC47.att[key];return{};}return _del.apply(this,arguments);};
+ st.get=async function(key){if(PRAC47.on){if(key==="tt:data"&&typeof D!=="undefined"&&D)return{value:JSON.stringify(D)};if(own(PRAC47.att,key))return{value:PRAC47.att[key]};}return _get.apply(this,arguments);};}
+/* nothing else reaches the server either: team roles, invites, the business name, the person's name, password and language */
+{const no=()=>{const r={data:null,error:{message:t("pmNo"),code:"practice"}};const p=new Proxy(function(){},{get(_,k){if(k==="then")return(a,b)=>Promise.resolve(r).then(a,b);if(k==="catch"||k==="finally")return f=>Promise.resolve(r)[k](f);return()=>p;},apply(){return p;}});return p;};
+ const W=(o,ms,on)=>{for(const m of ms){const f=o&&o[m];if(typeof f==="function")o[m]=function(){return on()?no():f.apply(o,arguments);};}return o;};
+ const _from=sb.from.bind(sb);sb.from=function(tb){const q=_from(tb);return tb==="business_data"?q:W(q,["insert","update","upsert","delete"],()=>PRAC47.on);};
+ const RO=new Set(["my_role","team"]),_rpc=sb.rpc.bind(sb);sb.rpc=function(fn){return PRAC47.on&&!RO.has(fn)?no():_rpc.apply(null,arguments);};
+ if(sb.storage&&typeof sb.storage.from==="function"){const _sf=sb.storage.from.bind(sb.storage);sb.storage.from=function(b){return W(_sf(b),["upload","update","remove","move","copy"],()=>PRAC47.on);};}
+ W(sb.auth,["updateUser","signInWithOtp","resetPasswordForEmail"],()=>PRAC47.on&&!!SESSION);}
+{const _dl=delInvite;delInvite=async function(){if(PRAC47.on)return toast(t("pmNo"));return _dl.apply(this,arguments);};}
+{const _sn=saveName;saveName=async function(v,quiet){if(PRAC47.on){if(!quiet)toast(t("pmNo"));return;}return _sn.apply(this,arguments);};}
+{const _so=signOut;signOut=async function(){prOff();return _so.apply(this,arguments);};}
 {const sp=Storage.prototype,_si=sp.setItem,_gi=sp.getItem,_ri=sp.removeItem;const pre=k=>typeof k==="string"&&(k.startsWith("tamm:ds:")||k.startsWith("tamm:dsv:"));
  sp.setItem=function(k,v){if(PRAC47.on&&pre(k)){PRAC47.ls[k]=String(v);return;}return _si.apply(this,arguments);};
  sp.getItem=function(k){if(PRAC47.on&&pre(k)&&Object.prototype.hasOwnProperty.call(PRAC47.ls,k))return PRAC47.ls[k];return _gi.apply(this,arguments);};
  sp.removeItem=function(k){if(PRAC47.on&&pre(k)){PRAC47.ls[k]=null;return;}return _ri.apply(this,arguments);};}
-{const _ud=useData;useData=function(){if(PRAC47.on&&typeof D!=="undefined"&&D&&unlocked)return;return _ud.apply(this,arguments);};}
-{const _rf=refresh25;refresh25=async function(){if(PRAC47.on&&typeof D!=="undefined"&&D)return;return _rf.apply(this,arguments);};}
-function prStart(){if(PRAC47.on)return;uiConfirm({title:esc(t("pmStartQ")),body:esc(t("pmStartB")),ok:t("pmStart"),no:t("uiCancel"),icon:I6.bulb},async()=>{try{await SYNC.q;}catch(e){}
- PRAC47.on=true;PRAC47.ls={};try{localStorage.setItem("tamm:prac","1");}catch(e){}render();toast(t("pmStarted"));});}
-function prEnd(){try{localStorage.removeItem("tamm:prac");}catch(e){}PRAC47.on=false;location.reload();}
-function prBar(){let b=document.getElementById("prBar");document.body.classList.toggle("prac",PRAC47.on);if(!PRAC47.on){if(b)b.remove();return;}
+/* the newest books still come in until the first practice save, so practice after a reload starts from today's books */
+{const _ud=useData;useData=function(){if(PRAC47.on&&PRAC47.w&&typeof D!=="undefined"&&D&&unlocked)return;return _ud.apply(this,arguments);};}
+{const _rf=refresh25;refresh25=async function(){if(PRAC47.on&&PRAC47.w&&typeof D!=="undefined"&&D)return;return _rf.apply(this,arguments);};}
+/* a save or a photo still on its way finishes first: practice starts only when nothing is saving */
+function prBusy(){return SYNC.pending>0||SAVING25>0||DSBUSY||OBBUSY||AVBUSY||BUSY;}
+function prStart(){if(PRAC47.on)return;if(prBusy())return toast(t("pmWait"));
+ uiConfirm({title:esc(t("pmStartQ")),body:esc(t("pmStartB")),ok:t("pmStart"),no:t("uiCancel"),icon:I6.bulb},()=>{if(PRAC47.on)return;if(prBusy())return toast(t("pmWait"));
+  PRAC47.on=true;PRAC47.w=false;PRAC47.ls={};PRAC47.att={};try{localStorage.setItem("tamm:prac","1");}catch(e){}render();toast(t("pmStarted"));});}
+function prEnd(){prOff();location.reload();}
+function prBar(){if(PRAC47.on&&window.__booted&&!SESSION)prOff();let b=document.getElementById("prBar");document.body.classList.toggle("prac",PRAC47.on);if(!PRAC47.on){if(b)b.remove();return;}
  if(!b){b=document.createElement("div");b.id="prBar";b.className="pr-bar no-u";document.body.appendChild(b);}
  const h=`<span>${I6.bulb}<b>${esc(t("pmBar"))}</b></span><button onclick="prEnd()">${esc(t("pmEnd"))}</button>`;if(b.innerHTML!==h)b.innerHTML=h;}
 {const _r=render;render=function(){const r=_r.apply(this,arguments);try{prBar();}catch(e){}return r;};}
