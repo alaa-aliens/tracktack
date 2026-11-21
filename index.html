@@ -1482,6 +1482,30 @@ label.v2-dt{position:relative;cursor:pointer}.v2-dt input{position:absolute;inse
 .ui-row.ui-foot{flex-direction:row-reverse}
 @media (min-width:760px){#v2s .sh,#v2s .sh.sale,#v2s .sh.buy,#v2s .sh.coll,#v2s .sh.cost,#v2s .sh.set{min-height:0}#v2s .sh>.v2-sht{margin-bottom:6px}#v2s .sh>.ui-foot{margin-top:14px}}
 .ui-btn.ui-acc svg,.ui-btn.ui-pri svg,.v2-done svg{width:24px!important;height:24px!important;stroke-width:2.6}
+#v2s .sh.cal{min-height:0}
+.cal-h{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:8px 0 10px}.cal-h b{font-size:17px;font-weight:800}
+.cal-nv{width:42px;height:42px;border-radius:50%;border:0;background:#fff;box-shadow:var(--sh);display:flex;align-items:center;justify-content:center;color:var(--ink);cursor:pointer}.cal-nv:disabled{opacity:.35}.cal-nv svg{width:18px;height:18px}
+.cal-g{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}.cal-wd span{text-align:center;font-size:12px;font-weight:700;color:var(--muted);padding:4px 0}
+.cal-d{position:relative;aspect-ratio:1;border:0;border-radius:14px;background:none;font:inherit;font-size:15.5px;font-weight:700;color:var(--ink);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}
+.cal-d:disabled{color:#C9C7BC;cursor:default}.cal-d.has{background:#fff;box-shadow:var(--sh)}.cal-d i{width:6px;height:6px;border-radius:50%;background:#7A9A10}
+.cal-d.td span{border-bottom:2px solid var(--ink)}.cal-d.on{background:var(--ink);color:#fff}.cal-d.on i{background:var(--lime)}
+button.v2-dt{border:0;font:inherit;color:var(--ink)}
+.dd-cal{position:absolute;inset:0;border:0;background:none;cursor:pointer;width:100%;height:100%}
+/* b37: shop name only on home and Settings; more room around page titles */
+.ds-ttl>small{display:none}.ds-top{margin:16px 2px 18px!important}.ds-ttl h1{font-size:26px!important;line-height:1.25}
+.dd-hd .v2-eye{display:none}.dd36 .dd-hd{margin:16px 0 16px!important}.dd36 .dd-hd h1{font-size:26px}
+.me-row{display:flex;align-items:center;gap:12px;width:100%;margin-top:12px;border:0;background:#fff;color:var(--ink);box-shadow:var(--sh);border-radius:20px;padding:14px 16px;font:inherit;text-align:start;cursor:pointer;min-height:64px}
+.me-row .ci{width:40px;height:40px;border-radius:50%;background:var(--soft);display:flex;align-items:center;justify-content:center;flex:none}.me-row .ci svg{width:19px;height:19px}
+.me-row.st-go .ci{background:var(--lime)}
+.me-row .tx{flex:1;min-width:0}.me-row .tx b{display:block;font-size:16px;font-weight:800}.me-row .tx small{display:block;font-size:12.5px;color:var(--muted);margin-top:2px}
+.me-row>svg{width:18px;height:18px;flex:none;color:var(--muted)}
+.ds-list.tm-card,.as-bl.tm-card{background:none!important;box-shadow:none!important;padding:0!important;border:0!important}
+.ds-list .ds-cu{background:#fff;border-radius:20px;box-shadow:var(--sh);margin:0 0 10px;padding:14px 14px;border:0!important}
+.ds-cu .av.ic{background:var(--soft);color:var(--ink)}.ds-cu .av.ic svg{width:19px;height:19px}
+.as-bl .as-r{display:flex;align-items:center;gap:10px;width:100%;background:#fff;border-radius:20px;box-shadow:var(--sh);margin:0 0 10px;padding:14px 16px;border:0!important;font:inherit;color:var(--ink);text-align:start;cursor:pointer}
+.as-bl .as-r>span{flex:1;min-width:0}.as-bl .as-r>svg{width:16px;height:16px;flex:none;color:var(--muted)}
+.as-bl .as-r b.v{font-size:16px}
+.sv-card{margin-top:6px}
 </style>
 </head>
 <body>
@@ -3937,7 +3961,7 @@ function asList(){return D.invoices.filter(x=>x&&num(x.amount)>0).sort((a,b)=>St
 function asHTML(){const L=asList();const cur=esc(D.settings.cur);const tot=r3(L.reduce((a,x)=>a+num(x.amount),0));
  return`<h3 class="ds-h3 as-h" id="allSales">${t("asT")}</h3><p class="as-d">${L.length?esc(t("asN").replace("{n}",L.length).replace("{v}",fmt(tot)+" "+D.settings.cur)):t("asNone")}</p>
  ${L.length?`<div class="tm-card ds-bl as-bl">${L.slice(0,AS_N).map(x=>{const left=r3(num(x.amount)-paidOf(x));const who=x.party?rsName(x.party):"";
-  return`<div class="r"><span><b>${esc(who||t("v2Shop"))}</b><small>${esc(niceDate(x.date))}${x.ob||typeof prName!=="function"?"":" · "+esc(prName(x.prod))}${num(x.qty)?" · "+esc(fq(x.qty))+" "+t("dsKgU"):""}${left>0.004?" · "+esc(t("asLeft").replace("{v}",fmt(left))):" · "+t("asPaid")}</small></span><b class="v">${fmt(x.amount)}</b></div>`;}).join("")}</div>
+  return`<button class="r as-r" onclick="saleView(${ja(x.id)})"><span><b>${esc(who||t("v2Shop"))}</b><small>${esc(niceDate(x.date))}${x.ob||typeof prName!=="function"?"":" · "+esc(prName(x.prod))}${num(x.qty)?" · "+esc(fq(x.qty))+" "+t("dsKgU"):""}${left>0.004?" · "+esc(t("asLeft").replace("{v}",fmt(left))):" · "+t("asPaid")}</small></span><b class="v">${fmt(x.amount)}</b>${I18.chev}</button>`;}).join("")}</div>
  ${L.length>AS_N?`<button class="ob-add" onclick="AS_N+=100;render()">${t("asMore")}</button>`:""}`:""}`;}
 const _dsDaysView28=dsDaysView;dsDaysView=function(){return _dsDaysView28()+asHTML();};
 /* ===== b29 (Ala'a, Nov 20): a past day opens like the notebook page Anas used to photograph; an optional invoice photo on the buy,
@@ -4307,7 +4331,7 @@ function mePwOpen(){v2Open(`${v2Head(t("mePw"),t("mePwD"),I20.edit)}
 async function mePwSave(){if(v2Busy())return;const a=v2Val("mp1"),b=v2Val("mp2"),msg=document.getElementById("mpMsg");if(msg)msg.style.color="var(--red)";
  if(String(a).length<8){if(msg)msg.textContent=t("pwShort");return;}if(a!==b){if(msg)msg.textContent=t("pwMismatch");return;}
  try{const {error}=await sb.auth.updateUser({password:a});if(error)throw error;v2Close();toast(t("mePwOk"));}catch(e){if(msg)msg.textContent=e&&e.message||String(e);}}
-{const _me=dsMoreView;dsMoreView=function(){const h=_me();const i=h.indexOf(`<p class="st-note"`);const add=meWeekHTML()+`<button class="ds-big me-pw" onclick="mePwOpen()">${I20.edit}<span>${t("mePw")}</span></button>`;return i<0?h+add:h.slice(0,i)+add+h.slice(i);};}
+{const _me=dsMoreView;dsMoreView=function(){const h=_me();const i=h.indexOf(`<p class="st-note"`);const add=meWeekHTML()+`<button class="me-row me-pw" onclick="mePwOpen()"><span class="ci">${I5.lock}</span><span class="tx"><b>${t("mePw")}</b></span>${I18.chev}</button>`;return i<0?h+add:h.slice(0,i)+add+h.slice(i);};}
 
 Object.assign(T.en,{ddSave:"Save",ddSaved:"Saved",ddDone:"Done editing",rsEditB:"Edit sales and collections"});Object.assign(T.ar,{ddSave:"حفظ",ddSaved:"تم الحفظ",ddDone:"انتهيت من التعديل",rsEditB:"عدّل المبيعات والتحصيل"});
 /* b35 (Ala'a, Nov 20): the language is kept on the person's account, so it follows them to any phone */
@@ -4400,7 +4424,7 @@ function ddCancel(){if(!SH)return;const s=DDSNAP;const quit=()=>{DDEDIT="";DDSNA
  if(!s||s.d!==SH.date||ddSig(SH.date)===s.sig){if(SH.dirty&&typeof dsDiscard==="function"){SH.dirty=false;dsLoad(SH.date);}return quit();}
  uiConfirm({danger:1,icon:I20.back,okIcon:I20.back,title:t("ddCancelQ"),body:t("ddCancelD"),ok:t("ddUndoB"),no:t("uiKeep")},async()=>{if(v2Busy())return;const ok=await ddRestore(s);if(!ok)return;dsLoad(s.d);quit();toast(t("ddUndone"));});}
 {const _home=v2Home;v2Home=function(){let h=_home();if(!SH)return h;const td=today(),d=SH.date;
- if(d>=td&&!DDTD)return h.replace(/<span class="v2-dt">([\s\S]*?)<\/span><\/span>/,(m,inner)=>`<label class="v2-dt">${inner}</span><input type="date" aria-label="${t("dsPickDay")}" max="${td}" value="${td}" onchange="if(this.value&&this.value<today())dsOpenDay(this.value)"></label>`);
+ if(d>=td&&!DDTD)return h.replace(/<span class="v2-dt">([\s\S]*?)<\/span><\/span>/,(m,inner)=>`<button class="v2-dt" aria-label="${t("dsPickDay")}" onclick="calOpen()">${inner}</span></button>`);
  const ro=v2RO(),ed=!ro&&DDEDIT===d;const R=dsRecs(d);const b=R.buy;const bq=b?num(b.qty):0,bp=b?num(b.price):0;
  h=h.replace(/<div class="v2-top">[\s\S]*?<\/span><\/span><\/div>/,"").replace(/<button class="v2-today"[^>]*>[\s\S]*?<\/button>/,"").replace(/<div class="dd-top">(?:<div>[\s\S]*?<\/div>)*<\/div>/,"").replace(/<p class="dd-tip">[\s\S]*?<\/p>/,"")
   .split(`<span>${t("v2ProfitT")}</span>`).join(`<span>${t("ddProfitDay")}</span>`).split(`<span>${t("v2LossT")}</span>`).join(`<span>${t("ddLossDay")}</span>`)
@@ -4412,7 +4436,7 @@ function ddCancel(){if(!SH)return;const s=DDSNAP;const quit=()=>{DDEDIT="";DDSNA
  const head=`<div class="dd36${ed?" ed":""}"><div class="rs-ph">${ed?"":`<button class="rs-bk" onclick="dsGo('days')">${I20.back}<span>${t("dsNavDays")}</span></button>`}</div>
  <div class="v2-top dd-hd"><div class="tt"><span class="v2-eye">${esc(bizNm())}</span><h1>${ed?t("ddEditT"):t("ddSheetT")}</h1></div></div>
  ${ed?`<div class="ui-edhd">${I20.edit}<span>${t("ddEditHint")}</span></div>`:""}
- <div class="dd-info"><label class="dd-dt"><span>${t("ddDate")}</span><b>${I18.cal}${esc(ddDM(d))}</b>${ed?"":`<input type="date" aria-label="${t("dsPickDay")}" max="${td}" value="${esc(d)}" onchange="if(this.value&&this.value!==SH.date)dsOpenDay(this.value,1);">`}</label>${bp?cell(t("ddPrice"),esc(fq(bp))):""}${bq?cell(t("ddWeight"),`${esc(fq(bq))} <small>${t("dsKgU")}</small>`):""}</div>`;
+ <div class="dd-info"><label class="dd-dt"><span>${t("ddDate")}</span><b>${I18.cal}${esc(ddDM(d))}</b>${ed?"":`<button class="dd-cal" aria-label="${t("dsPickDay")}" onclick="calOpen()"></button>`}</label>${bp?cell(t("ddPrice"),esc(fq(bp))):""}${bq?cell(t("ddWeight"),`${esc(fq(bq))} <small>${t("dsKgU")}</small>`):""}</div>`;
  return head+h+`</div>`;};}
 
 /* ---------- days: one card a day, sales and costs big ---------- */
@@ -4548,7 +4572,7 @@ async function stSave(){if(!STE)return;const {kind,id}=STE;const ar=String(v2Val
    const f=kind==="c"?"costX":"supX";D.settings[f]=[...(Array.isArray(D.settings[f])?D.settings[f]:[]),en||ar];M[stNmKey(en||ar)]={en,ar,at:now,by:me};}
   else M[stNmKey(id)]={en,ar,at:now,by:me};}
  const ok=await persist();if(!ok){D=snap;return;}toast(t("ddSaved"));render();stOpen();}
-{const _mv=dsMoreView;dsMoreView=function(){const h=_mv();const b=`<button class="ds-big st-go" onclick="stOpen()">${I20.edit}<span>${t("stBtn")}<small>${t("stBtnD")}</small></span></button>`;const i=h.indexOf(`<button class="ds-big me-pw"`);return i<0?h+b:h.slice(0,i)+b+h.slice(i);};}
+{const _mv=dsMoreView;dsMoreView=function(){const h=_mv();const b=`<button class="me-row st-go" onclick="stOpen()"><span class="ci">${I5.gear}</span><span class="tx"><b>${t("stBtn")}</b><small>${t("stBtnD")}</small></span>${I18.chev}</button>`;const i=h.indexOf(`<button class="me-row me-pw"`);return i<0?h+b:h.slice(0,i)+b+h.slice(i);};}
 function ddDM(d){try{return new Date(d+"T12:00:00").toLocaleDateString(lang==="ar"?"ar-JO-u-nu-latn":"en",{day:"numeric",month:"short"});}catch(e){return d;}}
 
 /* b36: owner can view the app as the accountant */
@@ -4591,6 +4615,36 @@ function spLive(){v2SaleLive();}
 {const _pr=slProd;slProd=function(k){if(V2E){V2E.spEd=false;V2E.spOff=false;}return _pr(k);};}
 
 Object.assign(T.en,{prTOn:"Prices on {d} a kilo"});Object.assign(T.ar,{prTOn:"أسعار {d} للكيلو"});
+
+/* b37: calendar sheet: pick a day; days with records have a dot */
+Object.assign(T.en,{calT:"Pick a day",calD:"A dot means something was recorded that day",calToday:"Today"});
+Object.assign(T.ar,{calT:"اختر يومًا",calD:"النقطة تعني أن هناك تسجيلات في ذلك اليوم",calToday:"اليوم"});
+let CALM="";
+function calOpen(){const d=SH&&SH.date||today();CALM=d.slice(0,7);v2Open(calHTML(),"cal");}
+function calNav(n){const [y,m]=CALM.split("-").map(Number);const x=new Date(y,m-1+n,1);CALM=x.getFullYear()+"-"+String(x.getMonth()+1).padStart(2,"0");const e=document.querySelector("#v2s .cal-w");if(e)e.outerHTML=calGrid();}
+function calGrid(){const td=today();const [y,m]=CALM.split("-").map(Number);const has=new Set(dsDays().map(x=>x.d));const cur=SH&&SH.date;
+ const first=new Date(y,m-1,1);const n=new Date(y,m,0).getDate();const lead=(first.getDay()+1)%7;/* week starts Saturday */
+ const loc=lang==="ar"?"ar-JO-u-nu-latn":"en";const title=first.toLocaleDateString(loc,{month:"long",year:"numeric"});
+ const wd=[...Array(7)].map((_,i)=>new Date(2026,0,3+i).toLocaleDateString(loc,{weekday:"narrow"}));
+ const canNext=CALM<td.slice(0,7);
+ let cells="";for(let i=0;i<lead;i++)cells+=`<span></span>`;
+ for(let i=1;i<=n;i++){const d=CALM+"-"+String(i).padStart(2,"0");const fut=d>td;cells+=`<button class="cal-d${d===td?" td":""}${d===cur?" on":""}${has.has(d)?" has":""}" ${fut?"disabled":""} onclick="calPick('${d}')"><span>${i}</span>${has.has(d)?"<i></i>":""}</button>`;}
+ return`<div class="cal-w"><div class="cal-h"><button class="cal-nv" aria-label="‹" onclick="calNav(-1)">${I20.back}</button><b>${esc(title)}</b><button class="cal-nv" aria-label="›" onclick="calNav(1)"${canNext?"":" disabled"}>${I20.chev}</button></div><div class="cal-g cal-wd">${wd.map(w=>`<span>${esc(w)}</span>`).join("")}</div><div class="cal-g">${cells}</div></div>`;}
+function calHTML(){return`${v2Head(t("calT"),t("calD"),I18.cal)}${calGrid()}<div class="ui-row ui-foot"><button class="ui-btn ui-sec" onclick="calPick(today())">${t("calToday")}</button></div>`;}
+function calPick(d){v2Close();if(!d)return;if(d>=today()){dsGo("day");return;}dsOpenDay(d,1);}
+
+/* b37: restaurants and all sales as separate cards; a sale opens its details in a sheet */
+Object.assign(T.en,{svT:"Sale details",svDate:"Date",svProd:"Product",svKg:"Weight",svPrice:"Price a kilo",svAmt:"Amount",svPaid:"Paid",svLeft:"Still owed",svEdit:"Edit this sale",svRest:"Open restaurant",svNoEdit:"This day can't be changed any more"});
+Object.assign(T.ar,{svT:"تفاصيل البيعة",svDate:"التاريخ",svProd:"الصنف",svKg:"الوزن",svPrice:"سعر الكيلو",svAmt:"المبلغ",svPaid:"المدفوع",svLeft:"الباقي عليه",svEdit:"عدّل البيعة",svRest:"افتح المطعم",svNoEdit:"لم يعد يمكن تعديل هذا اليوم"});
+function saleView(id){const x=D.invoices.find(i=>i&&i.id===id);if(!x)return;const cur=v2Cur();const q=num(x.qty),a=num(x.amount),pd=paidOf(x),left=r3(a-pd);const shop=!x.party||x.party==="Shop sales";
+ const row=(l,v,c)=>`<div class="ui-li"><span class="t"><small>${l}</small></span><b class="amt${c?" "+c:""}">${v}</b></div>`;
+ const can=!!x.sh&&x.shk==="sale"&&!dsRO(x.sh);const ph=phOf(x);
+ v2Open(`${v2Head(esc(shop?t("v2Shop"):rsName(x.party)),esc(t("svT")),I20.store)}
+ <div class="ui-card sv-card">${row(t("svDate"),esc(niceDate(x.date)))}${x.ob?"":row(t("svProd"),esc(prName(x.prod)))}${q?row(t("svKg"),esc(fq(q))+" "+t("dsKgU")):""}${q&&a?row(t("svPrice"),esc(fq2(a/q))+" "+cur):""}${row(t("svAmt"),fmt(a)+" "+cur)}${shop?"":row(t("svPaid"),fmt(pd)+" "+cur)}${shop?"":row(t("svLeft"),fmt(left)+" "+cur,left>0.004?"owe":"")}</div>
+ ${ph.length?`<button class="ui-add sv-ph" onclick="phGal(${ja(ph.join(","))},0)">${I20.cam}<span>${t("phT")}</span></button>`:""}
+ ${can?"":`<p class="ui-hint">${t("svNoEdit")}</p>`}
+ <div class="ui-row ui-foot">${shop?"":`<button class="ui-btn ui-sec" onclick="v2Close();dsGo('cust');dsCust(${ja(x.party)})">${t("svRest")}</button>`}${can?`<button class="ui-btn ui-pri" onclick="v2Close();rsSaleEdit(${ja(x.id)})">${I20.edit}<span>${t("svEdit")}</span></button>`:""}</div>`,"sv");}
+{const _cv=dsCustView;dsCustView=function(){const h=_cv();if(RSP)return h;return h.replace(/<span class="av">[^<]*<\/span>/g,`<span class="av ic">${I20.store}</span>`);};}
 </script>
 </body>
 </html>
