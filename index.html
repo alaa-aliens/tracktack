@@ -1506,6 +1506,13 @@ button.v2-dt{border:0;font:inherit;color:var(--ink)}
 .as-bl .as-r>span{flex:1;min-width:0}.as-bl .as-r>svg{width:16px;height:16px;flex:none;color:var(--muted)}
 .as-bl .as-r b.v{font-size:16px}
 .sv-card{margin-top:6px}
+.lf-sg{background:var(--soft);border-radius:16px;padding:12px 14px;margin-top:10px}.lf-sg p{margin:0 0 8px;font-size:13.5px;line-height:1.5;color:var(--ink)}.lf-sg:empty{display:none}
+.bs-stock{display:flex;align-items:center;gap:10px;background:var(--limebg);border-radius:16px;padding:12px 14px;margin:4px 0 10px}.bs-stock svg{width:18px;height:18px;flex:none}.bs-stock b{display:block;font-size:14.5px}.bs-stock small{display:block;font-size:12.5px;color:var(--muted);margin-top:2px}.bs-stock.no{background:var(--soft)}
+.ds-top{align-items:center!important}
+.ov-btn{display:inline-flex;align-items:center;gap:6px;border:0;background:#fff;box-shadow:var(--sh);border-radius:999px;padding:9px 14px;font:inherit;font-size:14px;font-weight:800;color:var(--ink);cursor:pointer;flex:none}.ov-btn svg{width:17px;height:17px}
+.ov-hero{margin-top:14px}.ov-hero .big.ng{color:#FF9C8A}
+.ov-st{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px;border-top:1px solid rgba(255,255,255,.12);padding-top:12px}.ov-st span{display:block;font-size:12px;color:rgba(255,255,255,.6)}.ov-st b{display:block;font-size:16px;font-weight:800;color:#fff;margin-top:2px}
+.ov-g{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:12px}.ov-t{background:#fff;border-radius:18px;box-shadow:var(--sh);padding:12px 14px}.ov-t span{display:block;font-size:12.5px;color:var(--muted);font-weight:600}.ov-t b{display:block;font-size:20px;font-weight:800;margin-top:2px}.ov-t b small{font-size:12px;color:var(--muted)}.ov-t>small{display:block;font-size:12px;color:var(--muted);margin-top:2px}.ov-t b.up{color:#4A7A10}.ov-t b.dn{color:var(--red)}
 </style>
 </head>
 <body>
@@ -4645,6 +4652,52 @@ function saleView(id){const x=D.invoices.find(i=>i&&i.id===id);if(!x)return;cons
  ${can?"":`<p class="ui-hint">${t("svNoEdit")}</p>`}
  <div class="ui-row ui-foot">${shop?"":`<button class="ui-btn ui-sec" onclick="v2Close();dsGo('cust');dsCust(${ja(x.party)})">${t("svRest")}</button>`}${can?`<button class="ui-btn ui-pri" onclick="v2Close();rsSaleEdit(${ja(x.id)})">${I20.edit}<span>${t("svEdit")}</span></button>`:""}</div>`,"sv");}
 {const _cv=dsCustView;dsCustView=function(){const h=_cv();if(RSP)return h;return h.replace(/<span class="av">[^<]*<\/span>/g,`<span class="av ic">${I20.store}</span>`);};}
+
+/* b37: what's left is worked out for him (from yesterday + bought − sold − waste), and he can change it; the buy sheet shows what's in stock */
+Object.assign(T.en,{lfSug:"From yesterday {a} + bought {b} − sold {c}{w} = {r} kg. Change it if the scale says otherwise.",lfSugW:" − waste {w}",lfUse:"Use {r} kg",bsStock:"In stock from yesterday: {k} kg",bsStockD:"Already paid for. It adds to what you can sell today.",bsStockNo:"Yesterday's leftover isn't weighed yet"});
+Object.assign(T.ar,{lfSug:"من أمس {a} + اشتريت {b} − بعت {c}{w} = {r} كغ. غيّره إذا كان الميزان مختلفًا.",lfSugW:" − تالف {w}",lfUse:"استخدم {r} كغ",bsStock:"في المخزن من أمس: {k} كغ",bsStockD:"مدفوع ثمنه من قبل. يُضاف لما تبيعه اليوم.",bsStockNo:"لم يُوزن الباقي من أمس بعد"});
+function lfBuyKg(d){if(SH&&SH.date===d){const b=SH.buy;return b&&bsChick(b.name||"")?r3(dsN(b.qty)):(b&&!b.name&&dsN(b.qty)?r3(dsN(b.qty)):0);}
+ return r3(D.expenses.filter(x=>x&&x.sh===d&&x.shk==="buy"&&bsChick(x.item||"")).reduce((a,x)=>a+num(x.qty),0));}
+function lfSoldKg(d){if(SH&&SH.date===d)return r3(SH.sales.filter(r=>lfIsChk(r.prod)).reduce((a,r)=>a+dsN(r.qty),0));return r3(D.invoices.filter(x=>x&&x.sh===d&&x.shk==="sale"&&lfIsChk(x.prod)).reduce((a,x)=>a+num(x.qty),0));}
+function lfSug(d,w){const a=num((lfAll()[d]||LF0).inKg),b=lfBuyKg(d),c=lfSoldKg(d);w=num(w)||0;return{a,b,c,w,r:Math.max(0,r3(a+b-c-w))};}
+function lfSugPaint(d){const e=document.getElementById("lfSg");if(!e)return;const g=lfSug(d,dsN(v2Val("lfW")));if(!(g.a>0||g.b>0)){e.innerHTML="";return;}
+ e.innerHTML=`<p>${esc(t("lfSug").replace("{a}",fq(g.a)).replace("{b}",fq(g.b)).replace("{c}",fq(g.c)).replace("{w}",g.w>0?t("lfSugW").replace("{w}",fq(g.w)):"").replace("{r}",fq(g.r)))}</p><button class="ui-btn ui-sec ui-sm" onclick="document.getElementById('lfK').value='${g.r}'">${esc(t("lfUse").replace("{r}",fq(g.r)))}</button>`;}
+{const _lo=lfOpen;lfOpen=function(d){_lo(d);const k=document.getElementById("lfK");if(!k)return;const set=(lfMap()[d]||{}).k>0;
+ const lbl=k.closest("label");if(lbl)lbl.insertAdjacentHTML("afterend",`<div class="lf-sg" id="lfSg"></div>`);
+ const w=document.getElementById("lfW");if(w)w.addEventListener("input",()=>{lfSugPaint(d);});
+ lfSugPaint(d);if(!set){const g=lfSug(d,0);if(g.a>0||g.b>0)k.value=String(g.r);}};}
+{const _bp=v2BuyPaint;v2BuyPaint=function(first){_bp(first);const sh=document.querySelector("#v2s .sh.buy");if(!sh||!SH||sh.querySelector(".bs-stock"))return;
+ const l=lfOf(SH.date);const prev=Object.keys(lfMap()).filter(x=>x<SH.date).sort().pop();if(!(l.inKg>0)&&!prev)return;
+ const h=sh.querySelector(".v2-sht");const html=`<div class="bs-stock${l.inKg>0?"":" no"}">${I20.store}<div><b>${esc(t("bsStock").replace("{k}",fq(l.inKg)))}</b>${l.inKg>0?`<small>${esc(t("bsStockD"))}</small>`:""}</div></div>`;
+ if(h)h.insertAdjacentHTML("afterend",html);};}
+
+/* b37: Overview in Days: the seller's own totals (only the daily sheets, not the owner's other books) */
+Object.assign(T.en,{ovBtn:"Overview",ovT:"Overview",ovW:"This week",ovM:"This month",ovA:"All",ovProfit:"Profit",ovLoss:"Loss",ovSold:"Sales",ovOut:"Costs",ovColl:"Collected",ovDays:"Days worked",ovWin:"Days with profit",ovLose:"Days with loss",ovBest:"Best day",ovWorst:"Worst day",ovKgB:"Chicken bought",ovKgS:"Chicken sold",ovByM:"Month by month",ovNone:"No days in this period yet"});
+Object.assign(T.ar,{ovBtn:"نظرة عامة",ovT:"نظرة عامة",ovW:"هذا الأسبوع",ovM:"هذا الشهر",ovA:"الكل",ovProfit:"الربح",ovLoss:"الخسارة",ovSold:"المبيعات",ovOut:"المصاريف",ovColl:"التحصيل",ovDays:"أيام العمل",ovWin:"أيام فيها ربح",ovLose:"أيام فيها خسارة",ovBest:"أفضل يوم",ovWorst:"أسوأ يوم",ovKgB:"دجاج مشترى",ovKgS:"دجاج مباع",ovByM:"شهرًا بشهر",ovNone:"لا توجد أيام في هذه الفترة بعد"});
+let DOV=false,OVP="m";
+function ovOpen(){DOV=true;render();try{window.scrollTo({top:0});}catch(e){}}
+function ovClose(){DOV=false;render();try{window.scrollTo({top:0});}catch(e){}}
+function ovHTML(){const td=today();const from=OVP==="w"?localDay(Date.now()-6*864e5):OVP==="m"?td.slice(0,8)+"01":"";
+ const L=dsDays().filter(x=>!from||x.d>=from);const sum=k=>r3(L.reduce((a,x)=>a+num(x[k]),0));
+ const sold=sum("sold"),out=sum("out"),coll=sum("coll"),pr=r3(sold-out);const P=L.map(x=>({d:x.d,p:r3(x.sold-x.out)}));
+ const win=P.filter(x=>x.p>0.004).length,lose=P.filter(x=>x.p<-0.004).length;const best=P.length?P.reduce((a,b)=>b.p>a.p?b:a):null,worst=P.length?P.reduce((a,b)=>b.p<a.p?b:a):null;
+ const ds=new Set(L.map(x=>x.d));const kgB=r3(D.expenses.filter(x=>x&&ds.has(x.sh)&&x.shk==="buy"&&bsChick(x.item||"")).reduce((a,x)=>a+num(x.qty),0));const kgS=r3(D.invoices.filter(x=>x&&ds.has(x.sh)&&x.shk==="sale"&&lfIsChk(x.prod)).reduce((a,x)=>a+num(x.qty),0));
+ const cur=esc(D.settings.cur);const ng=pr<-0.004;
+ const tile=(l,v,c)=>`<div class="ov-t"><span>${l}</span><b${c?` class="${c}"`:""}>${v}</b></div>`;
+ const day=(x,c)=>x?`<b class="${c}">${fmt(Math.abs(x.p))}</b><small>${esc(niceDate(x.d))}</small>`:"–";
+ const M={};for(const x of dsDays()){const m=x.d.slice(0,7);const g=M[m]=M[m]||{m,sold:0,out:0};g.sold+=num(x.sold);g.out+=num(x.out);}
+ const months=Object.values(M).sort((a,b)=>b.m.localeCompare(a.m));const mName=m=>new Date(m+"-15T12:00:00").toLocaleDateString(lang==="ar"?"ar-JO-u-nu-latn":"en",{month:"long",year:"numeric"});
+ return`<div class="rs-ph"><button class="rs-bk" onclick="ovClose()">${I20.back}<span>${t("dsNavDays")}</span></button></div>
+ <div class="ds-top"><div class="ds-ttl"><h1>${t("ovT")}</h1></div></div>
+ <div class="ui-tabs ov-tabs" role="tablist">${[["w","ovW"],["m","ovM"],["a","ovA"]].map(([k,l])=>`<button role="tab" class="${OVP===k?"on":""}" aria-selected="${OVP===k}" onclick="OVP='${k}';render()">${t(l)}</button>`).join("")}</div>
+ ${L.length?`<div class="ui-hero ov-hero"><span class="l">${ng?t("ovLoss"):t("ovProfit")}</span><b class="big${ng?" ng":" ok"}">${fmt(Math.abs(pr))}</b><small class="cu">${cur}</small>
+ <div class="ov-st"><div><span>${t("ovSold")}</span><b>${fmt(sold)}</b></div><div><span>${t("ovOut")}</span><b>${fmt(out)}</b></div><div><span>${t("ovColl")}</span><b>${fmt(coll)}</b></div></div></div>
+ <div class="ov-g">${tile(t("ovDays"),L.length)}${tile(t("ovWin"),win,"up")}${tile(t("ovLose"),lose,lose?"dn":"")}${tile(t("ovKgS"),fq(kgS)+` <small>${t("dsKgU")}</small>`)}</div>
+ <div class="ov-g two"><div class="ov-t"><span>${t("ovBest")}</span>${day(best&&best.p>0?best:null,"up")}</div><div class="ov-t"><span>${t("ovWorst")}</span>${day(worst&&worst.p<0?worst:null,"dn")}</div></div>
+ ${OVP==="a"&&months.length?`<h3 class="ds-h3">${t("ovByM")}</h3><div class="ui-card">${months.map(g=>{const p=r3(g.sold-g.out);return`<div class="ui-li"><span class="t"><b>${esc(mName(g.m))}</b><small>${t("ovSold")} ${fmt(g.sold)} · ${t("ovOut")} ${fmt(g.out)}</small></span><b class="amt${p<-0.004?" owe":""}">${p<-0.004?"−":""}${fmt(Math.abs(p))}</b></div>`;}).join("")}</div>`:""}`
+ :`<p class="st-empty tm-card">${t("ovNone")}</p>`}`;}
+{const _dv=dsDaysView;dsDaysView=function(){if(DOV)return ovHTML();const h=_dv();return h.replace(`<div class="ds-ttl"><small>${esc(bizNm())}</small><h1>${t("dsDaysT")}</h1></div>`,`<div class="ds-ttl"><small>${esc(bizNm())}</small><h1>${t("dsDaysT")}</h1></div><button class="ov-btn" onclick="ovOpen()">${I5.bars}<span>${t("ovBtn")}</span></button>`);};}
+{const _g=dsGo;dsGo=function(k){DOV=false;return _g(k);};}
 </script>
 </body>
 </html>
