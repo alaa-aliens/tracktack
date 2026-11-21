@@ -1738,7 +1738,8 @@ small.u-pre{margin-inline-start:0!important;margin-inline-end:3px!important;unic
 body.prac{padding-top:calc(44px + env(safe-area-inset-top))}
 body.prac .tm-main{scroll-margin-top:44px}
 body.prac #v2s,body.prac .modal{top:calc(44px + env(safe-area-inset-top))}
-body.prac #v2s .sh{max-height:calc(100% - 6px)}
+body.prac #v2s .sh{max-height:min(92vh,92dvh,calc(100% - 6px))}
+@media (min-width:760px){body.prac #v2s .sh{max-height:min(88vh,calc(100% - 6px))}}
 body.prac .modal .sheet{max-height:100%}
 .pr-go .pr-st{flex:none;font-size:12.5px;font-weight:700;padding:4px 10px;border-radius:999px;background:var(--soft);color:var(--muted)}
 .pr-go.on .pr-st{background:#FFC94D;color:#1d1a0f}
@@ -5879,13 +5880,18 @@ alHistInto("#v2s .sh.pv",L.sort(alCmp));}catch(e){}};}
 {const _cs=v2CostSheet;v2CostSheet=function(key,k){const r=_cs.apply(this,arguments);try{const row=k&&SH?SH.costs.find(x=>x.k===k):null;if(row&&row.rid){const sh=document.querySelector("#v2s .sh");if(sh)alHistInto("#v2s .sh",alOf("c",row.rid));}}catch(e){}return r;};}
 
 /* ---------- 7. practice mode (Ala'a picked it, 21/11): everything works, nothing reaches the real books.
-   Saves, photos and day drafts stay on this phone in memory; refreshing from the server is paused; ending it reloads the real books. ---------- */
-const PRAC47={on:false,ls:{},att:{}};
-/* it stays on through a reload and ends when the app is closed or the person signs out */
-try{localStorage.removeItem("tamm:prac");PRAC47.on=sessionStorage.getItem("tamm:prac")==="1";}catch(e){}
-function prOff(){PRAC47.on=false;PRAC47.ls={};PRAC47.att={};try{sessionStorage.removeItem("tamm:prac");}catch(e){}}
+   Saves, photos and day drafts stay on this phone in memory; once something is saved in practice, refreshing from the server
+   is paused; ending it reloads the real books. ---------- */
+const PRAC47={on:false,w:false,ls:{},att:{}};
+/* it stays on until it is ended, also through a reload or a restart of the app, so a test entry never reaches the books by
+   surprise (the striped banner shows on every screen). Signing out ends it. */
+try{PRAC47.on=localStorage.getItem("tamm:prac")==="1";}catch(e){}
+function prOff(){PRAC47.on=false;PRAC47.w=false;PRAC47.ls={};PRAC47.att={};try{localStorage.removeItem("tamm:prac");}catch(e){}}
+/* one phone, one mode: another tab of the app starting or ending practice does the same here */
+window.addEventListener("storage",e=>{if(e.key&&e.key!=="tamm:prac")return;let v=null;try{v=localStorage.getItem("tamm:prac");}catch(x){}
+ if(v==="1"&&!PRAC47.on){PRAC47.on=true;PRAC47.w=false;PRAC47.ls={};PRAC47.att={};render();}else if(v!=="1"&&PRAC47.on){PRAC47.on=false;location.reload();}});
 {const st=window.storage,_set=st.set,_del=st.delete,_get=st.get;const own=(o,k)=>Object.prototype.hasOwnProperty.call(o,k);
- st.set=async function(key,value){if(PRAC47.on){if(String(key).startsWith("tt:att:"))PRAC47.att[key]=value;return{key,value};}return _set.apply(this,arguments);};
+ st.set=async function(key,value){if(PRAC47.on){PRAC47.w=true;if(String(key).startsWith("tt:att:"))PRAC47.att[key]=value;return{key,value};}return _set.apply(this,arguments);};
  st.delete=async function(key){if(PRAC47.on){delete PRAC47.att[key];return{};}return _del.apply(this,arguments);};
  st.get=async function(key){if(PRAC47.on){if(key==="tt:data"&&typeof D!=="undefined"&&D)return{value:JSON.stringify(D)};if(own(PRAC47.att,key))return{value:PRAC47.att[key]};}return _get.apply(this,arguments);};}
 /* nothing else reaches the server either: team roles, invites, the business name, the person's name, password and language */
@@ -5902,13 +5908,14 @@ function prOff(){PRAC47.on=false;PRAC47.ls={};PRAC47.att={};try{sessionStorage.r
  sp.setItem=function(k,v){if(PRAC47.on&&pre(k)){PRAC47.ls[k]=String(v);return;}return _si.apply(this,arguments);};
  sp.getItem=function(k){if(PRAC47.on&&pre(k)&&Object.prototype.hasOwnProperty.call(PRAC47.ls,k))return PRAC47.ls[k];return _gi.apply(this,arguments);};
  sp.removeItem=function(k){if(PRAC47.on&&pre(k)){PRAC47.ls[k]=null;return;}return _ri.apply(this,arguments);};}
-{const _ud=useData;useData=function(){if(PRAC47.on&&typeof D!=="undefined"&&D&&unlocked)return;return _ud.apply(this,arguments);};}
-{const _rf=refresh25;refresh25=async function(){if(PRAC47.on&&typeof D!=="undefined"&&D)return;return _rf.apply(this,arguments);};}
+/* the newest books still come in until the first practice save, so practice after a reload starts from today's books */
+{const _ud=useData;useData=function(){if(PRAC47.on&&PRAC47.w&&typeof D!=="undefined"&&D&&unlocked)return;return _ud.apply(this,arguments);};}
+{const _rf=refresh25;refresh25=async function(){if(PRAC47.on&&PRAC47.w&&typeof D!=="undefined"&&D)return;return _rf.apply(this,arguments);};}
 /* a save or a photo still on its way finishes first: practice starts only when nothing is saving */
 function prBusy(){return SYNC.pending>0||SAVING25>0||DSBUSY||OBBUSY||AVBUSY||BUSY;}
 function prStart(){if(PRAC47.on)return;if(prBusy())return toast(t("pmWait"));
  uiConfirm({title:esc(t("pmStartQ")),body:esc(t("pmStartB")),ok:t("pmStart"),no:t("uiCancel"),icon:I6.bulb},()=>{if(PRAC47.on)return;if(prBusy())return toast(t("pmWait"));
-  PRAC47.on=true;PRAC47.ls={};PRAC47.att={};try{sessionStorage.setItem("tamm:prac","1");}catch(e){}render();toast(t("pmStarted"));});}
+  PRAC47.on=true;PRAC47.w=false;PRAC47.ls={};PRAC47.att={};try{localStorage.setItem("tamm:prac","1");}catch(e){}render();toast(t("pmStarted"));});}
 function prEnd(){prOff();location.reload();}
 function prBar(){if(PRAC47.on&&window.__booted&&!SESSION)prOff();let b=document.getElementById("prBar");document.body.classList.toggle("prac",PRAC47.on);if(!PRAC47.on){if(b)b.remove();return;}
  if(!b){b=document.createElement("div");b.id="prBar";b.className="pr-bar no-u";document.body.appendChild(b);}
