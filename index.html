@@ -5871,23 +5871,23 @@ function grpData48(per){const inP=d=>per==="all"||per48(d)===per;const s={},L={}
 const G48=[["sales",["s_rest","s_shop","s_left"],"cg"],["chicken",["c_live","c_clean","c_liver","c_wings"],"k"],["run",["r_lab","r_trans","r_pack","r_staff","r_rent","r_util","r_rep","r_oth"],"k"],["setup",["assets","fitout","setup_run","prepaid","unsorted"],"k"],["owner",["own_in","own_out"],"k"],["owed",["o_rest","o_open","o_pay","o_fam"],"k"]];
 let G48OPEN={};
 function rpGrp(k,desk){const s=grpData48(GPER48);const acc=ROLE==="accountant";const showCode=acc||desk;
- const chips=`<div class="b5-per" role="group">${["trade","trial","setup","all"].map(p=>`<button class="${GPER48===p?"on":""}" aria-pressed="${GPER48===p}" onclick="GPER48='${p}';render(true)"><span class="b5-pl">${t("per_"+p)}</span><span class="b5-ps">${t("per_"+p+"S")}</span></button>`).join("")}</div>`;
+ const chips=`<div class="g48-per" role="group">${["trade","trial","setup","all"].map(p=>`<button class="${GPER48===p?"on":""}" aria-pressed="${GPER48===p}" onclick="GPER48='${p}';render(true)"><b>${t("per_"+p)}</b><small>${t("per_"+p+"S")}</small></button>`).join("")}</div>`;
  const sum=l=>l.reduce((a,x)=>a+num(s[x]||0),0);
  const recName=(kd,x)=>kd==="fund"?tx(x.from||""):tx(x.party||x.item||x.desc||cat5(x.cat));
  const recRow=([kd,x,rem])=>`<button class="g48-rec" onclick="${kd==="fund"?"":`openDetail('${kd}',${ja(x.id)})`}"><span>${esc(sDate(x.date))}</span><span class="g48-rn">${esc(recName(kd,x))}${x.no?` <small class="no-u">${esc(x.no)}</small>`:""}</span><b>${AMT(rem!=null?rem:x.amount)}</b></button>`;
  const subRow=(g,x,tot,cls)=>{const v=num(s[x]||0);const pc=tot>0?Math.round(v/tot*100):0;const l=(s.L[x]||[]).slice().sort((p,q)=>q[1].date.localeCompare(p[1].date));
   return`<details class="g48-sub"${G48OPEN[x]?" open":""} ontoggle="G48OPEN['${x}']=this.open"><summary><span class="g48-sn">${esc(t(x))}${showCode?` <small class="no-u">${code48(x==="o_rest"?"o_open":x)}</small>`:""}</span><small class="g48-ct no-u">${l.length}</small><b class="${cls}">${AMT(v)}</b></summary>${g==="owed"?"":`<i class="b5-pb ${cls==="cg"?"cg":"k"}"><i style="width:${Math.max(pc,1)}%"></i></i>`}<div class="g48-recs">${l.map(recRow).join("")}</div></details>`;};
- const cards=G48.map(([g,subs,cls])=>{const live=subs.filter(x=>Math.abs(s[x]||0)>0.004);const tot=g==="owed"?0:sum(subs);
+ const cards=G48.map(([g,subs,cls])=>{const live=subs.filter(x=>Math.abs(s[x]||0)>0.004);if(!live.length&&g!=="owed"&&g!=="sales")return"";const tot=g==="owed"?0:sum(subs);
   return`<details class="tm-card g48 g48-${g}"${G48OPEN["g:"+g]?" open":""} ontoggle="G48OPEN['g:${g}']=this.open"><summary class="g48-h"><span class="g48-gn"><b>${t("g_"+g)}</b><small>${live.map(x=>t(x)).join(" · ")||t("g48None")}</small></span>${g==="owed"?`<small class="g48-now">${t("g48Now")}</small>`:`<b class="${cls}">${AMT(tot)}</b>`}</summary>${live.map(x=>subRow(g,x,tot,cls)).join("")||`<p class="b5-mutedp">${t("g48None")}</p>`}</details>`;});
  const sales=sum(["s_rest","s_shop","s_left"]),cost=sum(["c_live","c_clean","c_liver","c_wings","r_lab","r_trans","r_pack","r_staff","r_rent","r_util","r_rep","r_oth"]);const net=sales-cost;
- const hero=GPER48==="setup"?"":`<section class="b5-hero"><div class="b5-th"><small>${t("g48Profit")} · ${t("per_"+GPER48)}</small></div><div class="b5-hv"><span class="${net<-0.004?"crd":""}">${AMT(net,"-")}</span><span>${esc(curL())}</span></div><small class="b5-hd">${t("g48ProfitD")}</small></section>`;
+ const hero=GPER48==="setup"?"":`<section class="b5-hero g48-hero"><div class="b5-th"><small>${t("g48Profit")} · ${t("per_"+GPER48)}</small></div><div class="b5-hv"><span class="${net<-0.004?"crd":""}">${AMT(net,"-")}</span><span>${esc(curL())}</span></div><small class="b5-hd">${t("g48ProfitD")}</small></section>`;
  const n=note5(t("g48Note"));
- if(desk)return chips+`<div class="dk-grid half"><div class="dk-col">${hero}${cards.slice(0,3).join("")}</div><div class="dk-col">${cards.slice(3).join("")}${n}</div></div>`;
+ if(desk)return chips+`<div class="dk-grid half"><div class="dk-col">${hero}${cards.slice(0,3).join("")}</div><div class="dk-col">${cards.slice(3).join("")||""}${n}</div></div>`;
  return chips+hero+cards.join("")+n;}
 {const _vr=vReports;vReports=function(){if(RPT!=="grp"){const h=_vr();return h.replace(/(<div class="b5-tabs" role="tablist">)/,`$1<button role="tab" aria-selected="false" onclick="RPT='grp';render(true)">${t("rpGrp")}</button>`);}
  const save=RPT;RPT="pnl";let h=_vr();RPT=save;const k=bk2();const desk=useDk();
  h=h.replace(/(<div class="b5-tabs" role="tablist">)/,`$1<button role="tab" aria-selected="true" class="on" onclick="RPT='grp';render(true)">${t("rpGrp")}</button>`).replace(/<button role="tab" aria-selected="true" class="on" onclick="RPT='pnl'/,`<button role="tab" aria-selected="false" class="" onclick="RPT='pnl'`);
- const i=h.indexOf('<div class="b5-per"');const j=h.indexOf('<div class="b5-rp">');const head=h.slice(0,i>=0&&i<j?i:j);return head+`<div class="b5-rp">${rpGrp(k,desk)}</div>`;};}
+ const ti=h.indexOf('<div class="b5-tabs"');const te=ti<0?-1:h.indexOf('</div>',ti);const head=te<0?h.slice(0,h.indexOf('<div class="b5-rp">')):h.slice(0,te+6);return head+`<div class="b5-rp">${rpGrp(k,desk)}</div>`;};}
 /* CSV: add group, sub-category, accountant code and period */
 {const cell=v=>{let x=String(v??"");if(/^[=+\-@\t\r]/.test(x))x="'"+x;return`"${x.replace(/"/g,'""')}"`;};
  bkExport=function(){const k=bkData();const cols=["type","no","date","period","group","sub","code","party","desc","cat","amount","tax_pct","tax_amount","paid","remaining","receipt","checked","question"];
@@ -5903,7 +5903,10 @@ function rpGrp(k,desk){const s=grpData48(GPER48);const acc=ROLE==="accountant";c
 .g48-sub{padding:0 16px}.g48-sub>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:8px;padding:12px 0 6px}.g48-sn{flex:1}.g48-sn small,.g48-ct{color:var(--mut,#6b6b6b);font-size:12px}
 .g48-ct{background:rgba(0,0,0,.05);border-radius:10px;padding:1px 7px}.g48-sub .b5-pb{display:block;margin-bottom:10px}.g48-sub:last-child{padding-bottom:8px}
 .g48-recs{display:flex;flex-direction:column;margin-bottom:10px}.g48-rec{display:flex;gap:10px;align-items:center;background:none;border:0;border-top:1px solid rgba(0,0,0,.05);padding:9px 0;text-align:start;font:inherit;color:inherit;cursor:pointer}
-.g48-rec>span:first-child{color:var(--mut,#6b6b6b);font-size:13px;min-width:44px}.g48-rn{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.g48-rn small{color:var(--mut,#6b6b6b)}`;document.head.appendChild(st);})();
+.g48-rec>span:first-child{color:var(--mut,#6b6b6b);font-size:13px;min-width:44px}.g48-rn{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.g48-rn small{color:var(--mut,#6b6b6b)}
+.g48-per{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;background:#fff;border-radius:16px;padding:4px;margin:12px 0}.g48-per button{border:0;background:none;border-radius:12px;padding:8px 4px;font:inherit;color:inherit;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;min-width:0}
+.g48-per button b{font-size:14px;white-space:nowrap}.g48-per button small{font-size:11px;color:var(--mut,#6b6b6b);white-space:nowrap}.g48-per button.on{background:#202020;color:#fff}.g48-per button.on small{color:rgba(255,255,255,.7)}
+@media(min-width:901px){.g48-per{max-width:560px}}.b5-rp:has(.g48){min-width:0;max-width:100%}.g48,.g48-sub,.g48-recs{min-width:0;max-width:100%}.g48-rec{min-width:0;width:100%}.g48-sn{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.b5-hero.g48-hero .b5-hv bdi{font-size:34px;font-weight:700;line-height:1.1}.b5-hero.g48-hero .b5-hv{align-items:baseline;gap:6px}`;document.head.appendChild(st);})();
 </script>
 </body>
 </html>
