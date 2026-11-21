@@ -1676,6 +1676,18 @@ html:has(.ds-main .dd-bar),body:has(.ds-main .dd-bar),html:has(.ds-main .rs-bar)
 .dy-m{flex:1;min-width:0}.dy-m b{display:block;font-size:15px;font-weight:800}.dy-m small{display:block;font-size:12px;color:var(--muted);font-weight:600;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .dy-pf{text-align:end;flex:none}.dy-pf small{display:block;font-size:11.5px;font-weight:700;color:var(--muted)}.dy-pf b{font-size:18px;font-weight:800;color:var(--green)}.dy-pf.ng b{color:var(--red)}
 .dy-r>svg{width:16px;height:16px;color:var(--muted);flex:none}
+.bs-stock.bs40{margin:16px 0 6px}
+.cm-w{margin-top:18px}.cm-w .v2-lbl{margin:0 4px 8px}
+textarea.v2-in.v2-txt.cm-in{height:auto;min-height:92px;padding:14px 16px;font-size:16px!important;font-weight:500;line-height:1.6}
+.cm-in::placeholder{font-weight:400;color:var(--muted);opacity:.8}
+.rs-fab{inset-inline-end:auto;right:max(16px,calc(50vw - 304px));left:auto}
+.cal-sum{margin-top:16px;background:#fff;border-radius:18px;box-shadow:var(--sh);padding:14px 16px}.cal-st{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:10px}.cal-st b{font-size:15px;font-weight:800}.cal-st small{font-size:12.5px;color:var(--muted);font-weight:600}
+.cal-n{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.cal-n span{display:flex;flex-direction:column;gap:2px;padding-inline-start:10px;border-inline-start:1px solid var(--line)}.cal-n span:first-child{border:0;padding-inline-start:0}.cal-n small{font-size:12px;color:var(--muted);font-weight:700}.cal-n b{font-size:17px;font-weight:800}.cal-n .ok b{color:var(--green)}.cal-n .ng b{color:var(--red)}
+.cal-none{margin:16px 4px 0;color:var(--muted);font-size:14px}
+.rs-list.dy-l{margin-top:12px}.rs36 .ui-li.rs-dy{display:flex;align-items:center;gap:10px;padding:10px 12px 10px 10px;border:0;border-radius:18px;background:#fff;box-shadow:var(--sh);min-height:0}
+.rs36 .ui-li.rs-dy+.ui-li.rs-dy{border-top:0}.rs-dy .dy-m b{display:flex;align-items:center;gap:6px}.rs-dy .rs-am b{color:var(--ink);font-size:17px}.rs36 .rs-list .ui-li.rs-dy .ui-ic{flex:none}
+.rs-dy .rs-am.in b{color:var(--green)}
+.rs36.ed .rs-dy .dy-m small{white-space:normal}.rs36 .rs-dy .ui-ic{width:40px;height:40px}.rs36:not(.ed) .rs-list{padding-bottom:84px}
 </style>
 </head>
 <body>
@@ -3692,7 +3704,7 @@ Object.assign(T.en,{v2Morning:"Good morning, {n}",v2Day:"Your day",v2Steps:"4 st
  v2Slaughter:"Slaughter",v2Cleaning:"Cleaning",v2Diesel:"Diesel",v2Ice:"Ice",v2Cash:"Cash",
  v2TapWho:"Tap who you sold to.",v2Shop:"Shop (cash)",v2NewRest:"New restaurant",v2SaleTo:"Sale to {n}",v2OwesBefore:"Owes from before: {v}",v2HowKg:"How many kilos?",v2KgOpt:"Kilos (optional)",v2TodayP:"today's price",
  v2DiffP:"Different price for this restaurant?",v2ChAmt:"Change the amount",v2AddSale:"Add sale",v2SoldN:"Sold today · {n}",v2SalesToday:"Today's sales",v2Owed:"{v} owed",v2NeedPrice:"Set today's chicken price first",v2ShopAmt:"How much came in?",v2Amount:"Amount",
- v2CollD:"Who paid you for old bills?",v2PaidYou:"{n} paid you",v2OwesV:"Owes {v}",v2All:"All {v}",v2Oldest:"Oldest bill {v}",v2AddColl:"Add payment",v2CollToday:"Collected today",v2NoOwe:"No restaurant owes you money.",
+ v2CollD:"Who paid you for old bills?",v2PaidYou:"{n} paid you",v2OwesV:"Owes {v}",v2All:"Paid everything owed: {v}",v2Oldest:"Oldest bill {v}",v2AddColl:"Add payment",v2CollToday:"Collected today",v2NoOwe:"No restaurant owes you money.",
  v2ProfitT:"Profit today",v2LossT:"Loss today",v2SoldL:"Sold",v2SoldLd:"{n} restaurants",v2SoldLs:"{n} restaurants + shop",v2SoldLo:"Shop",v2CollOld:"Collected for old bills",v2Later:"Will pay later",
  v2Photo:"Add a photo of the notebook page",v2PhotoN:"Notebook photo added ({n})",v2Opt:"Optional",v2CloseSend:"Close and send",v2SendAgain:"Send again",v2CanFix:"You can still fix today until midnight tomorrow.",
  v2Unsaved:"Some changes aren't saved yet",v2SaveNow:"Save now",v2Remove:"Remove",v2NotSaved:"Not saved",v2Back:"Back",v2Locked:"Ask the owner to change it",
@@ -3711,7 +3723,7 @@ Object.assign(T.ar,{v2Morning:"صباح الخير {n}",v2Day:"يومك",v2Steps
  v2Slaughter:"ذبح",v2Cleaning:"تنظيف",v2Diesel:"ديزل",v2Ice:"ثلج",v2Cash:"نقدًا",
  v2TapWho:"اضغط على من بعت له.",v2Shop:"المحل (نقدًا)",v2NewRest:"مطعم جديد",v2SaleTo:"مبيعات لِـ {n}",v2OwesBefore:"عليه من قبل: {v}",v2HowKg:"كم كيلو؟",v2KgOpt:"كيلو (اختياري)",v2TodayP:"سعر اليوم",
  v2DiffP:"سعر مختلف لهذا المطعم؟",v2ChAmt:"غيّر المبلغ",v2AddSale:"أضف البيع",v2SoldN:"مبيع اليوم · {n}",v2SalesToday:"مبيع اليوم",v2Owed:"عليه {v}",v2NeedPrice:"حدّد سعر الدجاج اليوم أولًا",v2ShopAmt:"كم دخل؟",v2Amount:"المبلغ",
- v2CollD:"من دفع لك عن فواتير قديمة؟",v2PaidYou:"{n} دفع لك",v2OwesV:"عليه {v}",v2All:"الكل {v}",v2Oldest:"أقدم فاتورة {v}",v2AddColl:"أضف الدفعة",v2CollToday:"تحصيل اليوم",v2NoOwe:"لا يوجد مطعم عليه مال لك.",
+ v2CollD:"من دفع لك عن فواتير قديمة؟",v2PaidYou:"{n} دفع لك",v2OwesV:"عليه {v}",v2All:"دفع كل ما عليه: {v}",v2Oldest:"أقدم فاتورة {v}",v2AddColl:"أضف الدفعة",v2CollToday:"تحصيل اليوم",v2NoOwe:"لا يوجد مطعم عليه مال لك.",
  v2ProfitT:"ربح اليوم",v2LossT:"خسارة اليوم",v2SoldL:"المبيع",v2SoldLd:"{n} مطاعم",v2SoldLs:"{n} مطاعم + المحل",v2SoldLo:"المحل",v2CollOld:"تحصيل فواتير قديمة",v2Later:"سيدفعون لاحقًا",
  v2Photo:"أضف صورة صفحة الدفتر",v2PhotoN:"أُضيفت صورة الدفتر ({n})",v2Opt:"اختياري",v2CloseSend:"أغلق اليوم وأرسل",v2SendAgain:"أرسل مرة أخرى",v2CanFix:"يمكنك تعديل اليوم حتى منتصف ليل الغد.",
  v2Unsaved:"بعض التعديلات لم تُحفظ بعد",v2SaveNow:"احفظ الآن",v2Remove:"إزالة",v2NotSaved:"لم يُحفظ",v2Back:"رجوع",v2Locked:"اطلب من المالك تعديلها",
@@ -4042,7 +4054,7 @@ dsOwner=function(d){if(!canEdit())return toast(t("viewOnly"));DSOWN=true;SV="";d
 {const _qa=quickAdd;quickAdd=function(){_qa();const m=document.querySelector("#modal .tm-add");const s=m&&m.querySelector(".ds-qa");if(s&&canEdit())s.insertAdjacentHTML("afterend",`<button class="ds-qa v2-qr" onclick="closeModal();v2Rests()"><span class="ci">${I20.store}</span><span><b>${t("v2RestQa")}</b><small>${t("v2RestQaD")}</small></span></button>`);};}
 
 /* auto-update: reload when a new version is published */
-const BUILD="b45";
+const BUILD="b46";
 async function checkUpdate(){try{const r=await fetch("version.txt?"+Date.now(),{cache:"no-store"});const v=(await r.text()).trim();if(v&&v!==BUILD){const m=document.getElementById("modal");if(m&&m.classList.contains("on"))return;if(document.body.classList.contains("v2-open")||(typeof SH!=="undefined"&&SH&&SH.dirty)||(typeof DSBUSY!=="undefined"&&DSBUSY))return;try{if(sessionStorage.getItem("tamm:rl")===v)return;sessionStorage.setItem("tamm:rl",v);}catch(e){}/* b25: put the new page in the phone copy first, so the reload opens it */try{const nr=await fetch(location.pathname+"?fresh="+encodeURIComponent(v),{cache:"no-store"});if(nr.ok&&window.caches){for(const k of await caches.keys()){const ca=await caches.open(k);await ca.put(new Request(location.origin+location.pathname),nr.clone());}}}catch(e){}location.reload();}}catch(e){}}
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"){checkUpdate();try{if(unlocked&&D)dsRoll();}catch(e){}}});setTimeout(checkUpdate,3000);
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
@@ -4636,6 +4648,9 @@ function rsAddAsk(name){if(dsRO(today()))return;
  <button class="v2-li" onclick="v2Close();rsAt(today(),()=>v2CollSheet(${ja(name)}))"><span class="av">${I20.cash}</span><span class="tx"><b>${t("dsTheyPaid")}</b><span>${t("rsAddPayD")}</span></span></button></div>`,"rest");}
 function rsSaleDel(id){const x=D.invoices.find(i=>i.id===id);if(!x||!x.sh||x.shk!=="sale"||dsRO(x.sh))return;uiDelAsk(()=>rsAt(x.sh,()=>{const r=SH.sales.find(s=>s.rid===id||s.k===id);if(r)v2Remove("sales",r.k,1);}));}
 function rsCollDel(name,d){if(dsRO(d))return;uiDelAsk(()=>rsAt(d,()=>{const K=rsKeys(name);const r=SH.coll.find(c=>K.includes(String(c.who||"").trim()));if(r)v2Remove("coll",r.k,1);}));}
+function rsTile(d){const dt=new Date(String(d).slice(0,10)+"T12:00:00");return isNaN(dt)?`<span class="dy-dt"></span>`:`<span class="dy-dt"><b>${dt.getDate()}</b><small>${dt.getMonth()+1}/${dt.getFullYear()}</small></span>`;}
+function rsWd(d){try{return new Date(String(d).slice(0,10)+"T12:00:00").toLocaleDateString(lang==="ar"?"ar-JO-u-nu-latn":"en",{weekday:"long"});}catch(e){return"";}}
+Object.assign(T.en,{rsPaidL:"Paid you"});Object.assign(T.ar,{rsPaidL:"دفع لك"});
 rsPageHTML=function(name){const cur=esc(curL());const p=dsCusts().find(x=>x.name===name);if(!p)return"";
  const NK=rsKeys(name);const mine=dsInv().filter(x=>NK.includes(x.party));
  const bills=[...mine].sort((a,b)=>String(b.date).localeCompare(String(a.date))||String(b.at||"").localeCompare(String(a.at||"")));
@@ -4648,8 +4663,8 @@ rsPageHTML=function(name){const cur=esc(curL());const p=dsCusts().find(x=>x.name
  const bill=x=>{const left=r3(num(x.amount)-paidOf(x));const q=num(x.qty);const e=on&&canS(x);
   const sub=[x.ob?t("obTag"):prName(x.prod),q?fq(q)+" "+t("dsKgU"):"",left>0.004?`<span class="owe">${esc(t("rsLeftV").replace("{v}",fmt(left)))}</span>`:t("rsAllPaid")].filter(Boolean).join(" · ");
   const obx=obOk(x);
-  return`<div class="ui-li${on?"":" tap"}"${on?"":` role="button" tabindex="0" onclick="saleView(${ja(x.id)})"`}><span class="t"><b>${esc(niceDate(x.date))}${cam(phOf(x))}</b><small>${sub}</small></span><b class="amt">${fmt(x.amount)}</b>${e?`<button class="ui-ic" aria-label="${t("rsEdit")}" onclick="rsSaleEdit(${ja(x.id)})">${I20.edit}</button><button class="ui-ic del" aria-label="${t("uiDelete")}" onclick="rsSaleDel(${ja(x.id)})">${I20.trash}</button>`:on&&obx?`<button class="ui-ic del" aria-label="${t("uiDelete")}" onclick="obDel(${ja(x.id)})">${I20.trash}</button>`:""}</div>`;};
- const payRow=q=>{const e=on&&canP(q);return`<div class="ui-li${on?"":" tap"}"${on?"":` role="button" tabindex="0" onclick="payView(${ja(name)},${ja(q.d)})"`}><span class="t"><b>${esc(niceDate(q.d))}${cam(q.att)}</b></span><b class="amt">+${fmt(q.a)}</b>${e?`<button class="ui-ic" aria-label="${t("rsEdit")}" onclick="rsCollEdit(${ja(name)},${ja(q.d)})">${I20.edit}</button><button class="ui-ic del" aria-label="${t("uiDelete")}" onclick="rsCollDel(${ja(name)},${ja(q.d)})">${I20.trash}</button>`:""}</div>`;};
+  return`<div class="ui-li dy-r rs-dy${on?"":" tap"}"${on?"":` role="button" tabindex="0" onclick="saleView(${ja(x.id)})"`}>${rsTile(x.date)}<span class="dy-m"><b>${esc(rsWd(x.date))}${cam(phOf(x))}</b><small>${sub}</small></span><span class="dy-pf rs-am"><b>${fmt(x.amount)}</b></span>${on?"":I18.chev}${e?`<button class="ui-ic" aria-label="${t("rsEdit")}" onclick="rsSaleEdit(${ja(x.id)})">${I20.edit}</button><button class="ui-ic del" aria-label="${t("uiDelete")}" onclick="rsSaleDel(${ja(x.id)})">${I20.trash}</button>`:on&&obx?`<button class="ui-ic del" aria-label="${t("uiDelete")}" onclick="obDel(${ja(x.id)})">${I20.trash}</button>`:""}</div>`;};
+ const payRow=q=>{const e=on&&canP(q);return`<div class="ui-li dy-r rs-dy${on?"":" tap"}"${on?"":` role="button" tabindex="0" onclick="payView(${ja(name)},${ja(q.d)})"`}>${rsTile(q.d)}<span class="dy-m"><b>${esc(rsWd(q.d))}${cam(q.att)}</b><small>${t("rsPaidL")}</small></span><span class="dy-pf rs-am in"><b>+${fmt(q.a)}</b></span>${on?"":I18.chev}${e?`<button class="ui-ic" aria-label="${t("rsEdit")}" onclick="rsCollEdit(${ja(name)},${ja(q.d)})">${I20.edit}</button><button class="ui-ic del" aria-label="${t("uiDelete")}" onclick="rsCollDel(${ja(name)},${ja(q.d)})">${I20.trash}</button>`:""}</div>`;};
  const tabS=RST!=="c";
  const list=tabS?(bills.length?bills.map(bill).join(""):`<p class="ui-empty">${t("rsNoSales")}</p>`):(pays.length?pays.map(payRow).join(""):`<p class="ui-empty">${t("rsNoPays")}</p>`);
  const addRow=on&&can?(tabS?`<button class="ui-add" onclick="rsAt(today(),()=>v2SaleSheet(${ja(name)},null,false,1))">${I20.plus}<span>${t("rsAddSale")}</span></button>`:`<button class="ui-add" onclick="rsAt(today(),()=>v2CollSheet(${ja(name)}))">${I20.plus}<span>${t("rsAddPay")}</span></button>`):"";
@@ -4659,7 +4674,7 @@ rsPageHTML=function(name){const cur=esc(curL());const p=dsCusts().find(x=>x.name
  <div class="stats"><div><span>${t("rsSold")}</span><b>${fmt(sold)}</b></div><div><span>${t("rsColl")}</span><b>${fmt(coll)}</b></div></div></div>
  ${can||anyEd?`<div class="ui-row rs-acts36">${can?`<button class="ui-btn ui-pri rs-add" onclick="rsAddAsk(${ja(name)})">${I20.plus}<span>${t("rsAdd")}</span></button>`:""}${anyEd?`<button class="ui-btn ui-sec dd-edit rs-edb" onclick="rsEdStart(${ja(name)})">${I20.edit}<span>${t("rsEdit")}</span></button>`:""}</div>`:""}`}
  <div class="ui-tabs" role="tablist"><button role="tab" class="${tabS?"on":""}" aria-selected="${tabS}" onclick="RST='s';render()">${t("rsSales")} <i>${bills.length}</i></button><button role="tab" class="${tabS?"":"on"}" aria-selected="${!tabS}" onclick="RST='c';render()">${t("rsPays")} <i>${pays.length}</i></button></div>
- <div class="ui-card rs-list">${list}</div>${addRow}
+ <div class="rs-list dy-l dyA">${list}</div>${addRow}
  ${on?`<div class="ui-row ui-foot rs-bar"><button class="ui-btn ui-sec" onclick="rsEdCancel()">${t("uiCancel")}</button><button class="ui-btn ui-acc dd-save" onclick="rsEdDone()">${I20.check}<span>${t("uiSave")}</span></button></div>`:""}</div>`;};
 {const _od=obDel;obDel=function(id,ok){if(!ok){uiDelAsk(()=>obDel(id,1));return;}const c=window.confirm;window.confirm=()=>true;try{return _od(id);}finally{window.confirm=c;}};}
 {const _dc=dsCust;dsCust=function(n){if(RSP!==n){RST="s";RSSNAP=null;}return _dc(n);};}
@@ -4796,7 +4811,8 @@ Object.assign(T.en,{prTOn:"Prices on {d} a kilo"});Object.assign(T.ar,{prTOn:"أ
 
 /* b37: calendar sheet: pick a day; days with records have a dot */
 Object.assign(T.en,{calT:"Pick a day",calD:"A dot means something was recorded that day",calToday:"Today"});
-Object.assign(T.ar,{calT:"اختر يومًا",calD:"النقطة تعني أن هناك تسجيلات في ذلك اليوم",calToday:"اليوم"});
+Object.assign(T.en,{calSumT:"Month total",calDays:"{n} days recorded",calNone:"Nothing recorded this month"});
+Object.assign(T.ar,{calSumT:"مجموع الشهر",calDays:"أيام مسجّلة: {n}",calNone:"لا تسجيلات في هذا الشهر",calT:"اختر يومًا",calD:"النقطة تعني أن هناك تسجيلات في ذلك اليوم",calToday:"اليوم"});
 let CALM="";
 function calOpen(){const d=SH&&SH.date||today();CALM=d.slice(0,7);v2Open(calHTML(),"cal");}
 function calNav(n){const [y,m]=CALM.split("-").map(Number);const x=new Date(y,m-1+n,1);CALM=x.getFullYear()+"-"+String(x.getMonth()+1).padStart(2,"0");const e=document.querySelector("#v2s .cal-w");if(e)e.outerHTML=calGrid();}
@@ -4807,7 +4823,10 @@ function calGrid(){const td=today();const [y,m]=CALM.split("-").map(Number);cons
  const canNext=CALM<td.slice(0,7);
  let cells="";for(let i=0;i<lead;i++)cells+=`<span></span>`;
  for(let i=1;i<=n;i++){const d=CALM+"-"+String(i).padStart(2,"0");const fut=d>td;cells+=`<button class="cal-d${d===td?" td":""}${d===cur?" on":""}${has.has(d)?" has":""}" ${fut?"disabled":""} onclick="calPick('${d}')"><span>${i}</span>${has.has(d)?"<i></i>":""}</button>`;}
- return`<div class="cal-w"><div class="cal-h"><button class="cal-nv" aria-label="‹" onclick="calNav(-1)">${I20.back}</button><b>${esc(title)}</b><button class="cal-nv" aria-label="›" onclick="calNav(1)"${canNext?"":" disabled"}>${I20.chev}</button></div><div class="cal-g cal-wd">${wd.map(w=>`<span>${esc(w)}</span>`).join("")}</div><div class="cal-g">${cells}</div></div>`;}
+ return`<div class="cal-w"><div class="cal-h"><button class="cal-nv" aria-label="‹" onclick="calNav(-1)">${I20.back}</button><b>${esc(title)}</b><button class="cal-nv" aria-label="›" onclick="calNav(1)"${canNext?"":" disabled"}>${I20.chev}</button></div><div class="cal-g cal-wd">${wd.map(w=>`<span>${esc(w)}</span>`).join("")}</div><div class="cal-g">${cells}</div>${calSum()}</div>`;}
+function calSum(){const L=dsDays().filter(x=>x.d.slice(0,7)===CALM);if(!L.length)return`<p class="cal-none">${t("calNone")}</p>`;
+ const so=L.reduce((a,x)=>a+x.sold,0),ou=L.reduce((a,x)=>a+x.out,0),pr=r3(so-ou),f=v=>esc(fmt(v).replace(/\.00$/,""));
+ return`<div class="cal-sum"><div class="cal-st"><b>${t("calSumT")}</b><small>${esc(t("calDays").replace("{n}",L.length))}</small></div><div class="cal-n"><span><small>${t("dsSold")}</small><b>${f(so)}</b></span><span><small>${t("dsOut")}</small><b>${f(ou)}</b></span><span class="${pr<-0.004?"ng":"ok"}"><small>${pr<-0.004?t("dsLoss"):t("dsProfit")}</small><b>${f(Math.abs(pr))}</b></span></div></div>`;}
 function calHTML(){return`${v2Head(t("calT"),t("calD"),I18.cal)}${calGrid()}<div class="ui-row ui-foot"><button class="ui-btn ui-sec" onclick="calPick(today())">${t("calToday")}</button></div>`;}
 function calPick(d){v2Close();if(!d)return;if(d>=today()){dsGo("day");return;}dsOpenDay(d,1);}
 
