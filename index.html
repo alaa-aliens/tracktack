@@ -1636,7 +1636,7 @@ body:has(.ds-main .dd-bar) .tm-nav,body:has(.ds-main .dd-bar) .tm-fade,body:has(
 .ds-main:has(.dd-bar),.ds-main:has(.rs-bar){padding-bottom:120px!important}
 html:has(.ds-main .dd-bar),body:has(.ds-main .dd-bar),html:has(.ds-main .rs-bar),body:has(.ds-main .rs-bar){scroll-padding-bottom:120px}
 .ds-main .dd36:has(.dd-bar),.ds-main .rs36:has(.rs-bar),.ds-main #dsWrap:has(.dd-bar){transform:none!important;animation:none!important;filter:none!important}
-.cn-pick{display:flex;flex-wrap:wrap;gap:8px;max-height:216px;overflow:auto;margin:4px 0 12px;padding:2px}
+.cn-q{margin-bottom:10px}.cm-w{display:block;margin-top:14px}.cm-in{min-height:64px;resize:none;font-size:15px!important;line-height:1.5}.cn-pick{display:flex;flex-wrap:wrap;gap:8px;max-height:216px;overflow:auto;margin:4px 0 12px;padding:2px}
 .cn-c{border:1.5px solid var(--line,#e6e3da);background:#fff;border-radius:999px;padding:9px 14px;font:600 15px/1.1 inherit;color:inherit;cursor:pointer}
 .cn-c.on{background:var(--ink,#141613);color:#fff;border-color:var(--ink,#141613)}
 .cn-c[hidden]{display:none}
@@ -1794,7 +1794,7 @@ ar:{
  cash:"النقد المتوفر",cashS:"كل ما دخل ناقص كل ما دُفع",rev:"إجمالي الفواتير",coll:"المحصّل منها",owed:"لك عند الزبائن",custs:"الزبائن",supps:"الموردون",rem:"متبقي",lout:"تسجيل الخروج",addPerson:"+ إضافة شخص",pname:"الاسم",ptype:"النوع",both:"الاثنان",pnotes:"ملاحظات",owe:"عليك للموردين",profit:"الربح / (الخسارة)",spend:"إجمالي المصاريف",
  burn:"متوسط المصروف الشهري",runway:"النقد يكفي لـ",months:"شهر",overdue:"متأخر",open:"مفتوح",partial:"جزئي",paid:"مدفوع",
  trend:"الداخل مقابل الخارج",byCat:"أين ذهبت المصاريف",recent:"آخر الحركات",topC:"أهم الزبائن",monthly:"ملخص كل شهر",month:"الشهر",bal:"الرصيد",
- add:"إضافة",qTitle:"ماذا حدث؟",qS:"بيع",qSd:"فاتورة لزبون",qE:"مصروف",qEd:"دفعت ثمن شيء",qF:"تمويل",qFd:"مال وُضع في المشروع",qP:"دفعة",qPd:"زبون دفع لك",
+ add:"إضافة",qTitle:"ماذا حدث؟",qS:"مبيعات",qSd:"فاتورة لزبون",qE:"مصروف",qEd:"دفعت ثمن شيء",qF:"تمويل",qFd:"مال وُضع في المشروع",qP:"دفعة",qPd:"زبون دفع لك",
  amt:"المبلغ",cust:"الزبون",supp:"المورد",date:"التاريخ",status:"الحالة",due:"تاريخ الاستحقاق",desc:"البيان",cat:"التصنيف",no:"رقم الفاتورة",ref:"المرجع",method:"الطريقة",notes:"ملاحظات",
  from:"من",to:"بحوزة",more:"تفاصيل أكثر",less:"تفاصيل أقل",snap:"إضافة صورة الإيصال",receipts:"الإيصالات",
  save:"حفظ",cancel:"إلغاء",del:"حذف",edit:"تعديل",close:"إغلاق",confirm:"حذف هذا السجل؟ لا يمكن التراجع.",saved:"تم الحفظ",
@@ -2084,7 +2084,7 @@ Object.assign(T.en,{act:"Activity",more:"More",hello:"Hello",today:"What happene
  everyone:"Everyone",owner:"Owner",noAct:"Nothing here yet. Tap + to add the first one.",yesterday:"Yesterday",todayL:"Today"});
 Object.assign(T.ar,{act:"الحركات",more:"المزيد",hello:"أهلًا",today:"ماذا حدث اليوم؟",iPaid:"دفعت",gotPaid:"قبضت",putIn:"المموَّل",receipt:"إيصال",spentL:"المصروف",salesL:"المبيعات",seeAll:"عرض الكل",reports:"التقارير",
  cashNeg:"النقد {v} {c}. أحدهم يغطيه.",cashPos:"النقد المتوفر {v} {c}.",cashZero:"لا شيء مسجّل بعد. اضغط + للبدء.",
- iPaidD:"عامل، مورد، فاتورة",gotPaidD:"بيع، مدفوع الآن أو لاحقًا",fundD:"مال وُضع في المحل",snapR:"صوّر إيصالًا",snapRd:"الصورة أولًا والتفاصيل بعدها",recPay:"زبون دفع فاتورة",
+ iPaidD:"عامل، مورد، فاتورة",gotPaidD:"مبيعات، مدفوعة الآن أو لاحقًا",fundD:"مال وُضع في المحل",snapR:"صوّر إيصالًا",snapRd:"الصورة أولًا والتفاصيل بعدها",recPay:"زبون دفع فاتورة",
  tagline:"أموال محلك، تمّ.",done:"تمّ!",isSaved:"تم حفظه",language:"اللغة",teamSet:"الفريق والإعدادات",exportX:"تصدير المبيعات والمصاريف",salesInv:"المبيعات والفواتير",repPlan:"التقارير والخطة",
  everyone:"الكل",owner:"المالك",noAct:"لا شيء بعد. اضغط + لإضافة أول حركة.",yesterday:"أمس",todayL:"اليوم"});
 const I2={
@@ -2223,7 +2223,7 @@ Object.assign(T.en,{invBtn:"Invite someone",invT:"Invite someone",invD:"They get
  bkClose:"Close books through {d}",bkClosed:"Books closed through {d}",bkReopen:"Reopen",bkCloseQ:"Close the books through {d}? After this, only the owner or accountant can change entries on or before that date.",bkReopenQ:"Reopen the books so everyone can edit older entries again?",bkLocked:"The books are closed through {d}. Ask the owner or accountant to change this.",bkMore:"+{n} more"});
 Object.assign(T.ar,{invBtn:"دعوة شخص",invT:"دعوة شخص",invD:"سيصلهم رابط. عندما يسجّلون الدخول بهذا البريد ينضمّون إلى {b}.",rlD_staff:"يسجّل المبيعات والمصاريف فقط",rlD_editor:"يضيف ويعدّل كل شيء",rlD_accountant:"الدفاتر والتقارير والتصدير",rlD_viewer:"يشاهد فقط دون تعديل",invBad:"أدخل بريدًا صحيحًا.",invReadyT:"تم إنشاء الدعوة",invSend:"أرسل الدعوة",invSending:"جارٍ الإرسال…",invSentT:"تم إرسال الدعوة",invSentD:"أرسلنا بريدًا إلى {e} من تمّ. عند فتحه ينضمّ بصفة {r} ويختار كلمة مرور.",invNoMail:"الدعوة إلى {e} جاهزة، لكن البريد لم يُرسل. شارك الرابط بدلًا من ذلك.",invAlso:"أو شارك الرابط بنفسك",invResent:"أُعيد إرسال بريد الدعوة",invAgain:"أرسل البريد مجددًا",invBan:"أنت مدعو للانضمام إلى <b>{n}</b> بصفة <b>{r}</b>. أنشئ حسابك بهذا البريد.",invBanIn:"أنت مدعو للانضمام إلى <b>{n}</b> بصفة <b>{r}</b>. سجّل الدخول للقبول.",setPwT:"اختر كلمة مرور",setPwD:"تم دخولك. اختر كلمة مرور لتسجيل الدخول لاحقًا بـ {e}.",invReadyD:"أرسل هذا الرابط إلى {e}. سينضمّ بصفة {r}. يعمل مرة واحدة ولمدة 14 يومًا.",invShare:"مشاركة الرابط",invDone:"تم",rmQ:"إزالة {e} من المتجر؟ سيفقد الوصول فورًا.",staff:"موظف",forgot:"نسيت كلمة المرور؟",resetT:"إعادة تعيين كلمة المرور",resetD:"أدخل بريدك وسنرسل لك رابطًا لاختيار كلمة مرور جديدة.",resetSend:"أرسل الرابط",resetSent:"إذا كان لهذا البريد حساب، فالرابط في الطريق. تفقّد بريدك.",rsT:"تفقّد بريدك",rsD:"أرسلنا رابطًا إلى {e}. اضغط عليه لاختيار كلمة مرور جديدة.",rsWait:"قد يستغرق دقيقة. إن لم تجده، ابحث في الرسائل غير المرغوب فيها (Spam).",rsFrom:"تصلك الرسالة من تمّ (no-reply@alaa-ali.com).",rsOpening:"جارٍ فتح رابط إعادة التعيين…",rsAgain:"أرسله مرة أخرى",rsIn:"إعادة الإرسال بعد {n} ث",rsOther:"استخدم بريدًا آخر",rsOk:"أُرسل مرة أخرى.",rsNone:"إن لم يكن لهذا البريد حساب في تمّ، فلن يُرسل شيء.",rsExp:"انتهت صلاحية رابط البريد أو استُخدم من قبل. أرسل رابطًا جديدًا.",backSignin:"العودة لتسجيل الدخول",
  newPwT:"اختر كلمة مرور جديدة",newPwD:"للحساب {e}",newPw:"كلمة المرور الجديدة",newPw2:"أعد كتابة كلمة المرور",pwShort:"استخدم 8 أحرف على الأقل.",pwMismatch:"كلمتا المرور غير متطابقتين.",pwSaved:"تم تحديث كلمة المرور",savePw:"حفظ كلمة المرور",
- stHi:"أهلًا {n}",stSold:"بعت شيئًا",stSoldD:"بيع جديد، مدفوع الآن أو لاحقًا",stPaid:"دفعت ثمن شيء",stPaidD:"مصروف. أضف صورة الإيصال",stToday:"اليوم",stWeek:"في وقت سابق هذا الأسبوع",stNone:"لم تُضف شيئًا اليوم بعد. استخدم الأزرار في هذه الصفحة.",stNote:"ترى ما أضفته أنت، ومن عليه مال لتستلم منه. المالك يرى كل شيء.",stIn:"داخل",stOut:"خارج",
+ stHi:"أهلًا {n}",stSold:"بعت شيئًا",stSoldD:"مبيعات جديدة، مدفوعة الآن أو لاحقًا",stPaid:"دفعت ثمن شيء",stPaidD:"مصروف. أضف صورة الإيصال",stToday:"اليوم",stWeek:"في وقت سابق هذا الأسبوع",stNone:"لم تُضف شيئًا اليوم بعد. استخدم الأزرار في هذه الصفحة.",stNote:"ترى ما أضفته أنت، ومن عليه مال لتستلم منه. المالك يرى كل شيء.",stIn:"داخل",stOut:"خارج",
  books:"الدفاتر",booksD:"عرض المحاسب",bkMonth:"هذا الشهر",bkLast:"الشهر الماضي",bkQ:"هذا الربع",bkYear:"هذه السنة",bkAll:"كل الفترات",bkSales:"المبيعات",bkColl:"المحصّل",bkExp:"المصاريف",bkPaidOut:"المدفوع",bkNet:"الربح",bkTax:"الضريبة على المبيعات",bkFund:"أموال مضافة",bkRecv:"على الزبائن",bkOwe:"باقي للدفع",bkPeriod:"{a} إلى {b}",
  bkReview:"للمراجعة",bkReviewD:"{n} لم تُراجع بعد",bkAllOk:"كل شيء في هذه الفترة تمت مراجعته.",bkCheck:"تمت المراجعة",bkCheckAll:"تأكيد مراجعة الكل",bkMissing:"مصاريف بلا إيصال",bkMissingOk:"كل المصاريف هنا لها صورة إيصال.",bkByCat:"المصاريف حسب الفئة",bkExport:"تصدير هذه الفترة (CSV)",
  bkClose:"إغلاق الدفاتر حتى {d}",bkClosed:"الدفاتر مغلقة حتى {d}",bkReopen:"إعادة فتح",bkCloseQ:"إغلاق الدفاتر حتى {d}؟ بعدها يستطيع المالك أو المحاسب فقط تعديل القيود في هذا التاريخ أو قبله.",bkReopenQ:"إعادة فتح الدفاتر ليتمكن الجميع من تعديل القيود القديمة؟",bkLocked:"الدفاتر مغلقة حتى {d}. اطلب من المالك أو المحاسب تعديل هذا.",bkMore:"+{n} أخرى"});
@@ -2327,7 +2327,7 @@ Object.assign(T.ar,{slT:"ماذا بعت؟",slTap:"اضغط على ما بعته
 const nmKey=k=>"tamm:"+k+":"+((SESSION&&SESSION.user&&SESSION.user.id)||"anon");
 function myName(){try{const m=(SESSION&&SESSION.user&&SESSION.user.user_metadata)||{};const n=m.name||m.full_name||localStorage.getItem(nmKey("name"))||"";return String(n).trim().slice(0,40);}catch(e){return"";}}
 const mineToday=x=>!!(x&&ROLE==="staff"&&SESSION&&x.by===SESSION.user.id&&x.date===today());
-Object.assign(AR_MAP,{"Shop sales":"مبيعات المحل","Other":"أخرى","Sale":"بيع"});
+Object.assign(AR_MAP,{"Shop sales":"مبيعات المحل","Other":"أخرى","Sale":"مبيعات"});
 whoName=()=>{const n=myName();if(n)return n.split(/\s+/)[0];try{const e=(SESSION&&SESSION.user&&SESSION.user.email)||"";const x=e.split("@")[0].replace(/[._-]+/g," ").replace(/\d+/g,"").trim();return x?x.charAt(0).toUpperCase()+x.slice(1):"";}catch(e){return""}};
 async function saveName(v,quiet){v=String(v||"").trim().slice(0,40);if(!v)return;try{localStorage.setItem(nmKey("name"),v);}catch(e){}if(SESSION&&SESSION.user){SESSION.user.user_metadata=Object.assign({},SESSION.user.user_metadata,{name:v});try{await sb.auth.updateUser({data:{name:v}});}catch(e){}}if(!quiet)render();}
 function skipName(){try{localStorage.setItem(nmKey("nameSkip"),"1");}catch(e){}render();}
@@ -2478,7 +2478,7 @@ function go(k){tab=k;filter="all";q="";render();try{window.scrollTo({top:0});}ca
 
 /* ===== Tamm detail sheet ===== */
 Object.assign(T.en,{cashNeg:"You're covering {v} {c} for the shop.",youPaid:"You paid",paidYou:"paid you",saleTo:"Sale to",putInBy:"put in",paidFull:"Paid in full",stillDue:"{v} still due",when:"When",paidWith:"Paid with",forL:"For",whatL:"What",refL:"Reference",invNo:"Invoice",dueL:"Due",receipt:"Receipt",addReceipt:"Add a photo",noReceipt:"No receipt photo yet",deleteThis:"Delete this entry",recordPay:"Record a payment",shareL:"Share",pdfL:"PDF",waL:"WhatsApp",editL:"Edit",fromL:"From",toL:"To",note:"Note"});
-Object.assign(T.ar,{cashNeg:"أنت تغطي {v} {c} عن المحل.",youPaid:"دفعت لـ",paidYou:"دفع لك",saleTo:"بيع لـ",putInBy:"تمويل",paidFull:"مدفوع بالكامل",stillDue:"متبقي {v}",when:"التاريخ",paidWith:"طريقة الدفع",forL:"التصنيف",whatL:"البيان",refL:"المرجع",invNo:"الفاتورة",dueL:"الاستحقاق",receipt:"الإيصال",addReceipt:"إضافة صورة",noReceipt:"لا توجد صورة إيصال بعد",deleteThis:"حذف هذا السجل",recordPay:"تسجيل دفعة",shareL:"مشاركة",pdfL:"PDF",waL:"واتساب",editL:"تعديل",fromL:"من",toL:"إلى",note:"ملاحظة"});
+Object.assign(T.ar,{cashNeg:"أنت تغطي {v} {c} عن المحل.",youPaid:"دفعت لـ",paidYou:"دفع لك",saleTo:"مبيعات لـ",putInBy:"تمويل",paidFull:"مدفوع بالكامل",stillDue:"متبقي {v}",when:"التاريخ",paidWith:"طريقة الدفع",forL:"التصنيف",whatL:"البيان",refL:"المرجع",invNo:"الفاتورة",dueL:"الاستحقاق",receipt:"الإيصال",addReceipt:"إضافة صورة",noReceipt:"لا توجد صورة إيصال بعد",deleteThis:"حذف هذا السجل",recordPay:"تسجيل دفعة",shareL:"مشاركة",pdfL:"PDF",waL:"واتساب",editL:"تعديل",fromL:"من",toL:"إلى",note:"ملاحظة"});
 const I3={x:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>',
  edit:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>',
  share:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13M7 8l5-5 5 5M5 14v5a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-5"/></svg>',
@@ -2721,7 +2721,7 @@ Object.assign(T.ar,{nvReview:"المراجعة",nvReports:"التقارير",nvL
  stillOpen:"غير مسدَّد",stillOpenD:"لم يُسوَّ بعد",oneBill:"فاتورة واحدة",nBills:"{n} فواتير",custOwe:"على الزبائن",shopOwes:"على المحل",taxSales:"ضريبة المبيعات",inclR:"شاملة {r}",moneyPutIn:"أموال مضافة",nobodyL:"لا أحد",
  toReviewT:"للمراجعة",markAllL:"تأكيد مراجعة الكل",nChecked:"{a} من {b}",checkedW:"تمت مراجعتها",pNotClosed:"{p} غير مغلق",pClosed:"{p} مغلق",showMoreN:"عرض {n} أخرى",showLess:"عرض أقل",
  rc1:"إيصال واحد",rcN:"{n} إيصالات",noRc:"بلا إيصال",stPaidL:"مدفوع",stOwed:"متبقٍّ {v}",stNotPaid:"غير مدفوع",askedL:"سؤال مُرسَل",answeredL:"تمت الإجابة",
- reviewT:"مراجعة {p}",nOfM:"{a} من {b}",openEntry:"افتح الحركة كاملة",saleL:"بيع",expenseL:"مصروف",photo1:"صورة واحدة",photoN:"{n} صور",noRcPhoto:"لا توجد صورة إيصال",noRcPhotoD:"ستظهر المعاينة هنا عندما يضيفها المالك.",zoomL:"تكبير",
+ reviewT:"مراجعة {p}",nOfM:"{a} من {b}",openEntry:"افتح الحركة كاملة",saleL:"مبيعات",expenseL:"مصروف",photo1:"صورة واحدة",photoN:"{n} صور",noRcPhoto:"لا توجد صورة إيصال",noRcPhotoD:"ستظهر المعاينة هنا عندما يضيفها المالك.",zoomL:"تكبير",
  catL:"الفئة",paidFullW:"{m} · مدفوع بالكامل",partOwedW:"{m} · متبقٍّ {v}",notPaidYet:"لم يُدفع بعد",soldL:"ما تم بيعه",
  askOwnerL:"اسأل المالك",skipL:"تجاوز",looksRight:"صحيح",rqDoneT:"انتهت مراجعة {p}",rqDoneD:"تمت مراجعة كل الحركات.",backBooks:"العودة إلى الدفاتر",
  qRc:"أضف إيصالًا",qCat:"أي فئة؟",qShop:"هل هذا للمحل؟",qPaid:"كيف دُفع؟",qRcTxt:"{w} بتاريخ {d} بلا إيصال. هل يمكنك إضافته؟",qCatTxt:"تحت أي فئة يجب أن يكون {w} بتاريخ {d}؟",qShopTxt:"هل {w} بتاريخ {d} من مصاريف المحل؟",qPaidTxt:"كيف دُفع {w} بتاريخ {d}؟",
@@ -3094,7 +3094,7 @@ Object.assign(T.en,{d6Money:"Money",d6NewEntry:"New entry",d6NewSale:"New sale",
  d6SalesSub:"Every sale and invoice, newest first.",d6ExpSub:"Every bill and expense, newest first.",d6FundSub:"Money put into the shop.",d6No:"No.",d6Left:"Still due",d6StillOwed:"Still owed",d6NUnpaid:"{n} unpaid",d6From:"From",d6To:"To",d6Ref:"Reference",
  d6PlanSub:"Break-even and payback, worked out from your own numbers.",d6YourNums:"Your numbers",d6SetSub:"Shop details, products, team and backups.",d6AccSub:"Signed in as {e}",d6YourName:"Your name",d6Help:"Help",d6Prefs:"Account",
  d6ThisSale:"This sale",d6GpSub:"Customers who owe you, biggest first.",d6EmptySale:"Tap what you sold on the left.",d6StWhat:"What happened?",d6NoAct:"Nothing here yet. Use New entry to add the first one.",d6NoActV:"Nothing here yet.",d6Shown:"Showing {a} of {b}"});
-Object.assign(T.ar,{d6Money:"المال",d6NewEntry:"حركة جديدة",d6NewSale:"بيع جديد",d6NewExp:"مصروف جديد",d6PutIn:"أضف تمويلًا",d6MyAcc:"حسابي",d6Menu:"القائمة الرئيسية",
+Object.assign(T.ar,{d6Money:"المال",d6NewEntry:"حركة جديدة",d6NewSale:"مبيعات جديدة",d6NewExp:"مصروف جديد",d6PutIn:"أضف تمويلًا",d6MyAcc:"حسابي",d6Menu:"القائمة الرئيسية",
  d6Important:"الأهم اليوم:",d6ImpCash:"النقد أقل من الصفر بمقدار {v}. أحدهم يغطي الفرق.",d6ImpOwes:"ما زال {p} مدينًا لك بمبلغ {v}.",d6ImpOwe:"ما زلت مدينًا لـ{p} بمبلغ {v}.",d6ImpQs:"لدى المحاسب أسئلة لك ({n}).",d6ImpQ1:"لدى المحاسب سؤال لك.",d6ImpMiss:"مصاريف هذا الشهر بلا صورة إيصال: {n}.",d6ImpOk:"كل شيء على ما يرام. لا شيء ينتظرك اليوم.",
  d6Cash:"النقد المتوفر",d6CashD:"كل ما دخل، ناقص كل ما خرج.",d6Month:"هذا الشهر حتى الآن",d6SeeMonth:"اعرض هذا الشهر",d6Latest:"آخر الحركات",d6OneEntry:"حركة واحدة",d6NEntries:"{n} حركات",d6SeeAllAct:"اعرض كل الحركات",
  d6OwesRow:"{p} مدين لك",d6OpenSince:"مفتوحة منذ {d}",d6YouOweRow:"أنت مدين لـ{p}",d6Remind:"ذكّره",d6Pay:"ادفع",d6Snap:"صوّر",d6Answer:"أجب",d6OpenL:"افتح",d6RcMissD:"صوّرها ليراجعها المحاسب",d6Asks:"{n} يسأل عن {w}",d6Nothing:"لا شيء ينتظرك الآن.",d6AddQ:"إضافة سريعة",d6ViewOnly:"اطّلاع فقط",
@@ -3363,7 +3363,7 @@ function dsFromRecs(d){const R=dsRecs(d);const b=R.buy;const lb=b||dsLastBuy();
  const auto=b&&num(b.qty)>0&&num(b.price)>0?Math.abs(num(b.amount)-r3(num(b.qty)*num(b.price)))<0.005:false;
  const s={v:3,date:d,dirty:false,att:[],
   buy:{name:lb?String(lb.item||""):"",qty:b&&num(b.qty)?String(b.qty):"",price:b&&num(b.price)?String(b.price):(lb&&num(lb.price)?String(lb.price):""),paid:b?String(num(b.amount)):"",paidSet:!!b&&!auto,from:b?String(b.party||""):(lb?String(lb.party||""):""),rid:b?b.id:null,lock:b?(dsOthers(b)?-1:dsForeign(b,d)):0},
-  costs:R.costs.map(x=>({k:x.id,name:String(x.item||x.desc||""),amount:String(num(x.amount)),cat:x.cat||"",rid:x.id,lock:dsOthers(x)?-1:dsForeign(x,d)})),
+  costs:R.costs.map(x=>({k:x.id,name:String(x.item||x.desc||""),memo:String(x.memo||""),amount:String(num(x.amount)),cat:x.cat||"",rid:x.id,lock:dsOthers(x)?-1:dsForeign(x,d)})),
   sales:R.sales.map(x=>({k:x.id,who:x.party==="Shop sales"?"":String(x.party||""),shop:x.party==="Shop sales",qty:num(x.qty)?String(x.qty):"",amount:String(num(x.amount)),amtSet:!(num(x.qty)>0&&num(x.dprice)>0&&Math.abs(num(x.amount)-Math.round(num(x.qty)*num(x.dprice)*100)/100)<0.005),paid:(x.pays||[]).some(p=>dsOwn(p,d)),rid:x.id,lock:dsOthers(x)?-1:dsForeign(x,d)})),coll:[]};
  const CI=ROLE==="staff"?D.invoices.filter(x=>x&&dsVis(x)):D.invoices;/* a seller only works with collections on bills from the sheets */
  const M={};for(const x of CI)for(const p of (x.pays||[]))if(p&&p.sh===d&&p.c){const w=rsK(x.party);M[w]=r3((M[w]||0)+num(p.amount));}
@@ -3505,7 +3505,7 @@ async function dsSave(stay){if(DSBUSY||!SH)return false;const d=SH.date;if(dsRO(
   for(const r of SH.costs){const old=find(D.expenses,r.rid);if(old&&(r.lock||!r.ch)){keepE.add(old.id);if(!firstCost)firstCost=old;continue;}const a=r3(dsN(r.amount));if(a<=0)continue;
    let x=old;if(!x){x={id:uid(),no:"",date:d,due:"",notes:"",att:[],by:me,at,sh:d,shk:"cost"};D.expenses.push(x);}
    const nm=String(r.name||"").trim()||t("dsOtherCost");const op=ownPay(x);const fp=keepPays(x);const fs=r3(fp.reduce((q,p)=>q+num(p.amount),0));
-   Object.assign(x,{date:d,party:x.party||"",item:nm,desc:nm,cat:r.cat||dsCatFor(nm),amount:a});x.pays=[...fp,...(a-fs>0.004?[pay(a-fs,0,op)]:[])];keepE.add(x.id);if(!firstCost)firstCost=x;}
+   Object.assign(x,{date:d,party:x.party||"",item:nm,desc:nm,cat:r.cat||dsCatFor(nm),amount:a});if(r.memo!==undefined){const m=String(r.memo||"").trim();if(m)x.memo=m;else delete x.memo;}x.pays=[...fp,...(a-fs>0.004?[pay(a-fs,0,op)]:[])];keepE.add(x.id);if(!firstCost)firstCost=x;}
   /* sales */
   const bName=String(b.name||"").trim();
   for(const r of SH.sales){const old=find(D.invoices,r.rid);if(old&&(r.lock||!r.ch)){keepI.add(old.id);continue;}const a=r3(dsN(r.amount));if(a<=0)continue;
@@ -3709,7 +3709,7 @@ Object.assign(T.ar,{v2Morning:"صباح الخير {n}",v2Day:"يومك",v2Steps
  v2NextCosts:"التالي: المصاريف",v2NextSales:"التالي: المبيع",v2NextColl:"التالي: التحصيل",v2NextClose:"التالي: راجع اليوم",v2SaveB:"احفظ",
  v2TapCost:"اضغط على ما دفعت له اليوم.",v2CostsToday:"مصاريف اليوم",v2CostsSum:"مصاريف اليوم",v2HowMuch:"كم دفعت؟",v2AddX:"أضف {n}",v2LastTime:"آخر مرة",v2CostName:"لأي شيء؟",
  v2Slaughter:"ذبح",v2Cleaning:"تنظيف",v2Diesel:"ديزل",v2Ice:"ثلج",v2Cash:"نقدًا",
- v2TapWho:"اضغط على من بعت له.",v2Shop:"المحل (نقدًا)",v2NewRest:"مطعم جديد",v2SaleTo:"بيع لِـ {n}",v2OwesBefore:"عليه من قبل: {v}",v2HowKg:"كم كيلو؟",v2KgOpt:"كيلو (اختياري)",v2TodayP:"سعر اليوم",
+ v2TapWho:"اضغط على من بعت له.",v2Shop:"المحل (نقدًا)",v2NewRest:"مطعم جديد",v2SaleTo:"مبيعات لِـ {n}",v2OwesBefore:"عليه من قبل: {v}",v2HowKg:"كم كيلو؟",v2KgOpt:"كيلو (اختياري)",v2TodayP:"سعر اليوم",
  v2DiffP:"سعر مختلف لهذا المطعم؟",v2ChAmt:"غيّر المبلغ",v2AddSale:"أضف البيع",v2SoldN:"مبيع اليوم · {n}",v2SalesToday:"مبيع اليوم",v2Owed:"عليه {v}",v2NeedPrice:"حدّد سعر الدجاج اليوم أولًا",v2ShopAmt:"كم دخل؟",v2Amount:"المبلغ",
  v2CollD:"من دفع لك عن فواتير قديمة؟",v2PaidYou:"{n} دفع لك",v2OwesV:"عليه {v}",v2All:"الكل {v}",v2Oldest:"أقدم فاتورة {v}",v2AddColl:"أضف الدفعة",v2CollToday:"تحصيل اليوم",v2NoOwe:"لا يوجد مطعم عليه مال لك.",
  v2ProfitT:"ربح اليوم",v2LossT:"خسارة اليوم",v2SoldL:"المبيع",v2SoldLd:"{n} مطاعم",v2SoldLs:"{n} مطاعم + المحل",v2SoldLo:"المحل",v2CollOld:"تحصيل فواتير قديمة",v2Later:"سيدفعون لاحقًا",
@@ -3861,8 +3861,13 @@ function v2CostExtra(){const out=[];const seen=new Set();const L=D.expenses.filt
 function v2CostsOf(match){return SH.costs.filter(r=>match(String(r.name||"").trim()));}
 function v2Costs(){const lk=v2RO(),cur=v2Cur(),c=dsCalc();
  const tile=(key,label,icon,match,on)=>{const a=r3(v2CostsOf(match).reduce((q,r)=>q+dsN(r.amount),0));return`<button class="v2-tile${a>0?" on":""}" onclick="${on}"${lk?" disabled":""}>${a>0?`<span class="amt">${esc(fq(a))}</span>`:""}<span class="ti">${icon}</span><b dir="auto">${esc(label)}</b></button>`;};
- const tiles=V2C.map(cc=>tile(cc[0],ccName(cc),I20[cc[3]],n=>v2CostTile(n)===cc,`v2CostSheet('${cc[0]}')`)).join("")+v2CostExtra().map(n=>tile("",tx(n),I20.dots,m=>v2Norm(m)===v2Norm(n),`v2CostSheet('',null,${ja(n)})`)).join("")+(lk?"":`<button class="v2-tile dash" onclick="v2CostSheet('')"><span class="ti">${I20.plus}</span><b>${t("v2Other")}</b></button>`);
- const row=r=>{const cc=v2CostTile(r.name);return`<button class="v2-li" onclick="v2CostSheet('',${ja(r.k)})"${lk?" disabled":""}><span class="av">${cc?I20[cc[3]]:I20.dots}</span><span class="tx"><b dir="auto">${esc(tx(r.name)||t("dsOtherCost"))}</b><span>${r.lock?esc(t("v2Locked")):v2Unsaved(r)?`<i class="v2-ns">${t("v2NotSaved")}</i>`:t("v2Cash")}</span></span><span class="v">${fmt(dsN(r.amount))}</span></button>`;};
+ /* b44: names ranked by use; a cut-off (CN_MAX) can move rarely used ones under Other */
+ const since=new Date(Date.now()-30*864e5).toISOString().slice(0,10);const use={};for(const x of D.expenses)if(x&&x.shk==="cost"&&String(x.sh||x.date||"")>=since){const k=stNmKey(String(x.item||""));use[k]=(use[k]||0)+1;}
+ const all=[...V2C.map(cc=>({k:"c:"+cc[0],m:n=>v2CostTile(n)===cc,h:m=>tile(cc[0],ccName(cc),I20[cc[3]],m,`v2CostSheet('${cc[0]}')`)})),...v2CostExtra().map(n=>({k:stNmKey(n),m:x=>v2Norm(x)===v2Norm(n),h:m=>tile("",tx(n),I20.dots,m,`v2CostSheet('',null,${ja(n)})`)}))];
+ all.forEach((e,i)=>{e.i=i;e.today=v2CostsOf(e.m).length>0;e.u=use[e.k]||0;});
+ /* Ala'a 21/11: keep every name on the grid for now (CN_MAX=0 = no limit) */const CN_MAX=0;const pick=new Set(all.filter(e=>e.today).map(e=>e.i));for(const e of all.slice().sort((a,b)=>b.u-a.u||a.i-b.i)){if(CN_MAX&&pick.size>=CN_MAX&&!e.today)break;pick.add(e.i);}
+ const tiles=all.filter(e=>pick.has(e.i)).map(e=>e.h(e.m)).join("")+(lk?"":`<button class="v2-tile dash" onclick="v2CostSheet('')"><span class="ti">${I20.plus}</span><b>${t("v2Other")}</b></button>`);
+ const row=r=>{const cc=v2CostTile(r.name);return`<button class="v2-li" onclick="v2CostSheet('',${ja(r.k)})"${lk?" disabled":""}><span class="av">${cc?I20[cc[3]]:I20.dots}</span><span class="tx"><b dir="auto">${esc(tx(r.name)||t("dsOtherCost"))}</b><span>${r.lock?esc(t("v2Locked")):v2Unsaved(r)?`<i class="v2-ns">${t("v2NotSaved")}</i>`:r.memo?esc(r.memo):t("v2Cash")}</span></span><span class="v">${fmt(dsN(r.amount))}</span></button>`;};
  return`${v2Top(2,t("v2S2"),esc(t("v2StepN").replace("{n}",2)))}${v2Warn()}
  ${lk?"":`<p class="v2-sub">${t("v2TapCost")}</p>`}<div class="v2-grid">${tiles}</div>
  ${SH.costs.length?`<div class="v2-h"><b>${t("v2CostsToday")}</b><span>${SH.costs.length}</span></div><div class="v2-list">${SH.costs.map(row).join("")}</div>`:""}
@@ -3881,7 +3886,7 @@ function v2CostSheet(key,k,name){if(!SH||v2RO())return;if(dsRoll())return;const 
 function v2CostLive(){const l=document.getElementById("v2CL");if(l)l.textContent=t("v2AddX").replace("{n}",v2Val("v2CN").trim()||t("v2Other"));}
 function v2CostAdd(){if(!SH||!V2E||v2Busy()||v2Stale())return;const nm=String(v2Val("v2CN")||"").trim()||t("dsOtherCost");const a=r3(dsN(v2Val("v2CA")));if(!(a>0)){toast(t("avNeedAmt"));const e=document.getElementById("v2CA");if(e)e.focus();return;}
  let r=V2E.k?SH.costs.find(x=>x.k===V2E.k):null;if(!r){r={k:uid(),name:"",amount:"",cat:""};SH.costs.push(r);V2E.k=r.k;}
- Object.assign(r,{name:nm,amount:String(a),cat:V2E.cat||r.cat||"",ch:1});dsDirty();v2Save(()=>{v2Pass("costs");v2Close();});}
+ Object.assign(r,{name:nm,amount:String(a),cat:V2E.cat||r.cat||"",ch:1});const mi=document.getElementById("v2CM");if(mi)r.memo=mi.value.trim();dsDirty();v2Save(()=>{v2Pass("costs");v2Close();});}
 function v2Remove(sec,k){if(!SH||v2Busy()||v2Stale())return;const r=(SH[sec]||[]).find(x=>x.k===k);if(!r)return;if(r.lock)return toast(t("dsLockedRow"));SH[sec]=SH[sec].filter(x=>x.k!==k);dsDirty();v2Save(()=>v2Close());}
 /* ---------- step 3: sales ---------- */
 function v2Sales(){const lk=v2RO(),cur=v2Cur(),c=dsCalc(),pi=v2PriceInfo(),d=SH.date;const R=rsList();
@@ -4125,7 +4130,7 @@ window.addEventListener("popstate",()=>{if(BK_SKIP>0){BK_SKIP--;return;}
  const s=BK_TABS.pop();if(!s)return;if(s.kind==="own"){tab=s.prev;filter="all";q="";render();}else{if(s.kind==="rsp"&&typeof RSP!=="undefined")RSP="";if(STT==="day")dsStash();STT=s.prev;render();}try{window.scrollTo({top:0});}catch(e){}});
 /* ===== b28: a seller sees every sale since the start (sales only; costs stay hidden), listed under Days. ===== */
 Object.assign(T.en,{asT:"All sales",asD:"Every sale since the start, newest first.",asNone:"No sales yet.",asPaid:"Paid",asLeft:"{v} left",asMore:"Show more",asN:"{n} sales · {v}"});
-Object.assign(T.ar,{asT:"كل المبيعات",asD:"كل مبيعة منذ البداية، الأحدث أولًا.",asNone:"لا توجد مبيعات بعد.",asPaid:"مدفوعة",asLeft:"باقي {v}",asMore:"عرض المزيد",asN:"{n} مبيعة · {v}"});
+Object.assign(T.ar,{asT:"كل المبيعات",asD:"كل المبيعات منذ البداية، الأحدث أولًا.",asNone:"لا توجد مبيعات بعد.",asPaid:"مدفوعة",asLeft:"باقي {v}",asMore:"عرض المزيد",asN:"مبيعات: {n} · {v}"});
 let AS_N=60;
 function asList(){return D.invoices.filter(x=>x&&num(x.amount)>0).sort((a,b)=>String(b.date).localeCompare(String(a.date))||String(b.at||"").localeCompare(String(a.at||"")));}
 function asHTML(){const L=asList();const cur=esc(curL());const tot=r3(L.reduce((a,x)=>a+num(x.amount),0));
@@ -4221,10 +4226,10 @@ function seOpen(){if(!canEdit())return;const n=dsStaffDays();
 async function seSet(v){if(!canEdit())return;const snap=clone(D);D.settings.staffDays=v;const ok=await persist();if(!ok){D=snap;return;}toast(t("seOk"));v2Close();}
 {const _qa=quickAdd;quickAdd=function(){_qa();const m=document.querySelector("#modal .tm-add");const s=m&&m.querySelector(".v2-qr");if(s&&canEdit())s.insertAdjacentHTML("afterend",`<button class="ds-qa v2-qr" onclick="closeModal();seOpen()"><span class="ci">${I20.clock}</span><span><b>${t("seT")}</b><small>${esc(t(["seNow0","seNow1"][dsStaffDays()]||"seNow7"))}</small></span></button>`);};}
 /* b30: the shop is a cost, not a sale (Ala'a): it moves from the sales step to the costs step */
-V2C.push(["shop","v2ShopCost",12,"store",["shop","المحل","محل"]]);
+/* b44: Ala'a: the shop lines are sales after all; the Shop cost button is gone (shop sales are entered under Sales) */
 Object.assign(T.en,{v2ShopCost:"Shop"});Object.assign(T.ar,{v2ShopCost:"المحل"});
 Object.assign(AR_MAP,{"Shop: Chicken 7.7 kg":"المحل: دجاج ٧٫٧ كغ","Shop: Chicken":"المحل: دجاج","Shop: Liver and wings":"المحل: كبدة وجناح","Shop: Chicken meat":"المحل: لحمة دجاج","Shop: Wings":"المحل: جناح",
- "Shop: Chicken pieces":"المحل: دجاج قطع","Shop: Chicken pieces 14 kg":"المحل: دجاج قطع ١٤ كغ","Shop: Liver, wings and gizzards":"المحل: كبدة وجناح وقوانص","Shop: Chicken 16 kg":"المحل: دجاج ١٦ كغ","Shop: Liver, gizzards and wings":"المحل: كبدة وقوانص وجناح","Garbage bags":"أكياس نفايات"});
+ "Shop: Chicken pieces":"المحل: دجاج قطع","Shop: Chicken pieces 14 kg":"المحل: دجاج قطع ١٤ كغ","Shop: Liver, wings and gizzards":"المحل: كبدة وجناح وقوانص","Shop: Chicken 16 kg":"المحل: دجاج ١٦ كغ","Shop: Liver, gizzards and wings":"المحل: كبدة وقوانص وجناح","Chicken 7.7 kg":"دجاج ٧٫٧ كغ","Liver and wings":"كبدة وجناح","Chicken meat":"لحمة دجاج","Wings":"جناح","Chicken pieces":"دجاج قطع","Chicken pieces 14 kg":"دجاج قطع ١٤ كغ","Liver, wings and gizzards":"كبدة وجناح وقوانص","Chicken 16 kg":"دجاج ١٦ كغ","Chicken with liver":"دجاج مع كبدة","Garbage bags":"أكياس نفايات"});
 let RSTAB="list";
 function rsSeg(){return`<div class="rs-seg" role="tablist">${[["list","rsTabList"],["sales","rsTabSales"]].map(([k,l])=>`<button role="tab" aria-selected="${RSTAB===k}" class="${RSTAB===k?"on":""}" onclick="RSTAB='${k}';render();try{window.scrollTo({top:0})}catch(e){}">${t(l)}</button>`).join("")}</div>`;}
 {const _cv=dsCustView;dsCustView=function(){const h=_cv();const i=h.indexOf(`<div class="ds-hero`);if(i<0)return h;
@@ -4253,8 +4258,8 @@ Object.assign(T.en,{prT:"Today's prices a kilo",prAdd:"Product",prNewT:"New prod
  slAdd:"Add a sale",slPickT:"Who are you selling to?",slFind:"Search restaurants",slNone:"No restaurant with that name.",slWhat:"What are you selling?",slPriceFor:"{p} price a kilo",slNoSales:"No sales yet today.",
  coPickT:"Who paid you?",coNone:"Nobody owes anything.",ddAddCost:"Add a cost",ddAddSale:"Add a sale",ddAddColl:"Add a collection",ddAddBuy:"Add what was bought",ddDelQ:"Delete this line?",ddTap:"Tap a line to change it",v2S3d:"Restaurant, product and kilos"});
 Object.assign(T.ar,{prT:"أسعار اليوم للكيلو",prAdd:"صنف",prNewT:"صنف جديد",prNewD:"شيء آخر تبيعه بالكيلو",prPrice:"سعر الكيلو",prSaveB:"أضف الصنف",prNeedName:"اكتب اسم الصنف",prSet:"حدّد",prOk:"تم حفظ السعر",
- slAdd:"أضف بيعة",slPickT:"لمن تبيع؟",slFind:"ابحث عن مطعم",slNone:"لا يوجد مطعم بهذا الاسم.",slWhat:"ماذا تبيع؟",slPriceFor:"سعر كيلو {p}",slNoSales:"لا توجد مبيعات اليوم بعد.",
- coPickT:"من دفع لك؟",coNone:"لا أحد عليه شيء.",ddAddCost:"أضف مصروفًا",ddAddSale:"أضف بيعة",ddAddColl:"أضف تحصيلًا",ddAddBuy:"أضف الشراء",ddDelQ:"احذف هذا السطر؟",ddTap:"اضغط على أي سطر لتعديله",v2S3d:"المطعم والصنف والكيلو"});
+ slAdd:"أضف مبيعات اليوم",slPickT:"لمن تبيع؟",slFind:"ابحث عن مطعم",slNone:"لا يوجد مطعم بهذا الاسم.",slWhat:"ماذا تبيع؟",slPriceFor:"سعر كيلو {p}",slNoSales:"لا توجد مبيعات اليوم بعد.",
+ coPickT:"من دفع لك؟",coNone:"لا أحد عليه شيء.",ddAddCost:"أضف مصروفًا",ddAddSale:"أضف مبيعات اليوم",ddAddColl:"أضف تحصيلًا",ddAddBuy:"أضف الشراء",ddDelQ:"احذف هذا السطر؟",ddTap:"اضغط على أي سطر لتعديله",v2S3d:"المطعم والصنف والكيلو"});
 /* ---------- products ---------- */
 const PR_DEF=[{k:"chicken",en:"Chicken",ar:"دجاج"},{k:"liver",en:"Liver",ar:"كبدة"},{k:"wings",en:"Wings",ar:"جناح"}];
 function prList(){const S=D&&D.settings&&Array.isArray(D.settings.dsProds)?D.settings.dsProds.filter(p=>p&&p.k&&!p.gone):[];const L=[...PR_DEF];for(const p of S){const i=L.findIndex(x=>x.k===p.k);if(i>=0)L[i]=Object.assign({},L[i],p);else L.push(p);}return L;}
@@ -4303,12 +4308,13 @@ function slListHTML(coll){const q=v2Norm(SLQ);const owed={};for(const p of dsCus
  let L=rsList().filter(r=>!q||[r.key,r.en,r.ar,...(r.alias||[])].some(v=>v&&v2Norm(v).includes(q)));
  if(coll)L=L.filter(r=>v2OwedBefore(r.key,d)>0.004||SH.coll.some(c=>rsKeys(r.key).includes(c.who)));
  const ow=r=>coll?v2OwedBefore(r.key,d):r3(rsKeys(r.key).reduce((a,k)=>a+(owed[k]||0),0));
- return`${L.length?`<div class="v2-list">${L.map(r=>{const o=ow(r);const sub=rsSub(r.key);return`<button class="v2-li" onclick="v2Close();${coll?`v2CollSheet(${ja(r.key)})`:`v2SaleSheet(${ja(r.key)},null,false,1)`}"><span class="av">${avI(rsName(r.key))}</span><span class="tx"><b dir="auto">${esc(rsName(r.key))}</b>${sub?`<span dir="auto">${esc(sub)}</span>`:""}</span>${o>0.004?`<span class="v c-later">${fmt(o)}</span>`:""}</button>`;}).join("")}</div>`:`<p class="v2-sub">${coll&&!q?t("coNone"):t("slNone")}</p>`}
+ const shopRow=coll||(q&&!v2Norm(t("v2Shop")).includes(q)&&!v2Norm("shop المحل").includes(q))?"":`<button class="v2-li sl-shop" onclick="v2Close();v2SaleSheet('',null,true,1)"><span class="av">${I20.store}</span><span class="tx"><b>${t("v2Shop")}</b></span></button>`;
+ return`${shopRow}${L.length?`<div class="v2-list">${L.map(r=>{const o=ow(r);const sub=rsSub(r.key);return`<button class="v2-li" onclick="v2Close();${coll?`v2CollSheet(${ja(r.key)})`:`v2SaleSheet(${ja(r.key)},null,false,1)`}"><span class="av">${avI(rsName(r.key))}</span><span class="tx"><b dir="auto">${esc(rsName(r.key))}</b>${sub?`<span dir="auto">${esc(sub)}</span>`:""}</span>${o>0.004?`<span class="v c-later">${fmt(o)}</span>`:""}</button>`;}).join("")}</div>`:`<p class="v2-sub">${coll&&!q?t("coNone"):t("slNone")}</p>`}
  ${coll?"":`<button class="v2-rt dash" onclick="v2Close();v2RestNew(${ja(String(SLQ||"").trim())})">${I20.plus}<span>${t("v2NewRest")}</span></button>`}`;}
 function slList(coll){const e=document.getElementById("slL");if(e)e.innerHTML=slListHTML(!!coll);}
 v2Sales=function(){const lk=v2RO(),cur=v2Cur(),c=dsCalc(),pi=v2PriceInfo();
  const nR=new Set(SH.sales.map(x=>x.shop?"\u0000":rsOf(String(x.who||"").trim())?rsOf(String(x.who||"").trim()).key:String(x.who||"").trim())).size;
- const row=r=>`<button class="v2-li" onclick="v2SaleSheet(${ja(r.shop?"":r.who)},${ja(r.k)},${r.shop?"true":"false"})"><span class="av">${r.shop?I20.store:avI(rsName(String(r.who||"").trim()))}</span><span class="tx"><b dir="auto">${r.shop?t("v2Shop"):esc(rsName(String(r.who||"").trim()))}</b><span>${esc(prName(r.prod))}${dsN(r.qty)?" · "+esc(v2Kg(dsN(r.qty))):""} · ${r.lock?esc(t("v2Locked")):v2Unsaved(r)?`<i class="v2-ns">${t("v2NotSaved")}</i>`:r.shop||r.paid?`<span class="c-paid">${t("dsPaidNow")}</span>`:`<span class="c-later">${t("dsOnAcc")}</span>`}</span></span><span class="v">${fmt(dsN(r.amount))}</span></button>`;
+ const row=r=>`<button class="v2-li" onclick="v2SaleSheet(${ja(r.shop?"":r.who)},${ja(r.k)},${r.shop?"true":"false"})"><span class="av">${r.shop?I20.store:avI(rsName(String(r.who||"").trim()))}</span><span class="tx"><b dir="auto">${r.shop?t("v2Shop"):esc(rsName(String(r.who||"").trim()))}</b><span>${esc(r.sdesc&&!r.prod?tx(r.sdesc):prName(r.prod))}${dsN(r.qty)&&!(r.sdesc&&!r.prod&&/kg/.test(r.sdesc))?" · "+esc(v2Kg(dsN(r.qty))):""} · ${r.lock?esc(t("v2Locked")):v2Unsaved(r)?`<i class="v2-ns">${t("v2NotSaved")}</i>`:r.shop||r.paid?`<span class="c-paid">${t("dsPaidNow")}</span>`:`<span class="c-later">${t("dsOnAcc")}</span>`}</span></span><span class="v">${fmt(dsN(r.amount))}</span></button>`;
  return`${v2Top(3,t("v2S3"),esc(t("v2StepN").replace("{n}",3))+(pi.set?" · "+esc(fq2(pi.p)+" "+t("v2PerKg").replace("{c}",curL())):""))}${v2Warn()}
  ${lk?"":`<button class="sl-add" onclick="slPick()">${I20.plus}<span>${t("slAdd")}</span></button>`}
  ${SH.sales.length?`<div class="v2-h"><b>${t("v2SalesToday")}</b><span>${SH.sales.length}</span></div><div class="v2-list">${SH.sales.map(row).join("")}</div>`:`<p class="v2-sub">${t("slNoSales")}</p>`}
@@ -4359,7 +4365,7 @@ function ddEditHTML(d){const R=dsRecs(d);const cur=v2Cur();const b=R.buy;const b
  ${bq||bp?`<div class="dd-top">${bp?`<div><span>${t("ddPrice")}</span><b>${esc(fq(bp))}</b></div>`:""}${bq?`<div><span>${t("ddWeight")}</span><b>${esc(fq(bq))} <small>${t("dsKgU")}</small></b></div>`:""}</div>`:""}
  <div class="v2-h"><b>${t("ddCosts")}</b><span>${fmt(costT)} ${cur}</span></div>
  <div class="v2-list v2-tls">${b?ln("v2BuySheet()",esc(tx(b.item)||t("v2S1")),esc([bq?v2Kg(bq):"",bp?"× "+fq(bp):"",tx(b.party||"")].filter(Boolean).join(" · ")),fmt(num(b.amount))):""}
- ${R.costs.map(x=>ln(`v2CostSheet('',${ja(x.id)})`,`<bdi>${esc(tx(x.item||x.desc)||t("dsOtherCost"))}</bdi>`,"",fmt(num(x.amount)),"",ddX("costs",x.id))).join("")}
+ ${R.costs.map(x=>ln(`v2CostSheet('',${ja(x.id)})`,`<bdi>${esc(tx(x.item||x.desc)||t("dsOtherCost"))}</bdi>`,x.memo?esc(x.memo):"",fmt(num(x.amount)),"",ddX("costs",x.id))).join("")}
  <div class="v2-tl tot"><span>${t("ddTot")}</span><b>${fmt(costT)}</b></div></div>
  <div class="dd-adds">${b?"":add(t("ddAddBuy"),"v2BuySheet()")}${add(t("ddAddCost"),"v2CostSheet('')")}</div>
  <div class="v2-h"><b>${t("ddSales")}</b><span>${fmt(soldT)} ${cur}</span></div>
@@ -4379,7 +4385,7 @@ function ddEditHTML(d){const R=dsRecs(d);const cur=v2Cur();const b=R.buy;const b
 Object.assign(T.en,{svBtn:"View as seller",svBtnD:"See and use the screens Anas sees",svBar:"You're viewing as the seller",svBack:"Back to my books",
  rsBack:"Restaurants",rsAddSale:"Add a sale",rsTapEdit:"Tap a sale or a collection to change it",se1:"Today and yesterday",se1D:"He can change today and fix yesterday",seNow1:"Today and yesterday"});
 Object.assign(T.ar,{svBtn:"اعرض كبائع",svBtnD:"شاهد واستخدم الشاشات التي يراها أنس",svBar:"أنت تشاهد كبائع",svBack:"ارجع لدفاتري",
- rsBack:"المطاعم",rsAddSale:"أضف بيعة",rsTapEdit:"اضغط على أي بيعة أو تحصيل لتعديله",se1:"اليوم وأمس",se1D:"يعدّل اليوم ويصحّح أمس",seNow1:"اليوم وأمس"});
+ rsBack:"المطاعم",rsAddSale:"أضف مبيعات",rsTapEdit:"اضغط على أي مبيعات أو تحصيل لتعديله",se1:"اليوم وأمس",se1D:"يعدّل اليوم ويصحّح أمس",seNow1:"اليوم وأمس"});
 var SHOPV=false;let RSP="",RSDAY=false,RSED="";
 const shopUI=()=>ROLE==="staff"||SHOPV;
 /* the owner's daily sheet is now the seller's own screens, with a bar to go back */
@@ -4524,7 +4530,7 @@ Object.assign(T.en,{dsOut:"Costs",ddPrice:"Chicken price",ddDate:"Date",ddSheetT
 Object.assign(T.ar,{dsOut:"المصاريف",ddPrice:"سعر الدجاج",ddDate:"التاريخ",ddSheetT:"ورقة اليوم",ddEditT:"تعديل اليوم",ddEditHint:"عدّل أي سطر بالقلم، أو احذفه بسلة المهملات. اضغط حفظ عندما تنتهي.",
  ddProfitDay:"ربح هذا اليوم",ddLossDay:"خسارة هذا اليوم",uiCancel:"إلغاء",uiSave:"حفظ",uiDelete:"احذف",uiDelQ:"تحذف هذا؟",uiDelD:"لا يمكن التراجع عن الحذف.",
  ddCancelQ:"تلغي تعديلاتك؟",ddCancelD:"كل ما غيّرته منذ ضغطت تعديل سيرجع كما كان.",ddUndoB:"ألغِ التعديلات",uiKeep:"تابع التعديل",ddUndone:"أُلغيت التعديلات",ddSaved:"تم الحفظ",
- rsAdd:"أضف",rsEdit:"عدّل",rsAddWhat:"ماذا تريد أن تضيف؟",rsAddSaleD:"دجاج أو كبدة أو جناح أخذها",rsAddPayD:"مبلغ حصّلته منه",rsAddPay:"أضف دفعة",rsEditT:"تعديل {n}",rsEditHint:"عدّل أي بيعة أو دفعة بالقلم، أو احذفها بسلة المهملات.",
+ rsAdd:"أضف",rsEdit:"عدّل",rsAddWhat:"ماذا تريد أن تضيف؟",rsAddSaleD:"دجاج أو كبدة أو جناح أخذها",rsAddPayD:"مبلغ حصّلته منه",rsAddPay:"أضف دفعة",rsEditT:"تعديل {n}",rsEditHint:"عدّل أي مبيعات أو دفعة بالقلم، أو احذفها بسلة المهملات.",
  rsNoSales:"لا توجد مبيعات بعد.",rsOwes:"عليه",rsLeftV:"باقي {v}",prSheetT:"سعر {p} للكيلو",prSheetToday:"سعر اليوم",prAddB:"أضف صنفًا",
  swClose:"اسحب لإغلاق اليوم",clQ:"تغلق هذا اليوم؟",clD:"راجع أرقام اليوم قبل الإغلاق.",clB:"أغلق اليوم",clDone:"أُغلق اليوم",clSend:"أرسل الملخص على واتساب",
  clLeft:"الدجاج المتبقي",clLater:"على الحساب اليوم",clColl:"المحصّل",v2Closed:"أُغلق اليوم"});
@@ -4713,7 +4719,7 @@ function stHTML(){const P=prList().map(p=>stRow(lang==="ar"?(p.ar||p.en):(p.en||
  const R=rsList().map(r=>stRow(rsName(r.key),lang==="ar"&&!canEdit()?"":rsSub(r.key),`stEdit('r',${ja(r.key)})`));
  const C=[...V2C.map(cc=>{const o=nmOv(T.en[cc[1]]);return stRow(ccName(cc),o?stOther(o.ar,o.en):stOther(T.ar[cc[1]],T.en[cc[1]]),`stEdit('c',${ja(T.en[cc[1]])})`);}),...stCostNames().map(n=>{const o=nmOv(n);return stRow(tx(n),o?stOther(o.ar,o.en):stOther(arOf(n),v2Ar(n)?"":n),`stEdit('c',${ja(n)})`);})];
  const S=stSupNames().map(n=>{const o=nmOv(n);return stRow(tx(n),o?stOther(o.ar,o.en):stOther(arOf(n),v2Ar(n)?"":n),`stEdit('s',${ja(n)})`);});
- const own=canEdit();const s=D.settings;
+ const own=canEdit()&&!(typeof SHOPV!=="undefined"&&SHOPV)&&!(typeof ACCV!=="undefined"&&ACCV);const s=D.settings;
  return`${v2Head(t("stT"),t("stD"),I20.edit)}
  ${(()=>{const tabs=[["p","stProds",P.length],["r","stRests",R.length],["c","stCosts",C.length],["s","stSups",S.length],...(own?[["b","stShop",0]]:[])];if(!tabs.some(x=>x[0]===STAB))STAB="p";
   return`<div class="ui-tabs st-tabs" role="tablist">${tabs.map(([k,l,n])=>`<button role="tab" class="${STAB===k?"on":""}" aria-selected="${STAB===k}" onclick="STAB='${k}';stOpen()">${t(l)}${n?` <i>${n}</i>`:""}</button>`).join("")}</div>`;})()}
@@ -4807,7 +4813,7 @@ function calPick(d){v2Close();if(!d)return;if(d>=today()){dsGo("day");return;}ds
 
 /* b37: restaurants and all sales as separate cards; a sale opens its details in a sheet */
 Object.assign(T.en,{svT:"Sale details",svDate:"Date",svProd:"Product",svKg:"Weight",svPrice:"Price a kilo",svAmt:"Amount",svPaid:"Paid",svLeft:"Still owed",svEdit:"Edit this sale",svRest:"Open restaurant",svNoEdit:"This day can't be changed any more"});
-Object.assign(T.ar,{svT:"تفاصيل البيعة",svDate:"التاريخ",svProd:"الصنف",svKg:"الوزن",svPrice:"سعر الكيلو",svAmt:"المبلغ",svPaid:"المدفوع",svLeft:"الباقي عليه",svEdit:"عدّل البيعة",svRest:"افتح المطعم",svNoEdit:"لم يعد يمكن تعديل هذا اليوم"});
+Object.assign(T.ar,{svT:"تفاصيل المبيعات",svDate:"التاريخ",svProd:"الصنف",svKg:"الوزن",svPrice:"سعر الكيلو",svAmt:"المبلغ",svPaid:"المدفوع",svLeft:"الباقي عليه",svEdit:"عدّل المبيعات",svRest:"افتح المطعم",svNoEdit:"لم يعد يمكن تعديل هذا اليوم"});
 function saleView(id){const x=D.invoices.find(i=>i&&i.id===id);if(!x)return;const cur=v2Cur();const q=num(x.qty),a=num(x.amount),pd=paidOf(x),left=r3(a-pd);const shop=!x.party||x.party==="Shop sales";
  const row=(l,v,c)=>`<div class="ui-li"><span class="t"><small>${l}</small></span><b class="amt${c?" "+c:""}">${v}</b></div>`;
  const can=!!x.sh&&x.shk==="sale"&&!dsRO(x.sh);const ph=phOf(x);
@@ -5079,7 +5085,7 @@ function lfKgOf(r,k){if(!r)return null;if(k==="chicken")return num(r.k);const v=
  if(pk&&(dsDays().some(x=>x.d===p)||r)){const kv=lfKgOf(r,pk);const set=kv!=null&&!!r;const k=set?kv:(pk==="chicken"?lfSug(p,0).r:0);const ed=!dsRO(p)&&!lockedOn(p);const dn=shortDate(p);const pn=prName(pk);
   const lbl=(p===y?t("lf3Y"):t("lf3D").replace("{d}",dn))+(pk==="chicken"?"":" · "+pn);
   const html=`<div class="bs-stock bs40 bs41${set?"":" no"}"><div class="tx"><span class="l">${esc(lbl)}</span><b class="big">${esc(fq(k))} <small>${t("dsKgU")}</small></b></div>${ed?`<button class="bs-ed" onclick="bsLeftEdit(${ja(p)},${ja(pk)})">${I20.edit}<span>${t("bsEdit")}</span></button>`:""}</div>`;
-  BSLK={pk,k};const h=sh.querySelector(".v2-sht");if(h)h.insertAdjacentHTML("afterend",html);}else BSLK=null;
+  BSLK={pk,k};/* b44: under the What chips, since it follows that choice (Ala'a) */const h=sh.querySelector("#v2BN")||sh.querySelector(".v2-chips")||sh.querySelector(".v2-sht");if(h)h.insertAdjacentHTML("afterend",html);}else BSLK=null;
  bsTotPaint();};}
 let BSLK=null;
 function bsTotPaint(){const sh=document.querySelector("#v2s .sh.buy");if(!sh||!V2B)return;const row=sh.querySelector(".v2-sumrow");if(!row)return;
@@ -5273,6 +5279,7 @@ function ddSecEd(i){if(!SH||v2RO())return;DDEDIT=SH.date;render();setTimeout(()=
  const row=h.slice(e,z).replace(/<\/button>/g,`<i class="pr-pen">${I20.edit}</i></button>`);return h.slice(0,e)+row+h.slice(z);};}
 /* cost names: pick one from the list, or add a new one that is checked against the list first */
 function cnList(){return stCostNames();}
+Object.assign(T.en,{cnQ:"Search names"});Object.assign(T.ar,{cnQ:"ابحث عن اسم"});
 function cnFind(v){const k=v2Norm(v);if(!k)return null;return cnList().find(n=>[n,tx(n),arOf(n),(nmOv(n)||{}).ar,(nmOv(n)||{}).en].some(x=>x&&v2Norm(x)===k))||null;}
 function cnPick(n){const i=document.getElementById("v2CN");if(!i)return;i.value=n;const w=document.querySelector("#v2s .cn-pick");if(w)w.querySelectorAll(".cn-c").forEach(b=>b.classList.toggle("on",b.dataset.n===n));
  const nb=document.getElementById("cnNewBox");if(nb)nb.hidden=true;v2CostLive();const a=document.getElementById("v2CA");if(a&&!a.value)try{a.focus();}catch(e){}}
@@ -5284,7 +5291,8 @@ function cnAdd(){const f=document.getElementById("cnNewIn");const v=String(f&&f.
  const cur=inp.value.trim();const hit=cur?cnFind(cur)||cur:"";const L=cnList();if(hit&&!L.includes(hit))L.unshift(hit);
  inp.type="hidden";inp.removeAttribute("data-af");inp.value=hit;if(document.activeElement===inp)inp.blur();
  const lbl=inp.previousElementSibling;if(lbl&&lbl.classList.contains("v2-lbl"))lbl.textContent=t("cnPick");
- const box=document.createElement("div");box.innerHTML=`<div class="cn-pick">${L.map(n=>`<button type="button" class="cn-c${n===hit?" on":""}" data-n="${esc(n)}" onclick="cnPick(this.dataset.n)">${esc(tx(n))}</button>`).join("")}<button type="button" class="cn-c cn-new" onclick="cnNewOpen()">${I20.plus}<span>${t("cnNew")}</span></button></div>
+ const B=V2C.map(cc=>[T.en[cc[1]],ccName(cc)]).filter(b=>!L.some(n=>v2CostTile(n)===v2CostTile(b[0])));const A=[...B,...L.map(n=>[n,tx(n)])];
+ const box=document.createElement("div");box.innerHTML=`${A.length>8?`<input class="v2-in v2-txt cn-q" placeholder="${t("cnQ")}" autocomplete="off" oninput="cnFilter(this.value)">`:""}<div class="cn-pick">${A.map(([n,l])=>`<button type="button" class="cn-c${n===hit?" on":""}" data-n="${esc(n)}" onclick="cnPick(this.dataset.n)">${esc(l)}</button>`).join("")}<button type="button" class="cn-c cn-new" onclick="cnNewOpen()">${I20.plus}<span>${t("cnNew")}</span></button></div>
  <div class="cn-nb" id="cnNewBox" hidden><input id="cnNewIn" class="v2-in v2-txt" placeholder="${t("cnNewPh")}" autocomplete="off" oninput="cnFilter(this.value)" onkeydown="if(event.key==='Enter')cnAdd()"><button type="button" class="ui-btn ui-pri cn-ok" onclick="cnAdd()">${t("cnAdd")}</button></div>`;
  inp.after(...box.childNodes);if(!hit)setTimeout(()=>{const a=document.activeElement;if(a&&a.id==="v2CA")a.blur();},350);}catch(e){}return r;};}
 v2CostLive=function(){const l=document.getElementById("v2CL");if(l){const v=v2Val("v2CN").trim();l.textContent=t("v2AddX").replace("{n}",v?tx(v):t("v2Other"));}};
@@ -5296,8 +5304,8 @@ function avI(n,person){return person?I19.me:I20.store;}
 /* b44: a sale that was partly collected on another day can still be edited by the seller; only its total can't go
    below what was already collected, and it can't be deleted (the money in would lose its bill) */
 Object.assign(T.en,{fpLow:"The total can't be less than what was already collected ({v}).",fpNoDel:"Part of this sale was collected, so it can't be deleted.",fpHint:"{v} of it was already collected. The total can't go below that."});
-Object.assign(T.ar,{fpLow:"لا يمكن أن يقل المبلغ عن المقبوض منه ({v}).",fpNoDel:"قُبض جزء من هذه البيعة، لذلك لا يمكن حذفها.",fpHint:"قُبض منها {v} من قبل. لا يمكن أن يقل المبلغ عن ذلك."});
-{const _ld=dsLoad;dsLoad=function(){const r=_ld.apply(this,arguments);try{if(SH&&Array.isArray(SH.sales))for(const x of SH.sales)if(num(x.lock)>0){x.fp=num(x.lock);x.lock=0;}}catch(e){}return r;};}
+Object.assign(T.ar,{fpLow:"لا يمكن أن يقل المبلغ عن المقبوض منه ({v}).",fpNoDel:"قُبض جزء من هذه المبيعات، لذلك لا يمكن حذفها.",fpHint:"قُبض منها {v} من قبل. لا يمكن أن يقل المبلغ عن ذلك."});
+{const _ld=dsLoad;dsLoad=function(){const r=_ld.apply(this,arguments);try{if(SH&&Array.isArray(SH.sales))for(const x of SH.sales){if(num(x.lock)>0){x.fp=num(x.lock);x.lock=0;}if(x.shop&&x.rid){const iv=D.invoices.find(i=>i.id===x.rid);if(iv&&!iv.prod&&iv.desc)x.sdesc=iv.desc;}}}catch(e){}return r;};}
 {const _rm=v2Remove;v2Remove=function(sec,k,ok){const r=SH&&(SH[sec]||[]).find(x=>x.k===k);if(r&&num(r.fp)>0)return toast(t("fpNoDel"));return _rm.apply(this,arguments);};}
 {const _dd=dsDel;dsDel=function(sec,k){const r=SH&&(SH[sec]||[]).find(x=>x.k===k);if(r&&num(r.fp)>0)return toast(t("fpNoDel"));return _dd.apply(this,arguments);};}
 {const _ss=v2SaleSheet;v2SaleSheet=function(who,k){const out=_ss.apply(this,arguments);try{const r=k&&SH?SH.sales.find(x=>x.k===k):null;if(r&&num(r.fp)>0&&!v2RO()){const b=document.querySelector("#v2s .v2-done");const ft=b&&(b.closest(".ui-foot")||b);if(ft&&!document.getElementById("fpH")){const p=document.createElement("p");p.id="fpH";p.className="eo-hint fp-h";p.innerHTML=`<span class="eo-i">${I5.info}</span><span></span>`;p.lastChild.textContent=t("fpHint").replace("{v}",fmt(r.fp)+" "+curL());ft.before(p);}
@@ -5370,6 +5378,32 @@ function ccApply(){const g=new Set((typeof D!=="undefined"&&D&&D.settings&&Array
  const ok=await persist();if(!ok){D=snap;ccApply();return;}toast(t("dlDone"));render();STAB=kind;stOpen();};}
 /* b44: past days as compact rows (Ala'a picked option 1): date tile, weekday, sold/spent on one line, profit big at the end. */
 Object.assign(T.en,{dyS:"Sold",dyO:"Spent"});Object.assign(T.ar,{dyS:"مبيع",dyO:"مصروف"});
+/* b44: what was bought is one of four fixed things (Ala'a): live chicken, whole chicken (حب), liver, wings. No free text. */
+Object.assign(AR_MAP,{"Cleaned chicken":"دجاج حب","Wings":"جناح","Liver":"كبدة"});
+const BUY4=["Live chicken","Cleaned chicken","Liver","Wings"];
+/* buy choices = live chicken + the Products list (chicken shows as cleaned chicken here), so they always match the list */
+function buyList(){const L=["Live chicken"];for(const p of prList()){if(p.k==="chicken"){L.push("Cleaned chicken");continue;}const n=p.en||p.ar;if(!n)continue;if(p.en&&p.ar)AR_MAP[p.en]=AR_MAP[p.en]||p.ar;L.push(n);}return L;}
+/* Ala'a: every name in a transaction comes from the Names lists. Suppliers: all of them as chips (recent first), a new one is checked against the list */
+function supFind(v){const k=v2Norm(v);if(!k)return null;return stSupNames().find(n=>[n,tx(n),arOf(n),(nmOv(n)||{}).ar,(nmOv(n)||{}).en].some(x=>x&&v2Norm(x)===k))||null;}
+{const _bo=v2BuyOpts;v2BuyOpts=function(){const o=_bo();const all=stSupNames();const fr=[...o.froms.filter(n=>all.includes(n)),...all.filter(n=>!o.froms.includes(n))];return{names:buyList(),froms:fr};};}
+{const _bd=v2BuyDone;v2BuyDone=function(){if(V2B&&V2B.ofrom&&String(V2B.from||"").trim()){const ex=supFind(V2B.from);if(ex){V2B.from=ex;V2B.ofrom=false;}else V2B.from=String(V2B.from).trim();}return _bd.apply(this,arguments);};}
+{const _bp2=v2BuyPaint;v2BuyPaint=function(first){const r=_bp2.apply(this,arguments);try{const b=[...document.querySelectorAll("#v2s .v2-chip")].find(x=>/v2BuyFrom\(null\)/.test(x.getAttribute("onclick")||""));if(b){const sp=b.lastChild;if(sp&&sp.nodeType===3)sp.textContent=t("cnNew");}const f=document.getElementById("v2BF");if(f)f.placeholder=t("cnNewPh");}catch(e){}return r;};}
+{const _bp=v2BuyPaint;v2BuyPaint=function(first){if(V2B&&first&&SH&&!SH.buy.rid){const n=v2Norm(V2B.name||"");const hit=buyList().find(b=>v2Norm(b)===n||v2Norm(tx(b))===n);if(hit){V2B.name=hit;V2B.oname=false;}else if(!n||n===v2Norm(t("v2Chicken"))||n===v2Norm(T.en.v2Chicken)){V2B.name="Live chicken";V2B.oname=false;}}
+ const r=_bp.apply(this,arguments);try{if(V2B&&!V2B.oname){const b=[...document.querySelectorAll("#v2s .v2-chips .v2-chip")].find(x=>/v2BuyName\(null\)/.test(x.getAttribute("onclick")||""));if(b)b.remove();}}catch(e){}return r;};}
+/* b44: a day step only gets its tick when something is in it, or when the seller says "nothing today" (Ala'a: empty steps were ticked) */
+Object.assign(T.en,{nzQ:"Nothing in {s} today?",nzB:"Tick this step only if there really was nothing today.",nzOk:"Yes, nothing",nzNo:"Not now"});
+Object.assign(T.ar,{nzQ:"لا شيء في {s} اليوم؟",nzB:"علّم هذه الخطوة فقط إذا لم يكن فيها شيء اليوم فعلًا.",nzOk:"نعم، لا شيء",nzNo:"ليس الآن"});
+function v2StepHas(k){if(!SH)return false;const c=dsCalc();if(k==="buy")return!!SH.buy.rid||c.buy>0;return(SH[k]||[]).length>0;}
+{const _sl=v2StepList;v2StepList=function(){const st=_sl();const P=v2Passed(SH.date);for(const x of st){if(!v2StepHas(x.k)&&P[x.k]!==2){x.done=false;if(x.sub===t("v2None"))x.sub="";}}return st;};}
+v2Next=function(k,to){const ti={buy:"v2S1",costs:"v2S2",sales:"v2S3",coll:"v2S4"}[k];
+ const go=()=>{if(v2StepHas(k)||v2RO()||!ti||v2Passed(SH.date)[k]===2){v2Pass(k);return v2Go(to);}
+  uiConfirm({title:esc(t("nzQ").replace("{s}",t(ti))),body:esc(t("nzB")),ok:t("nzOk"),no:t("nzNo"),icon:I20.check},()=>{const o=v2Passed(SH.date);o[k]=2;try{localStorage.setItem(v2PK(SH.date),JSON.stringify(o));}catch(e){}v2Go(to);});
+  const x=document.querySelector("#tcf .ui-sec");if(x)x.onclick=()=>{uiConfirmX();v2Go(to);};};
+ if(SH&&SH.dirty&&!v2RO())return v2Save(go);go();};
+/* b44: an optional description on every cost (Ala'a) */
+Object.assign(T.en,{cmL:"Description (optional)",cmPh:"For example: two workers for cleaning"});Object.assign(T.ar,{cmL:"وصف (اختياري)",cmPh:"مثلًا: عاملان للتنظيف"});
+{const _cs=v2CostSheet;v2CostSheet=function(key,k){const r0=_cs.apply(this,arguments);try{const big=document.querySelector("#v2s .v2-big");if(!big||document.getElementById("v2CM"))return r0;const r=k&&SH?SH.costs.find(x=>x.k===k):null;const ro=v2RO()||!!(r&&r.lock);
+ big.insertAdjacentHTML("afterend",`<label class="cm-w"><span class="v2-lbl">${t("cmL")}</span><textarea id="v2CM" class="v2-in v2-txt cm-in" rows="2" maxlength="200" placeholder="${t("cmPh")}"${ro?" disabled":""}>${esc(r&&r.memo||"")}</textarea></label>`);}catch(e){}return r0;};}
 </script>
 </body>
 </html>
