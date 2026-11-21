@@ -1349,7 +1349,8 @@ label>.v2-in.v2-txt{margin-top:0}.v2-in.v2-txt:focus{border:2px solid var(--ink)
 .v2-dt{display:inline-flex;align-items:center;gap:6px;flex:none;background:#fff;border-radius:999px;padding:8px 13px;font-size:13.5px;font-weight:700;box-shadow:var(--sh);white-space:nowrap;margin-top:2px}.v2-dt svg{width:16px;height:16px}
 .me-lang{cursor:default}.me-lang .tm-seg{margin-inline-start:auto}.dd-edit.dd-save{margin:18px 0 6px}
 </style>
-<style id="ds">[dir=rtl] svg.dir-ic{transform:scaleX(-1)}
+<style id="ds">.st-tabs{overflow-x:auto;scrollbar-width:none;margin:16px 0 4px}.st-tabs::-webkit-scrollbar{display:none}.st-tabs button{flex:none;padding:0 14px;white-space:nowrap;font-size:14px!important}.st-sec:first-of-type{margin-top:8px}
+[dir=rtl] svg.dir-ic{transform:scaleX(-1)}
 .v2-top h1{font-size:20px!important;line-height:1.35}
 .sh.set{min-height:78vh}.st-sec{margin-top:18px}.st-sec h3{font-size:13px;font-weight:800;color:var(--muted);margin:0 4px 0;letter-spacing:.02em}.st-sec .ui-card{margin-top:8px}.st-none{color:var(--muted);font-size:14px;margin:14px 0}.st-sec .ui-add{margin-top:10px}.ds-big.st-go small{display:block;font-size:12.5px;font-weight:500;color:var(--muted);margin-top:2px}.ds-big.st-go span{text-align:start}
 
@@ -4500,23 +4501,25 @@ function stSupNames(){const out=[];const seen=new Set();const add=n=>{n=String(n
 {const _bo=v2BuyOpts;v2BuyOpts=function(){const o=_bo();for(const n of (D.settings.supX||[]))if(n&&!o.froms.some(f=>v2Norm(f)===v2Norm(n)))o.froms.push(n);return o;};}
 function stOther(ar,en){if(lang==="ar"&&!canEdit())return"";return lang==="ar"?(en&&en!==ar?en:""):(ar&&ar!==en?ar:"");}
 function stRow(name,sub,fn){return`<div class="ui-li"><span class="t"><b dir="auto">${esc(name)}</b>${sub?`<small dir="auto">${esc(sub)}</small>`:""}</span><button class="ui-ic" aria-label="${t("stEdT")}" onclick="${fn}">${I20.edit}</button></div>`;}
-function stSec(title,rows,addLbl,addFn){return`<div class="st-sec"><h3>${title}</h3><div class="ui-card">${rows.length?rows.join(""):`<p class="st-none">${t("stNone")}</p>`}</div><button class="ui-add" onclick="${addFn}">${I20.plus}<span>${addLbl}</span></button></div>`;}
+function stSec(title,rows,addLbl,addFn){return`<div class="st-sec">${title?`<h3>${title}</h3>`:""}<div class="ui-card">${rows.length?rows.join(""):`<p class="st-none">${t("stNone")}</p>`}</div><button class="ui-add" onclick="${addFn}">${I20.plus}<span>${addLbl}</span></button></div>`;}
 function stHTML(){const P=prList().map(p=>stRow(lang==="ar"?(p.ar||p.en):(p.en||p.ar),stOther(p.ar,p.en),`stEdit('p',${ja(p.k)})`));
- const R=rsList().map(r=>stRow(rsName(r.key),rsSub(r.key),`stEdit('r',${ja(r.key)})`));
+ const R=rsList().map(r=>stRow(rsName(r.key),lang==="ar"&&!canEdit()?"":rsSub(r.key),`stEdit('r',${ja(r.key)})`));
  const C=[...V2C.map(cc=>{const o=nmOv(T.en[cc[1]]);return stRow(ccName(cc),o?stOther(o.ar,o.en):stOther(T.ar[cc[1]],T.en[cc[1]]),`stEdit('c',${ja(T.en[cc[1]])})`);}),...stCostNames().map(n=>{const o=nmOv(n);return stRow(tx(n),o?stOther(o.ar,o.en):stOther(arOf(n),v2Ar(n)?"":n),`stEdit('c',${ja(n)})`);})];
  const S=stSupNames().map(n=>{const o=nmOv(n);return stRow(tx(n),o?stOther(o.ar,o.en):stOther(arOf(n),v2Ar(n)?"":n),`stEdit('s',${ja(n)})`);});
  const own=canEdit();const s=D.settings;
  return`${v2Head(t("stT"),t("stD"),I20.edit)}
- ${stSec(t("stProds"),P,t("stAddP"),"stEdit('p')")}${stSec(t("stRests"),R,t("stAddR"),"stEdit('r')")}${stSec(t("stCosts"),C,t("stAddC"),"stEdit('c')")}${stSec(t("stSups"),S,t("stAddS"),"stEdit('s')")}
- ${own?`<div class="st-sec"><h3>${t("stShop")}</h3><div class="ui-card">${stRow(String(s.nameAr||"").trim()||s.name||"",String(s.nameAr||"").trim()?s.name:"","stEdit('b')")}</div></div>`:""}`;}
-function stOpen(){v2Open(stHTML(),"set");}
+ ${(()=>{const tabs=[["p","stProds",P.length],["r","stRests",R.length],["c","stCosts",C.length],["s","stSups",S.length],...(own?[["b","stShop",0]]:[])];if(!tabs.some(x=>x[0]===STAB))STAB="p";
+  return`<div class="ui-tabs st-tabs" role="tablist">${tabs.map(([k,l,n])=>`<button role="tab" class="${STAB===k?"on":""}" aria-selected="${STAB===k}" onclick="STAB='${k}';stOpen()">${t(l)}${n?` <i>${n}</i>`:""}</button>`).join("")}</div>`;})()}
+ ${STAB==="p"?stSec("",P,t("stAddP"),"stEdit('p')"):STAB==="r"?stSec("",R,t("stAddR"),"stEdit('r')"):STAB==="c"?stSec("",C,t("stAddC"),"stEdit('c')"):STAB==="s"?stSec("",S,t("stAddS"),"stEdit('s')"):`<div class="st-sec"><div class="ui-card">${stRow(String(s.nameAr||"").trim()||s.name||"",String(s.nameAr||"").trim()?s.name:"","stEdit('b')")}</div></div>`}`;}
+let STAB="p";
+function stOpen(){v2Open(stHTML(),"set");const n=document.querySelector("#v2s .st-tabs button.on");if(n)try{n.scrollIntoView({inline:"center",block:"nearest"});}catch(e){}}
 let STE=null;
 function stEdit(kind,id){let ar="",en="",title=id==null?t("stNewT"):t("stEdT");
  if(kind==="b"){if(!canEdit())return;ar=D.settings.nameAr||"";en=D.settings.name||"";}
  else if(id!=null){if(kind==="p"){const p=prOf(id);ar=p.ar||"";en=p.en||"";}
   else if(kind==="r"){const r=rsList().find(x=>x.key===id);if(!r)return;ar=r.ar||(v2Ar(r.key)?r.key:"");en=r.en||(v2Ar(r.key)?"":r.key);}
   else{const o=nmOv(id);const c=v2CostTile(id);ar=o?o.ar||"":c?T.ar[c[1]]:arOf(id);en=o?o.en||"":c?T.en[c[1]]:(v2Ar(id)?"":id);}}
- STE={kind,id};
+ STE={kind,id};STAB=kind;
  v2Open(`${v2Head(title,kind==="b"?t("stShop"):t({p:"stProds",r:"stRests",c:"stCosts",s:"stSups"}[kind]),I20.edit)}
  <span class="v2-lbl">${kind==="b"?t("stShopAr"):t("stAr")}</span><input id="stA" class="v2-in v2-txt" dir="rtl" lang="ar" maxlength="80" value="${esc(ar)}" data-af="1">
  <span class="v2-lbl">${kind==="b"?t("stShopEn"):t("stEn")}</span><input id="stE" class="v2-in v2-txt" dir="ltr" lang="en" maxlength="80" value="${esc(en)}">
