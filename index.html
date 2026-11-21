@@ -5884,7 +5884,7 @@ function rpGrp(k,desk){const s=grpData48(GPER48);const acc=ROLE==="accountant";c
  const n=note5(t("g48Note"));
  if(desk)return chips+`<div class="dk-grid half"><div class="dk-col">${hero}${cards.slice(0,3).join("")}</div><div class="dk-col">${cards.slice(3).join("")||""}${n}</div></div>`;
  return chips+hero+cards.join("")+n;}
-{const _vr=vReports;vReports=function(){if(RPT!=="grp"){const h=_vr();return h.replace(/(<div class="b5-tabs" role="tablist">)/,`$1<button role="tab" aria-selected="false" onclick="RPT='grp';render(true)">${t("rpGrp")}</button>`);}
+{const _vr=vReports;vReports=function(){if(RPT==null)RPT="grp";/* group totals first (Ala'a 21/11) */if(RPT!=="grp"){const h=_vr();return h.replace(/(<div class="b5-tabs" role="tablist">)/,`$1<button role="tab" aria-selected="false" onclick="RPT='grp';render(true)">${t("rpGrp")}</button>`);}
  const save=RPT;RPT="pnl";let h=_vr();RPT=save;const k=bk2();const desk=useDk();
  h=h.replace(/(<div class="b5-tabs" role="tablist">)/,`$1<button role="tab" aria-selected="true" class="on" onclick="RPT='grp';render(true)">${t("rpGrp")}</button>`).replace(/<button role="tab" aria-selected="true" class="on" onclick="RPT='pnl'/,`<button role="tab" aria-selected="false" class="" onclick="RPT='pnl'`);
  const ti=h.indexOf('<div class="b5-tabs"');const te=ti<0?-1:h.indexOf('</div>',ti);const head=te<0?h.slice(0,h.indexOf('<div class="b5-rp">')):h.slice(0,te+6);return head+`<div class="b5-rp">${rpGrp(k,desk)}</div>`;};}
