@@ -1352,7 +1352,7 @@ label>.v2-in.v2-txt{margin-top:0}.v2-in.v2-txt:focus{border:2px solid var(--ink)
 <style id="ds">.sp-card{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--soft);border-radius:18px;padding:12px 14px;margin-top:10px}.sp-card.on{background:var(--limebg)}.sp-l{min-width:0}.sp-l>span{display:block;font-size:13px;font-weight:700;color:var(--muted)}.sp-l b{display:block;font-size:20px;font-weight:800;margin-top:2px}.sp-l b small{font-size:12px;color:var(--muted);font-weight:700}.sp-l>small{display:block;font-size:12.5px;color:#4A5A10;font-weight:700;margin-top:2px}.sp-card.ed{flex-wrap:wrap;background:var(--limebg)}.sp-card.ed .v2-fld{flex:1 1 100%}.sp-off{border:0;background:none;font:inherit;font-size:13.5px;font-weight:700;text-decoration:underline;color:var(--ink);padding:4px 0;cursor:pointer}.sp-card .sp-b{flex:none;width:auto!important;min-width:0}.sp-l{flex:1 1 auto}
 .st-tabs{overflow-x:auto;scrollbar-width:none;margin:16px 0 4px}.st-tabs::-webkit-scrollbar{display:none}.st-tabs button{flex:none;padding:0 14px;white-space:nowrap;font-size:14px!important}.st-sec:first-of-type{margin-top:8px}
 [dir=rtl] svg.dir-ic{transform:scaleX(-1)}
-.v2-top h1{font-size:20px!important;line-height:1.35}
+.v2-top h1{font-size:20px!important;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sh.set{min-height:78vh}.st-sec{margin-top:18px}.st-sec h3{font-size:13px;font-weight:800;color:var(--muted);margin:0 4px 0;letter-spacing:.02em}.st-sec .ui-card{margin-top:8px}.st-none{color:var(--muted);font-size:14px;margin:14px 0}.st-sec .ui-add{margin-top:10px}.ds-big.st-go small{display:block;font-size:12.5px;font-weight:500;color:var(--muted);margin-top:2px}.ds-big.st-go span{text-align:start}
 
 /* ===== Tamm design system (b36, Ala'a Nov 21): one set of buttons, cards, rows, chips and sheets for every seller screen =====
@@ -3553,7 +3553,7 @@ Object.assign(T.en,{v2Morning:"Good morning, {n}",v2Day:"Your day",v2Steps:"4 st
  v2RestT:"Restaurants",v2RestD:"Your team picks from this list, so every sale and payment uses the same name in English and Arabic.",v2RestNewN:"{n} new, check the names",v2New:"New",
  v2RestEdit:"Restaurant names",v2JoinT:"Same place, another name?",v2JoinD:"Bills and payments under “{b}” move to “{a}”.",v2Join:"Join them",v2Joined:"Joined",v2RestOk:"Names saved",v2NoRest:"No restaurants yet. They show here after the first sale.",
  v2RestQa:"Restaurants",v2RestQaD:"One list, the same names in English and Arabic",v2Sent:"Day closed",dsNavCust:"Restaurants",dsCustOwe:"Restaurants owe you"});
-Object.assign(T.ar,{v2Morning:"صباح الخير يا {n}",v2Day:"يومك",v2Steps:"4 خطوات، مثل دفترك",v2StepsN:"{n} من 4",
+Object.assign(T.ar,{v2Morning:"صباح الخير {n}",v2Day:"يومك",v2Steps:"4 خطوات، مثل دفترك",v2StepsN:"{n} من 4",
  v2S1:"الشراء",v2S1d:"كم كيلو دجاج وكم دفعت",v2S2:"المصاريف",v2S2d:"عمّال، ذبح، ديزل، أكياس…",v2S3:"المبيع",v2S3d:"اختر المطعم واكتب الكيلو",v2S4:"التحصيل",v2S4d:"مطاعم دفعت فواتير قديمة",v2None:"لا شيء اليوم",
  v2Close:"أغلق اليوم",v2Closed:"أُغلق اليوم وأُرسل",v2Hint:"كل خطوة تُحفظ وحدها. أغلق اليوم عندما تنتهي.",v2HintClosed:"ما زال بإمكانك تعديل اليوم. أرسله مرة أخرى بعد أي تعديل.",
  v2Price:"سعر الدجاج اليوم",v2PriceBy:"سعر الدجاج اليوم · حدّده {n}",v2PriceOld:"آخر سعر، هل هو نفسه اليوم؟",v2PriceNo:"لم يُحدد بعد",v2SetIt:"حدّده",v2Change:"غيّر",v2PerKg:"{c} للكيلو",
@@ -4720,7 +4720,7 @@ Object.assign(T.en,{stShop:"Shop",lgT:"Logo",lgNone:"No logo yet",lgAdd:"Add log
 Object.assign(T.ar,{stShop:"المحل",lgT:"الشعار",lgNone:"لا يوجد شعار بعد",lgAdd:"أضف الشعار",lgCh:"غيّر",lgDel:"احذف الشعار",lgBad:"هذا الملف ليس صورة",lgOk:"تم حفظ الشعار"});
 function bizLogo(){const l=D&&D.settings&&D.settings.logo;return typeof l==="string"&&/^data:image\/(png|jpeg|webp);base64,/.test(l)?l:"";}
 function lgImg(c){const l=bizLogo();return l?`<img class="${c||"biz-lg"}" src="${l}" alt="">`:"";}
-function lgTouch(){try{const l=bizLogo();let k=document.getElementById("lgTI");if(!l){if(k)k.remove();return;}if(!k){k=document.createElement("link");k.id="lgTI";k.rel="apple-touch-icon";document.head.appendChild(k);}k.href=l;}catch(e){}}
+function lgTouch(){try{const k=document.getElementById("lgTI");if(k)k.remove();}catch(e){}}
 function lgPick(){const i=document.createElement("input");i.type="file";i.accept="image/*";i.onchange=()=>{const f=i.files&&i.files[0];if(f)lgLoad(f);};i.click();}
 function lgLoad(f){if(!/^image\//.test(f.type||""))return toast(t("lgBad"));const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=async()=>{const N=192,c=document.createElement("canvas");c.width=c.height=N;const x=c.getContext("2d");const sc=Math.min(N/im.width,N/im.height);const w=im.width*sc,h=im.height*sc;x.drawImage(im,(N-w)/2,(N-h)/2,w,h);D.settings.logo=c.toDataURL("image/png");if(D.settings.logo.length>120000)D.settings.logo=c.toDataURL("image/webp",.85);if(await persist()){toast(t("lgOk"));lgTouch();}stOpen();render();};im.onerror=()=>toast(t("lgBad"));im.src=r.result;};r.readAsDataURL(f);}
 async function lgDel(){delete D.settings.logo;await persist();lgTouch();stOpen();render();}
@@ -4742,12 +4742,18 @@ function ahOs(){const u=navigator.userAgent||"";if(/iPhone|iPad|iPod/.test(u)||(
 function ahRow(){if(ahStand())return"";return`<button class="me-row ah-go" onclick="ahOpen()"><span class="ci">${I_HOME}</span><span class="tx"><b>${t("ahBtn")}</b><small>${t("ahBtnD")}</small></span>${I18.chev}</button>`;}
 function ahOpen(){const os=ahOs();const step=(n,tx,ic)=>`<li><span class="n">${n}</span><span class="tx">${tx}</span>${ic?`<span class="ic">${ic}</span>`:""}</li>`;
  const st=os==="ios"?[step(1,t("ahIos1")),step(2,t("ahIos2"),I_SHARE),step(3,t("ahIos3"),V2SVG('<rect x="4" y="4" width="16" height="16" rx="3"/><path d="M12 8v8M8 12h8"/>')),step(4,t("ahIos4"))]:os==="and"?[step(1,t("ahAnd1"),"⋮"),step(2,t("ahAnd2"),I_HOME),step(3,t("ahAnd3"))]:[];
- v2Open(`${v2Head(t("ahT"),t("ahD"),I_HOME)}<div class="ah-b">${lgImg("biz-lg ah-lg")||`<img class="biz-lg ah-lg" src="tamm-icon-192.png" alt="" onerror="this.remove()">`}
+ v2Open(`${v2Head(t("ahT"),t("ahD"),I_HOME)}<div class="ah-b"><img class="biz-lg ah-lg" src="tamm-icon-192.png" alt="" onerror="this.remove()">
  ${st.length?`<ol class="ah-st">${st.join("")}</ol>`:`<p class="ah-pc">${t("ahPc")}</p>`}</div>
  <div class="ui-row ui-foot">${AHP?`<button class="ui-btn ui-pri" onclick="ahGo()">${I20.plus}<span>${t("ahGo")}</span></button>`:""}<button class="ui-btn ui-sec" onclick="v2Close()">${t("close")||"OK"}</button></div>`,"ah");}
 async function ahGo(){if(!AHP)return;try{AHP.prompt();const r=await AHP.userChoice;if(r&&r.outcome==="accepted"){toast(t("ahOk"));v2Close();}}catch(e){}AHP=null;}
 {const _mv=dsMoreView;dsMoreView=function(){const h=_mv();const r=ahRow();if(!r)return h;const i=h.indexOf(`<p class="st-note"`);return i<0?h+r:h.slice(0,i)+r+h.slice(i);};}
 {const _vm=vMore;vMore=function(){const h=_vm();const r=ahRow();if(!r)return h;const i=h.indexOf(`<div class="tm-grid2">`);return i<0?h+r:h.slice(0,i)+r+h.slice(i);};}
+
+/* b38: short Arabic date like the English (السبت 21 نوفمبر), user display names from the books (D.settings.unm[uid]={ar,en}) */
+const AR_MON=["يناير","فبراير","مارس","أبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"];
+{const _sd=shortDate;shortDate=function(d){if(lang!=="ar")return _sd(d);try{const x=new Date(d+"T12:00:00");return x.toLocaleDateString("ar-JO",{weekday:"long"})+" "+x.getDate()+" "+AR_MON[x.getMonth()];}catch(e){return _sd(d);}};}
+function unmOf(uid,fb){try{const o=uid&&D&&D.settings&&D.settings.unm&&D.settings.unm[uid];if(o){const v=lang==="ar"?(o.ar||o.en):(o.en||o.ar);if(v)return String(v).trim().slice(0,40);}}catch(e){}return fb||"";}
+{const _mn=myName;myName=function(){const n=_mn();try{return unmOf(SESSION&&SESSION.user&&SESSION.user.id,n);}catch(e){return n;}};}
 </script>
 </body>
 </html>
