@@ -1613,6 +1613,19 @@ button.v2-dt{border:0;font:inherit;color:var(--ink)}
 
 /* b41: a little less padding in the dark totals card */
 .v2-hero{padding-top:29px!important}.v2-hero .cu{top:10px!important}.v2-stats{padding-bottom:14px}
+#v2s .sh.buy.stp1 .v2-pg{position:sticky;top:-20px;z-index:2;background:var(--paper);margin:-20px -20px 0;padding:16px 20px 10px}
+/* b41: no "edit any line with the pencil" hint, the icons say it */
+.ui-edhd{display:none!important}
+.bs41 .big{display:flex;align-items:baseline;gap:6px}.bs41 .big small{display:inline!important;font-size:16px;font-weight:700;color:var(--muted);margin:0}
+/* b41: the clear (x) shows on every number field, even when it is empty */
+.v2-in:placeholder-shown+.v2-clr{display:grid!important;opacity:.45}.v2-in:disabled+.v2-clr{display:none!important}
+.mg-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.mg-row .ui-add{margin-top:10px}
+.mg-h{margin:14px 4px 8px;font-size:15px;font-weight:800}.mg-d{margin:-4px 4px 10px;font-size:13px;color:var(--muted);line-height:1.45}
+.mg-r{width:100%;border:0;background:transparent;font:inherit;color:inherit;text-align:start;cursor:pointer}.mg-r.dis{opacity:.45;cursor:default}
+.mg-r.on{background:var(--limebg)}.mg-o{flex:none;width:26px;height:26px;display:grid;place-items:center}.mg-o svg{width:18px;height:18px}
+.dl-go{width:100%;margin-top:16px}.dl-d{margin-top:12px;font-size:14px;color:var(--ink);font-weight:600}
+/* b41: no shop name and logo at the top of Settings */
+#v2s .lg-brand{display:none!important}
 </style>
 </head>
 <body>
@@ -5013,7 +5026,7 @@ function lfKgOf(r,k){if(!r)return null;if(k==="chicken")return num(r.k);const v=
  const pk=V2B?bsProdOf(V2B.name):"";const p=bsPrevDay(SH.date);const y=localDay(Date.parse(SH.date+"T12:00:00")-864e5);const m=lfMap();const r=m[p];
  if(pk&&(dsDays().some(x=>x.d===p)||r)){const kv=lfKgOf(r,pk);const set=kv!=null&&!!r;const k=set?kv:(pk==="chicken"?lfSug(p,0).r:0);const ed=!dsRO(p)&&!lockedOn(p);const dn=shortDate(p);const pn=prName(pk);
   const lbl=(p===y?t("lf3Y"):t("lf3D").replace("{d}",dn))+(pk==="chicken"?"":" · "+pn);
-  const html=`<div class="bs-stock bs40 bs41${set?"":" no"}"><div class="tx"><span class="l">${esc(lbl)}</span><b class="big">${esc(fq(k))} <small>${t("dsKgU")}</small></b>${set?"":`<small class="est">${esc(t("lf3Est"))}</small>`}</div>${ed?`<button class="bs-ed" onclick="bsLeftEdit(${ja(p)},${ja(pk)})">${I20.edit}<span>${t("bsEdit")}</span></button>`:""}</div>`;
+  const html=`<div class="bs-stock bs40 bs41${set?"":" no"}"><div class="tx"><span class="l">${esc(lbl)}</span><b class="big">${esc(fq(k))} <small>${t("dsKgU")}</small></b></div>${ed?`<button class="bs-ed" onclick="bsLeftEdit(${ja(p)},${ja(pk)})">${I20.edit}<span>${t("bsEdit")}</span></button>`:""}</div>`;
   BSLK={pk,k};const h=sh.querySelector(".v2-sht");if(h)h.insertAdjacentHTML("afterend",html);}else BSLK=null;
  bsTotPaint();};}
 let BSLK=null;
@@ -5085,7 +5098,7 @@ addEventListener("resize",shSizeSoon);
 function ddBack(){if(!SH)return;const from=DDFROM;const s=DDSNAP;const go=()=>{DDEDIT="";DDSNAP=null;v2Close();DDFROM="";dsGo(from?"day":"days");};
  const changed=!!(s&&s.d===SH.date&&ddSig(SH.date)!==s.sig);
  if(!changed&&!SH.dirty)return go();
- uiConfirm({danger:1,icon:I20.back,okIcon:I20.back,title:t("ddCancelQ"),body:t("ddCancelD"),ok:t("ddUndoB"),no:t("uiKeep")},async()=>{if(v2Busy())return;if(changed){const ok=await ddRestore(s);if(!ok)return;}SH.dirty=false;dsLoad(SH.date);go();});}
+ uiConfirm({danger:1,icon:I20.back,okIcon:I20.back,title:t("ddBackQ"),body:t("ddBackD"),ok:t("ddBackB"),no:t("ddBackN")},async()=>{if(v2Busy())return;if(changed){const ok=await ddRestore(s);if(!ok)return;}SH.dirty=false;dsLoad(SH.date);go();});}
 {const _h=v2Home;v2Home=function(){const h=_h();if(!SH||!ddPage()||DDEDIT!==SH.date)return h;
  return h.replace('<div class="dd36 ed"><div class="rs-ph"></div>',`<div class="dd36 ed"><div class="rs-ph"><button class="rs-bk dd-bk" onclick="ddBack()">${I20.back}<span>${t("v2Back")}</span></button></div>`);};}
 
@@ -5098,6 +5111,78 @@ Object.assign(T.ar,{ddBuyP:"سعر الشراء",ddBuyW:"الوزن المشتر
  const e=h.indexOf('<div class="v2-h"',a);if(e<0)return h;const seg=h.slice(a,e);const row=(seg.match(/<div class="pr-row">[\s\S]*?<\/div>/)||[""])[0];const add=(seg.match(/<button class="pr-add"[\s\S]*?<\/button>/)||[""])[0];if(!row)return h;
  const blk=`<div class="dd-mg" id="prCard">${m[0]}<div class="dd-mgl">${I18.tag||""}<span>${t("ddSellP")} · ${esc(D.settings.cur)}</span></div>${row}${add}</div>`;
  h=h.slice(0,a)+blk+h.slice(e);return h.replace(m[0],"").replace(blk,blk);};}
+
+/* b41: the buy step uses the same header as the other three steps (X, Step 1 of 4, title, dots) */
+{const _bp=v2BuyPaint;v2BuyPaint=function(){const r=_bp.apply(this,arguments);try{const sh=document.querySelector("#v2s .sh.buy");const h=sh&&sh.querySelector(":scope>.v2-sht");const sub=h&&h.querySelector(".sub");
+ if(h&&sub&&sub.textContent.trim()===t("v2StepN").replace("{n}","1")){const ti=(h.querySelector("h2")||{}).textContent||"";
+  const d=document.createElement("div");d.className="v2-pg";d.innerHTML=`<button class="v2-back" aria-label="${esc(t("close")||"Close")}" onclick="v2Close()">${I20.x}</button><div class="tt"><small>${esc(sub.textContent)}</small><b>${esc(ti)}</b></div><div class="v2-dots"><i class="on"></i><i></i><i></i><i></i></div>`;
+  h.replaceWith(d);sh.classList.add("stp1");}}catch(e){}return r;};}
+
+Object.assign(T.en,{ddBackQ:"Are you sure you want to go back?",ddBackD:"This will delete all your edits.",ddBackB:"Yes, go back",ddBackN:"Keep editing",stBtn:"Names and lists"});
+Object.assign(T.ar,{ddBackQ:"متأكد أنك تريد الرجوع؟",ddBackD:"سيحذف هذا كل تعديلاتك.",ddBackB:"نعم، ارجع",ddBackN:"أكمل التعديل",stBtn:"الأسماء والقوائم"});
+
+/* b41: merge duplicate names (products, restaurants, costs, suppliers). Everything under one name moves to the other, and the first one goes away. */
+Object.assign(T.en,{mgBtn:"Merge two names",mgT:"Merge two names",mgS1:"Step 1: which name should go away?",mgS2:"Step 2: move its records into",mgD1:"Pick the duplicate. Its records will move to the name you pick next.",mgFix:"Built in, it can't go away",mgN:"{n} records",mgQ:"Merge “{a}” into “{b}”?",mgQD:"Everything under “{a}” moves to “{b}”, and “{a}” is removed from the list.",mgOk:"Merge",mgDone:"Merged",mgFew:"You need at least two names to merge"});
+Object.assign(T.ar,{mgBtn:"ادمج اسمين",mgT:"دمج اسمين",mgS1:"الخطوة 1: أي اسم تريد حذفه؟",mgS2:"الخطوة 2: انقل سجلاته إلى",mgD1:"اختر الاسم المكرر. ستنتقل سجلاته إلى الاسم الذي تختاره بعده.",mgFix:"أساسي، لا يمكن حذفه",mgN:"{n} سجل",mgQ:"دمج «{a}» في «{b}»؟",mgQD:"كل ما هو مسجل باسم «{a}» سينتقل إلى «{b}»، ويُحذف «{a}» من القائمة.",mgOk:"ادمج",mgDone:"تم الدمج",mgFew:"تحتاج اسمين على الأقل للدمج"});
+function mgItems(kind){const nk=v2Norm;
+ if(kind==="p")return prList().map(p=>({id:p.k,name:lang==="ar"?(p.ar||p.en):(p.en||p.ar),fix:PR_DEF.some(d=>d.k===p.k),n:D.invoices.filter(x=>x&&x.sh&&(x.prod||"chicken")===p.k).length}));
+ if(kind==="r")return rsList().map(r=>{const ks=[r.key,...(r.alias||[])];return{id:r.key,name:rsName(r.key),fix:false,n:D.invoices.filter(x=>x&&ks.includes(x.party)).length};});
+ if(kind==="c"){const cnt=id=>{const k=stNmKey(id);return D.expenses.filter(x=>x&&x.shk==="cost"&&stNmKey(String(x.item||""))===k).length;};
+  return[...V2C.map(cc=>({id:T.en[cc[1]],name:ccName(cc),fix:true,n:cnt(T.en[cc[1]])})),...stCostNames().map(n=>({id:n,name:tx(n),fix:false,n:cnt(n)}))];}
+ return stSupNames().map(n=>({id:n,name:tx(n),fix:false,n:D.expenses.filter(x=>x&&x.shk==="buy"&&nk(x.party)===nk(n)).length}));}
+let MG=null;
+function mgOpen(kind,from){const L=mgItems(kind);if(L.length<2)return toast(t("mgFew"));MG={kind,from:from==null?null:from};
+ const sub=t({p:"stProds",r:"stRests",c:"stCosts",s:"stSups"}[kind]);
+ const row=(it,on,fn,dis)=>`<button class="ui-li mg-r${on?" on":""}${dis?" dis":""}" ${dis?"disabled":""} onclick="${fn}"><span class="t"><b dir="auto">${esc(it.name)}</b><small>${dis?esc(t("mgFix")):esc(t("mgN").replace("{n}",it.n))}</small></span><span class="mg-o">${on?I20.check:""}</span></button>`;
+ let body;
+ if(MG.from==null)body=`<p class="mg-h">${t("mgS1")}</p><p class="mg-d">${t("mgD1")}</p><div class="ui-card">${L.map(it=>row(it,false,`mgOpen(${ja(kind)},${ja(it.id)})`,it.fix)).join("")}</div>`;
+ else{const f=L.find(x=>x.id===MG.from);body=`<p class="mg-h">${t("mgS1")}</p><div class="ui-card">${row(f,true,`mgOpen(${ja(kind)})`,false)}</div><p class="mg-h">${t("mgS2")}</p><div class="ui-card">${L.filter(x=>x.id!==MG.from).map(it=>row(it,false,`mgAsk(${ja(it.id)})`,false)).join("")}</div>`;}
+ v2Open(`${v2Head(t("mgT"),sub,I20.merge)}${body}<div class="ui-row ui-foot"><button class="ui-btn ui-sec" onclick="stOpen()">${t("uiCancel")}</button></div>`,"set mg");}
+function mgAsk(into){if(!MG||MG.from==null)return;const L=mgItems(MG.kind);const a=(L.find(x=>x.id===MG.from)||{}).name||MG.from,b=(L.find(x=>x.id===into)||{}).name||into;
+ uiConfirm({icon:I20.merge,okIcon:I20.merge,title:esc(t("mgQ").replace("{a}",a).replace("{b}",b)),body:esc(t("mgQD").replace(/\{a\}/g,a).replace("{b}",b)),ok:t("mgOk"),no:t("uiCancel")},()=>mgDo(MG.kind,MG.from,into));}
+async function mgDo(kind,from,into){if(from===into)return;const snap=clone(D);const nk=v2Norm;const now=new Date().toISOString(),me=dsMe();
+ if(kind==="p"){if(PR_DEF.some(d=>d.k===from))return;for(const x of D.invoices)if(x&&x.prod===from)x.prod=into;
+  const lf=D.settings.lf||{};for(const d in lf){const P=lf[d]&&lf[d].p;if(P&&P[from]!=null){P[into]=r3(num(P[into])+num(P[from]));delete P[from];}}
+  for(const r of (D.rests||[])){const sp=r&&r.spd;if(sp)for(const d in sp)if(sp[d]&&sp[d][from]!=null){if(sp[d][into]==null)sp[d][into]=sp[d][from];delete sp[d][from];}}
+  const pp=D.settings.prodPrice;if(pp&&pp[from]){if(!pp[into])pp[into]=pp[from];else{const h=pp[into].h=pp[into].h||{};const hf=pp[from].h||{};for(const d in hf)if(h[d]==null)h[d]=hf[d];}delete pp[from];}
+  D.settings.dsProds=Array.isArray(D.settings.dsProds)?D.settings.dsProds:[];const x=D.settings.dsProds.find(p=>p&&p.k===from);if(x){x.gone=true;x.into=into;x.gAt=now;x.gBy=me;}else D.settings.dsProds.push({k:from,gone:true,into,gAt:now,gBy:me});}
+ else if(kind==="r"){const A=v2RestRec(into);const B=(D.rests||[]).find(x=>x&&x.key===from&&!x.gone);
+  const moved=[from,...(B&&Array.isArray(B.alias)?B.alias:[])];for(const x of D.invoices)if(x&&moved.includes(x.party))x.party=into;
+  A.alias=[...new Set([...(Array.isArray(A.alias)?A.alias:[]),...moved])].filter(k=>k!==into);if(!A.en&&B&&B.en)A.en=B.en;if(!A.ar&&B&&B.ar)A.ar=B.ar;A.eAt=now;A.eBy=me;
+  if(B){B.gone=true;B.into=into;}}
+ else if(kind==="c"){if(v2CostTile(from))return;const kf=stNmKey(from);for(const x of D.expenses)if(x&&x.shk==="cost"&&stNmKey(String(x.item||""))===kf){x.item=into;x.eAt=now;x.eBy=me;}
+  D.settings.costX=(D.settings.costX||[]).filter(n=>stNmKey(n)!==kf);if(D.settings.nm)delete D.settings.nm[kf];}
+ else{for(const x of D.expenses)if(x&&x.shk==="buy"&&nk(x.party)===nk(from)){x.party=into;x.eAt=now;x.eBy=me;}
+  D.settings.supX=(D.settings.supX||[]).filter(n=>nk(n)!==nk(from));if(D.settings.nm)delete D.settings.nm[stNmKey(from)];}
+ (D.settings.mlog=Array.isArray(D.settings.mlog)?D.settings.mlog:[]).push({k:kind,a:from,b:into,at:now,by:me});
+ const ok=await persist();if(!ok){D=snap;return;}MG=null;toast(t("mgDone"));if(SH)try{dsLoad(SH.date);}catch(e){}render();STAB=kind;stOpen();}
+{const _sr=stRow;stRow=function(name,sub,fn){const h=_sr(name,sub,fn);const m=String(fn).match(/^stEdit\('([prcs])',(.+)\)$/);if(!m)return h;
+ let id="";try{id=JSON.parse(m[2].replace(/&quot;/g,'"').replace(/&amp;/g,"&").replace(/&#39;/g,"'").replace(/&lt;/g,"<").replace(/&gt;/g,">"));}catch(e){return h;}
+ const k=m[1];if((k==="p"&&PR_DEF.some(d=>d.k===id))||(k==="c"&&v2CostTile(id)))return h;
+ return h.replace(/<button class="ui-ic"/,`<button class="ui-ic mg-ic" aria-label="${t("mgBtn")}" onclick="mgOpen('${k}',${m[2]})">${I20.merge}</button><button class="ui-ic"`);};}
+
+/* b41: delete a name. No records: it just goes. With records: you must pick another name to move them to (a merge). Built-in names can't be deleted. */
+Object.assign(T.en,{dlBtn:"Delete this name",dlQ:"Delete “{a}”?",dlQD:"No sale or cost uses this name, so nothing else changes.",dlOk:"Delete",dlDone:"Deleted",dlHas:"“{a}” has {n} records. Pick the name to move them to, then it's deleted.",dlS2:"Move its records into"});
+Object.assign(T.ar,{dlBtn:"احذف هذا الاسم",dlQ:"حذف «{a}»؟",dlQD:"لا يوجد بيع أو مصروف بهذا الاسم، فلن يتغير شيء آخر.",dlOk:"احذف",dlDone:"تم الحذف",dlHas:"«{a}» عليه {n} سجل. اختر الاسم الذي تنتقل إليه السجلات، ثم يُحذف.",dlS2:"انقل سجلاته إلى"});
+{const _se=stEdit;stEdit=function(kind,id){_se(kind,id);if(id==null||!"prcs".includes(kind))return;const it=mgItems(kind).find(x=>x.id===id);if(!it||it.fix)return;
+ const f=document.querySelector("#v2s .ui-foot");if(f)f.insertAdjacentHTML("beforebegin",`<button class="ui-btn ui-del dl-go" onclick="dlAsk(${ja(kind)},${ja(id)})">${I20.trash}<span>${t("dlBtn")}</span></button>`);};}
+let DLM=false;
+function dlAsk(kind,id){const it=mgItems(kind).find(x=>x.id===id);if(!it||it.fix)return;
+ if(it.n>0){if(mgItems(kind).length<2)return toast(t("mgFew"));DLM=true;mgOpen(kind,id);return;}
+ uiConfirm({danger:1,title:esc(t("dlQ").replace("{a}",it.name)),body:esc(t("dlQD")),ok:t("dlOk"),no:t("uiCancel")},()=>dlDo(kind,id));}
+async function dlDo(kind,id){const snap=clone(D);const nk=v2Norm;const now=new Date().toISOString(),me=dsMe();
+ if(kind==="p"){if(PR_DEF.some(d=>d.k===id))return;D.settings.dsProds=Array.isArray(D.settings.dsProds)?D.settings.dsProds:[];const x=D.settings.dsProds.find(p=>p&&p.k===id);if(x){x.gone=true;x.gAt=now;x.gBy=me;}if(D.settings.prodPrice)delete D.settings.prodPrice[id];}
+ else if(kind==="r"){const r=(D.rests||[]).find(x=>x&&x.key===id&&!x.gone);if(r){r.gone=true;r.gAt=now;r.gBy=me;}}
+ else if(kind==="c"){if(v2CostTile(id))return;const k=stNmKey(id);D.settings.costX=(D.settings.costX||[]).filter(n=>stNmKey(n)!==k);if(D.settings.nm)delete D.settings.nm[k];}
+ else{D.settings.supX=(D.settings.supX||[]).filter(n=>nk(n)!==nk(id));if(D.settings.nm)delete D.settings.nm[stNmKey(id)];}
+ const ok=await persist();if(!ok){D=snap;return;}toast(t("dlDone"));render();STAB=kind;stOpen();}
+{const _mo=mgOpen;mgOpen=function(kind,from){const dl=DLM;DLM=false;_mo(kind,from);if(from==null)return;const sh=document.querySelector("#v2s .sh");if(!sh)return;
+ const it=mgItems(kind).find(x=>x.id===from);if(!it)return;const hs=sh.querySelectorAll(".mg-h");if(hs[0]){hs[0].outerHTML=`<p class="mg-d dl-d">${esc((dl?t("dlHas"):t("mgHas")).replace(/\{a\}/g,it.name).replace("{n}",it.n))}</p>`;}
+ const c1=sh.querySelector(".ui-card .mg-r.on");if(c1)c1.removeAttribute("onclick");const h2=sh.querySelector(".mg-h");if(h2)h2.textContent=t("dlS2");
+ const tt=sh.querySelector(".v2-sht h2");if(tt)tt.textContent=dl?t("dlBtn"):t("mgT1");};}
+Object.assign(T.en,{mgT1:"Merge into another name",mgHas:"Pick the name to merge “{a}” into. Its {n} records move there and “{a}” is removed."});
+Object.assign(T.ar,{mgT1:"ادمج مع اسم آخر",mgHas:"اختر الاسم الذي تريد دمج «{a}» فيه. تنتقل سجلاته ({n}) إليه ويُحذف «{a}»."});
+Object.assign(T.en,{stT:"Names and lists"});Object.assign(T.ar,{stT:"الأسماء والقوائم"});
 </script>
 </body>
 </html>
